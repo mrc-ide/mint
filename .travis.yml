@@ -1,0 +1,44 @@
+matrix:
+  include:
+    - language: java
+      jdk:
+        - openjdk8
+      cache: npm
+      install:
+        - npm install codecov -g
+        - npm install --prefix=src/app/static
+        - npm run build --prefix=src/app/static
+      before_script:
+        - ./src/app/static/scripts/run-dependencies-for-integration-tests.sh
+      script:
+        - npm test --prefix=src/app/static
+        - npm run integration-test --prefix=src/app/static
+      after_success:
+        - codecov -f src/app/static/coverage/*.json
+        - codecov -f src/app/static/coverage/integration/*.json
+    - language: java
+      before_cache:
+        - rm -f  $HOME/src/.gradle/caches/modules-2/modules-2.lock
+        - rm -fr $HOME/src/.gradle/caches/*/plugin-resolution/
+      cache:
+        directories:
+          - $HOME/src/app/.gradle/caches/
+          - $HOME/src/app/.gradle/wrapper/
+          - $HOME/src/app/static/node_modules
+      jdk:
+        - openjdk8
+      install:
+        - npm install codecov -g
+        - npm install --prefix=src/app/static
+        - ./src/gradlew -p src
+      before_script:
+        - sudo /etc/init.d/postgresql stop
+        - ./scripts/run-dependencies.sh
+      script:
+        - ./src/gradlew -p src app::test
+        - ./src/gradlew -p src app::jacocoTestReport
+        - codecov -f src/app/coverage/test/*.xml
+        - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        - ./scripts/travis.sh
+      services:
+        - docker

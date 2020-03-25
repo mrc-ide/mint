@@ -1,0 +1,14 @@
+!/usr/bin/env bash
+set -e
+PATH_CONFIG=/etc/mintt/config.properties
+if [ ! -f $PATH_CONFIG ]; then
+    echo "Waiting for configuration at '$PATH_CONFIG'"
+    while [ ! -f $PATH_CONFIG ]; do
+        sleep 1
+        echo "...still waiting"
+    done
+    echo "Found configuration"
+fi
+
+echo "Starting app"
+/app-boot/bin/app
