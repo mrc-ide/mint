@@ -1,0 +1,2 @@
+# mint
+Malaria Indicators Tool
