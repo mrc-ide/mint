@@ -1,4 +1,4 @@
-package org.imperial.mrc.hint.controllers
+package org.imperial.mrc.mint.controllers
 
 import org.imperial.mrc.mint.AppProperties
 import org.springframework.stereotype.Controller

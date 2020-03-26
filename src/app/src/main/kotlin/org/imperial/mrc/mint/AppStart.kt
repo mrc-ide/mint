@@ -12,13 +12,7 @@ import org.springframework.web.servlet.resource.PathResourceResolver
 class MintApplication
 
 fun main(args: Array<String>) {
-    try {
-        SpringApplication.run(MintApplication::class.java, *args)
-    }
-    catch(e: Exception) {
-        val s = e.message
-        throw e
-    }
+    SpringApplication.run(MintApplication::class.java, *args)
 }
 
 @Configuration
