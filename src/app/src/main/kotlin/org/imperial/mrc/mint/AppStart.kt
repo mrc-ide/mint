@@ -1,6 +1,5 @@
-package org.imperial.mrc.hint
+package org.imperial.mrc.mint
 
-import org.pac4j.core.config.Config
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Configuration
@@ -13,12 +12,18 @@ import org.springframework.web.servlet.resource.PathResourceResolver
 class MintApplication
 
 fun main(args: Array<String>) {
-    SpringApplication.run(MintApplication::class.java, *args)
+    try {
+        SpringApplication.run(MintApplication::class.java, *args)
+    }
+    catch(e: Exception) {
+        val s = e.message
+        throw e
+    }
 }
 
 @Configuration
 @EnableWebMvc
-class MvcConfig(val config: Config) : WebMvcConfigurer {
+class MvcConfig() : WebMvcConfigurer {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/public/**")
                 .addResourceLocations("file:/static/public/", "file:static/public/")

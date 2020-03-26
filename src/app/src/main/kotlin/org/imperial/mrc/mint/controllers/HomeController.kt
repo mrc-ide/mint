@@ -1,6 +1,6 @@
 package org.imperial.mrc.hint.controllers
 
-import org.imperial.mrc.hint.AppProperties
+import org.imperial.mrc.mint.AppProperties
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
