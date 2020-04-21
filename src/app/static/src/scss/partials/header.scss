@@ -13,6 +13,11 @@
   a.nav-link.active {
     color: $gray-700 !important;
   }
+
+  .b-icon {
+    margin-left: 2px;
+    margin-top: -2px;
+  }
 }
 
 .navbar-header {
@@ -21,6 +26,12 @@
   margin-top: -0.5rem;
   margin-bottom: -0.5rem;
   margin-left: -1rem;
+}
+
+.project-header {
+  display: flex;
+  margin-left: -1rem;
+  background: $theme-mint;
 }
 
 .navbar-secondary {

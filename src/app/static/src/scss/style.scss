@@ -7,3 +7,6 @@ html {
   overflow-y: scroll;
 }
 
+.btn-primary {
+  @include button-variant($theme-mint, darken($theme-mint, 10%))
+}
