@@ -1,0 +1,32 @@
+import Vue from "vue"
+import Vuex from "vuex"
+import {MutationPayload, Store, StoreOptions} from "vuex";
+import {mutations} from "./mutations";
+
+export interface Region {
+    name: string
+}
+
+export interface Project {
+    name: string
+    regions: Region[]
+}
+
+export interface RootState {
+    projects: Project[]
+}
+
+const logger = (store: Store<RootState>) => {
+    store.subscribe((mutation: MutationPayload) => {
+        console.log(mutation.type);
+    })
+};
+
+export const storeOptions: StoreOptions<RootState> = {
+    state: {projects: []},
+    mutations,
+    plugins: [logger]
+}
+
+Vue.use(Vuex);
+export const store = new Vuex.Store<RootState>(storeOptions);
