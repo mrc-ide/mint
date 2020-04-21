@@ -1,3 +1,24 @@
-@import "../../node_modules/bootstrap/scss/bootstrap";
-@import "../../node_modules/@riophae/vue-treeselect/dist/vue-treeselect";
+@import "partials/variables.scss";
+@import "partials/header.scss";
 
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+html {
+  overflow-y: scroll;
+}
+
+.btn-primary {
+  @include button-variant($theme-mint, darken($theme-mint, 10%))
+}
+
+.vue-tags-input {
+  max-width: 100% !important;
+}
+
+.ti-input {
+  @extend .form-control
+}
+
+.ti-new-tag-input-wrapper {
+  font-size: inherit !important;
+}

@@ -1,6 +1,7 @@
 import Vue from "vue"
 import Vuex from "vuex"
 import {MutationPayload, Store, StoreOptions} from "vuex";
+
 import {mutations} from "./mutations";
 
 export interface Region {
@@ -14,6 +15,8 @@ export interface Project {
 
 export interface RootState {
     projects: Project[]
+    currentProject: Project | null
+    currentRegion: Region | null
 }
 
 const logger = (store: Store<RootState>) => {
@@ -22,8 +25,12 @@ const logger = (store: Store<RootState>) => {
     })
 };
 
-export const storeOptions: StoreOptions<RootState> = {
-    state: {projects: []},
+const storeOptions: StoreOptions<RootState> = {
+    state: {
+        projects: [],
+        currentProject: null,
+        currentRegion: null
+    },
     mutations,
     plugins: [logger]
 }
