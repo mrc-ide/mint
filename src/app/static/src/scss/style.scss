@@ -1,3 +1,9 @@
+@import "partials/variables.scss";
+@import "partials/header.scss";
+
 @import "../../node_modules/bootstrap/scss/bootstrap";
-@import "../../node_modules/@riophae/vue-treeselect/dist/vue-treeselect";
+
+html {
+  overflow-y: scroll;
+}
 

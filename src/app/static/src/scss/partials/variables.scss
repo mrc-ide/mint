@@ -1,0 +1,11 @@
+// Variables to overwrite original bootstrap sass vars
+//
+// Variables should follow the `$component-state-property-size` formula for
+// consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
+
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+
+$theme-primary: #e31837;
+$secondary-header-bg-color: rgba(170, 240, 174, .2);
+$primary-header-bg-color: $gray-400;

@@ -7,8 +7,7 @@
     <!-- endinject -->
 </head>
 <body>
-<div id="app"">
-   <h1>Hello, ${title}</h1>
+<div id="app">
 </div>
 </body>
 </html>
