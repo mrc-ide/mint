@@ -1,8 +1,8 @@
-import {app} from "../app/index";
+import {mint} from "../app/index";
 
 describe("Index", () => {
     it("can load app", () => {
         //placeholder test
-        expect(app.$children.length).toBe(0);
+        expect(mint.$children.length).toBe(1);
     });
 });

@@ -1,3 +1,12 @@
-@import "../../node_modules/bootstrap/scss/bootstrap";
-@import "../../node_modules/@riophae/vue-treeselect/dist/vue-treeselect";
+@import "partials/variables.scss";
+@import "partials/header.scss";
 
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+html {
+  overflow-y: scroll;
+}
+
+.btn-primary {
+  @include button-variant($theme-mint, darken($theme-mint, 10%))
+}
