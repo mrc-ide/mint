@@ -9,12 +9,12 @@ export interface Region {
 export interface Project {
     name: string
     regions: Region[]
+    currentRegion: Region
 }
 
 export interface RootState {
     projects: Project[]
     currentProject: Project | null
-    currentRegion: Region | null
 }
 
 const logger = (store: Store<RootState>) => {
@@ -26,8 +26,7 @@ const logger = (store: Store<RootState>) => {
 const storeOptions: StoreOptions<RootState> = {
     state: {
         projects: [],
-        currentProject: null,
-        currentRegion: null
+        currentProject: null
     },
     plugins: [logger]
 }

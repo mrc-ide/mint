@@ -9,7 +9,7 @@
             <div class="container-fluid">
                 <div class="navbar-header project-header">
                     <span>{{currentProject.name}}:</span>
-                    <drop-down :text="currentRegion.name" parent-class="px-2" toggle-class="text-dark">
+                    <drop-down :text="currentProject.currentRegion.name" parent-class="px-2" toggle-class="text-dark">
                         <div class="dropdown-item" v-for="region in currentProject.regions">
                             <a href="#" class="text-success">{{region.name}}</a>
                         </div>
@@ -36,11 +36,12 @@
 
     export default Vue.extend({
         components: {dropDown, BIconGraphUp},
-        computed: mapState(["currentProject", "currentRegion"]),
+        computed: mapState(["currentProject"]),
         methods: {
             createProject() {
-                this.$store.state.currentProject = {name: "Zimbabwe", regions: [{name: "Central"}, {name: "North"}]}
-                this.$store.state.currentRegion = {name: "Central"}
+                const newRegion = {name: "Central"}
+                this.$store.state.currentProject = {name: "Zimbabwe",
+                    regions: [newRegion, {name: "North"}], currentRegion: newRegion}
             }
         }
     })
