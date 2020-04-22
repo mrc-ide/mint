@@ -1,5 +1,6 @@
 import {MutationTree} from "vuex";
-import {Project, RootState} from "./store";
+import {RootState} from "./store";
+import {Project} from "./models/project";
 
 export enum RootMutation {
     AddProject = "AddProject"
