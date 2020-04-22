@@ -30,6 +30,7 @@ class MintrAPIClient(
     }
 
     fun get(url: String): ResponseEntity<String> {
+
         return "$baseUrl/$url".httpGet()
                 .addTimeouts()
                 .response()
