@@ -44,6 +44,8 @@ dependencies {
     testImplementation "org.jsoup:jsoup:1.11.3"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.4.2"
+    testImplementation "org.leadpony.justify:justify:1.1.0"
+    testImplementation "org.leadpony.joy:joy:1.1.0"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
