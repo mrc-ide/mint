@@ -29,10 +29,10 @@ describe("project page", () => {
         expect(wrapper.find("button").classes()).toContain("disabled");
     });
 
-    it("button is disabled if regions are missing", async () => {
+    it("button is disabled if regions and newRegion are missing", async () => {
         const store = createStore()
         const wrapper = shallowMount(projectPage, {store});
-        wrapper.find("input").setValue("new project")
+        wrapper.find("input").setValue("new project");
         await Vue.nextTick();
 
         expect(wrapper.find("button").attributes().disabled).toBe("disabled");
@@ -52,13 +52,48 @@ describe("project page", () => {
         expect(wrapper.find("button").classes()).not.toContain("disabled");
     });
 
-    it("can add new project", async () => {
+    it("button is enabled when project name and newRegion are provided", async () => {
+        const store = createStore()
+        const wrapper = shallowMount(projectPage, {store});
+
+        wrapper.find("input").setValue("new project");
+        wrapper.setData({newRegion: "region"});
+
+        await Vue.nextTick();
+
+        expect(wrapper.find("button").attributes().disabled).toBeUndefined();
+        expect(wrapper.find("button").classes()).not.toContain("disabled");
+    });
+
+    it("can add new project from region tags", async () => {
         const mockMutation = jest.fn();
         const store = createStore(mockMutation);
         const wrapper = shallowMount(projectPage, {store});
 
         wrapper.find("input").setValue("new project");
         wrapper.find(VueTagsInput).vm.$emit("tags-changed", [{text: "South"}])
+
+        await Vue.nextTick();
+
+        wrapper.find("button").trigger("click");
+
+        await Vue.nextTick();
+
+        expect(mockMutation.mock.calls.length).toBe(1);
+        expect(mockMutation.mock.calls[0][1]).toStrictEqual({
+            name: "new project",
+            regions: [{name: "South"}],
+            currentRegion: {name: "South"}
+        });
+    });
+
+    it("can add new project from single region typed but not entered", async () => {
+        const mockMutation = jest.fn();
+        const store = createStore(mockMutation);
+        const wrapper = shallowMount(projectPage, {store});
+
+        wrapper.find("input").setValue("new project");
+        wrapper.setData({newRegion: "South"})
 
         await Vue.nextTick();
 
