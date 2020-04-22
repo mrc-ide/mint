@@ -40,11 +40,11 @@ This is run for each branch as part of the Travis build and the resulting image 
 To run:
 
 ```
-docker run -p 8080:8080 mrcide/hint:branch_name
+docker run -p 8080:8080 mrcide/mint:branch_name
 ```
 
 or
 
 ```
-docker run -p 8080:8080 mrcide/hint:git_sha
+docker run -p 8080:8080 mrcide/mint:git_sha
 ```

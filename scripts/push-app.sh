@@ -4,8 +4,8 @@ set -ex
 HERE=$(dirname $0)
 . $HERE/common
 
-docker push $APP_DOCKER_COMMIT_TAG \
-    && docker push $APP_DOCKER_BRANCH_TAG
+docker push $TAG_SHA \
+    && docker push $TAG_BRANCH
 
 if [ $GIT_BRANCH == "master" ]; then
     docker tag $TAG_SHA $TAG_LATEST
