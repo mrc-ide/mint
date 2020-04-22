@@ -67,6 +67,10 @@ describe("project page", () => {
         await Vue.nextTick();
 
         expect(mockMutation.mock.calls.length).toBe(1);
-        expect(mockMutation.mock.calls[0][1]).toStrictEqual({name: "new project", regions: [{name: "South"}]});
+        expect(mockMutation.mock.calls[0][1]).toStrictEqual({
+            name: "new project",
+            regions: [{name: "South"}],
+            currentRegion: {name: "South"}
+        });
     });
 });

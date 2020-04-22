@@ -10,6 +10,5 @@ export const mutations: MutationTree<RootState> = {
     [RootMutation.AddProject](state: RootState, payload: Project) {
         state.projects.push(payload)
         state.currentProject = payload
-        state.currentRegion = payload.regions[0]
     }
 }

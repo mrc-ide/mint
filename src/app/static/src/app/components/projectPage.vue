@@ -83,9 +83,11 @@
         methods: {
             addProject: mapMutationByName(RootMutation.AddProject),
             createProject() {
+                const regions = this.regions.map((tag) => ({name: tag.text}));
                 const project: Project = {
                     name: this.newProject,
-                    regions: this.regions.map((tag) => ({name: tag.text}))
+                    regions: regions,
+                    currentRegion: regions[0]
                 }
                 this.addProject(project)
             },
