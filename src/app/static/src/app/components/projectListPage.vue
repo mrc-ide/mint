@@ -94,7 +94,7 @@
                 const project = new Project(this.newProject, regionNames);
                 this.addProject(project);
                 this.$router.push({
-                    path: project.regions[0].url
+                    path: project.currentRegion.url
                 })
             },
             tagAdded: function (newTags: Tag[]) {

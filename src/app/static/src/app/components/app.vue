@@ -31,8 +31,6 @@
 
     export default Vue.extend({
         components: {dropDown, BIconGraphUp},
-        computed: {
-            ...mapState(["currentProject"])
-        }
+        computed: mapState(["currentProject"])
     })
 </script>
