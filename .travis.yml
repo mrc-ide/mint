@@ -40,7 +40,6 @@ matrix:
         - codecov -f src/app/coverage/test/*.xml
         - ./scripts/travis.sh
       after_success:
-        - ./scripts/build-app.sh
-        - ./scripts/push-app.sh
+        - ./scripts/travis.sh
       services:
         - docker
