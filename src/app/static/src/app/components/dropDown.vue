@@ -1,9 +1,7 @@
 <template>
-    <div class="dropdown" :class="parentClass">
-        <a href="#"
-           class="dropdown-toggle"
+    <div class="dropdown" :class="parentClass" :id="id">
+        <a class="dropdown-toggle"
            :class="toggleClass"
-           v-on:blur="close"
            v-on:click="toggle">
             {{text}}
         </a>
@@ -21,6 +19,7 @@
     }
 
     interface Data {
+        id: string
         show: boolean
     }
 
@@ -34,6 +33,7 @@
         props: {text: String, parentClass: String, toggleClass: String},
         data(): Data {
             return {
+                id: [...Array(30)].map(() => Math.random().toString(36)[2]).join(''),
                 show: false
             }
         },
@@ -44,6 +44,23 @@
             close() {
                 this.show = false;
             }
+        },
+        mounted() {
+            window.document.onclick = (e: any) => {
+                let target = e.target
+                let closeDropdown = true;
+                while (target.parentElement) {
+                    if (target.id == this.id) {
+                        // this click originated from inside the dropown, so don't close it
+                        closeDropdown = false;
+                        break;
+                    }
+                    target = target.parentElement
+                }
+                if (closeDropdown) {
+                    this.close();
+                }
+            };
         }
     })
 </script>

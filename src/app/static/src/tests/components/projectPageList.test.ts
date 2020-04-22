@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import {shallowMount} from "@vue/test-utils";
 import VueTagsInput from '@johmun/vue-tags-input';
-import projectPage from "../../app/components/projectPage.vue";
+import projectListPage from "../../app/components/projectListPage.vue";
 import {mockRootState} from "../mocks";
 import {RootMutation} from "../../app/mutations";
 
@@ -19,7 +19,7 @@ describe("project page", () => {
 
     it("button is disabled if project name is missing", async () => {
         const store = createStore()
-        const wrapper = shallowMount(projectPage, {store});
+        const wrapper = shallowMount(projectListPage, {store});
 
         wrapper.find(VueTagsInput).vm.$emit("tagsChanged", [{text: "South"}])
 
@@ -31,7 +31,7 @@ describe("project page", () => {
 
     it("button is disabled if regions are missing", async () => {
         const store = createStore()
-        const wrapper = shallowMount(projectPage, {store});
+        const wrapper = shallowMount(projectListPage, {store});
         wrapper.find("input").setValue("new project")
         await Vue.nextTick();
 
@@ -41,7 +41,7 @@ describe("project page", () => {
 
     it("button is enabled when project name and regions are provided", async () => {
         const store = createStore()
-        const wrapper = shallowMount(projectPage, {store});
+        const wrapper = shallowMount(projectListPage, {store});
 
         wrapper.find("input").setValue("new project");
         wrapper.find(VueTagsInput).vm.$emit("tags-changed", [{text: "South"}])
@@ -54,8 +54,9 @@ describe("project page", () => {
 
     it("can add new project", async () => {
         const mockMutation = jest.fn();
+        const mockRouter = [] as any[];
         const store = createStore(mockMutation);
-        const wrapper = shallowMount(projectPage, {store});
+        const wrapper = shallowMount(projectListPage, {store, mocks: {$router: mockRouter}});
 
         wrapper.find("input").setValue("new project");
         wrapper.find(VueTagsInput).vm.$emit("tags-changed", [{text: "South"}])
@@ -72,5 +73,7 @@ describe("project page", () => {
             regions: [{name: "South"}],
             currentRegion: {name: "South"}
         });
+
+        expect(mockRouter[0].path).toBe("/projects/new-project/regions/south")
     });
 });

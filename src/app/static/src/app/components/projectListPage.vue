@@ -91,7 +91,7 @@
                 }
                 this.addProject(project);
                 this.$router.push({
-                    path: `/projects/${this.newProject}/regions/${regions[0].name}`
+                    path: `/projects/${this.newProject}/regions/${regions[0].name}`.replace(/\s/g, "-").toLowerCase()
                 })
             },
             tagAdded: function (newTags: Tag[]) {

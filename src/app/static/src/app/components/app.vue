@@ -10,8 +10,8 @@
                 <div class="navbar-header project-header">
                     <span>{{currentProject.name}}:</span>
                     <drop-down :text="currentProject.currentRegion.name" parent-class="px-2" toggle-class="text-dark">
-                        <div class="dropdown-item" v-for="region in currentProject.regions">
-                            <router-link :to="getRegionUrl(region)" class="text-success">{{region.name}}</router-link>
+                        <div class="dropdown-item" v-for="region in regions">
+                            <router-link :to="region.url" class="text-success">{{region.name}}</router-link>
                         </div>
                     </drop-down>
                 </div>
@@ -32,10 +32,12 @@
 
     export default Vue.extend({
         components: {dropDown, BIconGraphUp},
-        computed: mapState(["currentProject"]),
-        methods: {
-            getRegionUrl(region: Region) {
-                return `/projects/${this.currentProject.name}/regions/${region.name}`
+        computed: {
+            ...mapState(["currentProject"]),
+            regions() {
+                return this.currentProject.regions.map((r: Region) => {
+                    return {url: `/projects/${this.currentProject.name}/regions/${r.name}`, name: r.name}
+                })
             }
         }
     })
