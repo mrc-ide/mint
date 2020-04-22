@@ -40,6 +40,7 @@ matrix:
         - codecov -f src/app/coverage/test/*.xml
         - ./scripts/travis.sh
       after_success:
+        - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
         - ./scripts/travis.sh
       services:
         - docker
