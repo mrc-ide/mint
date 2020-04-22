@@ -3,16 +3,7 @@ import Vuex from "vuex"
 import {MutationPayload, Store, StoreOptions} from "vuex";
 
 import {mutations} from "./mutations";
-
-export interface Region {
-    name: string
-}
-
-export interface Project {
-    name: string
-    regions: Region[]
-    currentRegion: Region
-}
+import {Project} from "./models/project";
 
 export interface RootState {
     projects: Project[]

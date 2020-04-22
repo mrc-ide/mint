@@ -5,6 +5,7 @@ import VueTagsInput from '@johmun/vue-tags-input';
 import projectListPage from "../../app/components/projectListPage.vue";
 import {mockRootState} from "../mocks";
 import {RootMutation} from "../../app/mutations";
+import {Region} from "../../app/models/project";
 
 describe("project page", () => {
 
@@ -68,10 +69,10 @@ describe("project page", () => {
         await Vue.nextTick();
 
         expect(mockMutation.mock.calls.length).toBe(1);
-        expect(mockMutation.mock.calls[0][1]).toStrictEqual({
+        expect(mockMutation.mock.calls[0][1]).toEqual({
             name: "new project",
-            regions: [{name: "South"}],
-            currentRegion: {name: "South"}
+            regions: [{name: "South", url: "/projects/new-project/regions/south"}],
+            currentRegion: {name: "South", url: "/projects/new-project/regions/south"}
         });
 
         expect(mockRouter[0].path).toBe("/projects/new-project/regions/south")

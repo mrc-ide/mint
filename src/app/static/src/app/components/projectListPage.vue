@@ -44,7 +44,7 @@
     import VueTagsInput from '@johmun/vue-tags-input';
     import {RootMutation} from "../mutations";
     import {mapMutationByName} from "../utils";
-    import {Project} from "../store";
+    import {Project} from "../models/project";
 
     interface Data {
         newProject: string
@@ -83,15 +83,11 @@
         methods: {
             addProject: mapMutationByName(RootMutation.AddProject),
             createProject() {
-                const regions = this.regions.map((tag) => ({name: tag.text}));
-                const project: Project = {
-                    name: this.newProject,
-                    regions: regions,
-                    currentRegion: regions[0]
-                }
+                const regionNames = this.regions.map((tag) => tag.text);
+                const project = new Project(this.newProject, regionNames);
                 this.addProject(project);
                 this.$router.push({
-                    path: `/projects/${this.newProject}/regions/${regions[0].name}`.replace(/\s/g, "-").toLowerCase()
+                    path: project.regions[0].url
                 })
             },
             tagAdded: function (newTags: Tag[]) {
