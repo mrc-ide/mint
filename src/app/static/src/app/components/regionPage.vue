@@ -5,5 +5,17 @@
 </template>
 
 <script lang="ts">
-    export default {}
+    import Vue from "vue";
+    import {RootMutation} from "../mutations";
+    import {mapMutationByName} from "../utils";
+    export default Vue.extend({
+        methods: {
+            setCurrentRegion: mapMutationByName(RootMutation.SetCurrentRegion)
+        },
+        watch: {
+            $route(to) {
+                this.setCurrentRegion(to.path);
+            }
+        }
+    });
 </script>
