@@ -8,7 +8,7 @@
                         <label for="name" class="col-sm-2 col-form-label text-right">Name</label>
                         <div class="col-sm-10">
                             <input type="text"
-                                   v-model="name"
+                                   v-model="newProject"
                                    class="form-control"
                                    id="name"
                                    placeholder="Project name">
@@ -19,9 +19,9 @@
                         <div class="col-sm-10">
                             <vue-tags-input
                                     :tags="regions"
-                                    value=""
+                                    v-model="newRegion"
                                     placeholder="Add a region"
-                                    @tags-changed="newTags => regions = newTags"
+                                    @tags-changed="tagAdded"
                             />
                             <span class="text-muted small">You can always add and remove regions later</span>
                         </div>
@@ -47,40 +47,51 @@
     import {Project} from "../store";
 
     interface Data {
-        name: string
-        regions: { text: string }[]
+        newProject: string
+        regions: Tag[]
+        newRegion: string
     }
 
     interface Methods {
         addProject: (project: Project) => void
         createProject: () => void
+        tagAdded: (newTags: Tag[]) => void
     }
 
     interface Computed {
         disabled: boolean
     }
 
+    interface Tag {
+        text: string
+    }
+
     export default Vue.extend<Data, Methods, Computed, {}>({
         components: {VueTagsInput},
         data() {
             return {
-                name: "",
-                regions: []
+                newProject: "",
+                regions: [],
+                newRegion: ""
             }
         },
         computed: {
             disabled() {
-                return !this.name || this.regions.length == 0
+                return !this.newProject || this.regions.length == 0
             }
         },
         methods: {
             addProject: mapMutationByName(RootMutation.AddProject),
             createProject() {
                 const project: Project = {
-                    name: this.name,
+                    name: this.newProject,
                     regions: this.regions.map((tag) => ({name: tag.text}))
                 }
                 this.addProject(project)
+            },
+            tagAdded: function(newTags: Tag[]) {
+                this.regions = newTags;
+                this.newRegion = "";
             }
         }
     });
