@@ -89,9 +89,12 @@
                     regions: regions,
                     currentRegion: regions[0]
                 }
-                this.addProject(project)
+                this.addProject(project);
+                this.$router.push({
+                    path: `/projects/${this.newProject}/regions/${regions[0].name}`
+                })
             },
-            tagAdded: function(newTags: Tag[]) {
+            tagAdded: function (newTags: Tag[]) {
                 this.regions = newTags;
                 this.newRegion = "";
             }
