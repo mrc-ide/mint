@@ -20,8 +20,8 @@
                             <vue-tags-input
                                     :tags="regions"
                                     v-model="newRegion"
-                                    :add-on-key="[13, ',', 32]"
-                                    placeholder="First region, Second region"
+                                    :add-on-key="[13, ',']"
+                                    :placeholder="placeholder"
                                     @tags-changed="tagAdded"
                             />
                             <span class="text-muted small">You can always add and remove regions later</span>
@@ -61,6 +61,7 @@
 
     interface Computed {
         disabled: boolean
+        placeholder: string
     }
 
     interface Tag {
@@ -79,6 +80,9 @@
         computed: {
             disabled() {
                 return !this.newProject || (!this.newRegion && this.regions.length == 0)
+            },
+            placeholder() {
+                return this.regions.length == 0 ? "First region, second region" : "...";
             }
         },
         methods: {

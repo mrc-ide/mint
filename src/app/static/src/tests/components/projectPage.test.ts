@@ -108,4 +108,20 @@ describe("project page", () => {
             currentRegion: {name: "South"}
         });
     });
+
+    it("placeholder text goes away once at least one region is entered", async () => {
+
+        const store = createStore();
+        const wrapper = shallowMount(projectPage, {store});
+
+        let tagsInput = wrapper.find(VueTagsInput);
+        expect(tagsInput.props("placeholder")).toBe("First region, second region");
+
+        tagsInput.vm.$emit("tags-changed", [{text: "South"}]);
+
+        await Vue.nextTick();
+        expect(tagsInput.props("placeholder")).toBe("...");
+
+    });
+
 });
