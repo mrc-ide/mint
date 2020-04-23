@@ -119,7 +119,7 @@ describe("project page", () => {
     it("placeholder text goes away once at least one region is entered", async () => {
 
         const store = createStore();
-        const wrapper = shallowMount(projectPage, {store});
+        const wrapper = shallowMount(projectListPage, {store});
 
         let tagsInput = wrapper.find(VueTagsInput);
         expect(tagsInput.props("placeholder")).toBe("First region, second region");
