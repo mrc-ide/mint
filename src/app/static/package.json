@@ -57,6 +57,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "@johmun/vue-tags-input": "^2.1.0"
+    "@johmun/vue-tags-input": "^2.1.0",
+    "@reside-ic/vue-dynamic-form": "^0.0.5"
   }
 }

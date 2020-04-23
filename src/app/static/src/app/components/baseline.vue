@@ -1,12 +1,36 @@
 <template>
-    <h1>Baseline</h1>
+    <div>
+        <h1>Baseline</h1>
+        <dynamic-form v-model="options"
+                      submit-text="Next"
+                      @submit="nextStep"></dynamic-form>
+    </div>
 </template>
 <script lang="ts">
     import Vue from "vue";
     import {BaselineOptions} from "../types";
+    import {DynamicFormData, DynamicFormMeta, DynamicForm} from "@reside-ic/vue-dynamic-form";
 
-    export default Vue.extend({
+    interface Methods {
+        nextStep: () => void
+    }
 
+    interface Data{
+        options: BaselineOptions
+    }
+
+    export default Vue.extend<Data, Methods, {}, {}>({
+        components: {DynamicForm},
+        data(): Data {
+            return {
+                options: baselineOptions
+            }
+        },
+        methods: {
+            nextStep() {
+                alert("Not implemented!");
+            }
+        }
     });
 
     //TODO: These should be fetched from the backend
