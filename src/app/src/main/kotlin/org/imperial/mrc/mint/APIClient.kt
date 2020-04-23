@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component
 interface APIClient {
     fun getImpactGraphPrevalenceConfig(): ResponseEntity<String>
     fun getImpactGraphPrevalenceData(dataOptions: Map<String, Any>): ResponseEntity<String>
+    fun getImpactTableConfig(): ResponseEntity<String>
+    fun getImpactTableData(dataOptions: Map<String, Any>): ResponseEntity<String>
 }
 
 @Component
@@ -25,8 +27,15 @@ class MintrAPIClient(
 
     override fun getImpactGraphPrevalenceData(dataOptions: Map<String, Any>): ResponseEntity<String>
     {
-        val json = objectMapper.writeValueAsString(dataOptions)
-        return postJson("graph/prevalence/data", json)
+        return postJson("graph/prevalence/data", optionsJson(dataOptions))
+    }
+
+    override fun getImpactTableConfig(): ResponseEntity<String> {
+        return get("table/impact/config")
+    }
+
+    override fun getImpactTableData(dataOptions: Map<String, Any>): ResponseEntity<String> {
+        return postJson("table/impact/data", optionsJson(dataOptions))
     }
 
     fun get(url: String): ResponseEntity<String> {
@@ -36,6 +45,11 @@ class MintrAPIClient(
                 .response()
                 .second
                 .asResponseEntity()
+    }
+
+    private fun optionsJson(dataOptions: Map<String, Any>): String
+    {
+        return  objectMapper.writeValueAsString(dataOptions)
     }
 
     private fun postJson(url: String, json: String): ResponseEntity<String> {
