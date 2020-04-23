@@ -30,7 +30,7 @@ node generateTypes "pkgapi-master/inst/schema"
 echo "/**
   * This file was automatically generated.
   * DO NOT MODIFY IT BY HAND.
-  * Instead, modify the hintr JSON schema files
+  * Instead, modify the mintr JSON schema files
   * and run ./generate-types.sh to regenerate this file.
 */" >> ${target}
 
