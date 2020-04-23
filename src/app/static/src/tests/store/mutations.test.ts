@@ -1,6 +1,7 @@
 import {mutations, RootMutation} from "../../app/mutations";
 import {mockError, mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
+import {expectAllMutationsDefined} from "../testHelpers";
 
 describe("mutations", () => {
 
@@ -39,7 +40,13 @@ describe("mutations", () => {
 
         expect(state.errors.length).toBe(1);
         expect(state.errors[0].detail).toBe("some message detail");
+    });
 
+    it("adds prevalence graph data", () => {
+        const state = mockRootState();
+        mutations[RootMutation.AddPrevalenceGraphData](state, ["some data"]);
+
+        expect(state.prevalenceGraphData).toStrictEqual(["some data"]);
     });
 
 });
