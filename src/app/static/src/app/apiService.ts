@@ -7,7 +7,7 @@ import {RootMutation} from "./mutations";
 
 declare var appUrl: string;
 
-export interface ResponseWithType<T> extends Response {
+export interface ResponseWithType<T> extends ResponseSuccess {
     data: T
 }
 
@@ -25,8 +25,6 @@ export interface API<S, E> {
     postAndReturn<T>(url: string, data: any): Promise<void | ResponseWithType<T>>
 
     get<T>(url: string): Promise<void | ResponseWithType<T>>
-
-    delete(url: string): Promise<void | true>
 }
 
 export class APIService<S extends string, E extends string> implements API<S, E> {
