@@ -1,5 +1,8 @@
 import {ActionTree} from "vuex";
-import {Project, RootState} from "./store";
+import {RootState} from "./store";
+import {api} from "./apiService";
+import {Data} from "./generated";
+import {RootMutation} from "./mutations";
 
 export enum RootAction {
     FetchPrevalenceGraphData = "FetchPrevalenceGraphData"
@@ -7,7 +10,11 @@ export enum RootAction {
 
 export const actions: ActionTree<RootState, RootState> = {
 
-    [RootAction.FetchPrevalenceGraphData](context) {
-
+    async [RootAction.FetchPrevalenceGraphData](context) {
+        await api(context)
+            .freezeResponse()
+            .withSuccess(RootMutation.PrevalenceGraphDataFetched)
+            .withError(RootMutation.ErrorAdded)
+            .postAndReturn<Data>("/graph/prevalence/data", {anySettings: true})
     }
 }

@@ -50,7 +50,8 @@ export class APIService<S extends string, E extends string> implements API<S, E>
 
     static getFirstErrorFromFailure = (failure: ResponseFailure) => {
         if (failure.errors.length == 0) {
-            return APIService.createError("apiMissingError");
+            return APIService
+                .createError("API response failed but did not contain any error information. Please contact support.");
         }
         return failure.errors[0];
     };
@@ -73,7 +74,7 @@ export class APIService<S extends string, E extends string> implements API<S, E>
 
     withError = (type: E) => {
         this._onError = (failure: ResponseFailure) => {
-            this._commit({type: type, payload: APIService.getFirstErrorFromFailure(failure)});
+            this._commit(type, APIService.getFirstErrorFromFailure(failure));
         };
         return this
     };
@@ -86,7 +87,7 @@ export class APIService<S extends string, E extends string> implements API<S, E>
     withSuccess = (type: S) => {
         this._onSuccess = (data: any) => {
             const finalData = this._freezeResponse ? freezer.deepFreeze(data) : data;
-            this._commit({type: type, payload: finalData});
+            this._commit(type, finalData);
         };
         return this;
     };
@@ -113,7 +114,7 @@ export class APIService<S extends string, E extends string> implements API<S, E>
         let failure = e.response && e.response.data;
 
         if (!isMINTResponseFailure(failure)) {
-            this._commitError(APIService.createError("apiCouldNotParseError"));
+            this._commitError(APIService.createError("Could not parse API response. Please contact support."));
         } else if (this._onError) {
             this._onError(failure);
         } else {
@@ -122,7 +123,7 @@ export class APIService<S extends string, E extends string> implements API<S, E>
     };
 
     private _commitError = (error: APIError) => {
-        this._commit({type: `errors/${RootMutation.ErrorAdded}`, payload: error}, {root: true});
+        this._commit(RootMutation.ErrorAdded, error);
     };
 
     private _verifyHandlers(url: string) {
