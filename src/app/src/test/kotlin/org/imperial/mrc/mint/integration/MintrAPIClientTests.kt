@@ -23,4 +23,20 @@ class MintrAPIClientTests {
         assertThat(result.statusCodeValue).isEqualTo(200)
         JSONValidator().validateSuccess(result.body!!, "Data")
     }
+
+    @Test
+    fun `can get impact table config`() {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getImpactTableConfig()
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "TableDefinition")
+    }
+
+    @Test
+    fun `can get table data`() {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getImpactTableData(mapOf())
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "Data")
+    }
 }

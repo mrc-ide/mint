@@ -19,4 +19,16 @@ class ImpactController(private val apiClient: APIClient){
     fun graphPrevalenceData(@RequestBody dataOptions: Map<String, Any>): ResponseEntity<String> {
         return apiClient.getImpactGraphPrevalenceData(dataOptions)
     }
+
+    @GetMapping("/table/config")
+    @ResponseBody
+    fun tableConfig(): ResponseEntity<String> {
+        return apiClient.getImpactTableConfig()
+    }
+
+    @PostMapping("/table/data")
+    @ResponseBody
+    fun tableData(@RequestBody dataOptions: Map<String, Any>): ResponseEntity<String> {
+        return apiClient.getImpactTableData(dataOptions)
+    }
 }
