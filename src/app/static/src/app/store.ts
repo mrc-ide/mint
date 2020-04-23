@@ -2,6 +2,8 @@ import Vue from "vue"
 import Vuex from "vuex"
 import {MutationPayload, Store, StoreOptions} from "vuex";
 
+import {mutations} from "./mutations";
+
 export interface Region {
     name: string
 }
@@ -28,9 +30,9 @@ const storeOptions: StoreOptions<RootState> = {
         projects: [],
         currentProject: null
     },
+    mutations,
     plugins: [logger]
 }
 
 Vue.use(Vuex);
-
 export const store = new Vuex.Store<RootState>(storeOptions);

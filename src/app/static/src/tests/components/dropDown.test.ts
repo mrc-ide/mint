@@ -1,13 +1,12 @@
 import Vue from "vue";
 import {shallowMount} from "@vue/test-utils";
-import {store} from "../../app/store";
 import dropDown from "../../app/components/dropDown.vue";
 
 describe("drop down", () => {
 
     it("renders text and extra css classes", () => {
         const wrapper = shallowMount(dropDown, {
-            store, propsData: {
+            propsData: {
                 text: "test text",
                 parentClass: "test-parent",
                 toggleClass: "test-toggle"
@@ -19,7 +18,7 @@ describe("drop down", () => {
     });
 
     it("toggles dropdown on click", async () => {
-        const wrapper = shallowMount(dropDown, {store, propsData: {text: "text"}});
+        const wrapper = shallowMount(dropDown, {propsData: {text: "text"}});
         expect(wrapper.find(".dropdown-menu").classes()).toStrictEqual(["dropdown-menu"]);
         wrapper.find(".dropdown-toggle").trigger("click");
         await Vue.nextTick();
@@ -30,7 +29,7 @@ describe("drop down", () => {
     });
 
     it("closes dropdown on blur", async () => {
-        const wrapper = shallowMount(dropDown, {store, propsData: {text: "text"}});
+        const wrapper = shallowMount(dropDown, {propsData: {text: "text"}});
         wrapper.find(".dropdown-toggle").trigger("click");
         await Vue.nextTick();
         expect(wrapper.find(".dropdown-menu").classes()).toStrictEqual(["dropdown-menu", "show"]);

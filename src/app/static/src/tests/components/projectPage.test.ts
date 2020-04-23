@@ -1,0 +1,127 @@
+import Vue from "vue";
+import Vuex from "vuex";
+import {shallowMount} from "@vue/test-utils";
+import VueTagsInput from '@johmun/vue-tags-input';
+import projectPage from "../../app/components/projectPage.vue";
+import {mockRootState} from "../mocks";
+import {RootMutation} from "../../app/mutations";
+
+describe("project page", () => {
+
+    const createStore = (addProjectMock = jest.fn()) => {
+        return new Vuex.Store({
+            state: mockRootState(),
+            mutations: {
+                [RootMutation.AddProject]: addProjectMock
+            }
+        });
+    };
+
+    it("button is disabled if project name is missing", async () => {
+        const store = createStore()
+        const wrapper = shallowMount(projectPage, {store});
+
+        wrapper.find(VueTagsInput).vm.$emit("tagsChanged", [{text: "South"}])
+
+        await Vue.nextTick();
+
+        expect(wrapper.find("button").attributes().disabled).toBe("disabled");
+        expect(wrapper.find("button").classes()).toContain("disabled");
+    });
+
+    it("button is disabled if regions and newRegion are missing", async () => {
+        const store = createStore()
+        const wrapper = shallowMount(projectPage, {store});
+        wrapper.find("input").setValue("new project");
+        await Vue.nextTick();
+
+        expect(wrapper.find("button").attributes().disabled).toBe("disabled");
+        expect(wrapper.find("button").classes()).toContain("disabled");
+    });
+
+    it("button is enabled when project name and regions are provided", async () => {
+        const store = createStore()
+        const wrapper = shallowMount(projectPage, {store});
+
+        wrapper.find("input").setValue("new project");
+        wrapper.find(VueTagsInput).vm.$emit("tags-changed", [{text: "South"}])
+
+        await Vue.nextTick();
+
+        expect(wrapper.find("button").attributes().disabled).toBeUndefined();
+        expect(wrapper.find("button").classes()).not.toContain("disabled");
+    });
+
+    it("button is enabled when project name and newRegion are provided", async () => {
+        const store = createStore()
+        const wrapper = shallowMount(projectPage, {store});
+
+        wrapper.find("input").setValue("new project");
+        wrapper.setData({newRegion: "region"});
+
+        await Vue.nextTick();
+
+        expect(wrapper.find("button").attributes().disabled).toBeUndefined();
+        expect(wrapper.find("button").classes()).not.toContain("disabled");
+    });
+
+    it("can add new project from region tags", async () => {
+        const mockMutation = jest.fn();
+        const store = createStore(mockMutation);
+        const wrapper = shallowMount(projectPage, {store});
+
+        wrapper.find("input").setValue("new project");
+        wrapper.find(VueTagsInput).vm.$emit("tags-changed", [{text: "South"}])
+
+        await Vue.nextTick();
+
+        wrapper.find("button").trigger("click");
+
+        await Vue.nextTick();
+
+        expect(mockMutation.mock.calls.length).toBe(1);
+        expect(mockMutation.mock.calls[0][1]).toStrictEqual({
+            name: "new project",
+            regions: [{name: "South"}],
+            currentRegion: {name: "South"}
+        });
+    });
+
+    it("can add new project from single region typed but not entered", async () => {
+        const mockMutation = jest.fn();
+        const store = createStore(mockMutation);
+        const wrapper = shallowMount(projectPage, {store});
+
+        wrapper.find("input").setValue("new project");
+        wrapper.setData({newRegion: "South"})
+
+        await Vue.nextTick();
+
+        wrapper.find("button").trigger("click");
+
+        await Vue.nextTick();
+
+        expect(mockMutation.mock.calls.length).toBe(1);
+        expect(mockMutation.mock.calls[0][1]).toStrictEqual({
+            name: "new project",
+            regions: [{name: "South"}],
+            currentRegion: {name: "South"}
+        });
+    });
+
+    it("placeholder text goes away once at least one region is entered", async () => {
+
+        const store = createStore();
+        const wrapper = shallowMount(projectPage, {store});
+
+        let tagsInput = wrapper.find(VueTagsInput);
+        expect(tagsInput.props("placeholder")).toBe("First region, second region");
+
+        tagsInput.vm.$emit("tags-changed", [{text: "South"}]);
+
+        await Vue.nextTick();
+        expect(tagsInput.props("placeholder")).toBe("...");
+
+    });
+
+});

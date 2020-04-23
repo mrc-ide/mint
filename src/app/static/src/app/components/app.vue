@@ -20,12 +20,7 @@
                 </a>
             </div>
         </div>
-
-        <div class="container pt-5">
-            <button class="btn btn-primary" @click="createProject">
-                Create fake current project to see project navbar
-            </button>
-        </div>
+        <project-page></project-page>
     </div>
 </template>
 <script lang="ts">
@@ -33,17 +28,10 @@
     import {mapState} from "vuex";
     import dropDown from "./dropDown.vue";
     import {BIconGraphUp} from "bootstrap-vue";
+    import projectPage from "./projectPage.vue";
 
     export default Vue.extend({
-        components: {dropDown, BIconGraphUp},
-        computed: mapState(["currentProject"]),
-        methods: {
-            createProject() {
-                const newRegion = {name: "Central"}
-                this.$store.state.currentProject = {name: "Zimbabwe",
-                    regions: [newRegion, {name: "North"}], currentRegion: newRegion}
-            }
-        }
+        components: {dropDown, BIconGraphUp, projectPage},
+        computed: mapState(["currentProject"])
     })
-
 </script>

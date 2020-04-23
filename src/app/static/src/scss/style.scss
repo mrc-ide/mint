@@ -10,3 +10,23 @@ html {
 .btn-primary {
   @include button-variant($theme-mint, darken($theme-mint, 10%))
 }
+
+.vue-tags-input {
+  max-width: 100% !important;
+}
+
+.ti-input {
+  @extend .form-control;
+  height: auto !important;
+}
+
+.ti-new-tag-input-wrapper {
+  font-size: inherit !important;
+}
+
+.ti-tag {
+  max-width: 100%;
+  .ti-content {
+    max-width: calc(100% - 15px);
+  }
+}
