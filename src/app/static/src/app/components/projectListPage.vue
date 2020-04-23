@@ -45,7 +45,7 @@
     import VueTagsInput from '@johmun/vue-tags-input';
     import {RootMutation} from "../mutations";
     import {mapMutationByName} from "../utils";
-    import {Project} from "../store";
+    import {Project} from "../models/project";
 
     interface Data {
         newProject: string
@@ -88,21 +88,20 @@
         methods: {
             addProject: mapMutationByName(RootMutation.AddProject),
             createProject() {
-                const regions = this.regions.map((tag) => ({name: tag.text}));
-                if (regions.length == 0){
+                const regionNames = this.regions.map((tag) => tag.text);
+                if (regionNames.length == 0){
                     // user has only entered one region name and has not blurred the input
                     // so this.regions is empty even though this.newRegion is populated
                     // so take this.newRegion as the only region
-                    regions.push({name: this.newRegion})
+                    regionNames.push(this.newRegion)
                 }
-                const project: Project = {
-                    name: this.newProject,
-                    regions: regions,
-                    currentRegion: regions[0]
-                }
-                this.addProject(project)
+                const project = new Project(this.newProject, regionNames);
+                this.addProject(project);
+                this.$router.push({
+                    path: project.currentRegion.url
+                })
             },
-            tagAdded: function(newTags: Tag[]) {
+            tagAdded: function (newTags: Tag[]) {
                 this.regions = newTags;
                 this.newRegion = "";
             }

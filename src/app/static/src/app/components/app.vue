@@ -11,7 +11,7 @@
                     <span>{{currentProject.name}}:</span>
                     <drop-down :text="currentProject.currentRegion.name" parent-class="px-2" toggle-class="text-dark">
                         <div class="dropdown-item" v-for="region in currentProject.regions">
-                            <a href="#" class="text-success">{{region.name}}</a>
+                            <router-link :to="region.url" class="text-success">{{region.name}}</router-link>
                         </div>
                     </drop-down>
                 </div>
@@ -20,7 +20,7 @@
                 </a>
             </div>
         </div>
-        <project-page></project-page>
+        <router-view></router-view>
     </div>
 </template>
 <script lang="ts">
@@ -28,10 +28,9 @@
     import {mapState} from "vuex";
     import dropDown from "./dropDown.vue";
     import {BIconGraphUp} from "bootstrap-vue";
-    import projectPage from "./projectPage.vue";
 
     export default Vue.extend({
-        components: {dropDown, BIconGraphUp, projectPage},
+        components: {dropDown, BIconGraphUp},
         computed: mapState(["currentProject"])
     })
 </script>

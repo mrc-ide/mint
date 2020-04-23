@@ -1,5 +1,6 @@
 import {mutations, RootMutation} from "../../app/mutations";
 import {mockRootState} from "../mocks";
+import {Project} from "../../app/models/project";
 
 describe("mutations", () => {
 
@@ -14,6 +15,17 @@ describe("mutations", () => {
             name: "new project",
             regions: [{name: "South"}],
             currentRegion: {name: "South"}
+        })
+    });
+
+    it("updates the current region", () => {
+        const state = mockRootState({
+            currentProject: new Project("my project", ["North region", "South region"])
+        })
+        mutations[RootMutation.SetCurrentRegion](state, "/projects/my-project/regions/south-region");
+        expect(state.currentProject!!.currentRegion).toEqual({
+            name: "South region",
+            url: "/projects/my-project/regions/south-region"
         })
     });
 

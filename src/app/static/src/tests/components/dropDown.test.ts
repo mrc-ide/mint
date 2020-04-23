@@ -1,5 +1,5 @@
 import Vue from "vue";
-import {shallowMount} from "@vue/test-utils";
+import {mount, shallowMount} from "@vue/test-utils";
 import dropDown from "../../app/components/dropDown.vue";
 
 describe("drop down", () => {
@@ -28,13 +28,21 @@ describe("drop down", () => {
         expect(wrapper.find(".dropdown-menu").classes()).toStrictEqual(["dropdown-menu"]);
     });
 
-    it("closes dropdown on blur", async () => {
-        const wrapper = shallowMount(dropDown, {propsData: {text: "text"}});
+    it("closes dropdown on clicks outside the element", async () => {
+        const fakeComponent = {
+            components: {dropDown},
+            template: "<div><span>another random element</span><drop-down></drop-down></div>"
+        }
+        const wrapper = mount(fakeComponent, {attachToDocument: true});
         wrapper.find(".dropdown-toggle").trigger("click");
         await Vue.nextTick();
         expect(wrapper.find(".dropdown-menu").classes()).toStrictEqual(["dropdown-menu", "show"]);
-        wrapper.find(".dropdown-toggle").trigger("blur");
+
+        wrapper.find("span").trigger("click");
         await Vue.nextTick();
         expect(wrapper.find(".dropdown-menu").classes()).toStrictEqual(["dropdown-menu"]);
+
+        // destroy wrapper to remove from DOM
+        wrapper.destroy();
     });
 });
