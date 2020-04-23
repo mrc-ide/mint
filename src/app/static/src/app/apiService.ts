@@ -154,11 +154,6 @@ export class APIService<S extends string, E extends string> implements API<S, E>
         return this._handleAxiosResponse(axios.post(fullUrl, data, {headers}));
     }
 
-    async delete(url: string) {
-        const fullUrl = this._buildFullUrl(url);
-        return this._handleAxiosResponse(axios.delete(fullUrl));
-    }
-
 }
 
 export const api =

@@ -251,6 +251,19 @@ describe("ApiService", () => {
         expect(warnings[1][0]).toBe("No success handler registered for request /baseline/.");
     });
 
+    it("returns the response object from a POST", async () => {
+
+        mockAxios.onPost(`/baseline/`)
+            .reply(200, mockSuccess("TEST"));
+
+        const commit = jest.fn();
+        const response = await api({commit, rootState} as any)
+            .withSuccess("TEST_TYPE")
+            .postAndReturn("/baseline/", {});
+
+        expect(response).toStrictEqual({data: "TEST", errors: null, status: "success"});
+    });
+
     async function expectCouldNotParseAPIResponseError() {
         const commit = jest.fn();
         await api({commit, rootState} as any)
