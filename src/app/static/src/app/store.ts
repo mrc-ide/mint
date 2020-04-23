@@ -3,6 +3,7 @@ import Vuex from "vuex"
 import {MutationPayload, Store, StoreOptions} from "vuex";
 
 import {mutations} from "./mutations";
+import {APIError} from "./apiService";
 
 export interface Region {
     name: string
@@ -17,6 +18,7 @@ export interface Project {
 export interface RootState {
     projects: Project[]
     currentProject: Project | null
+    errors: APIError[]
 }
 
 const logger = (store: Store<RootState>) => {
@@ -28,7 +30,8 @@ const logger = (store: Store<RootState>) => {
 const storeOptions: StoreOptions<RootState> = {
     state: {
         projects: [],
-        currentProject: null
+        currentProject: null,
+        errors: []
     },
     mutations,
     plugins: [logger]

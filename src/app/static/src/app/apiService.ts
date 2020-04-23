@@ -3,6 +3,7 @@ import {ActionContext, Commit} from "vuex";
 import {freezer, isMINTResponseFailure} from "./utils";
 import {RootState} from "./store";
 import {ResponseSuccess, ResponseFailure} from "./generated";
+import {RootMutation} from "./mutations";
 
 declare var appUrl: string;
 
@@ -10,7 +11,7 @@ export interface ResponseWithType<T> extends Response {
     data: T
 }
 
-interface APIError {
+export interface APIError {
     error: string;
     detail: string | null;
 }
@@ -121,7 +122,7 @@ export class APIService<S extends string, E extends string> implements API<S, E>
     };
 
     private _commitError = (error: APIError) => {
-        this._commit({type: `errors/${ErrorsMutation.ErrorAdded}`, payload: error}, {root: true});
+        this._commit({type: `errors/${RootMutation.ErrorAdded}`, payload: error}, {root: true});
     };
 
     private _verifyHandlers(url: string) {
