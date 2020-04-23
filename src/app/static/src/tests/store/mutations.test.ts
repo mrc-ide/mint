@@ -4,6 +4,10 @@ import {Project} from "../../app/models/project";
 
 describe("mutations", () => {
 
+    it("implements all defined mutations", () => {
+        expectAllMutationsDefined(RootMutation, mutations);
+    });
+
     it("adds a new project", () => {
         const state = mockRootState()
         mutations[RootMutation.AddProject](state, {
