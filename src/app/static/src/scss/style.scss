@@ -16,9 +16,17 @@ html {
 }
 
 .ti-input {
-  @extend .form-control
+  @extend .form-control;
+  height: auto !important;
 }
 
 .ti-new-tag-input-wrapper {
   font-size: inherit !important;
+}
+
+.ti-tag {
+  max-width: 100%;
+  .ti-content {
+    max-width: calc(100% - 15px);
+  }
 }

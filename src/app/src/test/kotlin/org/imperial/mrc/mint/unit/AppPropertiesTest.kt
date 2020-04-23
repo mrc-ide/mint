@@ -47,4 +47,11 @@ class AppPropertiesTests {
         val sut = ConfiguredAppProperties(props)
         assertThat(sut.applicationUrl).isEqualTo("https://test")
     }
+
+    @Test
+    fun `can read apiUrl`() {
+        val props = readPropsFromTempFile("mintr_url=https://test")
+        val sut = ConfiguredAppProperties(props)
+        assertThat(sut.apiUrl).isEqualTo("https://test")
+    }
 }
