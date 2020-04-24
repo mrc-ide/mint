@@ -45,7 +45,7 @@
     "ts-jest": "^24.1.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.6.4",
-    "v-tooltip": "^2.0.2",
+    "v-tooltip": "^2.0.3",
     "vue": "^2.6.10",
     "vue-feather-icons": "^5.0.0",
     "vue-jest": "^3.0.5",
@@ -58,6 +58,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "@johmun/vue-tags-input": "^2.1.0"
+    "@johmun/vue-tags-input": "^2.1.0",
+    "@reside-ic/vue-dynamic-form": "0.0.8"
   }
 }
