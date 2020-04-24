@@ -1,5 +1,5 @@
 import {mutations, RootMutation} from "../../app/mutations";
-import {mockRootState} from "../mocks";
+import {mockError, mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
 
 describe("mutations", () => {
@@ -27,6 +27,15 @@ describe("mutations", () => {
             name: "South region",
             url: "/projects/my-project/regions/south-region"
         })
+    });
+
+    it("adds error", () => {
+        const state = mockRootState();
+        mutations[RootMutation.AddError](state, mockError("some message detail"));
+
+        expect(state.errors.length).toBe(1);
+        expect(state.errors[0].detail).toBe("some message detail");
+
     });
 
 });
