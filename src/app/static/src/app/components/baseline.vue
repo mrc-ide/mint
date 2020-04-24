@@ -7,11 +7,10 @@
 </template>
 <script lang="ts">
     import Vue from "vue";
-    import {BaselineOptions} from "../types";
-    import {DynamicForm} from "@reside-ic/vue-dynamic-form";
+    import {DynamicForm, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
     interface Data{
-        options: BaselineOptions
+        options: DynamicFormMeta
     }
 
     export default Vue.extend<Data, {}, {}, {}>({
@@ -24,7 +23,7 @@
     });
 
     //TODO: These should be fetched from the backend
-    const baselineOptions: BaselineOptions = {
+    const baselineOptions: DynamicFormMeta = {
         controlSections: [
             {
                 label: "Site Inputs",
