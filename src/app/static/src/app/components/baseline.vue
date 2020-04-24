@@ -8,26 +8,17 @@
 <script lang="ts">
     import Vue from "vue";
     import {BaselineOptions} from "../types";
-    import {DynamicFormData, DynamicFormMeta, DynamicForm} from "@reside-ic/vue-dynamic-form";
-
-    interface Methods {
-        nextStep: () => void
-    }
+    import {DynamicForm} from "@reside-ic/vue-dynamic-form";
 
     interface Data{
         options: BaselineOptions
     }
 
-    export default Vue.extend<Data, Methods, {}, {}>({
+    export default Vue.extend<Data, {}, {}, {}>({
         components: {DynamicForm},
         data(): Data {
             return {
                 options: baselineOptions
-            }
-        },
-        methods: {
-            nextStep() {
-                alert("Not implemented!");
             }
         }
     });
