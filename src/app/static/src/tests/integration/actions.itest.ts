@@ -5,7 +5,6 @@ describe("actions", () => {
 
     it("can get prevalence graph data", async () => {
         const commit = jest.fn();
-
         await (actions[RootAction.FetchPrevalenceGraphData] as any)({commit} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddPrevalenceGraphData);
