@@ -7,6 +7,7 @@ import {Project} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph} from "./generated";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {actions} from "./actions";
 
 export interface RootState {
     projects: Project[]
@@ -32,9 +33,10 @@ const storeOptions: StoreOptions<RootState> = {
         prevalenceGraphConfig: null,
         baselineOptions: null
     },
+    actions,
     mutations,
     plugins: [logger]
-}
+};
 
 Vue.use(Vuex);
 export const store = new Vuex.Store<RootState>(storeOptions);
