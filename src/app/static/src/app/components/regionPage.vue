@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-5">
+    <div class="mx-5 mt-5">
         <div class="stepper mb-5">
             <step-button number="1"
                          text="Setup baseline"
