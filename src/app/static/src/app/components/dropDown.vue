@@ -51,9 +51,13 @@
                 let closeDropdown = true;
                 while (target.parentElement) {
                     if (target.id == this.id) {
-                        // this click originated from inside the dropown, so don't close it
-                        closeDropdown = false;
-                        break;
+                        // this click originated from inside the dropdown and was not a navigation
+                        // so leave the dropdown open
+                        const original = e.target;
+                        if (!original.href) {
+                            closeDropdown = false;
+                            break;
+                        }
                     }
                     target = target.parentElement
                 }

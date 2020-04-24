@@ -45,4 +45,22 @@ describe("drop down", () => {
         // destroy wrapper to remove from DOM
         wrapper.destroy();
     });
+
+    it("closes dropdown on navigation from within the dropdown", async () => {
+        const fakeComponent = {
+            components: {dropDown},
+            template: "<drop-down><a href='http://somewhere.com' id='test'>some link</a></drop-down>"
+        }
+        const wrapper = mount(fakeComponent, {attachToDocument: true});
+        wrapper.find(".dropdown-toggle").trigger("click");
+        await Vue.nextTick();
+        expect(wrapper.find(".dropdown-menu").classes()).toStrictEqual(["dropdown-menu", "show"]);
+
+        wrapper.find("#test").trigger("click");
+        await Vue.nextTick();
+        expect(wrapper.find(".dropdown-menu").classes()).toStrictEqual(["dropdown-menu"]);
+
+        // destroy wrapper to remove from DOM
+        wrapper.destroy();
+    });
 });

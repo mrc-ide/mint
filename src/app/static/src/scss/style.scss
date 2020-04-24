@@ -1,7 +1,9 @@
 @import "partials/variables.scss";
-@import "partials/header.scss";
-
 @import "../../node_modules/bootstrap/scss/bootstrap";
+@import "partials/header.scss";
+@import "partials/stepper.scss";
+@import "partials/tooltips.scss";
+@import "partials/baseline.scss";
 
 html {
   overflow-y: scroll;

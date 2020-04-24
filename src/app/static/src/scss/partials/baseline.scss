@@ -1,0 +1,30 @@
+.baseline {
+  .dynamic-form {
+    @extend .row;
+
+    > div {
+      @extend .card;
+      @extend .mt-2;
+      padding: 0;
+      margin-left: 1%;
+      margin-right: 1%;
+      flex: 0 0 31.3333%;
+      max-width: 31.33333%t;
+      width: 100%;
+
+      h3 {
+        @extend .card-header;
+        @extend .bg-light;
+        @extend .h5;
+      }
+
+      .col-md-6 {
+        @extend .my-2;
+        flex: 0 0 90% !important;
+        max-width: 90% !important;
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+    }
+  }
+}

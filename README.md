@@ -21,6 +21,8 @@ Requirements:
 1. Run `./scripts/run-development-dependencies.sh` to start docker instances of [mintr](https://github.com/mrc-ide/mintr)
 1. Run app from your IDE or by `cd src && ./gradlew :app:bootRun` to serve the app on port 8080
 
+For more information about developing the front-end see [src/app/static/README](https://github.com/mrc-ide/mint/blob/master/src/app/static/README.md)
+
 ### Back-end Testing
 
 Ensure dependencies are running and execute tests on the command line or through IntelliJ:
