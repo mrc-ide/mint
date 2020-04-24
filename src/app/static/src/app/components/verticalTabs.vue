@@ -21,13 +21,35 @@
 </template>
 <script lang="ts">
     import Vue from "vue";
+    import {Dictionary} from "vue-router/types/router";
+    import {Tab} from "../types";
 
-    export default Vue.extend<any, any, any, any>({
-        props: ["tabs"],
+    interface Methods {
+        calculateDimensions: () => void
+    }
+
+    interface Data {
+        width: number
+        height: number
+    }
+
+    interface Computed {
+        contentStyle: Dictionary<string>
+        navStyle: Dictionary<string>
+    }
+
+    interface Props {
+        tabs: Tab[]
+    }
+
+    export default Vue.extend<Data, Methods, Computed, Props>({
+        props: {
+            tabs: Array
+        },
         data() {
             return {
-                width: 1,
-                height: 1
+                width: 0,
+                height: 0
             }
         },
         computed: {

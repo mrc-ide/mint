@@ -43,7 +43,7 @@ describe("vertical tabs", () => {
     it("calculates tab translation and content margin based on width of element", async () => {
         const wrapper = mount(verticalTabs, {propsData: {
                 tabs : [{name: "one", active: false}, {name: "two", active: true}]
-            }, attachToDocument: true});
+            }});
 
         await Vue.nextTick();
         expect(wrapper.find(".nav-tabs").attributes().style)
@@ -55,7 +55,7 @@ describe("vertical tabs", () => {
     it("re-calculates tab translation and content margin if tabs change", async () => {
         const wrapper = mount(verticalTabs, {propsData: {
                 tabs : [{name: "one", active: false}, {name: "two", active: true}]
-            }, attachToDocument: true});
+            }});
 
         await Vue.nextTick();
         expect(wrapper.find(".nav-tabs").attributes().style)

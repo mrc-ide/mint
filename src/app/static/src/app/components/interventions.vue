@@ -4,8 +4,17 @@
 <script lang="ts">
     import Vue from "vue";
     import verticalTabs from "./verticalTabs.vue";
+    import {Tab} from "../types";
 
-    export default Vue.extend({
+    interface Data {
+        tabs: Tab[]
+    }
+
+    interface Methods {
+        changeTab: (name: string) => void
+    }
+
+    export default Vue.extend<Data, Methods, {}, {}>({
         data() {
             return {
                 tabs: [{name: "Table", active: false}, {name: "Graphs", active: true}]
