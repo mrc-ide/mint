@@ -6,11 +6,13 @@ import {mutations} from "./mutations";
 import {Project} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph} from "./generated";
+import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 export interface RootState {
     projects: Project[]
     currentProject: Project | null
     errors: APIError[]
+    baselineOptions: DynamicFormMeta | null
     prevalenceGraphData: Data
     prevalenceGraphConfig: Graph | null
 }
@@ -27,7 +29,8 @@ const storeOptions: StoreOptions<RootState> = {
         currentProject: null,
         errors: [],
         prevalenceGraphData: [],
-        prevalenceGraphConfig: null
+        prevalenceGraphConfig: null,
+        baselineOptions: null
     },
     mutations,
     plugins: [logger]

@@ -3,11 +3,13 @@ import {RootState} from "./store";
 import {Project} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph} from "./generated";
+import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 export enum RootMutation {
     AddProject = "AddProject",
     SetCurrentRegion = "SetCurrentRegion",
     AddError = "AddError",
+    AddBaselineOptions = "AddBaselineOptions",
     AddPrevalenceGraphData = "AddPrevalenceGraphData",
     AddPrevalenceGraphConfig = "AddPrevalenceGraphConfig"
 }
@@ -25,6 +27,10 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.AddError](state: RootState, payload: APIError) {
         state.errors.push(payload)
+    },
+
+    [RootMutation.AddBaselineOptions](state: RootState, payload: DynamicFormMeta) {
+        state.baselineOptions = payload
     },
 
     [RootMutation.AddPrevalenceGraphData](state: RootState, payload: Data) {

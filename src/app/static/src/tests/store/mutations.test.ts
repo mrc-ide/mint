@@ -42,6 +42,14 @@ describe("mutations", () => {
         expect(state.errors[0].detail).toBe("some message detail");
     });
 
+    it("adds baseline options", () => {
+        const state = mockRootState();
+        const options = {"configurationSections":[]};
+        mutations[RootMutation.AddBaselineOptions](state, options);
+
+        expect(state.baselineOptions).toStrictEqual(options);
+    });
+
     it("adds prevalence graph data", () => {
         const state = mockRootState();
         mutations[RootMutation.AddPrevalenceGraphData](state, ["some data"]);
