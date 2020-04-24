@@ -9,6 +9,14 @@ import org.junit.jupiter.api.Test
 
 class MintrAPIClientTests {
     @Test
+    fun `can get baseline options`() {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getBaselineOptions()
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "BaselineOptions")
+    }
+
+    @Test
     fun `can get impact graph prevalence config`() {
         val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
         val result = sut.getImpactGraphPrevalenceConfig()

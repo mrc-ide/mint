@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 
 interface APIClient {
+    fun getBaselineOptions(): ResponseEntity<String>
     fun getImpactGraphPrevalenceConfig(): ResponseEntity<String>
     fun getImpactGraphPrevalenceData(dataOptions: Map<String, Any>): ResponseEntity<String>
     fun getImpactTableConfig(): ResponseEntity<String>
@@ -20,6 +21,10 @@ class MintrAPIClient(
         private val objectMapper: ObjectMapper) : APIClient {
 
     private val baseUrl = appProperties.apiUrl
+
+    override fun getBaselineOptions(): ResponseEntity<String> {
+        return get("baseline/options")
+    }
 
     override fun getImpactGraphPrevalenceConfig(): ResponseEntity<String> {
         return get("graph/prevalence/config")
