@@ -15,6 +15,6 @@ export const actions: ActionTree<RootState, RootState> = {
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/graph/prevalence/data", {anySettings: true})
+            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true})
     }
 }

@@ -16,4 +16,5 @@ docker run --rm -d \
   --network=$NETWORK \
   --name $MINT \
   -p 8080:8080 \
+  -v $TEST_CONFIG:/etc/mint/config.properties \
   $MINT_IMAGE
