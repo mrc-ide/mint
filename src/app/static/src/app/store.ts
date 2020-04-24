@@ -5,13 +5,14 @@ import {MutationPayload, Store, StoreOptions} from "vuex";
 import {mutations} from "./mutations";
 import {Project} from "./models/project";
 import {APIError} from "./apiService";
-import {Data} from "./generated";
+import {Data, Graph} from "./generated";
 
 export interface RootState {
     projects: Project[]
     currentProject: Project | null
     errors: APIError[]
     prevalenceGraphData: Data
+    prevalenceGraphConfig: Graph | null
 }
 
 const logger = (store: Store<RootState>) => {
@@ -25,7 +26,8 @@ const storeOptions: StoreOptions<RootState> = {
         projects: [],
         currentProject: null,
         errors: [],
-        prevalenceGraphData: []
+        prevalenceGraphData: [],
+        prevalenceGraphConfig: null
     },
     mutations,
     plugins: [logger]

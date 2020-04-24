@@ -1,12 +1,12 @@
 import {mutations, RootMutation} from "../../app/mutations";
 import {mockError, mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
-import {expectAllMutationsDefined} from "../testHelpers";
+import {expectAllDefined} from "../testHelpers";
 
 describe("mutations", () => {
 
     it("implements all defined mutations", () => {
-        expectAllMutationsDefined(RootMutation, mutations);
+        expectAllDefined(RootMutation, mutations);
     });
 
     it("adds a new project", () => {
@@ -47,6 +47,13 @@ describe("mutations", () => {
         mutations[RootMutation.AddPrevalenceGraphData](state, ["some data"]);
 
         expect(state.prevalenceGraphData).toStrictEqual(["some data"]);
+    });
+
+    it("adds prevalence graph config", () => {
+        const state = mockRootState();
+        mutations[RootMutation.AddPrevalenceGraphConfig](state, {data: {whatever: 1}, layout: {something: "hi"}});
+
+        expect(state.prevalenceGraphConfig).toStrictEqual({data: {whatever: 1}, layout: {something: "hi"}});
     });
 
 });
