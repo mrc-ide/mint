@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import CompositionApi from '@vue/composition-api'
 
 // create mock element for app to attach to
 const app = document.createElement('div');
@@ -17,5 +18,9 @@ Object.defineProperty((global as any).Element.prototype, 'innerText', {
     },
     configurable: true
 });
+// createObjectURL is not implemented in jest/jsdom
+// https://github.com/plotly/react-plotly.js/issues/115
+window.URL.createObjectURL = function(object: any) {return ""};
 
 Vue.use(Vuex);
+Vue.use(CompositionApi);
