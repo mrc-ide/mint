@@ -49,16 +49,21 @@ describe("wide format data series", () => {
     it("returns null for invalid series definitions", () => {
         const localProps = {
             ...props,
-            series: [{id: "ITN", x: ["ITN"]}, {name: "PBO"}]
+            series: [{name: "PBO"}]
         }
         const dataSeries = useWideFormatData(localProps).dataSeries.value;
-        expect(dataSeries.length).toBe(2);
-        expect(dataSeries[0]).toEqual({
-            id: "ITN",
-            x: ["ITN"],
-            y: [100]
-        });
-        expect(dataSeries[1]).toBe(null);
+        expect(dataSeries.length).toBe(1);
+        expect(dataSeries[0]).toBe(null);
+    });
+
+    it("returns null for series definitions with invalid ids", () => {
+        const localProps = {
+            ...props,
+            series: [{id: "badid"}]
+        }
+        const dataSeries = useWideFormatData(localProps).dataSeries.value;
+        expect(dataSeries.length).toBe(1);
+        expect(dataSeries[0]).toBe(null);
     });
 
     it("includes series with explicit x,y ranges", () => {

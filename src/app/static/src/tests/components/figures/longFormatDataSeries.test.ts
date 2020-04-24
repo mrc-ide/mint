@@ -51,16 +51,21 @@ describe("long format data series", () => {
     it("returns null for invalid series definitions", () => {
         const localProps = {
             ...props,
-            series: [{id: "none"}, {name: "ITN"}]
+            series: [{name: "ITN"}]
         }
         const dataSeries = useLongFormatData(localProps).dataSeries.value;
-        expect(dataSeries.length).toBe(2);
-        expect(dataSeries[0]).toEqual({
-            id: "none",
-            x: [1, 2],
-            y: [0.1, 0.3]
-        });
-        expect(dataSeries[1]).toBe(null);
+        expect(dataSeries.length).toBe(1);
+        expect(dataSeries[0]).toBe(null);
+    });
+
+    it("returns null for series definitions with invalid ids", () => {
+        const localProps = {
+            ...props,
+            series: [{id: "badid"}]
+        }
+        const dataSeries = useLongFormatData(localProps).dataSeries.value;
+        expect(dataSeries.length).toBe(1);
+        expect(dataSeries[0]).toBe(null);
     });
 
     it("includes series with explicit x,y ranges", () => {

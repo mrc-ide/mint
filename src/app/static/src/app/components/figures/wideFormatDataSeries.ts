@@ -29,12 +29,16 @@ export function useWideFormatData(props: Props) {
             }
             if (d.id) {
                 const row = getRow(d.id);
+                if (!row) {
+                    console.warn(`The data series with ${d.id} did not match any rows in the provided data`)
+                    return null;
+                }
                 const error_y = d.error_y && getErrorBar(row, d.error_y)
                 const result: SeriesDefinition = {
                     ...d,
                     y: meta.cols.map((c: string) => row[c])
                 }
-                if (error_y){
+                if (error_y) {
                     result.error_y = error_y
                 }
                 return result
