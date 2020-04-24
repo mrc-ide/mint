@@ -2,7 +2,7 @@ import {computed} from "@vue/composition-api";
 import {Dictionary} from "vue-router/types/router";
 
 export interface FilteringProps {
-    settings: Dictionary<string>
+    settings: Dictionary<string | number>
     data: any[]
 }
 

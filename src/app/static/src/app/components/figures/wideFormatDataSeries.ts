@@ -29,11 +29,15 @@ export function useWideFormatData(props: Props) {
             }
             if (d.id) {
                 const row = getRow(d.id);
-                return {
+                const error_y = d.error_y && getErrorBar(row, d.error_y)
+                const result: SeriesDefinition = {
                     ...d,
-                    y: meta.cols.map((c: string) => row[c]),
-                    error_y: d.error_y && getErrorBar(row, d.error_y)
+                    y: meta.cols.map((c: string) => row[c])
                 }
+                if (error_y){
+                    result.error_y = error_y
+                }
+                return result
             }
             // ignore invalid definitions
             return null
