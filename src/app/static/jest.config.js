@@ -1,6 +1,6 @@
 module.exports = {
     "setupFiles": ["./src/tests/setup.ts", "jest-canvas-mock"],
-    "testURL": "http://localhost",
+    "testURL": "http://localhost:8080",
     "globals": {
         "ts-jest": {
             tsConfig: 'tsconfig.json',

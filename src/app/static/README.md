@@ -17,7 +17,7 @@ with the suffix `.itest.ts` treated as integration tests. Config for each can be
 `jest.config.js` and `jest.integration.config.js`, respectively.
 - run unit tests with `npm test` 
 - run integration tests with `npm run integration-test` having first started the app and 
-all dependencies by running `./scripts/run-dependencies-for-integration-tests.sh` from this
+all dependencies by running `./scripts/run-dev-dependencies-for-integration-tests.sh` from this
 directory
 
 ### Compiling
