@@ -16,7 +16,7 @@ describe("actions", () => {
     });
 
     it("fetches prevalence graph data", async () => {
-        mockAxios.onPost("/graph/prevalence/data")
+        mockAxios.onPost("/impact/graph/prevalence/data")
             .reply(200, mockSuccess([{prev: 1, net_use: 0.2, resistance: "low"}]));
 
         const commit = jest.fn();
