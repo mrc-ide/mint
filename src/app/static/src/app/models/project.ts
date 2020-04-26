@@ -1,12 +1,16 @@
+import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+
 export interface Region {
     name: string
     url: string
+    baselineOptions: DynamicFormMeta
 }
 
 export class Region {
-    constructor(name: string, parent: Project) {
-        this.name = name
-        this.url = `/projects/${parent.name}/regions/${name}`.replace(/\s/g, "-").toLowerCase()
+    constructor(name: string, parent: Project, baselineOptions: DynamicFormMeta) {
+        this.name = name;
+        this.url = `/projects/${parent.name}/regions/${name}`.replace(/\s/g, "-").toLowerCase();
+        this.baselineOptions = baselineOptions;
     }
 }
 
@@ -18,9 +22,9 @@ export interface Project {
 
 export class Project {
 
-    constructor(name: string, regionsName: string[], currentRegion: Region | null = null) {
+    constructor(name: string, regionsName: string[], currentRegion: Region | null = null, baselineOptions: DynamicFormMeta) {
         this.name = name;
-        this.regions = regionsName.map(n => new Region(n, this));
+        this.regions = regionsName.map(n => new Region(n, this, baselineOptions));
         this.currentRegion = currentRegion || this.regions[0]
     }
 
