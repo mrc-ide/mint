@@ -1,6 +1,6 @@
 import {computed} from "@vue/composition-api";
 import {SeriesDefinition, SeriesMetadata, WideFormatSeriesMetadata} from "./types";
-import {FilteringProps, useFiltering} from "./filteredData";
+import {FilteringProps, useFiltering} from "../filteredData";
 
 interface Props extends FilteringProps {
     series: SeriesDefinition[]

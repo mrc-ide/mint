@@ -1,4 +1,4 @@
-import {useLongFormatData} from "../../../app/components/figures/longFormatDataSeries";
+import {useLongFormatData} from "../../../app/components/figures/graphs/longFormatDataSeries";
 
 describe("long format data series", () => {
 

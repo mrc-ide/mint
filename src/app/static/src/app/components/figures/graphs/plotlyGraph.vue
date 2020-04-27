@@ -4,7 +4,7 @@
 <script lang="ts">
     import {Plotly} from "vue-plotly"
     import {defineComponent} from "@vue/composition-api";
-    import {FilteringProps} from "./filteredData";
+    import {FilteringProps} from "../filteredData";
     import {SeriesDefinition, SeriesMetadata} from "./types";
     import {useLongFormatData} from "./longFormatDataSeries";
     import {useWideFormatData} from "./wideFormatDataSeries";

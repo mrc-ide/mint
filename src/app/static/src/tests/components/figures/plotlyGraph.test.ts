@@ -1,6 +1,6 @@
 import {Plotly} from "vue-plotly";
 import {mount} from "@vue/test-utils";
-import plotlyGraph from "../../../app/components/figures/plotlyGraph.vue";
+import plotlyGraph from "../../../app/components/figures/graphs/plotlyGraph.vue";
 
 describe("plotly graph", () => {
 
