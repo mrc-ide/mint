@@ -10,14 +10,23 @@
     import {DynamicForm, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
     import {Project, Region} from "../models/project";
     import {mapState} from "vuex";
+    import {mapMutationByName} from "../utils";
+    import {RootMutation} from "../mutations";
 
     interface Computed {
-        currentProject: Project,
+        currentProject: Project
         options: DynamicFormMeta
     }
 
-    export default Vue.extend<{}, {}, Computed, {}>({
+    interface Methods {
+        update: (value: DynamicFormMeta) => void
+    }
+
+    export default Vue.extend<{}, Methods, Computed, {}>({
         components: {DynamicForm},
+        methods: {
+            update: mapMutationByName(RootMutation.SetCurrentRegionBaselineOptions)
+        },
         computed: {
             ...mapState(["currentProject"]),
             options:  {
@@ -25,7 +34,7 @@
                     return this.currentProject.currentRegion.baselineOptions
                 },
                 set(value: DynamicFormMeta) {
-                      //TODO: update by calling a mutation to set options in the current region
+                      this.update(value);
                 }
              }
         }
