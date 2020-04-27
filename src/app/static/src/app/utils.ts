@@ -16,6 +16,27 @@ export function isMINTResponseFailure(object: any): object is ResponseFailure {
         && object.errors.every((e: any) => isMINTError(e))
 }
 
+export function deepCopy(data: any): any {
+    let result = null;
+    if(!data) return result;
+
+    if(Array.isArray(data)) {
+        result = [];
+        for (let item of data) {
+            result.push(deepCopy(item));
+        }
+    } else if (typeof data === "object") {
+        result = {} as any;
+        for(let prop in data) {
+            if (data.hasOwnProperty(prop)) {
+                result[prop] = deepCopy(data[prop]);
+            }
+        }
+    }
+
+    return result || data;
+}
+
 export const freezer = {
 
     deepFreeze: (data: any): any => {

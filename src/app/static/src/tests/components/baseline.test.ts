@@ -17,7 +17,7 @@ describe("baseline", () => {
     const getWrapper = (addProjectMock = jest.fn()) => {
         const store =  new Vuex.Store({
             state: mockRootState({
-                currentProject: new Project("project 1", ["region 1"], null, baselineOptions)
+                currentProject: new Project("project 1", ["region 1"], baselineOptions)
             })
         });
 

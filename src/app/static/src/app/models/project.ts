@@ -1,4 +1,5 @@
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {deepCopy} from "../utils";
 
 export interface Region {
     name: string
@@ -10,7 +11,7 @@ export class Region {
     constructor(name: string, parent: Project, baselineOptions: DynamicFormMeta) {
         this.name = name;
         this.url = `/projects/${parent.name}/regions/${name}`.replace(/\s/g, "-").toLowerCase();
-        this.baselineOptions = {...baselineOptions}; //Make our own copy
+        this.baselineOptions = deepCopy(baselineOptions);
     }
 }
 
@@ -22,7 +23,7 @@ export interface Project {
 
 export class Project {
 
-    constructor(name: string, regionsName: string[], currentRegion: Region | null = null, baselineOptions: DynamicFormMeta) {
+    constructor(name: string, regionsName: string[], baselineOptions: DynamicFormMeta, currentRegion: Region | null = null) {
         this.name = name;
         this.regions = regionsName.map(n => new Region(n, this, baselineOptions));
         this.currentRegion = currentRegion || this.regions[0]

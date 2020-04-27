@@ -29,6 +29,7 @@
     import dropDown from "./dropDown.vue";
     import {BIconGraphUp} from "bootstrap-vue";
     import {store} from "../store";
+    import {RootAction} from "../actions";
 
     interface Methods {
         fetchBaselineOptions: () => void
@@ -39,7 +40,7 @@
         components: {dropDown, BIconGraphUp},
         computed: mapState(["currentProject"]),
         methods: {
-            ...mapActions({fetchBaselineOptions: "FetchBaselineOptions"})
+            ...mapActions({fetchBaselineOptions: RootAction.FetchBaselineOptions})
         },
         beforeMount: function () {
             this.fetchBaselineOptions();

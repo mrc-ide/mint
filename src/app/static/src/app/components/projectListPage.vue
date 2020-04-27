@@ -99,7 +99,7 @@
                     // so take this.newRegion as the only region
                     regionNames.push(this.newRegion)
                 }
-                const project = new Project(this.newProject, regionNames, null, this.baselineOptions);
+                const project = new Project(this.newProject, regionNames, this.baselineOptions);
                 this.addProject(project);
                 this.$router.push({
                     path: project.currentRegion.url

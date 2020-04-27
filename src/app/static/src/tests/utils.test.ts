@@ -1,4 +1,4 @@
-import {freezer, isMINTResponseFailure} from "../app/utils";
+import {freezer, isMINTResponseFailure, deepCopy} from "../app/utils";
 import {mockError} from "./mocks";
 
 describe("utils", () => {
@@ -85,6 +85,27 @@ describe("utils", () => {
             expect(isMINTResponseFailure(test)).toBe(true);
         });
 
+    });
+
+    it("deep copies an object", () => {
+
+        const data = {
+            nothing: null,
+            time: 10,
+            name: "hello",
+            items: [1, null, "three", {label: "l1"}],
+            child: {
+                name: "child",
+                items: [4, null, "five"]
+            }
+        };
+
+        const copy = deepCopy(data);
+        expect(JSON.stringify(copy)).toEqual(JSON.stringify(data));
+        expect(copy.items).not.toBe(data.items);
+        expect(copy.items[3]).not.toBe(data.items[3]);
+        expect(copy.child).not.toBe(data.child);
+        expect(copy.child.items).not.toBe(data.child.items);
     });
 
 });

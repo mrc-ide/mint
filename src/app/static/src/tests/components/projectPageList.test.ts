@@ -93,8 +93,8 @@ describe("project page", () => {
             currentRegion: {name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions}
         });
 
-        //Baseline options should equal options from store, but be fresh copy
-        expect(mockMutation.mock.calls[0][1].currentRegion.baselineOptions).not.toBe(mockBaselineOptions);
+        //Baseline options should equal options from store, but be fresh deep copy
+        expect(mockMutation.mock.calls[0][1].currentRegion.baselineOptions.controlSections).not.toBe(mockBaselineOptions.controlSections);
 
         expect(mockRouter[0].path).toBe("/projects/new-project/regions/south");
     });

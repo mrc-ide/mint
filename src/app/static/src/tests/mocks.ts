@@ -18,7 +18,7 @@ export function mockRootState(state: Partial<RootState> = {}): RootState {
 }
 
 export function mockProject(project: Partial<Project> = {}): Project {
-    return new Project("project 1", ["region 1"], null, {controlSections: []});
+    return new Project("project 1", ["region 1"], {controlSections: []});
 }
 
 export const mockSuccess = (data: any): ResponseSuccess => {

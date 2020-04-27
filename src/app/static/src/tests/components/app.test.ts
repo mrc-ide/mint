@@ -26,7 +26,7 @@ describe("app", () => {
     it("show second nav bar if currentProject is not null", () => {
         let state = {
             currentProject: new Project(
-                "my project", ["region1", "region2"], null, {controlSections: []}
+                "my project", ["region1", "region2"], {controlSections: []}
             )
         };
         const wrapper = getWrapper(state);
