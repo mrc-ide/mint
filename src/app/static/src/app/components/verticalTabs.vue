@@ -5,9 +5,9 @@
             <li v-for="tab in tabs"
                 class="nav-item">
                 <a class="text-success nav-link"
-                   :class="{active: tab.active}"
-                   @click="$emit('tab-selected', tab.name)">
-                    {{tab.name}}
+                   :class="{active: activeTab === tab}"
+                   @click="$emit('tab-selected', tab)">
+                    {{tab}}
                 </a>
             </li>
         </ul>
@@ -21,7 +21,6 @@
 <script lang="ts">
     import Vue from "vue";
     import {Dictionary} from "vue-router/types/router";
-    import {Tab} from "../types";
 
     interface Methods {
         calculateDimensions: () => void
@@ -38,12 +37,14 @@
     }
 
     interface Props {
-        tabs: Tab[]
+        tabs: string[]
+        activeTab: string
     }
 
     export default Vue.extend<Data, Methods, Computed, Props>({
         props: {
-            tabs: Array
+            tabs: Array,
+            activeTab: String
         },
         data() {
             return {
@@ -57,6 +58,7 @@
             },
             navStyle() {
                 return {
+                    "height": "42px",
                     "transform-origin": "0 0",
                     "transform": `translate(0, ${this.width}px) rotate(-90deg)`
                 }
