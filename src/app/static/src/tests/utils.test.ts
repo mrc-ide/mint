@@ -91,9 +91,13 @@ describe("utils", () => {
 
         const data = {
             nothing: null,
+            truth: true,
             time: 10,
             name: "hello",
-            items: [1, null, "three", {label: "l1"}],
+            untrue: false,
+            zero: 0,
+            empty: "",
+            items: [1, null, "three", {label: "l1"}, 0, false, ""],
             child: {
                 name: "child",
                 items: [4, null, "five"]

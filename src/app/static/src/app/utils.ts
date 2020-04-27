@@ -17,9 +17,11 @@ export function isMINTResponseFailure(object: any): object is ResponseFailure {
 }
 
 export function deepCopy(data: any): any {
-    let result = null;
-    if(!data) return result;
+    if (data == null) {
+        return null;
+    }
 
+    let result = null;
     if(Array.isArray(data)) {
         result = [];
         for (let item of data) {

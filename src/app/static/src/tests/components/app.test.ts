@@ -3,7 +3,6 @@ import {shallowMount} from "@vue/test-utils";
 import app from "../../app/components/app.vue";
 import {mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
-import {RootMutation} from "../../app/mutations";
 import {RootAction} from "../../app/actions";
 
 describe("app", () => {
