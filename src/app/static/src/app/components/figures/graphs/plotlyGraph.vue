@@ -4,11 +4,11 @@
 <script lang="ts">
     import {Plotly} from "vue-plotly"
     import {defineComponent} from "@vue/composition-api";
-    import {FilteringProps} from "./filteredData";
+    import {FilteringProps} from "../filteredData";
     import {useLongFormatData} from "./longFormatDataSeries";
     import {useWideFormatData} from "./wideFormatDataSeries";
     import {Dictionary} from "vue-router/types/router";
-    import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../generated";
+    import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
 
     interface Props extends FilteringProps {
         series: SeriesDefinition[]

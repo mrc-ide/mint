@@ -74,7 +74,7 @@ export interface WideFormatMetadata {
   format: "wide";
 }
 export interface SeriesDefinition {
-  x?: number[];
+  x?: (number | string)[];
   y?: number[];
   id?: string;
   name?: string;

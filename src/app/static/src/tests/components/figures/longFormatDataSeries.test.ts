@@ -1,4 +1,4 @@
-import {useLongFormatData} from "../../../app/components/figures/longFormatDataSeries";
+import {useLongFormatData} from "../../../app/components/figures/graphs/longFormatDataSeries";
 
 describe("long format data series", () => {
 
@@ -48,24 +48,22 @@ describe("long format data series", () => {
         });
     });
     
-    it("returns null for invalid series definitions", () => {
+    it("does not include invalid series definitions", () => {
         const localProps = {
             ...props,
             series: [{name: "ITN"}]
         }
         const dataSeries = useLongFormatData(localProps).dataSeries.value;
-        expect(dataSeries.length).toBe(1);
-        expect(dataSeries[0]).toBe(null);
+        expect(dataSeries.length).toBe(0);
     });
 
-    it("returns null for series definitions with invalid ids", () => {
+    it("does not include series definitions with invalid ids", () => {
         const localProps = {
             ...props,
             series: [{id: "badid"}]
         }
         const dataSeries = useLongFormatData(localProps).dataSeries.value;
-        expect(dataSeries.length).toBe(1);
-        expect(dataSeries[0]).toBe(null);
+        expect(dataSeries.length).toBe(0);
     });
 
     it("includes series with explicit x,y ranges", () => {

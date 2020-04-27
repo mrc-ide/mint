@@ -12,7 +12,7 @@
     import Vue from "vue";
     import verticalTabs from "./verticalTabs.vue";
     import {Tab} from "../types";
-    import plotlyGraph from "./figures/plotlyGraph.vue";
+    import plotlyGraph from "./figures/graphs/plotlyGraph.vue";
     import {Data, Graph} from "../generated";
     import {mapActionByName, mapStateProp} from "../utils";
     import {RootState} from "../store";

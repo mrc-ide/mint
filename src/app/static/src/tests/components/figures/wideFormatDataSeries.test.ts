@@ -1,4 +1,4 @@
-import {useWideFormatData} from "../../../app/components/figures/wideFormatDataSeries";
+import {useWideFormatData} from "../../../app/components/figures/graphs/wideFormatDataSeries";
 
 describe("wide format data series", () => {
 

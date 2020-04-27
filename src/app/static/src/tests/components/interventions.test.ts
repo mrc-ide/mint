@@ -1,11 +1,21 @@
 import Vue from "vue";
 import {mount} from "@vue/test-utils";
 import interventions from "../../app/components/interventions.vue";
+import Vuex from "vuex";
+import {mockRootState} from "../mocks";
+import {RootMutation} from "../../app/mutations";
 
 describe("interventions", () => {
 
+    const createStore = () => {
+        return new Vuex.Store({
+            state: mockRootState()
+        });
+    };
+
     it("initialises tabs", () => {
-        const wrapper = mount(interventions);
+        const store = createStore();
+        const wrapper = mount(interventions, {store});
         const tabs = wrapper.findAll("a");
         expect(tabs.at(0).text()).toBe("Table");
         expect(tabs.at(0).classes()).not.toContain("active");
@@ -14,7 +24,8 @@ describe("interventions", () => {
     });
 
     it("can change tab", async () => {
-        const wrapper = mount(interventions);
+        const store = createStore();
+        const wrapper = mount(interventions, {store});
         const tabs = wrapper.findAll("a");
         expect(tabs.at(1).classes()).toContain("active");
 
