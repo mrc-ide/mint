@@ -38,7 +38,7 @@ describe("actions", () => {
         await (actions[RootAction.FetchPrevalenceGraphConfig] as any)({commit} as any, new FormData());
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddPrevalenceGraphConfig)
-        expectEqualsFrozen(commit.mock.calls[0][1], {data: {whatever: 1}, layout: {something: "hi"}});
+        expect(commit.mock.calls[0][1]).toStrictEqual({data: {whatever: 1}, layout: {something: "hi"}});
     });
 
 });

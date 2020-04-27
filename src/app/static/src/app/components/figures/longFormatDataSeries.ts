@@ -1,10 +1,10 @@
 import {computed} from "@vue/composition-api";
-import {LongFormatSeriesMetadata, SeriesDefinition, SeriesMetadata} from "./types";
 import {FilteringProps, useFiltering} from "./filteredData";
+import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../generated";
 
 interface Props extends FilteringProps {
     series: SeriesDefinition[]
-    metadata: SeriesMetadata
+    metadata: LongFormatMetadata | WideFormatMetadata
 }
 
 export function useLongFormatData(props: Props) {
@@ -12,7 +12,7 @@ export function useLongFormatData(props: Props) {
     const getRows = (definition: SeriesDefinition) => {
         const x = [] as any[];
         const y = [] as any[];
-        const meta = props.metadata as LongFormatSeriesMetadata
+        const meta = props.metadata as LongFormatMetadata
         filteredData.value.map((row: any) => {
             if (row[meta.id_col] == definition.id) {
                 x.push(row[meta.x_col])
@@ -23,26 +23,30 @@ export function useLongFormatData(props: Props) {
     }
 
     const dataSeries = computed(() => {
-        return props.series.map((d: SeriesDefinition) => {
+        const result: any[] = []
+        props.series.map((d: SeriesDefinition) => {
             if (d.x && d.y) {
                 // all values are given explicitly
-                return d
+                result.push(d);
+                return;
             }
             if (d.id) {
                 const rows = getRows(d);
                 if (rows[0].length == 0) {
-                    console.warn(`The data series with ${d.id} did not match any rows in the provided data`)
-                    return null;
+                    console.warn(`The data series with id: ${d.id} did not match any rows in the provided data`)
+                    return;
                 }
-                return {
+                result.push({
                     ...d,
                     x: rows[0],
                     y: rows[1]
-                }
+                });
+                return;
             }
-            // ignore invalid definitions
-            return null
+            return;
         });
+
+        return result;
     });
 
     return {dataSeries}

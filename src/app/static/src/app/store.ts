@@ -1,11 +1,13 @@
 import Vue from "vue"
 import Vuex from "vuex"
+import CompositionApi from '@vue/composition-api'
 import {MutationPayload, Store, StoreOptions} from "vuex";
 
 import {mutations} from "./mutations";
 import {Project} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph} from "./generated";
+import {actions} from "./actions";
 
 export interface RootState {
     projects: Project[]
@@ -30,8 +32,10 @@ const storeOptions: StoreOptions<RootState> = {
         prevalenceGraphConfig: null
     },
     mutations,
+    actions,
     plugins: [logger]
 }
 
 Vue.use(Vuex);
+Vue.use(CompositionApi);
 export const store = new Vuex.Store<RootState>(storeOptions);

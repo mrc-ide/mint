@@ -9,6 +9,10 @@ html {
   overflow-y: scroll;
 }
 
+.nav-link {
+  cursor: pointer;
+}
+
 .btn-primary {
   @include button-variant($theme-mint, darken($theme-mint, 10%))
 }
@@ -28,6 +32,7 @@ html {
 
 .ti-tag {
   max-width: 100%;
+
   .ti-content {
     max-width: calc(100% - 15px);
   }

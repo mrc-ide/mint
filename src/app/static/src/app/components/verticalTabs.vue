@@ -4,8 +4,7 @@
             class="nav nav-tabs">
             <li v-for="tab in tabs"
                 class="nav-item">
-                <a href="#"
-                   class="text-success nav-link"
+                <a class="text-success nav-link"
                    :class="{active: tab.active}"
                    @click="$emit('tab-selected', tab.name)">
                     {{tab.name}}
@@ -49,7 +48,7 @@
         data() {
             return {
                 width: 0,
-                height: 0
+                height: 42
             }
         },
         computed: {
@@ -76,7 +75,6 @@
         methods: {
             calculateDimensions(){
                 this.width = (this.$refs.tabLinks as Element).clientWidth;
-                this.height = (this.$refs.tabLinks as Element).clientHeight;
             }
         }
     })

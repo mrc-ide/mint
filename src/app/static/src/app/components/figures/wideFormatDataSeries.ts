@@ -1,10 +1,10 @@
 import {computed} from "@vue/composition-api";
-import {SeriesDefinition, SeriesMetadata, WideFormatSeriesMetadata} from "./types";
 import {FilteringProps, useFiltering} from "./filteredData";
+import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../generated";
 
 interface Props extends FilteringProps {
     series: SeriesDefinition[]
-    metadata: SeriesMetadata
+    metadata: LongFormatMetadata | WideFormatMetadata
 }
 
 export function useWideFormatData(props: Props) {
@@ -21,7 +21,7 @@ export function useWideFormatData(props: Props) {
         }
     }
     const dataSeries = computed(() => {
-        const meta = props.metadata as WideFormatSeriesMetadata
+        const meta = props.metadata as WideFormatMetadata
         return props.series.map((d: SeriesDefinition) => {
             if (d.x && d.y) {
                 // all values are given explicitly
@@ -30,7 +30,7 @@ export function useWideFormatData(props: Props) {
             if (d.id) {
                 const row = getRow(d.id);
                 if (!row) {
-                    console.warn(`The data series with ${d.id} did not match any rows in the provided data`)
+                    console.warn(`The data series with id: ${d.id} did not match any rows in the provided data`)
                     return null;
                 }
                 const error_y = d.error_y && getErrorBar(row, d.error_y)
