@@ -49,7 +49,7 @@
         data() {
             return {
                 width: 0,
-                height: 0
+                height: 42
             }
         },
         computed: {
@@ -76,7 +76,6 @@
         methods: {
             calculateDimensions(){
                 this.width = (this.$refs.tabLinks as Element).clientWidth;
-                this.height = (this.$refs.tabLinks as Element).clientHeight;
             }
         }
     })

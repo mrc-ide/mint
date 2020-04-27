@@ -16,8 +16,6 @@ describe("actions", () => {
                 "irs_use",
                 "month",
                 "net_use",
-                "prevalence",
-                "resistance",
                 "value"]);
     });
 
