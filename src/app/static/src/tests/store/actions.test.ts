@@ -19,6 +19,18 @@ describe("actions", () => {
         expectAllDefined(RootAction, actions);
     });
 
+    it("fetches baseline options", async () => {
+        const options = {"configurationSections":[]};
+        mockAxios.onGet("/baseline/options")
+            .reply(200, mockSuccess(options));
+
+        const commit = jest.fn();
+        await (actions[RootAction.FetchBaselineOptions] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddBaselineOptions);
+        expect(commit.mock.calls[0][1]).toStrictEqual(options);
+    });
+
     it("fetches prevalence graph data", async () => {
         mockAxios.onPost("/impact/graph/prevalence/data")
             .reply(200, mockSuccess([{prev: 1, net_use: 0.2, resistance: "low"}]));

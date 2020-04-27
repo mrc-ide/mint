@@ -46,6 +46,8 @@
     import {RootMutation} from "../mutations";
     import {mapMutationByName} from "../utils";
     import {Project} from "../models/project";
+    import {mapState} from "vuex";
+    import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
     interface Data {
         newProject: string
@@ -62,6 +64,7 @@
     interface Computed {
         disabled: boolean
         placeholder: string
+        baselineOptions: DynamicFormMeta
     }
 
     interface Tag {
@@ -78,12 +81,13 @@
             }
         },
         computed: {
+            ... mapState(["baselineOptions"]),
             disabled() {
                 return !this.newProject || (!this.newRegion && this.regions.length == 0)
             },
             placeholder() {
                 return this.regions.length == 0 ? "First region, second region" : "...";
-            }
+            },
         },
         methods: {
             addProject: mapMutationByName(RootMutation.AddProject),
@@ -95,7 +99,7 @@
                     // so take this.newRegion as the only region
                     regionNames.push(this.newRegion)
                 }
-                const project = new Project(this.newProject, regionNames);
+                const project = new Project(this.newProject, regionNames, this.baselineOptions);
                 this.addProject(project);
                 this.$router.push({
                     path: project.currentRegion.url

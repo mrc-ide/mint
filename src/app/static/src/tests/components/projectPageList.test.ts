@@ -5,12 +5,17 @@ import VueTagsInput from '@johmun/vue-tags-input';
 import projectListPage from "../../app/components/projectListPage.vue";
 import {mockRootState} from "../mocks";
 import {RootMutation} from "../../app/mutations";
+import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 describe("project page", () => {
 
+    const mockBaselineOptions: DynamicFormMeta = { controlSections: [] };
+
     const createStore = (addProjectMock = jest.fn()) => {
         return new Vuex.Store({
-            state: mockRootState(),
+            state: mockRootState({
+                baselineOptions: mockBaselineOptions
+            }),
             mutations: {
                 [RootMutation.AddProject]: addProjectMock
             }
@@ -18,7 +23,7 @@ describe("project page", () => {
     };
 
     it("button is disabled if project name is missing", async () => {
-        const store = createStore()
+        const store = createStore();
         const wrapper = shallowMount(projectListPage, {store});
 
         wrapper.find(VueTagsInput).vm.$emit("tagsChanged", [{text: "South"}])
@@ -30,9 +35,9 @@ describe("project page", () => {
     });
 
     it("button is disabled if regions and newRegion are missing", async () => {
-        const store = createStore()
+        const store = createStore();
         const wrapper = shallowMount(projectListPage, {store});
-        wrapper.find("input").setValue("new project")
+        wrapper.find("input").setValue("new project");
 
         await Vue.nextTick();
 
@@ -41,7 +46,7 @@ describe("project page", () => {
     });
 
     it("button is enabled when project name and regions are provided", async () => {
-        const store = createStore()
+        const store = createStore();
         const wrapper = shallowMount(projectListPage, {store});
 
         wrapper.find("input").setValue("new project");
@@ -54,7 +59,7 @@ describe("project page", () => {
     });
 
     it("button is enabled when project name and newRegion are provided", async () => {
-        const store = createStore()
+        const store = createStore();
         const wrapper = shallowMount(projectListPage, {store});
 
         wrapper.find("input").setValue("new project");
@@ -84,9 +89,12 @@ describe("project page", () => {
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1]).toEqual({
             name: "new project",
-            regions: [{name: "South", url: "/projects/new-project/regions/south"}],
-            currentRegion: {name: "South", url: "/projects/new-project/regions/south"}
+            regions: [{name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions}],
+            currentRegion: {name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions}
         });
+
+        //Baseline options should equal options from store, but be fresh deep copy
+        expect(mockMutation.mock.calls[0][1].currentRegion.baselineOptions.controlSections).not.toBe(mockBaselineOptions.controlSections);
 
         expect(mockRouter[0].path).toBe("/projects/new-project/regions/south");
     });
@@ -109,8 +117,8 @@ describe("project page", () => {
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1]).toEqual({
             name: "new project",
-            regions: [{name: "South", url: "/projects/new-project/regions/south"}],
-            currentRegion: {name: "South", url: "/projects/new-project/regions/south"}
+            regions: [{name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions}],
+            currentRegion: {name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions}
         });
 
         expect(mockRouter[0].path).toBe("/projects/new-project/regions/south");

@@ -24,6 +24,10 @@
         max-width: 90% !important;
         margin-left: 5%;
         margin-right: 5%;
+
+        span.small {
+          display: none;
+        }
       }
     }
   }

@@ -16,8 +16,8 @@ describe("vertical tabs", () => {
 
     it("displays tabs and active tab", () => {
         const wrapper = shallowMount(verticalTabs, {propsData: {
-            tabs : [{name: "one", active: false}, {name: "two", active: true}]
-        }});
+                tabs : [{name: "one", active: false}, {name: "two", active: true}]
+            }});
 
         const tabs = wrapper.findAll("a.nav-link");
         expect(tabs.at(0).text()).toBe("one");

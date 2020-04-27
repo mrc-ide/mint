@@ -33,8 +33,9 @@ export function useLongFormatData(props: Props) {
             if (d.id) {
                 const rows = getRows(d);
                 if (rows[0].length == 0) {
-                    console.warn(`The data series with id: ${d.id} did not match any rows in the provided data`)
-                    return;
+                    console.warn(`The data series with id ${d.id} did not match any rows in the provided data`)
+                    return null;
+
                 }
                 result.push({
                     ...d,
@@ -45,7 +46,6 @@ export function useLongFormatData(props: Props) {
             }
             return;
         });
-
         return result;
     });
 

@@ -3,12 +3,14 @@ import MockAdapter from "axios-mock-adapter";
 import {RootState} from "../app/store";
 import {Graph, ResponseFailure, ResponseSuccess} from "../app/generated";
 import {APIError} from "../app/apiService";
+import {Project} from "../app/models/project";
 
 export function mockRootState(state: Partial<RootState> = {}): RootState {
     return {
         projects: [],
         currentProject: null,
         errors: [],
+        baselineOptions: null,
         prevalenceGraphData: [],
         prevalenceGraphConfig: null,
         ...state
@@ -26,6 +28,9 @@ export function mockGraph(props: Partial<Graph> = {}): Graph {
         },
         ...props
     }
+
+export function mockProject(project: Partial<Project> = {}): Project {
+    return new Project("project 1", ["region 1"], {controlSections: []});
 }
 
 export const mockSuccess = (data: any): ResponseSuccess => {

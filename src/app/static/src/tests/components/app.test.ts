@@ -7,21 +7,16 @@ import {RootAction} from "../../app/actions";
 
 describe("app", () => {
 
-    const getWrapper = (state = {}, mockFetch = jest.fn()) => {
+    const getWrapper = (state = {}, fetchOptionsMock = jest.fn(), fetchConfigMock = jest.fn()) => {
         const store = new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.FetchPrevalenceGraphConfig]: mockFetch
+                [RootAction.FetchBaselineOptions]: fetchOptionsMock,
+                [RootAction.FetchPrevalenceGraphConfig]: fetchConfigMock
             }
-        })
+        });
         return shallowMount(app, {store, stubs: ['router-link', 'router-view']});
-    }
-
-    it("fetches prevalence graph config on mount", () => {
-        const mockFetch = jest.fn();
-        getWrapper({}, mockFetch);
-        expect(mockFetch.mock.calls.length).toBe(1);
-    })
+    };
 
     it("does not show second nav bar if currentProject is null", () => {
         const wrapper = getWrapper();
@@ -31,7 +26,7 @@ describe("app", () => {
     it("show second nav bar if currentProject is not null", () => {
         let state = {
             currentProject: new Project(
-                "my project", ["region1", "region2"]
+                "my project", ["region1", "region2"], {controlSections: []}
             )
         };
         const wrapper = getWrapper(state);
@@ -43,6 +38,15 @@ describe("app", () => {
         expect(firstNavLink.html())
             .toBe("<router-link-stub to=\"/projects/my-project/regions/region1\"" +
                 " class=\"text-success\">region1</router-link-stub>");
+    });
+
+    it("fetches baseline options and prevalence graph config before mount", () => {
+        const fetchOptionsMock = jest.fn();
+        const fetchConfigMock = jest.fn();
+        getWrapper({}, fetchOptionsMock, fetchConfigMock);
+
+        expect(fetchOptionsMock.mock.calls.length).toBe(1);
+        expect(fetchConfigMock.mock.calls.length).toBe(1);
     });
 
 });

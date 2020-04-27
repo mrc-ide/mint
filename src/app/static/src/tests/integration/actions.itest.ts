@@ -1,5 +1,6 @@
 import {actions, RootAction} from "../../app/actions";
 import {RootMutation} from "../../app/mutations";
+import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 describe("actions", () => {
 
@@ -8,15 +9,13 @@ describe("actions", () => {
         await (actions[RootAction.FetchPrevalenceGraphData] as any)({commit} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddPrevalenceGraphData);
-        const firstRow = commit.mock.calls[0][1][0]
+        const firstRow = commit.mock.calls[0][1][0];
         expect(Object.keys(firstRow).sort())
             .toEqual([
                 "intervention",
                 "irs_use",
                 "month",
                 "net_use",
-                "prevalence",
-                "resistance",
                 "value"]);
     });
 
@@ -29,4 +28,14 @@ describe("actions", () => {
         expect(commit.mock.calls[0][1].layout.title).toBeDefined(); // just confirm it's the expected type
     });
 
+    it("can get baseline options", async () => {
+        const commit = jest.fn();
+
+        await(actions[RootAction.FetchBaselineOptions] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddBaselineOptions);
+        const options = commit.mock.calls[0][1] as DynamicFormMeta;
+        expect(options.controlSections.length).toBe(3);
+        expect(options.controlSections[0].label).toBe("Site Inputs");
+    });
 });

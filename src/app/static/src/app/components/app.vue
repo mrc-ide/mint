@@ -25,20 +25,29 @@
 </template>
 <script lang="ts">
     import Vue from "vue"
-    import {mapState} from "vuex";
+    import {mapActions, mapState} from "vuex";
     import dropDown from "./dropDown.vue";
     import {BIconGraphUp} from "bootstrap-vue";
     import {RootAction} from "../actions";
     import {mapActionByName} from "../utils";
+    import {store} from "../store";
 
-    export default Vue.extend({
+    interface Methods {
+        fetchBaselineOptions: () => void
+        fetchPrevGraphConfig: () => void
+    }
+
+    export default Vue.extend<{}, Methods, {}, {}>({
+        store,
         components: {dropDown, BIconGraphUp},
         computed: mapState(["currentProject"]),
         methods: {
-            fetchPrevGraphConfig: mapActionByName(RootAction.FetchPrevalenceGraphConfig)
+            fetchPrevGraphConfig: mapActionByName(RootAction.FetchPrevalenceGraphConfig),
+            fetchBaselineOptions: mapActionByName(RootAction.FetchBaselineOptions)
         },
-        mounted() {
-            this.fetchPrevGraphConfig()
+        beforeMount: function () {
+            this.fetchBaselineOptions();
+            this.fetchPrevGraphConfig();
         }
     })
 </script>
