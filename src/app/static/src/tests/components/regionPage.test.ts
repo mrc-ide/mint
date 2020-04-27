@@ -3,7 +3,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
 import regionPage from "../../app/components/regionPage.vue";
-import {mockRootState} from "../mocks";
+import {mockProject, mockRootState} from "../mocks";
 import {RootMutation} from "../../app/mutations";
 import stepButton from "../../app/components/stepButton.vue";
 import interventions from "../../app/components/interventions.vue";
@@ -17,7 +17,9 @@ describe("region page", () => {
 
     const createStore = (setCurrentRegionMock = jest.fn()) => {
         return new Vuex.Store({
-            state: mockRootState(),
+            state: mockRootState({
+                currentProject: mockProject()
+            }),
             mutations: {
                 [RootMutation.SetCurrentRegion]: setCurrentRegionMock
             }
@@ -33,7 +35,7 @@ describe("region page", () => {
 
         await router.push({
             path: "/projects/new-project/regions/new-region"
-        })
+        });
         await Vue.nextTick();
         expect(setCurrentRegionMock.mock.calls.length).toBe(1);
         expect(setCurrentRegionMock.mock.calls[0][1]).toBe("/projects/new-project/regions/new-region");

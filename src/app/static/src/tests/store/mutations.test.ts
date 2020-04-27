@@ -25,12 +25,14 @@ describe("mutations", () => {
 
     it("updates the current region", () => {
         const state = mockRootState({
-            currentProject: new Project("my project", ["North region", "South region"])
-        })
+            currentProject: new Project("my project", ["North region", "South region"],
+                {controlSections: []})
+        });
         mutations[RootMutation.SetCurrentRegion](state, "/projects/my-project/regions/south-region");
         expect(state.currentProject!!.currentRegion).toEqual({
             name: "South region",
-            url: "/projects/my-project/regions/south-region"
+            url: "/projects/my-project/regions/south-region",
+            baselineOptions: {controlSections: []}
         })
     });
 
@@ -40,6 +42,14 @@ describe("mutations", () => {
 
         expect(state.errors.length).toBe(1);
         expect(state.errors[0].detail).toBe("some message detail");
+    });
+
+    it("adds baseline options", () => {
+        const state = mockRootState();
+        const options = {"configurationSections":[]};
+        mutations[RootMutation.AddBaselineOptions](state, options);
+
+        expect(state.baselineOptions).toStrictEqual(options);
     });
 
     it("adds prevalence graph data", () => {
