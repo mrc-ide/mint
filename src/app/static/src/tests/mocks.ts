@@ -30,7 +30,7 @@ export function mockGraph(props: Partial<Graph> = {}): Graph {
     }
 }
 
-export function mockProject(project: Partial<Project> = {}): Project {
+export function mockProject(): Project {
     return new Project("project 1", ["region 1"], {controlSections: []});
 }
 
