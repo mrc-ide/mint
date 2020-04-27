@@ -10,7 +10,7 @@ export class Region {
     constructor(name: string, parent: Project, baselineOptions: DynamicFormMeta) {
         this.name = name;
         this.url = `/projects/${parent.name}/regions/${name}`.replace(/\s/g, "-").toLowerCase();
-        this.baselineOptions = baselineOptions;
+        this.baselineOptions = {...baselineOptions}; //Make our own copy
     }
 }
 

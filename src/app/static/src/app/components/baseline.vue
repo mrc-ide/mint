@@ -8,7 +8,7 @@
 <script lang="ts">
     import Vue from "vue";
     import {DynamicForm, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
-    import {Project} from "../models/project";
+    import {Project, Region} from "../models/project";
     import {mapState} from "vuex";
 
     interface Computed {
@@ -20,14 +20,14 @@
         components: {DynamicForm},
         computed: {
             ...mapState(["currentProject"]),
-          options:  {
-              get() {
-                  return this.currentProject.currentRegion.baselineOptions
-              },
-              set(value: DynamicFormMeta) {
-                  //TODO: update by calling a mutation to set options in the current region
-              }
-          }
+            options:  {
+                get() {
+                    return this.currentProject.currentRegion.baselineOptions
+                },
+                set(value: DynamicFormMeta) {
+                      //TODO: update by calling a mutation to set options in the current region
+                }
+             }
         }
     });
 </script>
