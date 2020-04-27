@@ -73,6 +73,17 @@ describe("interventions", () => {
         }])
     });
 
+    it("does not show prevalence graph under table tab", async () => {
+        const store = createStore({prevalenceGraphConfig: mockGraph()});
+        const wrapper = mount(interventions, {store});
+        expect(wrapper.findAll(plotlyGraph).length).toBe(1);
+        const tabs = wrapper.findAll("a");
+        tabs.at(0).trigger("click");
+
+        await Vue.nextTick();
+        expect(wrapper.findAll(plotlyGraph).length).toBe(0);
+    });
+
     it("does not show prevalence graph if graph config does not exist", () => {
         const store = createStore();
         const wrapper = shallowMount(interventions, {store});
