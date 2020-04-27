@@ -28,9 +28,17 @@
     import {mapState} from "vuex";
     import dropDown from "./dropDown.vue";
     import {BIconGraphUp} from "bootstrap-vue";
+    import {RootAction} from "../actions";
+    import {mapActionByName} from "../utils";
 
     export default Vue.extend({
         components: {dropDown, BIconGraphUp},
-        computed: mapState(["currentProject"])
+        computed: mapState(["currentProject"]),
+        methods: {
+            fetchPrevGraphConfig: mapActionByName(RootAction.FetchPrevalenceGraphConfig)
+        },
+        mounted() {
+            this.fetchPrevGraphConfig()
+        }
     })
 </script>

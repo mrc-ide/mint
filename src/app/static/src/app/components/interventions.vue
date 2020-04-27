@@ -26,7 +26,6 @@
     interface Methods {
         changeTab: (name: string) => void
         getGraphData: () => void
-        getGraphConfig: () => void
     }
 
     interface Computed {
@@ -51,12 +50,10 @@
                 this.tabs.find(t => t.name == name)!!.active = true;
                 this.activeTab = name;
             },
-            getGraphData: mapActionByName(RootAction.FetchPrevalenceGraphData),
-            getGraphConfig: mapActionByName(RootAction.FetchPrevalenceGraphConfig)
+            getGraphData: mapActionByName(RootAction.FetchPrevalenceGraphData)
         },
         components: {verticalTabs, plotlyGraph},
         mounted() {
-            this.getGraphConfig();
             this.getGraphData();
         }
     });

@@ -3,15 +3,25 @@ import {shallowMount} from "@vue/test-utils";
 import app from "../../app/components/app.vue";
 import {mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
+import {RootAction} from "../../app/actions";
 
 describe("app", () => {
 
-    const getWrapper = (state = {}) => {
+    const getWrapper = (state = {}, mockFetch = jest.fn()) => {
         const store = new Vuex.Store({
-            state: mockRootState(state)
+            state: mockRootState(state),
+            actions: {
+                [RootAction.FetchPrevalenceGraphConfig]: mockFetch
+            }
         })
         return shallowMount(app, {store, stubs: ['router-link', 'router-view']});
     }
+
+    it("fetches prevalence graph config on mount", () => {
+        const mockFetch = jest.fn();
+        getWrapper({}, mockFetch);
+        expect(mockFetch.mock.calls.length).toBe(1);
+    })
 
     it("does not show second nav bar if currentProject is null", () => {
         const wrapper = getWrapper();

@@ -1,15 +1,20 @@
 import Vue from "vue";
-import {mount} from "@vue/test-utils";
+import {mount, shallowMount} from "@vue/test-utils";
 import interventions from "../../app/components/interventions.vue";
 import Vuex from "vuex";
-import {mockRootState} from "../mocks";
-import {RootMutation} from "../../app/mutations";
+import {mockGraph, mockRootState} from "../mocks";
+import plotlyGraph from "../../app/components/figures/graphs/plotlyGraph.vue";
+import {RootState} from "../../app/store";
+import {RootAction} from "../../app/actions";
 
 describe("interventions", () => {
 
-    const createStore = () => {
+    const createStore = (state: Partial<RootState> = {}, mockFetch = jest.fn()) => {
         return new Vuex.Store({
-            state: mockRootState()
+            state: mockRootState(state),
+            actions: {
+                [RootAction.FetchPrevalenceGraphData]: mockFetch
+            }
         });
     };
 
@@ -34,6 +39,53 @@ describe("interventions", () => {
         await Vue.nextTick();
         expect(tabs.at(1).classes()).not.toContain("active");
         expect(tabs.at(0).classes()).toContain("active");
+    });
+
+    it("shows prevalence graph under graph tab if graph config exists", () => {
+        const store = createStore({
+            prevalenceGraphConfig: mockGraph({
+                layout: {
+                    whatever: 1
+                },
+                series: [{
+                    x: [1, 2],
+                    y: [100, 200]
+                }],
+                metadata: {
+                    format: "wide",
+                    id_col: "intervention",
+                    cols: ["cases"]
+                }
+            })
+        });
+        const wrapper = shallowMount(interventions, {store});
+        expect(wrapper.findAll(plotlyGraph).length).toBe(1);
+        const graph = wrapper.findAll(plotlyGraph).at(0);
+        expect(graph.props("layout")).toEqual({whatever: 1});
+        expect(graph.props("metadata")).toEqual({
+            format: "wide",
+            id_col: "intervention",
+            cols: ["cases"]
+        });
+        expect(graph.props("series")).toEqual([{
+            x: [1, 2],
+            y: [100, 200]
+        }])
+    });
+
+    it("does not show prevalence graph if graph config does not exist", () => {
+        const store = createStore();
+        const wrapper = shallowMount(interventions, {store});
+        expect(wrapper.findAll(plotlyGraph).length).toBe(0);
+    });
+
+    it("fetches graph data", async () => {
+        const mockFetch = jest.fn();
+        const store = createStore({
+            prevalenceGraphConfig: mockGraph()
+        }, mockFetch);
+        shallowMount(interventions, {store});
+        expect(mockFetch.mock.calls.length).toBe(1);
     });
 
 });
