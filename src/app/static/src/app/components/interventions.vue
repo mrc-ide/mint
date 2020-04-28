@@ -4,7 +4,61 @@
                       :layout="prevalenceGraphConfig.layout"
                       :metadata="prevalenceGraphConfig.metadata"
                       :series="prevalenceGraphConfig.series"
-                      :data="prevalenceGraphData"
+                      :data="prevalenceGraphData1"
+                      :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
+        <plotly-graph v-if="activeTab === 'Graphs' && prevalenceGraphConfig"
+                      :layout="prevalenceGraphConfig.layout"
+                      :metadata="prevalenceGraphConfig.metadata"
+                      :series="prevalenceGraphConfig.series"
+                      :data="prevalenceGraphData2"
+                      :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
+        <plotly-graph v-if="activeTab === 'Graphs' && prevalenceGraphConfig"
+                      :layout="prevalenceGraphConfig.layout"
+                      :metadata="prevalenceGraphConfig.metadata"
+                      :series="prevalenceGraphConfig.series"
+                      :data="prevalenceGraphData3"
+                      :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
+        <plotly-graph v-if="activeTab === 'Graphs' && prevalenceGraphConfig"
+                      :layout="prevalenceGraphConfig.layout"
+                      :metadata="prevalenceGraphConfig.metadata"
+                      :series="prevalenceGraphConfig.series"
+                      :data="prevalenceGraphData4"
+                      :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
+        <plotly-graph v-if="activeTab === 'Graphs' && prevalenceGraphConfig"
+                      :layout="prevalenceGraphConfig.layout"
+                      :metadata="prevalenceGraphConfig.metadata"
+                      :series="prevalenceGraphConfig.series"
+                      :data="prevalenceGraphData5"
+                      :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
+        <plotly-graph v-if="activeTab === 'Graphs' && prevalenceGraphConfig"
+                      :layout="prevalenceGraphConfig.layout"
+                      :metadata="prevalenceGraphConfig.metadata"
+                      :series="prevalenceGraphConfig.series"
+                      :data="prevalenceGraphData6"
+                      :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
+        <plotly-graph v-if="activeTab === 'Graphs' && prevalenceGraphConfig"
+                      :layout="prevalenceGraphConfig.layout"
+                      :metadata="prevalenceGraphConfig.metadata"
+                      :series="prevalenceGraphConfig.series"
+                      :data="prevalenceGraphData7"
+                      :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
+        <plotly-graph v-if="activeTab === 'Graphs' && prevalenceGraphConfig"
+                      :layout="prevalenceGraphConfig.layout"
+                      :metadata="prevalenceGraphConfig.metadata"
+                      :series="prevalenceGraphConfig.series"
+                      :data="prevalenceGraphData8"
+                      :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
+        <plotly-graph v-if="activeTab === 'Graphs' && prevalenceGraphConfig"
+                      :layout="prevalenceGraphConfig.layout"
+                      :metadata="prevalenceGraphConfig.metadata"
+                      :series="prevalenceGraphConfig.series"
+                      :data="prevalenceGraphData9"
+                      :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
+        <plotly-graph v-if="activeTab === 'Graphs' && prevalenceGraphConfig"
+                      :layout="prevalenceGraphConfig.layout"
+                      :metadata="prevalenceGraphConfig.metadata"
+                      :series="prevalenceGraphConfig.series"
+                      :data="prevalenceGraphData10"
                       :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
     </vertical-tabs>
 </template>
@@ -31,7 +85,17 @@
 
     interface Computed {
         currentRegion: Region
-        prevalenceGraphData: Data
+        prevalenceGraphData1: Data
+        prevalenceGraphData2: Data
+        prevalenceGraphData3: Data
+        prevalenceGraphData4: Data
+        prevalenceGraphData5: Data
+        prevalenceGraphData6: Data
+        prevalenceGraphData7: Data
+        prevalenceGraphData8: Data
+        prevalenceGraphData9: Data
+        prevalenceGraphData10: Data
+
         prevalenceGraphConfig: Graph | null
     }
 
@@ -45,7 +109,17 @@
         computed: {
             currentRegion: mapStateProp<RootState, Region | null>(state => state.currentProject && state.currentProject.currentRegion),
             prevalenceGraphConfig: mapStateProp<RootState, Graph | null>(state => state.prevalenceGraphConfig),
-            prevalenceGraphData: mapStateProp<RootState, Data>(state => state.prevalenceGraphData)
+
+            prevalenceGraphData1: mapStateProp<RootState, Data>(state => state.prevalenceGraphData1),
+            prevalenceGraphData2: mapStateProp<RootState, Data>(state => state.prevalenceGraphData2),
+            prevalenceGraphData3: mapStateProp<RootState, Data>(state => state.prevalenceGraphData3),
+            prevalenceGraphData4: mapStateProp<RootState, Data>(state => state.prevalenceGraphData4),
+            prevalenceGraphData5: mapStateProp<RootState, Data>(state => state.prevalenceGraphData5),
+            prevalenceGraphData6: mapStateProp<RootState, Data>(state => state.prevalenceGraphData6),
+            prevalenceGraphData7: mapStateProp<RootState, Data>(state => state.prevalenceGraphData7),
+            prevalenceGraphData8: mapStateProp<RootState, Data>(state => state.prevalenceGraphData8),
+            prevalenceGraphData9: mapStateProp<RootState, Data>(state => state.prevalenceGraphData9),
+            prevalenceGraphData10: mapStateProp<RootState, Data>(state => state.prevalenceGraphData10)
         },
         methods: {
             changeTab(name: string) {
