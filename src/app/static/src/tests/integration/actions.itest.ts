@@ -38,4 +38,20 @@ describe("actions", () => {
         expect(options.controlSections.length).toBe(3);
         expect(options.controlSections[0].label).toBe("Site Inputs");
     });
+
+    it("can get impact table data", async () => {
+        const commit = jest.fn();
+        await (actions[RootAction.FetchImpactTableData] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData);
+        const firstRow = commit.mock.calls[0][1][0];
+        expect(Object.keys(firstRow).sort())
+            .toEqual([
+                "intervention",
+                "irs_use",
+                "month",
+                "net_use",
+                "value"]);
+    });
+
 });

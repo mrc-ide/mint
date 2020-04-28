@@ -16,6 +16,7 @@ export interface RootState {
     baselineOptions: DynamicFormMeta | null
     prevalenceGraphData: Data
     prevalenceGraphConfig: Graph | null
+    impactTableData: Data
 }
 
 const logger = (store: Store<RootState>) => {
@@ -31,7 +32,8 @@ const storeOptions: StoreOptions<RootState> = {
         errors: [],
         prevalenceGraphData: [],
         prevalenceGraphConfig: null,
-        baselineOptions: null
+        baselineOptions: null,
+        impactTableData: []
     },
     actions,
     mutations,

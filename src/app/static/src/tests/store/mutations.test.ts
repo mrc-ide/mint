@@ -92,4 +92,10 @@ describe("mutations", () => {
         expect(state.prevalenceGraphConfig).toStrictEqual({data: {whatever: 1}, layout: {something: "hi"}});
     });
 
+    it("adds impact table data", () => {
+        const state = mockRootState();
+        mutations[RootMutation.AddImpactTableData](state, ["some data"]);
+
+        expect(state.impactTableData).toStrictEqual(["some data"]);
+    });
 });

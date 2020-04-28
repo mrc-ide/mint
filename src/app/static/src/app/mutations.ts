@@ -12,7 +12,8 @@ export enum RootMutation {
     AddError = "AddError",
     AddBaselineOptions = "AddBaselineOptions",
     AddPrevalenceGraphData = "AddPrevalenceGraphData",
-    AddPrevalenceGraphConfig = "AddPrevalenceGraphConfig"
+    AddPrevalenceGraphConfig = "AddPrevalenceGraphConfig",
+    AddImpactTableData = "AddImpactTableData"
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -46,5 +47,9 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.AddPrevalenceGraphConfig](state: RootState, payload: Graph) {
         state.prevalenceGraphConfig = payload
+    },
+
+    [RootMutation.AddImpactTableData](state: RootState, payload: Data) {
+        state.impactTableData = payload
     }
 };
