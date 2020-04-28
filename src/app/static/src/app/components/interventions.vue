@@ -17,6 +17,7 @@
     import {mapActionByName, mapStateProp} from "../utils";
     import {RootState} from "../store";
     import {RootAction} from "../actions";
+    import {Region} from "../models/project";
 
     interface ComponentData {
         tabs: Tab[],
@@ -29,6 +30,7 @@
     }
 
     interface Computed {
+        currentRegion: Region
         prevalenceGraphData: Data
         prevalenceGraphConfig: Graph | null
     }
@@ -41,6 +43,7 @@
             }
         },
         computed: {
+            currentRegion: mapStateProp<RootState, Region | null>(state => state.currentProject && state.currentProject.currentRegion),
             prevalenceGraphConfig: mapStateProp<RootState, Graph | null>(state => state.prevalenceGraphConfig),
             prevalenceGraphData: mapStateProp<RootState, Data>(state => state.prevalenceGraphData)
         },
@@ -53,6 +56,14 @@
             getGraphData: mapActionByName(RootAction.FetchPrevalenceGraphData)
         },
         components: {verticalTabs, plotlyGraph},
+        watch: {
+          currentRegion: function() {
+              if (this.currentRegion)
+              {
+                  this.getGraphData();
+              }
+          }
+        },
         mounted() {
             this.getGraphData();
         }
