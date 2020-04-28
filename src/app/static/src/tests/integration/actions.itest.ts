@@ -56,4 +56,20 @@ describe("actions", () => {
                 "prev_year_3"]);
     });
 
+    it("can get impact table config", async () => {
+        const commit = jest.fn();
+        await (actions[RootAction.FetchImpactTableConfig] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableConfig);
+        expect(Object.keys(commit.mock.calls[0][1]).sort())
+            .toEqual([
+                "cases_averted",
+                "intervention",
+                "irs_use",
+                "net_use",
+                "prev_year_1",
+                "prev_year_2",
+                "prev_year_3"]);
+    });
+
 });

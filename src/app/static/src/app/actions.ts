@@ -9,6 +9,7 @@ export enum RootAction {
     FetchPrevalenceGraphData = "FetchPrevalenceGraphData",
     FetchPrevalenceGraphConfig = "FetchPrevalenceGraphConfig",
     FetchImpactTableData = "FetchImpactTableData",
+    FetchImpactTableConfig = "FetchImpactTableConfig",
     FetchBaselineOptions = "FetchBaselineOptions"
 }
 
@@ -43,5 +44,13 @@ export const actions: ActionTree<RootState, RootState> = {
             .withSuccess(RootMutation.AddImpactTableData)
             .withError(RootMutation.AddError)
             .postAndReturn<Data>("/impact/table/data", {anySettings: true})
+    },
+
+    async [RootAction.FetchImpactTableConfig](context) {
+        await api(context)
+            .freezeResponse()
+            .withSuccess(RootMutation.AddImpactTableConfig)
+            .withError(RootMutation.AddError)
+            .get<Data>("/impact/table/config")
     }
 };
