@@ -46,12 +46,15 @@ describe("actions", () => {
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData);
         const firstRow = commit.mock.calls[0][1][0];
         expect(Object.keys(firstRow).sort())
-            .toEqual([
+            .toEqual(["cases_averted",
                 "intervention",
                 "irs_use",
                 "month",
                 "net_use",
-                "value"]);
+                "value",
+                "prev_year_1",
+                "prev_year_2",
+                "prev_year_3"]);
     });
 
 });
