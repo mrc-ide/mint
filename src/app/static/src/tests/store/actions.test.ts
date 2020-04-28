@@ -2,6 +2,7 @@ import {mockAxios, mockSuccess} from "../mocks";
 import {expectAllDefined, expectEqualsFrozen} from "../testHelpers";
 import {actions, RootAction} from "../../app/actions";
 import {RootMutation} from "../../app/mutations";
+import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 describe("actions", () => {
 
@@ -20,7 +21,7 @@ describe("actions", () => {
     });
 
     it("fetches baseline options", async () => {
-        const options = {"configurationSections":[]};
+        const options: DynamicFormMeta = {"controlSections":[]};
         mockAxios.onGet("/baseline/options")
             .reply(200, mockSuccess(options));
 
@@ -28,6 +29,18 @@ describe("actions", () => {
         await (actions[RootAction.FetchBaselineOptions] as any)({commit} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddBaselineOptions);
+        expect(commit.mock.calls[0][1]).toStrictEqual(options);
+    });
+
+    it("fetches intervention options", async () => {
+        const options: DynamicFormMeta = {"controlSections":[]};
+        mockAxios.onGet("/intervention/options")
+            .reply(200, mockSuccess(options));
+
+        const commit = jest.fn();
+        await (actions[RootAction.FetchInterventionOptions] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddInterventionOptions);
         expect(commit.mock.calls[0][1]).toStrictEqual(options);
     });
 

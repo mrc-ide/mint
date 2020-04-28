@@ -72,11 +72,20 @@ describe("mutations", () => {
 
     it("adds baseline options", () => {
         const state = mockRootState();
-        const options = {"configurationSections":[]};
+        const options: DynamicFormMeta = {"controlSections":[]};
         mutations[RootMutation.AddBaselineOptions](state, options);
 
         expect(state.baselineOptions).toStrictEqual(options);
     });
+
+    it("adds intervention options", () => {
+        const state = mockRootState();
+        const options: DynamicFormMeta = {"controlSections":[]};
+        mutations[RootMutation.AddInterventionOptions](state, options);
+
+        expect(state.interventionOptions).toStrictEqual(options);
+    });
+
 
     it("adds prevalence graph data", () => {
         const state = mockRootState();
