@@ -1,5 +1,6 @@
 import Vue from "vue"
 import Vuex from "vuex"
+import CompositionApi from '@vue/composition-api'
 import {MutationPayload, Store, StoreOptions} from "vuex";
 
 import {mutations} from "./mutations";
@@ -7,6 +8,7 @@ import {Project} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph} from "./generated";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+
 import {actions} from "./actions";
 
 export interface RootState {
@@ -39,4 +41,5 @@ const storeOptions: StoreOptions<RootState> = {
 };
 
 Vue.use(Vuex);
+Vue.use(CompositionApi);
 export const store = new Vuex.Store<RootState>(storeOptions);

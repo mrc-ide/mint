@@ -28,11 +28,13 @@
     import {mapActions, mapState} from "vuex";
     import dropDown from "./dropDown.vue";
     import {BIconGraphUp} from "bootstrap-vue";
-    import {store} from "../store";
     import {RootAction} from "../actions";
+    import {mapActionByName} from "../utils";
+    import {store} from "../store";
 
     interface Methods {
         fetchBaselineOptions: () => void
+        fetchPrevGraphConfig: () => void
     }
 
     export default Vue.extend<{}, Methods, {}, {}>({
@@ -40,10 +42,12 @@
         components: {dropDown, BIconGraphUp},
         computed: mapState(["currentProject"]),
         methods: {
-            ...mapActions({fetchBaselineOptions: RootAction.FetchBaselineOptions})
+            fetchPrevGraphConfig: mapActionByName(RootAction.FetchPrevalenceGraphConfig),
+            fetchBaselineOptions: mapActionByName(RootAction.FetchBaselineOptions)
         },
         beforeMount: function () {
             this.fetchBaselineOptions();
+            this.fetchPrevGraphConfig();
         }
     })
 </script>

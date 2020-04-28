@@ -4,8 +4,7 @@
             class="nav nav-tabs">
             <li v-for="tab in tabs"
                 class="nav-item">
-                <a href="#"
-                   class="text-success nav-link"
+                <a class="text-success nav-link"
                    :class="{active: tab.active}"
                    @click="$emit('tab-selected', tab.name)">
                     {{tab.name}}

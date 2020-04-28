@@ -1,8 +1,21 @@
-import {mapMutations, MutationMethod} from "vuex";
-import {ResponseFailure, ResponseSuccess} from "./generated";
+import {ActionMethod, mapActions, mapMutations, mapState, MutationMethod} from "vuex";
+import {ResponseFailure} from "./generated";
+import {Dict} from "@reside-ic/vue-dynamic-form";
 
 export const mapMutationByName = (name: string): MutationMethod => {
     return mapMutations([name])[name]
+};
+
+class ComputedWithType<T> {
+}
+
+export const mapStateProp = <S, T>(func: (s: S) => T, namespace: string | null = null): ComputedWithType<T> => {
+    return namespace && (mapState<S>(namespace, {prop: (state: S) => func(state)}) as Dict<ComputedWithType<T>>)["prop"]
+        || (mapState<S>({prop: (state: S) => func(state)}) as Dict<ComputedWithType<T>>)["prop"]
+};
+
+export const mapActionByName = <T>(name: string, namespace: string | null = null): ActionMethod => {
+    return (!!namespace && mapActions(namespace, [name])[name]) || mapActions([name])[name]
 };
 
 function isMINTError(object: any): object is Error {
