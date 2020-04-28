@@ -5,21 +5,19 @@ import verticalTabs from "../../app/components/verticalTabs.vue";
 describe("vertical tabs", () => {
 
     beforeAll(() => {
-        // JSDOM doesn't implement layout so these are always zero by default
+        // JSDOM doesn't implement layout so this is always zero by default
         // https://github.com/testing-library/react-testing-library/issues/353
         Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 100 })
-        Object.defineProperty(HTMLElement.prototype, 'clientHeight', { configurable: true, value: 10 })
     })
 
     afterAll(() => {
         Object.defineProperty(HTMLElement.prototype, 'clientWidth', 0)
-        Object.defineProperty(HTMLElement.prototype, 'clientHeight', 0)
     })
 
     it("displays tabs and active tab", () => {
         const wrapper = shallowMount(verticalTabs, {propsData: {
-            tabs : [{name: "one", active: false}, {name: "two", active: true}]
-        }});
+                tabs : [{name: "one", active: false}, {name: "two", active: true}]
+            }});
 
         const tabs = wrapper.findAll("a.nav-link");
         expect(tabs.at(0).text()).toBe("one");
@@ -49,7 +47,7 @@ describe("vertical tabs", () => {
         expect(wrapper.find(".nav-tabs").attributes().style)
             .toBe("transform-origin: 0 0; transform: translate(0, 100px) rotate(-90deg);");
         expect(wrapper.find(".col").attributes().style)
-            .toBe("margin-left: -90px;");
+            .toBe("margin-left: -58px;");
     });
 
     it("re-calculates tab translation and content margin if tabs change", async () => {
@@ -61,7 +59,7 @@ describe("vertical tabs", () => {
         expect(wrapper.find(".nav-tabs").attributes().style)
             .toBe("transform-origin: 0 0; transform: translate(0, 100px) rotate(-90deg);");
         expect(wrapper.find(".col").attributes().style)
-            .toBe("margin-left: -90px;");
+            .toBe("margin-left: -58px;");
 
         Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 50 });
 
@@ -73,7 +71,7 @@ describe("vertical tabs", () => {
         expect(wrapper.find(".nav-tabs").attributes().style)
             .toBe("transform-origin: 0 0; transform: translate(0, 50px) rotate(-90deg);");
         expect(wrapper.find(".col").attributes().style)
-            .toBe("margin-left: -40px;");
+            .toBe("margin-left: -8px;");
 
     });
 
