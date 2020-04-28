@@ -5,12 +5,19 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/baseline")
-class BaselineController(private val apiClient: APIClient) {
+@RequestMapping("/")
+class OptionsController(private val apiClient: APIClient) {
 
-    @GetMapping("/options")
+    @GetMapping("/baseline/options")
     @ResponseBody
     fun baselineOptions(): ResponseEntity<String> {
         return apiClient.getBaselineOptions()
     }
+
+    @GetMapping("/intervention/options")
+    @ResponseBody
+    fun interventionOptions(): ResponseEntity<String> {
+        return apiClient.getInterventionOptions()
+    }
+
 }

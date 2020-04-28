@@ -13,7 +13,15 @@ class MintrAPIClientTests {
         val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
         val result = sut.getBaselineOptions()
         assertThat(result.statusCodeValue).isEqualTo(200)
-        JSONValidator().validateSuccess(result.body!!, "BaselineOptions")
+        JSONValidator().validateSuccess(result.body!!, "DynamicFormOptions")
+    }
+
+    @Test
+    fun `can get intervention options`() {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getInterventionOptions()
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "DynamicFormOptions")
     }
 
     @Test
