@@ -3,24 +3,26 @@
         <ul class="nav nav-tabs" style="margin-left: 26px;margin-bottom: -1px;">
             <li class="nav-item">
                 <a class="text-success nav-link"
-                   :class="{active: activeOuterTab === 'Impact'}"
-                   @click="() => changeOuterTab('Impact')">Impact
+                   :class="{active: activeHorizontalTab === 'Impact'}"
+                   @click="() => changeHorizontalTab('Impact')">Impact
                 </a>
             </li>
             <li class="nav-item">
                 <a class="text-success nav-link"
-                   :class="{active: activeOuterTab === 'Cost'}"
-                   @click="() => changeOuterTab('Cost')">Cost effectiveness
+                   :class="{active: activeHorizontalTab === 'Cost'}"
+                   @click="() => changeHorizontalTab('Cost')">Cost effectiveness
                 </a>
             </li>
         </ul>
         <div class="tab-content">
-            <vertical-tabs :tabs="innerTabs" :active-tab="activeInnerTab" @tab-selected="changeInnerTab">
-                <div v-if="activeOuterTab === 'Impact'">
-                   <impact :active-tab="activeInnerTab" />
+            <vertical-tabs :tabs="verticalTabs"
+                           :active-tab="activeVerticalTab"
+                           @tab-selected="changeVerticalTab">
+                <div v-if="activeHorizontalTab === 'Impact'">
+                   <impact :active-tab="activeVerticalTab" />
                 </div>
-                <div v-if="activeOuterTab === 'Cost'">
-                    <cost-effectiveness :active-tab="activeInnerTab" />
+                <div v-if="activeHorizontalTab === 'Cost'">
+                    <cost-effectiveness :active-tab="activeVerticalTab" />
                 </div>
             </vertical-tabs>
         </div>
@@ -35,31 +37,31 @@
     import costEffectiveness from "./costEffectiveness.vue";
 
     interface ComponentData {
-        innerTabs: string[],
-        activeInnerTab: string
-        activeOuterTab: string
+        verticalTabs: string[],
+        activeVerticalTab: string
+        activeHorizontalTab: string
     }
 
     interface Methods {
-        changeOuterTab: (name: string) => void
-        changeInnerTab: (name: string) => void
+        changeVerticalTab: (name: string) => void
+        changeHorizontalTab: (name: string) => void
         getGraphData: () => void
     }
 
     export default Vue.extend<ComponentData, Methods, {}, {}>({
         data() {
             return {
-                innerTabs: ["Table", "Graphs"],
-                activeInnerTab: "Graphs",
-                activeOuterTab: "Impact"
+                verticalTabs: ["Table", "Graphs"],
+                activeVerticalTab: "Graphs",
+                activeHorizontalTab: "Impact"
             }
         },
         methods: {
-            changeInnerTab(name: string) {
-                this.activeInnerTab = name;
+            changeVerticalTab(name: string) {
+                this.activeVerticalTab = name;
             },
-            changeOuterTab(name: string) {
-                this.activeOuterTab = name;
+            changeHorizontalTab(name: string) {
+                this.activeHorizontalTab = name;
             },
             getGraphData: mapActionByName(RootAction.FetchPrevalenceGraphData)
         },

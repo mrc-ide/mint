@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="pt-5">
         <plotly-graph v-if="activeTab === 'Graphs' && prevalenceGraphConfig"
                       :layout="prevalenceGraphConfig.layout"
                       :metadata="prevalenceGraphConfig.metadata"
