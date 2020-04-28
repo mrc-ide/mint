@@ -33,6 +33,7 @@ describe("baseline", () => {
         const wrapper = getWrapper();
         expect(wrapper.find(DynamicForm).exists()).toBe(true);
         expect(wrapper.find(DynamicForm).props("formMeta").controlSections.length).toBe(3);
+        expect(wrapper.find(DynamicForm).props("submitText")).toBe("Next");
     });
 
     it("commits mutation when form data changes", async () => {
@@ -45,5 +46,13 @@ describe("baseline", () => {
         await Vue.nextTick();
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1][0]).toBe(newBaseline);
+    });
+
+    it("emits submit event when form is submitted", async () => {
+        const wrapper = getWrapper();
+        wrapper.find(DynamicForm).vm.$emit("submit");
+
+        await Vue.nextTick();
+        expect(wrapper.emitted("submit")!!.length).toBe(1);
     });
 });
