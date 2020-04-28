@@ -2,6 +2,7 @@ import {mutations, RootMutation} from "../../app/mutations";
 import {mockError, mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
 import {expectAllDefined} from "../testHelpers";
+import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 describe("mutations", () => {
 
@@ -36,6 +37,31 @@ describe("mutations", () => {
         })
     });
 
+    it("updates the current region's baseline options", () => {
+        const state = mockRootState({
+            currentProject: new Project("my project", ["North region", "South region"],
+                {controlSections: ["OLD BASELINE"]} as any)
+        });
+
+        const newBaseline = {controlSections: ["NEWBASELINE"]} as any;
+        mutations[RootMutation.SetCurrentRegionBaselineOptions](state, newBaseline);
+        expect(state.currentProject!!.currentRegion.baselineOptions).toStrictEqual(newBaseline);
+    });
+
+    it("updating the current region's baseline options does nothing if no current project", () => {
+        const projects = [new Project("my project", ["North region", "South region"],
+            {controlSections: ["OLD BASELINE"]} as any)];
+        const state = mockRootState({
+            projects,
+            currentProject: null
+        });
+
+        const newBaseline = {controlSections: ["NEWBASELINE"]} as any;
+        mutations[RootMutation.SetCurrentRegionBaselineOptions](state, newBaseline);
+        expect(state.currentProject).toBeNull();
+        expect(state.projects[0].currentRegion.baselineOptions).toStrictEqual({controlSections: ["OLD BASELINE"]});
+    });
+
     it("adds error", () => {
         const state = mockRootState();
         mutations[RootMutation.AddError](state, mockError("some message detail"));
@@ -66,4 +92,10 @@ describe("mutations", () => {
         expect(state.prevalenceGraphConfig).toStrictEqual({data: {whatever: 1}, layout: {something: "hi"}});
     });
 
+    it("adds impact table data", () => {
+        const state = mockRootState();
+        mutations[RootMutation.AddImpactTableData](state, ["some data"]);
+
+        expect(state.impactTableData).toStrictEqual(["some data"]);
+    });
 });

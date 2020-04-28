@@ -31,11 +31,29 @@ describe("actions", () => {
     it("can get baseline options", async () => {
         const commit = jest.fn();
 
-        await(actions[RootAction.FetchBaselineOptions] as any)({commit} as any);
+        await (actions[RootAction.FetchBaselineOptions] as any)({commit} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddBaselineOptions);
         const options = commit.mock.calls[0][1] as DynamicFormMeta;
         expect(options.controlSections.length).toBe(3);
         expect(options.controlSections[0].label).toBe("Site Inputs");
     });
+
+    it("can get impact table data", async () => {
+        const commit = jest.fn();
+        await (actions[RootAction.FetchImpactTableData] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData);
+        const firstRow = commit.mock.calls[0][1][0];
+        expect(Object.keys(firstRow).sort())
+            .toEqual([
+                "cases_averted",
+                "intervention",
+                "irs_use",
+                "net_use",
+                "prev_year_1",
+                "prev_year_2",
+                "prev_year_3"]);
+    });
+
 });

@@ -13,7 +13,7 @@
                          :active="currentStep === 2"
                          @click="setCurrentStep(2)"></step-button>
         </div>
-        <baseline v-if="currentStep === 1"></baseline>
+        <baseline v-if="currentStep === 1" @submit="setCurrentStep(2)"></baseline>
         <interventions v-if="currentStep === 2"></interventions>
     </div>
 </template>

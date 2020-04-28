@@ -5,7 +5,7 @@
                       :metadata="prevalenceGraphConfig.metadata"
                       :series="prevalenceGraphConfig.series"
                       :data="prevalenceGraphData"
-                      :settings="{}"></plotly-graph>
+                      :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
     </div>
 </template>
 <script lang="ts">

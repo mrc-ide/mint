@@ -68,4 +68,20 @@ describe("region page", () => {
 
     });
 
+    it("sets current step to 2 when baseline is submitted", async () => {
+        const store = createStore();
+        const wrapper = shallowMount(regionPage, {store});
+
+        const baselineComp = wrapper.find(baseline);
+        baselineComp.vm.$emit("submit");
+
+        await Vue.nextTick();
+
+        const steps = wrapper.findAll(stepButton);
+        expect(steps.at(1).props("active")).toBe(true);
+        expect(steps.at(0).props("active")).toBe(false);
+        expect(wrapper.findAll(interventions).length).toBe(1);
+        expect(wrapper.findAll(baseline).length).toBe(0);
+    });
+
 });

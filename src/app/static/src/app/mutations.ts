@@ -8,10 +8,12 @@ import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 export enum RootMutation {
     AddProject = "AddProject",
     SetCurrentRegion = "SetCurrentRegion",
+    SetCurrentRegionBaselineOptions = "SetCurrentRegionBaselineOptions",
     AddError = "AddError",
     AddBaselineOptions = "AddBaselineOptions",
     AddPrevalenceGraphData = "AddPrevalenceGraphData",
-    AddPrevalenceGraphConfig = "AddPrevalenceGraphConfig"
+    AddPrevalenceGraphConfig = "AddPrevalenceGraphConfig",
+    AddImpactTableData = "AddImpactTableData"
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -23,6 +25,12 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.SetCurrentRegion](state: RootState, payload: string) {
         state.currentProject && state.currentProject.setCurrentRegion(payload);
+    },
+
+    [RootMutation.SetCurrentRegionBaselineOptions](state: RootState, payload: DynamicFormMeta) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.baselineOptions = payload;
+        }
     },
 
     [RootMutation.AddError](state: RootState, payload: APIError) {
@@ -39,5 +47,9 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.AddPrevalenceGraphConfig](state: RootState, payload: Graph) {
         state.prevalenceGraphConfig = payload
+    },
+
+    [RootMutation.AddImpactTableData](state: RootState, payload: Data) {
+        state.impactTableData = payload
     }
-}
+};

@@ -8,6 +8,7 @@ import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 export enum RootAction {
     FetchPrevalenceGraphData = "FetchPrevalenceGraphData",
     FetchPrevalenceGraphConfig = "FetchPrevalenceGraphConfig",
+    FetchImpactTableData = "FetchImpactTableData",
     FetchBaselineOptions = "FetchBaselineOptions"
 }
 
@@ -33,5 +34,13 @@ export const actions: ActionTree<RootState, RootState> = {
             .withSuccess(RootMutation.AddPrevalenceGraphConfig)
             .withError(RootMutation.AddError)
             .get<Graph>("/impact/graph/prevalence/config")
+    },
+
+    async [RootAction.FetchImpactTableData](context) {
+        await api(context)
+            .freezeResponse()
+            .withSuccess(RootMutation.AddImpactTableData)
+            .withError(RootMutation.AddError)
+            .postAndReturn<Data>("/impact/table/data", {anySettings: true})
     }
 };
