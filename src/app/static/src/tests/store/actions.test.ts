@@ -36,7 +36,7 @@ describe("actions", () => {
             .reply(200, mockSuccess([{prev: 1, net_use: 0.2, resistance: "low"}]));
 
         const commit = jest.fn();
-        await (actions[RootAction.FetchPrevalenceGraphData] as any)({commit} as any, new FormData());
+        await (actions[RootAction.FetchPrevalenceGraphData] as any)({commit} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddPrevalenceGraphData)
         expectEqualsFrozen(commit.mock.calls[0][1], [{prev: 1, net_use: 0.2, resistance: "low"}]);
@@ -47,10 +47,21 @@ describe("actions", () => {
             .reply(200, mockSuccess({data: {whatever: 1}, layout: {something: "hi"}}));
 
         const commit = jest.fn();
-        await (actions[RootAction.FetchPrevalenceGraphConfig] as any)({commit} as any, new FormData());
+        await (actions[RootAction.FetchPrevalenceGraphConfig] as any)({commit} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddPrevalenceGraphConfig)
         expect(commit.mock.calls[0][1]).toStrictEqual({data: {whatever: 1}, layout: {something: "hi"}});
+    });
+
+    it("fetches impact table data", async () => {
+        mockAxios.onPost("/impact/table/data")
+                .reply(200, mockSuccess([{prev: 1, net_use: 0.2, resistance: "low"}]));
+
+        const commit = jest.fn();
+        await (actions[RootAction.FetchImpactTableData] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData)
+        expectEqualsFrozen(commit.mock.calls[0][1], [{prev: 1, net_use: 0.2, resistance: "low"}]);
     });
 
 });
