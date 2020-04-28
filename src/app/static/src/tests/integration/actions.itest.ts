@@ -65,7 +65,6 @@ describe("actions", () => {
             .toEqual([
                 "cases_averted",
                 "intervention",
-                "irs_use",
                 "net_use",
                 "prev_year_1",
                 "prev_year_2",
