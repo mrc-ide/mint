@@ -98,4 +98,11 @@ describe("mutations", () => {
 
         expect(state.impactTableData).toStrictEqual(["some data"]);
     });
+
+    it("adds impact table config", () => {
+        const state = mockRootState();
+        mutations[RootMutation.AddImpactTableConfig](state, ["some data"]);
+
+        expect(state.impactTableConfig).toStrictEqual(["some data"]);
+    });
 });

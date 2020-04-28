@@ -2,7 +2,7 @@ import {MutationTree} from "vuex";
 import {RootState} from "./store";
 import {Project} from "./models/project";
 import {APIError} from "./apiService";
-import {Data, Graph} from "./generated";
+import {Data, Graph, TableDefinition} from "./generated";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 export enum RootMutation {
@@ -13,7 +13,8 @@ export enum RootMutation {
     AddBaselineOptions = "AddBaselineOptions",
     AddPrevalenceGraphData = "AddPrevalenceGraphData",
     AddPrevalenceGraphConfig = "AddPrevalenceGraphConfig",
-    AddImpactTableData = "AddImpactTableData"
+    AddImpactTableData = "AddImpactTableData",
+    AddImpactTableConfig = "AddImpactTableConfig"
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -51,5 +52,9 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.AddImpactTableData](state: RootState, payload: Data) {
         state.impactTableData = payload
+    },
+
+    [RootMutation.AddImpactTableConfig](state: RootState, payload: TableDefinition) {
+        state.impactTableConfig = payload
     }
 };

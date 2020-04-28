@@ -64,4 +64,15 @@ describe("actions", () => {
         expectEqualsFrozen(commit.mock.calls[0][1], [{prev: 1, net_use: 0.2, resistance: "low"}]);
     });
 
+    it("fetches impact table config", async () => {
+        mockAxios.onGet("/impact/table/config")
+            .reply(200, mockSuccess({net_use: "Net use"}));
+
+        const commit = jest.fn();
+        await (actions[RootAction.FetchImpactTableConfig] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableConfig)
+        expectEqualsFrozen(commit.mock.calls[0][1], {net_use: "Net use"});
+    });
+
 });
