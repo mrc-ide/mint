@@ -32,7 +32,6 @@ export const actions: ActionTree<RootState, RootState> = {
 
     async [RootAction.FetchPrevalenceGraphConfig](context) {
         await api(context)
-            .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphConfig)
             .withError(RootMutation.AddError)
             .get<Graph>("/impact/graph/prevalence/config")

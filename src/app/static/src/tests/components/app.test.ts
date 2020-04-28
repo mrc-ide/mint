@@ -7,11 +7,12 @@ import {RootAction} from "../../app/actions";
 
 describe("app", () => {
 
-    const getWrapper = (state = {}, fetchOptionsMock = jest.fn()) => {
+    const getWrapper = (state = {}, fetchOptionsMock = jest.fn(), fetchConfigMock = jest.fn()) => {
         const store = new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.FetchBaselineOptions]: fetchOptionsMock
+                [RootAction.FetchBaselineOptions]: fetchOptionsMock,
+                [RootAction.FetchPrevalenceGraphConfig]: fetchConfigMock
             }
         });
         return shallowMount(app, {store, stubs: ['router-link', 'router-view']});
@@ -39,11 +40,13 @@ describe("app", () => {
                 " class=\"text-success\">region1</router-link-stub>");
     });
 
-    it("fetches baseline options", () => {
+    it("fetches baseline options and prevalence graph config before mount", () => {
         const fetchOptionsMock = jest.fn();
-        const wrapper = getWrapper({}, fetchOptionsMock);
+        const fetchConfigMock = jest.fn();
+        getWrapper({}, fetchOptionsMock, fetchConfigMock);
 
         expect(fetchOptionsMock.mock.calls.length).toBe(1);
+        expect(fetchConfigMock.mock.calls.length).toBe(1);
     });
 
 });

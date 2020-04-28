@@ -5,14 +5,14 @@
     import {Plotly} from "vue-plotly"
     import {defineComponent} from "@vue/composition-api";
     import {FilteringProps} from "../filteredData";
-    import {SeriesDefinition, SeriesMetadata} from "./types";
     import {useLongFormatData} from "./longFormatDataSeries";
     import {useWideFormatData} from "./wideFormatDataSeries";
     import {Dictionary} from "vue-router/types/router";
+    import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
 
     interface Props extends FilteringProps {
         series: SeriesDefinition[]
-        metadata: SeriesMetadata
+        metadata: WideFormatMetadata | LongFormatMetadata
         layout: Dictionary<string>
     }
 
