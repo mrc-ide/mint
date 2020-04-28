@@ -1,6 +1,5 @@
 <template>
     <div class="baseline">
-        <h1>Baseline</h1>
         <dynamic-form v-model="options"
                       :include-submit-button="true"
                       submit-text="Next"

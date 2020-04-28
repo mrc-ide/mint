@@ -32,6 +32,7 @@
     }
 
     .btn {
+      @extend .btn-lg;
       @extend .btn-primary;
       @extend .my-3;
       margin-left: auto;
