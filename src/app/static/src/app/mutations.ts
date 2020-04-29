@@ -12,7 +12,7 @@ export enum RootMutation {
     AddError = "AddError",
     AddBaselineOptions = "AddBaselineOptions",
 
-    ClearPrevalenceGraphData = "ClearPrevalenceGraphData",
+    //ClearPrevalenceGraphData = "ClearPrevalenceGraphData",
 
     AddPrevalenceGraphData1 = "AddPrevalenceGraphData1",
     AddPrevalenceGraphData2 = "AddPrevalenceGraphData2",
@@ -54,57 +54,57 @@ export const mutations: MutationTree<RootState> = {
         state.baselineOptions = payload
     },
 
-    [RootMutation.ClearPrevalenceGraphData](state: RootState, payload: Data) {
-        state.prevalenceGraphData1 = [];
-        state.prevalenceGraphData2 = [];
-        state.prevalenceGraphData3 = [];
-        state.prevalenceGraphData4 = [];
-        state.prevalenceGraphData5 = [];
-        state.prevalenceGraphData6 = [];
-        state.prevalenceGraphData7 = [];
-        state.prevalenceGraphData8 = [];
-        state.prevalenceGraphData9 = [];
-        state.prevalenceGraphData10 = [];
-    },
+   /* [RootMutation.ClearPrevalenceGraphData](state: RootState, payload: Data) {
+        state.currentProject!!.currentRegion.prevalenceGraphData1 = [];
+        state.currentProject!!.currentRegion.prevalenceGraphData2 = [];
+        state.currentProject!!.currentRegion.prevalenceGraphData3 = [];
+        state.currentProject!!.currentRegion.prevalenceGraphData4 = [];
+        state.currentProject!!.currentRegion.prevalenceGraphData5 = [];
+        state.currentProject!!.currentRegion.prevalenceGraphData6 = [];
+        state.currentProject!!.currentRegion.prevalenceGraphData7 = [];
+        state.currentProject!!.currentRegion.prevalenceGraphData8 = [];
+        state.currentProject!!.currentRegion.prevalenceGraphData9 = [];
+        state.currentProject!!.currentRegion.prevalenceGraphData10 = [];
+    },*/
 
     [RootMutation.AddPrevalenceGraphData1](state: RootState, payload: Data) {
-        state.prevalenceGraphData1 = payload
+        state.currentProject!!.currentRegion.prevalenceGraphData1 = payload
     },
 
     [RootMutation.AddPrevalenceGraphData2](state: RootState, payload: Data) {
-        state.prevalenceGraphData2 = payload
+        state.currentProject!!.currentRegion.prevalenceGraphData2 = payload
     },
 
     [RootMutation.AddPrevalenceGraphData3](state: RootState, payload: Data) {
-        state.prevalenceGraphData3 = payload
+        state.currentProject!!.currentRegion.prevalenceGraphData3 = payload
     },
 
     [RootMutation.AddPrevalenceGraphData4](state: RootState, payload: Data) {
-        state.prevalenceGraphData4 = payload
+        state.currentProject!!.currentRegion.prevalenceGraphData4 = payload
     },
 
     [RootMutation.AddPrevalenceGraphData5](state: RootState, payload: Data) {
-        state.prevalenceGraphData5 = payload
+        state.currentProject!!.currentRegion.prevalenceGraphData5 = payload
     },
 
     [RootMutation.AddPrevalenceGraphData6](state: RootState, payload: Data) {
-        state.prevalenceGraphData6 = payload
+        state.currentProject!!.currentRegion.prevalenceGraphData6 = payload
     },
 
     [RootMutation.AddPrevalenceGraphData7](state: RootState, payload: Data) {
-        state.prevalenceGraphData7 = payload
+        state.currentProject!!.currentRegion.prevalenceGraphData7 = payload
     },
 
     [RootMutation.AddPrevalenceGraphData8](state: RootState, payload: Data) {
-        state.prevalenceGraphData8 = payload
+        state.currentProject!!.currentRegion.prevalenceGraphData8 = payload
     },
 
     [RootMutation.AddPrevalenceGraphData9](state: RootState, payload: Data) {
-        state.prevalenceGraphData9 = payload
+        state.currentProject!!.currentRegion.prevalenceGraphData9 = payload
     },
 
     [RootMutation.AddPrevalenceGraphData10](state: RootState, payload: Data) {
-        state.prevalenceGraphData10 = payload
+        state.currentProject!!.currentRegion.prevalenceGraphData10 = payload
     },
 
     [RootMutation.AddPrevalenceGraphConfig](state: RootState, payload: Graph) {

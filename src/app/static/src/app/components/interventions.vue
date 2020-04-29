@@ -110,20 +110,21 @@
             currentRegion: mapStateProp<RootState, Region | null>(state => state.currentProject && state.currentProject.currentRegion),
             prevalenceGraphConfig: mapStateProp<RootState, Graph | null>(state => state.prevalenceGraphConfig),
 
-            prevalenceGraphData1: mapStateProp<RootState, Data>(state => state.prevalenceGraphData1),
-            prevalenceGraphData2: mapStateProp<RootState, Data>(state => state.prevalenceGraphData2),
-            prevalenceGraphData3: mapStateProp<RootState, Data>(state => state.prevalenceGraphData3),
-            prevalenceGraphData4: mapStateProp<RootState, Data>(state => state.prevalenceGraphData4),
-            prevalenceGraphData5: mapStateProp<RootState, Data>(state => state.prevalenceGraphData5),
-            prevalenceGraphData6: mapStateProp<RootState, Data>(state => state.prevalenceGraphData6),
-            prevalenceGraphData7: mapStateProp<RootState, Data>(state => state.prevalenceGraphData7),
-            prevalenceGraphData8: mapStateProp<RootState, Data>(state => state.prevalenceGraphData8),
-            prevalenceGraphData9: mapStateProp<RootState, Data>(state => state.prevalenceGraphData9),
-            prevalenceGraphData10: mapStateProp<RootState, Data>(state => state.prevalenceGraphData10)
+            prevalenceGraphData1: function(){ return this.currentRegion ?  (this.currentRegion as Region).prevalenceGraphData1: []},
+            prevalenceGraphData2: function(){ return this.currentRegion ?  (this.currentRegion as Region).prevalenceGraphData2: []},
+            prevalenceGraphData3: function(){ return this.currentRegion ?  (this.currentRegion as Region).prevalenceGraphData3: []},
+            prevalenceGraphData4: function(){ return this.currentRegion ?  (this.currentRegion as Region).prevalenceGraphData4: []},
+            prevalenceGraphData5: function(){ return this.currentRegion ?  (this.currentRegion as Region).prevalenceGraphData5: []},
+            prevalenceGraphData6: function(){ return this.currentRegion ?  (this.currentRegion as Region).prevalenceGraphData6: []},
+            prevalenceGraphData7: function(){ return this.currentRegion ?  (this.currentRegion as Region).prevalenceGraphData7: []},
+            prevalenceGraphData8: function(){ return this.currentRegion ?  (this.currentRegion as Region).prevalenceGraphData8: []},
+            prevalenceGraphData9: function(){ return this.currentRegion ?  (this.currentRegion as Region).prevalenceGraphData9: []},
+            prevalenceGraphData10: function(){ return this.currentRegion ?  (this.currentRegion as Region).prevalenceGraphData10: []},
+
         },
         methods: {
             changeTab(name: string) {
-                this.tabs = this.tabs.map(t => ({...t, active: false}))
+                this.tabs = this.tabs.map(t => ({...t, active: false}));
                 this.tabs.find(t => t.name == name)!!.active = true;
                 this.activeTab = name;
             },
@@ -132,7 +133,8 @@
         components: {verticalTabs, plotlyGraph},
         watch: {
           currentRegion: function() {
-              if (this.currentRegion)
+              console.log("Interventions component switching to region: " + this.currentRegion.name);
+              if (this.currentRegion && this.currentRegion.prevalenceGraphData1.length == 0)
               {
                   this.getGraphData();
               }

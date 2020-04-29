@@ -22,7 +22,7 @@ export const actions: ActionTree<RootState, RootState> = {
     },
 
     async [RootAction.FetchPrevalenceGraphData](context) {
-        context.commit(RootMutation.ClearPrevalenceGraphData);
+        //context.commit(RootMutation.ClearPrevalenceGraphData);
 
         await Promise.all([
             api(context)
