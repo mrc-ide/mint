@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component
 
 interface APIClient {
     fun getBaselineOptions(): ResponseEntity<String>
+    fun getInterventionOptions(): ResponseEntity<String>
     fun getImpactGraphPrevalenceConfig(): ResponseEntity<String>
     fun getImpactGraphPrevalenceData(dataOptions: Map<String, Any>): ResponseEntity<String>
     fun getImpactTableConfig(): ResponseEntity<String>
@@ -24,6 +25,10 @@ class MintrAPIClient(
 
     override fun getBaselineOptions(): ResponseEntity<String> {
         return get("baseline/options")
+    }
+
+    override fun getInterventionOptions(): ResponseEntity<String> {
+        return get("intervention/options")
     }
 
     override fun getImpactGraphPrevalenceConfig(): ResponseEntity<String> {
