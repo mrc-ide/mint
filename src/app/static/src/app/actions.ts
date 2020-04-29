@@ -10,7 +10,9 @@ export enum RootAction {
     FetchPrevalenceGraphConfig = "FetchPrevalenceGraphConfig",
     FetchImpactTableData = "FetchImpactTableData",
     FetchImpactTableConfig = "FetchImpactTableConfig",
-    FetchBaselineOptions = "FetchBaselineOptions"
+    FetchBaselineOptions = "FetchBaselineOptions",
+    FetchImpactData = "FetchImpactData",
+    FetchConfig = "FetchConfig"
 }
 
 export const actions: ActionTree<RootState, RootState> = {
@@ -51,5 +53,21 @@ export const actions: ActionTree<RootState, RootState> = {
             .withSuccess(RootMutation.AddImpactTableConfig)
             .withError(RootMutation.AddError)
             .get<Data>("/impact/table/config")
+    },
+
+    async [RootAction.FetchImpactData](context) {
+        await Promise.all([
+            context.dispatch(RootAction.FetchPrevalenceGraphData),
+            context.dispatch(RootAction.FetchImpactTableData)
+        ]);
+    },
+
+    async [RootAction.FetchConfig](context) {
+        await Promise.all([
+            context.dispatch(RootAction.FetchBaselineOptions),
+            context.dispatch(RootAction.FetchPrevalenceGraphConfig),
+            context.dispatch(RootAction.FetchImpactTableConfig)
+        ]);
     }
+
 };

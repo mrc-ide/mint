@@ -2,23 +2,20 @@ import Vue from "vue";
 import {mount, shallowMount} from "@vue/test-utils";
 import interventions from "../../app/components/interventions.vue";
 import Vuex from "vuex";
-import {mockGraph, mockRootState} from "../mocks";
+import {mockRootState} from "../mocks";
 import {RootState} from "../../app/store";
 import {RootAction} from "../../app/actions";
 import impact from "../../app/components/impact.vue";
 import costEffectiveness from "../../app/components/costEffectiveness.vue";
-import mock = jest.mock;
 
 describe("interventions", () => {
 
     const createStore = (state: Partial<RootState> = {},
-                         mockGraphFetch = jest.fn(),
-                         mockTableFetch = jest.fn()) => {
+                         mockFetchData = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.FetchPrevalenceGraphData]: mockGraphFetch,
-                [RootAction.FetchImpactTableData]: mockTableFetch
+                [RootAction.FetchImpactData]: mockFetchData
             }
         });
     };
@@ -72,16 +69,9 @@ describe("interventions", () => {
         expect(wrapper.find(impact).props("activeTab")).toBe("Table");
     });
 
-    it("fetches graph data", async () => {
+    it("fetches data", async () => {
         const mockFetch = jest.fn();
         const store = createStore({}, mockFetch);
-        shallowMount(interventions, {store});
-        expect(mockFetch.mock.calls.length).toBe(1);
-    });
-
-    it("fetches table data", async () => {
-        const mockFetch = jest.fn();
-        const store = createStore({}, jest.fn(), mockFetch);
         shallowMount(interventions, {store});
         expect(mockFetch.mock.calls.length).toBe(1);
     });

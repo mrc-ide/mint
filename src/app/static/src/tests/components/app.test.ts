@@ -8,15 +8,11 @@ import {RootAction} from "../../app/actions";
 describe("app", () => {
 
     const getWrapper = (state = {},
-                        fetchOptionsMock = jest.fn(),
-                        fetchConfigMock = jest.fn(),
-                        fetchTableConfigMock = jest.fn()) => {
+                        fetchConfigMock = jest.fn()) => {
         const store = new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.FetchBaselineOptions]: fetchOptionsMock,
-                [RootAction.FetchPrevalenceGraphConfig]: fetchConfigMock,
-                [RootAction.FetchImpactTableConfig]: fetchTableConfigMock
+                [RootAction.FetchConfig]: fetchConfigMock
             }
         });
         return shallowMount(app, {store, stubs: ['router-link', 'router-view']});
@@ -44,15 +40,10 @@ describe("app", () => {
                 " class=\"text-success\">region1</router-link-stub>");
     });
 
-    it("fetches baseline options, prevalence graph config and impact table config before mount", () => {
-        const fetchOptionsMock = jest.fn();
+    it("fetches config before mount", () => {
         const fetchConfigMock = jest.fn();
-        const fetchTableConfigMock = jest.fn();
-        getWrapper({}, fetchOptionsMock, fetchConfigMock, fetchTableConfigMock);
-
-        expect(fetchOptionsMock.mock.calls.length).toBe(1);
+        getWrapper({}, fetchConfigMock);
         expect(fetchConfigMock.mock.calls.length).toBe(1);
-        expect(fetchTableConfigMock.mock.calls.length).toBe(1);
     });
 
 });
