@@ -12,6 +12,8 @@ export enum RootMutation {
     AddError = "AddError",
     AddBaselineOptions = "AddBaselineOptions",
 
+    ClearPrevalenceGraphData = "ClearPrevalenceGraphData",
+
     AddPrevalenceGraphData1 = "AddPrevalenceGraphData1",
     AddPrevalenceGraphData2 = "AddPrevalenceGraphData2",
     AddPrevalenceGraphData3 = "AddPrevalenceGraphData3",
@@ -50,6 +52,19 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.AddBaselineOptions](state: RootState, payload: DynamicFormMeta) {
         state.baselineOptions = payload
+    },
+
+    [RootMutation.ClearPrevalenceGraphData](state: RootState, payload: Data) {
+        state.prevalenceGraphData1 = [];
+        state.prevalenceGraphData2 = [];
+        state.prevalenceGraphData3 = [];
+        state.prevalenceGraphData4 = [];
+        state.prevalenceGraphData5 = [];
+        state.prevalenceGraphData6 = [];
+        state.prevalenceGraphData7 = [];
+        state.prevalenceGraphData8 = [];
+        state.prevalenceGraphData9 = [];
+        state.prevalenceGraphData10 = [];
     },
 
     [RootMutation.AddPrevalenceGraphData1](state: RootState, payload: Data) {
