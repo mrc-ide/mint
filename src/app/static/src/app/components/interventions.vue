@@ -1,58 +1,71 @@
 <template>
-    <vertical-tabs :tabs="tabs" @tab-selected="changeTab">
-        <plotly-graph v-if="activeTab === 'Graphs' && prevalenceGraphConfig"
-                      :layout="prevalenceGraphConfig.layout"
-                      :metadata="prevalenceGraphConfig.metadata"
-                      :series="prevalenceGraphConfig.series"
-                      :data="prevalenceGraphData"
-                      :settings="{'net_use': 0, 'irs_use': 0}"></plotly-graph>
-    </vertical-tabs>
+    <div>
+        <ul class="nav nav-tabs" style="margin-left: 26px;margin-bottom: -1px;">
+            <li class="nav-item">
+                <a class="text-success nav-link"
+                   :class="{active: activeHorizontalTab === 'Impact'}"
+                   @click="() => changeHorizontalTab('Impact')">Impact
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="text-success nav-link"
+                   :class="{active: activeHorizontalTab === 'Cost'}"
+                   @click="() => changeHorizontalTab('Cost')">Cost effectiveness
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <vertical-tabs :tabs="verticalTabs"
+                           :active-tab="activeVerticalTab"
+                           @tab-selected="changeVerticalTab">
+                <div v-if="activeHorizontalTab === 'Impact'">
+                   <impact :active-tab="activeVerticalTab" />
+                </div>
+                <div v-if="activeHorizontalTab === 'Cost'">
+                    <cost-effectiveness :active-tab="activeVerticalTab" />
+                </div>
+            </vertical-tabs>
+        </div>
+    </div>
 </template>
 <script lang="ts">
     import Vue from "vue";
     import verticalTabs from "./verticalTabs.vue";
-    import {Tab} from "../types";
-    import plotlyGraph from "./figures/graphs/plotlyGraph.vue";
-    import {Data, Graph} from "../generated";
-    import {mapActionByName, mapStateProp} from "../utils";
-    import {RootState} from "../store";
+    import {mapActionByName} from "../utils";
     import {RootAction} from "../actions";
+    import impact from "./impact.vue";
+    import costEffectiveness from "./costEffectiveness.vue";
 
     interface ComponentData {
-        tabs: Tab[],
-        activeTab: string
+        verticalTabs: string[],
+        activeVerticalTab: string
+        activeHorizontalTab: string
     }
 
     interface Methods {
-        changeTab: (name: string) => void
+        changeVerticalTab: (name: string) => void
+        changeHorizontalTab: (name: string) => void
         getGraphData: () => void
     }
 
-    interface Computed {
-        prevalenceGraphData: Data
-        prevalenceGraphConfig: Graph | null
-    }
-
-    export default Vue.extend<ComponentData, Methods, Computed, {}>({
+    export default Vue.extend<ComponentData, Methods, {}, {}>({
         data() {
             return {
-                tabs: [{name: "Table", active: false}, {name: "Graphs", active: true}],
-                activeTab: "Graphs"
+                verticalTabs: ["Table", "Graphs"],
+                activeVerticalTab: "Graphs",
+                activeHorizontalTab: "Impact"
             }
         },
-        computed: {
-            prevalenceGraphConfig: mapStateProp<RootState, Graph | null>(state => state.prevalenceGraphConfig),
-            prevalenceGraphData: mapStateProp<RootState, Data>(state => state.prevalenceGraphData)
-        },
         methods: {
-            changeTab(name: string) {
-                this.tabs = this.tabs.map(t => ({...t, active: false}))
-                this.tabs.find(t => t.name == name)!!.active = true;
-                this.activeTab = name;
+            changeVerticalTab(name: string) {
+                this.activeVerticalTab = name;
+            },
+            changeHorizontalTab(name: string) {
+                this.activeHorizontalTab = name;
             },
             getGraphData: mapActionByName(RootAction.FetchPrevalenceGraphData)
         },
-        components: {verticalTabs, plotlyGraph},
+        components: {verticalTabs, impact, costEffectiveness},
         mounted() {
             this.getGraphData();
         }

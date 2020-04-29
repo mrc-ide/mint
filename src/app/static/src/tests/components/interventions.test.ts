@@ -3,9 +3,10 @@ import {mount, shallowMount} from "@vue/test-utils";
 import interventions from "../../app/components/interventions.vue";
 import Vuex from "vuex";
 import {mockGraph, mockRootState} from "../mocks";
-import plotlyGraph from "../../app/components/figures/graphs/plotlyGraph.vue";
 import {RootState} from "../../app/store";
 import {RootAction} from "../../app/actions";
+import impact from "../../app/components/impact.vue";
+import costEffectiveness from "../../app/components/costEffectiveness.vue";
 
 describe("interventions", () => {
 
@@ -18,76 +19,53 @@ describe("interventions", () => {
         });
     };
 
-    it("initialises tabs", () => {
+    it("initialises outer tabs", () => {
         const store = createStore();
-        const wrapper = mount(interventions, {store});
+        const wrapper = shallowMount(interventions, {store});
         const tabs = wrapper.findAll("a");
-        expect(tabs.at(0).text()).toBe("Table");
-        expect(tabs.at(0).classes()).not.toContain("active");
-        expect(tabs.at(1).text()).toBe("Graphs");
-        expect(tabs.at(1).classes()).toContain("active");
-    });
-
-    it("can change tab", async () => {
-        const store = createStore();
-        const wrapper = mount(interventions, {store});
-        const tabs = wrapper.findAll("a");
-        expect(tabs.at(1).classes()).toContain("active");
-
-        tabs.at(0).trigger("click");
-
-        await Vue.nextTick();
-        expect(tabs.at(1).classes()).not.toContain("active");
+        expect(tabs.at(0).text()).toBe("Impact");
         expect(tabs.at(0).classes()).toContain("active");
+        expect(tabs.at(1).text()).toBe("Cost effectiveness");
+        expect(tabs.at(1).classes()).not.toContain("active");
+        expect(wrapper.findAll(impact).length).toBe(1);
+        expect(wrapper.findAll(costEffectiveness).length).toBe(0);
     });
 
-    it("shows prevalence graph under graph tab if graph config exists", () => {
-        const store = createStore({
-            prevalenceGraphConfig: mockGraph({
-                layout: {
-                    whatever: 1
-                },
-                series: [{
-                    x: [1, 2],
-                    y: [100, 200]
-                }],
-                metadata: {
-                    format: "wide",
-                    id_col: "intervention",
-                    cols: ["cases"]
-                }
-            })
-        });
-        const wrapper = shallowMount(interventions, {store});
-        expect(wrapper.findAll(plotlyGraph).length).toBe(1);
-        const graph = wrapper.findAll(plotlyGraph).at(0);
-        expect(graph.props("layout")).toEqual({whatever: 1});
-        expect(graph.props("metadata")).toEqual({
-            format: "wide",
-            id_col: "intervention",
-            cols: ["cases"]
-        });
-        expect(graph.props("series")).toEqual([{
-            x: [1, 2],
-            y: [100, 200]
-        }])
-    });
-
-    it("does not show prevalence graph under table tab", async () => {
-        const store = createStore({prevalenceGraphConfig: mockGraph()});
-        const wrapper = mount(interventions, {store});
-        expect(wrapper.findAll(plotlyGraph).length).toBe(1);
-        const tabs = wrapper.findAll("a");
-        tabs.at(0).trigger("click");
-
-        await Vue.nextTick();
-        expect(wrapper.findAll(plotlyGraph).length).toBe(0);
-    });
-
-    it("does not show prevalence graph if graph config does not exist", () => {
+    it("can change outer tab", async () => {
         const store = createStore();
         const wrapper = shallowMount(interventions, {store});
-        expect(wrapper.findAll(plotlyGraph).length).toBe(0);
+        const tabs = wrapper.findAll("a");
+        tabs.at(1).trigger("click");
+        await Vue.nextTick();
+        expect(tabs.at(0).classes()).not.toContain("active");
+        expect(tabs.at(1).classes()).toContain("active");
+        expect(wrapper.findAll(impact).length).toBe(0);
+        expect(wrapper.findAll(costEffectiveness).length).toBe(1);
+    });
+
+    it("initialises inner tabs", () => {
+        const store = createStore();
+        const wrapper = mount(interventions, {store});
+        const innerTabs = wrapper.findAll(".tab-content a");
+        expect(innerTabs.at(0).text()).toBe("Table");
+        expect(innerTabs.at(0).classes()).not.toContain("active");
+        expect(innerTabs.at(1).text()).toBe("Graphs");
+        expect(innerTabs.at(1).classes()).toContain("active");
+        expect(wrapper.find(impact).props("activeTab")).toBe("Graphs");
+    });
+
+    it("can change inner tab", async () => {
+        const store = createStore();
+        const wrapper = mount(interventions, {store});
+        const innerTabs = wrapper.findAll(".tab-content a");
+        expect(innerTabs.at(1).classes()).toContain("active");
+
+        innerTabs.at(0).trigger("click");
+
+        await Vue.nextTick();
+        expect(innerTabs.at(1).classes()).not.toContain("active");
+        expect(innerTabs.at(0).classes()).toContain("active");
+        expect(wrapper.find(impact).props("activeTab")).toBe("Table");
     });
 
     it("fetches graph data", async () => {
