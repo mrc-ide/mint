@@ -46,6 +46,7 @@
         changeVerticalTab: (name: string) => void
         changeHorizontalTab: (name: string) => void
         getGraphData: () => void
+        getTableData: () => void
     }
 
     export default Vue.extend<ComponentData, Methods, {}, {}>({
@@ -63,11 +64,13 @@
             changeHorizontalTab(name: string) {
                 this.activeHorizontalTab = name;
             },
-            getGraphData: mapActionByName(RootAction.FetchPrevalenceGraphData)
+            getGraphData: mapActionByName(RootAction.FetchPrevalenceGraphData),
+            getTableData: mapActionByName(RootAction.FetchImpactTableData)
         },
         components: {verticalTabs, impact, costEffectiveness},
         mounted() {
             this.getGraphData();
+            this.getTableData();
         }
     });
 

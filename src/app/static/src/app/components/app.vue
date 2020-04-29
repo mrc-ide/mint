@@ -35,6 +35,7 @@
     interface Methods {
         fetchBaselineOptions: () => void
         fetchPrevGraphConfig: () => void
+        fetchImpactTableConfig: () => void
     }
 
     export default Vue.extend<{}, Methods, {}, {}>({
@@ -43,11 +44,13 @@
         computed: mapState(["currentProject"]),
         methods: {
             fetchPrevGraphConfig: mapActionByName(RootAction.FetchPrevalenceGraphConfig),
+            fetchImpactTableConfig: mapActionByName(RootAction.FetchImpactTableConfig),
             fetchBaselineOptions: mapActionByName(RootAction.FetchBaselineOptions)
         },
         beforeMount: function () {
             this.fetchBaselineOptions();
             this.fetchPrevGraphConfig();
+            this.fetchImpactTableConfig();
         }
     })
 </script>

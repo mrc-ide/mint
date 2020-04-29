@@ -7,14 +7,18 @@ import {RootState} from "../../app/store";
 import {RootAction} from "../../app/actions";
 import impact from "../../app/components/impact.vue";
 import costEffectiveness from "../../app/components/costEffectiveness.vue";
+import mock = jest.mock;
 
 describe("interventions", () => {
 
-    const createStore = (state: Partial<RootState> = {}, mockFetch = jest.fn()) => {
+    const createStore = (state: Partial<RootState> = {},
+                         mockGraphFetch = jest.fn(),
+                         mockTableFetch = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.FetchPrevalenceGraphData]: mockFetch
+                [RootAction.FetchPrevalenceGraphData]: mockGraphFetch,
+                [RootAction.FetchImpactTableData]: mockTableFetch
             }
         });
     };
@@ -70,9 +74,14 @@ describe("interventions", () => {
 
     it("fetches graph data", async () => {
         const mockFetch = jest.fn();
-        const store = createStore({
-            prevalenceGraphConfig: mockGraph()
-        }, mockFetch);
+        const store = createStore({}, mockFetch);
+        shallowMount(interventions, {store});
+        expect(mockFetch.mock.calls.length).toBe(1);
+    });
+
+    it("fetches table data", async () => {
+        const mockFetch = jest.fn();
+        const store = createStore({}, jest.fn(), mockFetch);
         shallowMount(interventions, {store});
         expect(mockFetch.mock.calls.length).toBe(1);
     });
