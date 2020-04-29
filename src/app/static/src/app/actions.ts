@@ -22,65 +22,67 @@ export const actions: ActionTree<RootState, RootState> = {
     },
 
     async [RootAction.FetchPrevalenceGraphData](context) {
-        await api(context)
-            .freezeResponse()
-            .withSuccess(RootMutation.AddPrevalenceGraphData1)
-            .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true});
-
-        await api(context)
+        await Promise.all([
+            api(context)
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData2)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true});
+            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true}),
 
-        await api(context)
+            api(context)
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData3)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true});
+            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true}),
 
-        await api(context)
+            api(context)
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData4)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true});
+            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true}),
 
-        await api(context)
+            api(context)
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData5)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true});
+            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true}),
 
-        await api(context)
+            api(context)
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData6)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true});
+            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true}),
 
-        await api(context)
+            api(context)
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData7)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true});
+            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true}),
 
-        await api(context)
+            api(context)
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData8)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true});
+            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true}),
 
-        await api(context)
+            api(context)
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData9)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true});
+            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true}),
 
-        await api(context)
+            api(context)
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData10)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true});
+            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true}),
+
+            api(context)
+            .freezeResponse()
+            .withSuccess(RootMutation.AddPrevalenceGraphData1)
+            .withError(RootMutation.AddError)
+            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true})
+         ]);
     },
 
     async [RootAction.FetchPrevalenceGraphConfig](context) {
