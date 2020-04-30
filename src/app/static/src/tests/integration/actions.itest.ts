@@ -39,6 +39,17 @@ describe("actions", () => {
         expect(options.controlSections[0].label).toBe("Site Inputs");
     });
 
+    it("can get intervention options", async () => {
+        const commit = jest.fn();
+
+        await (actions[RootAction.FetchInterventionOptions] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddInterventionOptions);
+        const options = commit.mock.calls[0][1] as DynamicFormMeta;
+        expect(options.controlSections.length).toBe(3);
+        expect(options.controlSections[0].label).toBe("Procurement and distribution");
+    });
+
     it("can get impact table data", async () => {
         const commit = jest.fn();
         await (actions[RootAction.FetchImpactTableData] as any)({commit} as any);

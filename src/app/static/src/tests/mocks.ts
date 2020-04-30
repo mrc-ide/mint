@@ -11,6 +11,7 @@ export function mockRootState(state: Partial<RootState> = {}): RootState {
         currentProject: null,
         errors: [],
         baselineOptions: null,
+        interventionOptions: null,
         prevalenceGraphData: [],
         prevalenceGraphConfig: null,
         impactTableData: [],
