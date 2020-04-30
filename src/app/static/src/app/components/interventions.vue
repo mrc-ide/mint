@@ -19,10 +19,10 @@
                            :active-tab="activeVerticalTab"
                            @tab-selected="changeVerticalTab">
                 <div v-if="activeHorizontalTab === 'Impact'">
-                   <impact :active-tab="activeVerticalTab" />
+                    <impact :active-tab="activeVerticalTab"/>
                 </div>
                 <div v-if="activeHorizontalTab === 'Cost'">
-                    <cost-effectiveness :active-tab="activeVerticalTab" />
+                    <cost-effectiveness :active-tab="activeVerticalTab"/>
                 </div>
             </vertical-tabs>
         </div>
@@ -45,7 +45,7 @@
     interface Methods {
         changeVerticalTab: (name: string) => void
         changeHorizontalTab: (name: string) => void
-        getGraphData: () => void
+        fetchData: () => void
     }
 
     export default Vue.extend<ComponentData, Methods, {}, {}>({
@@ -63,11 +63,11 @@
             changeHorizontalTab(name: string) {
                 this.activeHorizontalTab = name;
             },
-            getGraphData: mapActionByName(RootAction.FetchPrevalenceGraphData)
+            fetchData: mapActionByName(RootAction.FetchImpactData)
         },
         components: {verticalTabs, impact, costEffectiveness},
         mounted() {
-            this.getGraphData();
+            this.fetchData();
         }
     });
 
