@@ -41,24 +41,27 @@ describe("vertical tabs", () => {
         expect(wrapper.emitted("tab-selected")!![0][0]).toBe("one");
     });
 
-    it("calculates tab translation and content margin based on width of element", async () => {
+    it("adds col styling", () => {
         const wrapper = getWrapper();
-
-        await Vue.nextTick();
-        expect(wrapper.find(".nav-tabs").attributes().style)
-            .toBe("height: 42px; transform-origin: 0 0; transform: translate(0, 100px) rotate(-90deg);");
         expect(wrapper.find(".col").attributes().style)
-            .toBe("margin-left: -58px;");
+            .toBe("position: absolute; top: 0px; left: 0px; padding-left: 42px;");
     });
 
-    it("re-calculates tab translation and content margin if tabs change", async () => {
+    it("calculates tab translation", async () => {
         const wrapper = getWrapper();
 
         await Vue.nextTick();
         expect(wrapper.find(".nav-tabs").attributes().style)
-            .toBe("height: 42px; transform-origin: 0 0; transform: translate(0, 100px) rotate(-90deg);");
-        expect(wrapper.find(".col").attributes().style)
-            .toBe("margin-left: -58px;");
+            .toBe("z-index: 999; height: 42px; transform-origin: 0 0; transform: translate(0, 100px) rotate(-90deg);");
+
+    });
+
+    it("re-calculates tab translation if tabs change", async () => {
+        const wrapper = getWrapper();
+
+        await Vue.nextTick();
+        expect(wrapper.find(".nav-tabs").attributes().style)
+            .toBe("z-index: 999; height: 42px; transform-origin: 0 0; transform: translate(0, 100px) rotate(-90deg);");
 
         Object.defineProperty(HTMLElement.prototype, 'clientWidth', {configurable: true, value: 50});
 
@@ -68,9 +71,7 @@ describe("vertical tabs", () => {
         await Vue.nextTick(); // wait 2 ticks because that's what the watcher does internally
 
         expect(wrapper.find(".nav-tabs").attributes().style)
-            .toBe("height: 42px; transform-origin: 0 0; transform: translate(0, 50px) rotate(-90deg);");
-        expect(wrapper.find(".col").attributes().style)
-            .toBe("margin-left: -8px;");
+            .toBe("z-index: 999; height: 42px; transform-origin: 0 0; transform: translate(0, 50px) rotate(-90deg);");
 
     });
 
