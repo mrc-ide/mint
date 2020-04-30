@@ -11,6 +11,7 @@ export enum RootAction {
     FetchImpactTableData = "FetchImpactTableData",
     FetchImpactTableConfig = "FetchImpactTableConfig",
     FetchBaselineOptions = "FetchBaselineOptions",
+    FetchInterventionOptions = "FetchInterventionOptions",
     FetchImpactData = "FetchImpactData",
     FetchConfig = "FetchConfig"
 }
@@ -22,6 +23,13 @@ export const actions: ActionTree<RootState, RootState> = {
             .withSuccess(RootMutation.AddBaselineOptions)
             .withError(RootMutation.AddError)
             .get<DynamicFormMeta>("/baseline/options")
+    },
+
+    async [RootAction.FetchInterventionOptions](context) {
+        await api(context)
+            .withSuccess(RootMutation.AddInterventionOptions)
+            .withError(RootMutation.AddError)
+            .get<DynamicFormMeta>("/intervention/options")
     },
 
     async [RootAction.FetchPrevalenceGraphData](context) {
@@ -65,6 +73,7 @@ export const actions: ActionTree<RootState, RootState> = {
     async [RootAction.FetchConfig](context) {
         await Promise.all([
             context.dispatch(RootAction.FetchBaselineOptions),
+            context.dispatch(RootAction.FetchInterventionOptions),
             context.dispatch(RootAction.FetchPrevalenceGraphConfig),
             context.dispatch(RootAction.FetchImpactTableConfig)
         ]);
