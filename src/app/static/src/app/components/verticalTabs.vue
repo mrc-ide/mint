@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" style="position: relative">
         <ul ref="tabLinks" :style="navStyle"
             class="nav nav-tabs">
             <li v-for="tab in tabs"
@@ -12,7 +12,7 @@
             </li>
         </ul>
         <div class="col" :style="contentStyle">
-            <div class="tab-content">
+            <div class="tab-content p-5">
                 <slot></slot>
             </div>
         </div>
@@ -28,7 +28,6 @@
 
     interface Data {
         width: number
-        height: number
     }
 
     interface Computed {
@@ -48,16 +47,21 @@
         },
         data() {
             return {
-                width: 0,
-                height: 42
+                width: 0
             }
         },
         computed: {
             contentStyle() {
-                return {"margin-left": this.height - this.width + "px"}
+                return {
+                    "position": "absolute",
+                    "top": "0",
+                    "left": "0",
+                    "padding-left": "42px"
+                }
             },
             navStyle() {
                 return {
+                    "z-index": "999",
                     "height": "42px",
                     "transform-origin": "0 0",
                     "transform": `translate(0, ${this.width}px) rotate(-90deg)`
@@ -75,7 +79,7 @@
             this.calculateDimensions();
         },
         methods: {
-            calculateDimensions(){
+            calculateDimensions() {
                 this.width = (this.$refs.tabLinks as Element).clientWidth;
             }
         }
