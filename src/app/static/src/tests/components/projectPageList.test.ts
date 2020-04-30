@@ -89,8 +89,8 @@ describe("project page", () => {
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1]).toEqual({
             name: "new project",
-            regions: [{name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions}],
-            currentRegion: {name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions}
+            regions: [{name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions, step: 1}],
+            currentRegion: {name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions, step: 1}
         });
 
         //Baseline options should equal options from store, but be fresh deep copy
@@ -117,8 +117,8 @@ describe("project page", () => {
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1]).toEqual({
             name: "new project",
-            regions: [{name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions}],
-            currentRegion: {name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions}
+            regions: [{name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions, step: 1}],
+            currentRegion: {name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions, step: 1}
         });
 
         expect(mockRouter[0].path).toBe("/projects/new-project/regions/south");

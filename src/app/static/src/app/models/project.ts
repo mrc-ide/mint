@@ -5,6 +5,7 @@ export interface Region {
     name: string
     url: string
     baselineOptions: DynamicFormMeta
+    step: number
 }
 
 export class Region {
@@ -12,6 +13,7 @@ export class Region {
         this.name = name;
         this.url = `/projects/${parent.name}/regions/${name}`.replace(/\s/g, "-").toLowerCase();
         this.baselineOptions = deepCopy(baselineOptions);
+        this.step = 1;
     }
 }
 

@@ -25,17 +25,19 @@
     import stepButton from "./stepButton.vue";
     import interventions from "./interventions.vue";
     import baseline from "./baseline.vue";
+    import {mapState} from "vuex";
 
     export default Vue.extend({
         components: {stepButton, baseline, interventions},
-        data() {
-            return {currentStep: 1}
+        computed: {
+            ...mapState(["currentProject"]),
+            currentStep: function() {
+                return this.currentProject.currentRegion.step;
+            }
         },
         methods: {
             setCurrentRegion: mapMutationByName(RootMutation.SetCurrentRegion),
-            setCurrentStep(step: number) {
-                this.currentStep = step;
-            }
+            setCurrentStep: mapMutationByName(RootMutation.SetCurrentRegionStep)
         },
         watch: {
             $route(to) {
