@@ -45,6 +45,9 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.AddInterventionOptions](state: RootState, payload: DynamicFormMeta) {
         state.interventionOptions = payload
+        if (state.currentProject) {
+            state.currentProject.currentRegion.interventionOptions = payload;
+        }
     },
 
     [RootMutation.AddPrevalenceGraphData](state: RootState, payload: Data) {

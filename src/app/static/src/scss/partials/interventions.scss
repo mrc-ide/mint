@@ -1,0 +1,51 @@
+.interventions {
+  .dynamic-form {
+    @extend .list-group;
+
+    > div {
+      @extend .list-group-item;
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: 0;
+
+      h3 {
+        @extend .bg-light;
+        @extend .text-secondary;
+        @extend .list-group-item;
+        @extend .border-left-0;
+        @extend .border-right-0;
+        @extend .border-top-0;
+        font-size: inherit !important;
+      }
+
+      .row {
+        display: block;
+        margin: 0;
+      }
+
+      .col-md-6 {
+        display: flex;
+        @extend .row;
+        max-width: 100%;
+        flex: 0 0 100%;
+
+        span.small {
+          display: none;
+        }
+      }
+
+      label {
+        @extend .col-7;
+        @extend .col-form-label;
+        @extend .text-right;
+        padding-left: 0;
+      }
+
+      input, select {
+        display: flex;
+        @extend .col-5;
+        @extend .mt-2;
+      }
+    }
+  }
+}
