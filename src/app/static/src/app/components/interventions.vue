@@ -35,6 +35,8 @@
     import {RootAction} from "../actions";
     import impact from "./impact.vue";
     import costEffectiveness from "./costEffectiveness.vue";
+    import {Project, Region} from "../models/project";
+    import {mapState} from "vuex";
 
     interface ComponentData {
         verticalTabs: string[],
@@ -48,12 +50,23 @@
         fetchData: () => void
     }
 
-    export default Vue.extend<ComponentData, Methods, {}, {}>({
+    interface Computed {
+        currentProject: Project | null
+        currentRegion: Region | null
+    }
+
+    export default Vue.extend<ComponentData, Methods, Computed, {}>({
         data() {
             return {
                 verticalTabs: ["Table", "Graphs"],
                 activeVerticalTab: "Graphs",
                 activeHorizontalTab: "Impact"
+            }
+        },
+        computed: {
+            ...mapState(["currentProject"]),
+            currentRegion() {
+                return this.currentProject && this.currentProject.currentRegion;
             }
         },
         methods: {
@@ -68,6 +81,11 @@
         components: {verticalTabs, impact, costEffectiveness},
         mounted() {
             this.fetchData();
+        },
+        watch: {
+            currentRegion: function() {
+                this.fetchData();
+            }
         }
     });
 
