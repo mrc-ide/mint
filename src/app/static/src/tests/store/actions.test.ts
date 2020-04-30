@@ -88,4 +88,22 @@ describe("actions", () => {
         expectEqualsFrozen(commit.mock.calls[0][1], {net_use: "Net use"});
     });
 
+    it("FetchConfig fetches options and figures config", async () => {
+        const dispatch = jest.fn();
+        await (actions[RootAction.FetchConfig] as any)({dispatch} as any);
+
+        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchBaselineOptions);
+        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchInterventionOptions);
+        expect(dispatch.mock.calls[2][0]).toBe(RootAction.FetchPrevalenceGraphConfig);
+        expect(dispatch.mock.calls[3][0]).toBe(RootAction.FetchImpactTableConfig);
+    });
+
+    it("FetchImpactTableData fetches all impact figure data", async () => {
+        const dispatch = jest.fn();
+        await (actions[RootAction.FetchImpactData] as any)({dispatch} as any);
+
+        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
+        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchImpactTableData);
+    });
+
 });
