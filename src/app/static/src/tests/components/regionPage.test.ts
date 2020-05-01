@@ -40,7 +40,8 @@ describe("region page", () => {
     });
 
     it("shows interventions if current region's step is 2", () => {
-        const project = new Project("project 1", ["region 1"], {controlSections: []});
+        const project = new Project("project 1", ["region 1"],
+            {controlSections: []}, {controlSections: []});
         project.currentRegion.step = 2;
 
         const store = createStore(jest.fn(), jest.fn(), project);
