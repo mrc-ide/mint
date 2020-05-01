@@ -23,8 +23,7 @@
     import {RootMutation} from "../mutations";
     import {mapMutationByName} from "../utils";
     import stepButton from "./stepButton.vue";
-    // @ts-ignore
-    const baseline = () => import("./baseline.vue");
+    import baseline from "./baseline.vue";
     // @ts-ignore
     const interventions = async () => import("./interventions.vue");
 
