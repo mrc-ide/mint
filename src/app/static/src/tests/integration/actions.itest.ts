@@ -4,9 +4,23 @@ import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 describe("actions", () => {
 
+    const getStateWithBaselineOptions = async () => {
+        const commit = jest.fn();
+        await (actions[RootAction.FetchPrevalenceGraphConfig] as any)({commit} as any);
+        const options = commit.mock.calls[0][1] as DynamicFormMeta;
+        return {
+            currentProject: {
+                currentRegion: {
+                    baselineOptions: options
+                }
+            }
+        };
+    };
+
     it("can get prevalence graph data", async () => {
         const commit = jest.fn();
-        await (actions[RootAction.FetchPrevalenceGraphData] as any)({commit} as any);
+        const state = await getStateWithBaselineOptions();
+        await (actions[RootAction.FetchPrevalenceGraphData] as any)({commit, state} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddPrevalenceGraphData);
         const firstRow = commit.mock.calls[0][1][0];
@@ -52,7 +66,8 @@ describe("actions", () => {
 
     it("can get impact table data", async () => {
         const commit = jest.fn();
-        await (actions[RootAction.FetchImpactTableData] as any)({commit} as any);
+        const state = await getStateWithBaselineOptions();
+        await (actions[RootAction.FetchImpactTableData] as any)({commit, state} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData);
         const firstRow = commit.mock.calls[0][1][0];

@@ -3,6 +3,7 @@ import {expectAllDefined, expectEqualsFrozen} from "../testHelpers";
 import {actions, RootAction} from "../../app/actions";
 import {RootMutation} from "../../app/mutations";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {BaselineOptions} from "../../app/generated";
 
 describe("actions", () => {
 
@@ -15,6 +16,21 @@ describe("actions", () => {
     afterEach(() => {
         (console.log as jest.Mock).mockClear();
     });
+
+    const options: BaselineOptions = {
+        controlSections:
+            [{
+                label: "section",
+                controlGroups: []
+            }]
+    };
+    const state = {
+        currentProject: {
+            currentRegion: {
+                baselineOptions: options
+            }
+        }
+    };
 
     it("implements all defined actions", () => {
         expectAllDefined(RootAction, actions);
@@ -45,13 +61,17 @@ describe("actions", () => {
     });
 
     it("fetches prevalence graph data", async () => {
-        mockAxios.onPost("/impact/graph/prevalence/data")
+        const url = "/impact/graph/prevalence/data";
+        mockAxios.onPost(url, options)
             .reply(200, mockSuccess([{prev: 1, net_use: 0.2, resistance: "low"}]));
 
         const commit = jest.fn();
-        await (actions[RootAction.FetchPrevalenceGraphData] as any)({commit} as any);
+        await (actions[RootAction.FetchPrevalenceGraphData] as any)({commit, state} as any);
 
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddPrevalenceGraphData)
+        expect(mockAxios.history.post[0].url).toBe(url);
+        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(options));
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddPrevalenceGraphData);
         expectEqualsFrozen(commit.mock.calls[0][1], [{prev: 1, net_use: 0.2, resistance: "low"}]);
     });
 
@@ -67,13 +87,17 @@ describe("actions", () => {
     });
 
     it("fetches impact table data", async () => {
-        mockAxios.onPost("/impact/table/data")
+        const url = "/impact/table/data";
+        mockAxios.onPost(url, options)
                 .reply(200, mockSuccess([{prev: 1, net_use: 0.2, resistance: "low"}]));
 
         const commit = jest.fn();
-        await (actions[RootAction.FetchImpactTableData] as any)({commit} as any);
+        await (actions[RootAction.FetchImpactTableData] as any)({commit, state} as any);
 
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData)
+        expect(mockAxios.history.post[0].url).toBe(url);
+        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(options));
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData);
         expectEqualsFrozen(commit.mock.calls[0][1], [{prev: 1, net_use: 0.2, resistance: "low"}]);
     });
 
@@ -86,6 +110,24 @@ describe("actions", () => {
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableConfig)
         expectEqualsFrozen(commit.mock.calls[0][1], {net_use: "Net use"});
+    });
+
+    it("FetchConfig fetches options and figures config", async () => {
+        const dispatch = jest.fn();
+        await (actions[RootAction.FetchConfig] as any)({dispatch} as any);
+
+        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchBaselineOptions);
+        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchInterventionOptions);
+        expect(dispatch.mock.calls[2][0]).toBe(RootAction.FetchPrevalenceGraphConfig);
+        expect(dispatch.mock.calls[3][0]).toBe(RootAction.FetchImpactTableConfig);
+    });
+
+    it("FetchImpactTableData fetches all impact figure data", async () => {
+        const dispatch = jest.fn();
+        await (actions[RootAction.FetchImpactData] as any)({dispatch} as any);
+
+        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
+        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchImpactTableData);
     });
 
 });

@@ -19,10 +19,10 @@
                            :active-tab="activeVerticalTab"
                            @tab-selected="changeVerticalTab">
                 <div v-if="activeHorizontalTab === 'Impact'">
-                   <impact :active-tab="activeVerticalTab" />
+                    <impact :active-tab="activeVerticalTab"/>
                 </div>
                 <div v-if="activeHorizontalTab === 'Cost'">
-                    <cost-effectiveness :active-tab="activeVerticalTab" />
+                    <cost-effectiveness :active-tab="activeVerticalTab"/>
                 </div>
             </vertical-tabs>
         </div>
@@ -35,6 +35,8 @@
     import {RootAction} from "../actions";
     import impact from "./impact.vue";
     import costEffectiveness from "./costEffectiveness.vue";
+    import {Project, Region} from "../models/project";
+    import {mapState} from "vuex";
 
     interface ComponentData {
         verticalTabs: string[],
@@ -45,15 +47,26 @@
     interface Methods {
         changeVerticalTab: (name: string) => void
         changeHorizontalTab: (name: string) => void
-        getGraphData: () => void
+        fetchData: () => void
     }
 
-    export default Vue.extend<ComponentData, Methods, {}, {}>({
+    interface Computed {
+        currentProject: Project | null
+        currentRegion: Region | null
+    }
+
+    export default Vue.extend<ComponentData, Methods, Computed, {}>({
         data() {
             return {
                 verticalTabs: ["Table", "Graphs"],
                 activeVerticalTab: "Graphs",
                 activeHorizontalTab: "Impact"
+            }
+        },
+        computed: {
+            ...mapState(["currentProject"]),
+            currentRegion() {
+                return this.currentProject && this.currentProject.currentRegion;
             }
         },
         methods: {
@@ -63,11 +76,16 @@
             changeHorizontalTab(name: string) {
                 this.activeHorizontalTab = name;
             },
-            getGraphData: mapActionByName(RootAction.FetchPrevalenceGraphData)
+            fetchData: mapActionByName(RootAction.FetchImpactData)
         },
         components: {verticalTabs, impact, costEffectiveness},
         mounted() {
-            this.getGraphData();
+            this.fetchData();
+        },
+        watch: {
+            currentRegion: function() {
+                this.fetchData();
+            }
         }
     });
 

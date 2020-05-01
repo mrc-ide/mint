@@ -25,7 +25,7 @@
 </template>
 <script lang="ts">
     import Vue from "vue"
-    import {mapActions, mapState} from "vuex";
+    import {mapState} from "vuex";
     import dropDown from "./dropDown.vue";
     import {BIconGraphUp} from "bootstrap-vue";
     import {RootAction} from "../actions";
@@ -33,8 +33,7 @@
     import {store} from "../store";
 
     interface Methods {
-        fetchBaselineOptions: () => void
-        fetchPrevGraphConfig: () => void
+        fetchConfig: () => void
     }
 
     export default Vue.extend<{}, Methods, {}, {}>({
@@ -42,12 +41,10 @@
         components: {dropDown, BIconGraphUp},
         computed: mapState(["currentProject"]),
         methods: {
-            fetchPrevGraphConfig: mapActionByName(RootAction.FetchPrevalenceGraphConfig),
-            fetchBaselineOptions: mapActionByName(RootAction.FetchBaselineOptions)
+            fetchConfig: mapActionByName(RootAction.FetchConfig)
         },
         beforeMount: function () {
-            this.fetchBaselineOptions();
-            this.fetchPrevGraphConfig();
+            this.fetchConfig();
         }
     })
 </script>

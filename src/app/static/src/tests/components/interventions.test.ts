@@ -2,7 +2,7 @@ import Vue from "vue";
 import {mount, shallowMount} from "@vue/test-utils";
 import interventions from "../../app/components/interventions.vue";
 import Vuex from "vuex";
-import {mockGraph, mockRootState} from "../mocks";
+import {mockProject, mockRootState} from "../mocks";
 import {RootState} from "../../app/store";
 import {RootAction} from "../../app/actions";
 import impact from "../../app/components/impact.vue";
@@ -10,11 +10,12 @@ import costEffectiveness from "../../app/components/costEffectiveness.vue";
 
 describe("interventions", () => {
 
-    const createStore = (state: Partial<RootState> = {}, mockFetch = jest.fn()) => {
+    const createStore = (state: Partial<RootState> = {},
+                         mockFetchData = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.FetchPrevalenceGraphData]: mockFetch
+                [RootAction.FetchImpactData]: mockFetchData
             }
         });
     };
@@ -68,13 +69,28 @@ describe("interventions", () => {
         expect(wrapper.find(impact).props("activeTab")).toBe("Table");
     });
 
-    it("fetches graph data", async () => {
+    it("fetches data on mount", async () => {
         const mockFetch = jest.fn();
-        const store = createStore({
-            prevalenceGraphConfig: mockGraph()
-        }, mockFetch);
+        const store = createStore({}, mockFetch);
         shallowMount(interventions, {store});
         expect(mockFetch.mock.calls.length).toBe(1);
+    });
+
+    it("fetches data on currentRegion change", async () => {
+        const mockFetch = jest.fn();
+
+        const project = mockProject();
+        const store = createStore({
+            projects: [project],
+            currentProject: project
+        }, mockFetch);
+
+        shallowMount(interventions, {store});
+
+        store.state.currentProject!!.currentRegion = {name: "newRegion", url: "/", baselineOptions: {controlSections: []}};
+        await Vue.nextTick();
+
+        expect(mockFetch.mock.calls.length).toBe(2);
     });
 
 });

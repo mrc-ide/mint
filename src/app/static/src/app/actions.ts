@@ -11,8 +11,14 @@ export enum RootAction {
     FetchImpactTableData = "FetchImpactTableData",
     FetchImpactTableConfig = "FetchImpactTableConfig",
     FetchBaselineOptions = "FetchBaselineOptions",
-    FetchInterventionOptions = "FetchInterventionOptions"
+    FetchInterventionOptions = "FetchInterventionOptions",
+    FetchImpactData = "FetchImpactData",
+    FetchConfig = "FetchConfig"
 }
+
+const currentRegionBaseline = (state: RootState) => {
+    return state.currentProject!!.currentRegion.baselineOptions;
+};
 
 export const actions: ActionTree<RootState, RootState> = {
 
@@ -35,7 +41,7 @@ export const actions: ActionTree<RootState, RootState> = {
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true})
+            .postAndReturn<Data>("/impact/graph/prevalence/data", currentRegionBaseline(context.state))
     },
 
     async [RootAction.FetchPrevalenceGraphConfig](context) {
@@ -50,7 +56,7 @@ export const actions: ActionTree<RootState, RootState> = {
             .freezeResponse()
             .withSuccess(RootMutation.AddImpactTableData)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/table/data", {anySettings: true})
+            .postAndReturn<Data>("/impact/table/data", currentRegionBaseline(context.state))
     },
 
     async [RootAction.FetchImpactTableConfig](context) {
@@ -59,5 +65,22 @@ export const actions: ActionTree<RootState, RootState> = {
             .withSuccess(RootMutation.AddImpactTableConfig)
             .withError(RootMutation.AddError)
             .get<Data>("/impact/table/config")
+    },
+
+    async [RootAction.FetchImpactData](context) {
+        await Promise.all([
+            context.dispatch(RootAction.FetchPrevalenceGraphData),
+            context.dispatch(RootAction.FetchImpactTableData)
+        ]);
+    },
+
+    async [RootAction.FetchConfig](context) {
+        await Promise.all([
+            context.dispatch(RootAction.FetchBaselineOptions),
+            context.dispatch(RootAction.FetchInterventionOptions),
+            context.dispatch(RootAction.FetchPrevalenceGraphConfig),
+            context.dispatch(RootAction.FetchImpactTableConfig)
+        ]);
     }
+
 };

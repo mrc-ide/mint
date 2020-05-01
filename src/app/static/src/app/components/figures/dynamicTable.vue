@@ -1,8 +1,8 @@
 <template>
-    <table>
-        <thead>
+    <table class="table">
+        <thead class="thead-light">
         <tr>
-            <th v-for="key in Object.keys(columns)">{{columns[key]}}</th>
+            <th scope="col" v-for="key in Object.keys(columns)">{{columns[key]}}</th>
         </tr>
         </thead>
         <tbody>
