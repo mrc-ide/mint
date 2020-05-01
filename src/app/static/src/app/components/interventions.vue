@@ -3,6 +3,7 @@
         <div class="col-4 interventions">
             <dynamic-form ref="settings"
                           v-model="options"
+                          @submit="updateInterventionSettings"
                           :include-submit-button="false"></dynamic-form>
         </div>
         <div class="col-8">
@@ -43,7 +44,7 @@
     import impact from "./impact.vue";
     import costEffectiveness from "./costEffectiveness.vue";
     import {mapState} from "vuex";
-    import {DynamicForm, DynamicFormMeta, DynamicFormData} from "@reside-ic/vue-dynamic-form";
+    import {DynamicForm, DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
     import {Project} from "../models/project";
     import {RootMutation} from "../mutations";
 
@@ -57,8 +58,8 @@
         changeVerticalTab: (name: string) => void
         changeHorizontalTab: (name: string) => void
         fetchData: () => void
-        updateInterventionOptions:
-            (payload: { formMeta: DynamicFormMeta, formData: DynamicFormData }) => void
+        updateInterventionOptions: (payload: DynamicFormMeta) => void
+        updateInterventionSettings: (payload: DynamicFormData) => void
     }
 
     interface Computed {
@@ -81,8 +82,7 @@
                     return this.currentProject.currentRegion.interventionOptions
                 },
                 set(value: DynamicFormMeta) {
-                    const data = (this.$refs.settings as any).submit();
-                    this.updateInterventionOptions({formMeta: value, formData: data});
+                    this.updateInterventionOptions(value);
                 }
             }
         },
@@ -94,11 +94,19 @@
                 this.activeHorizontalTab = name;
             },
             fetchData: mapActionByName(RootAction.FetchImpactData),
-            updateInterventionOptions: mapMutationByName(RootMutation.SetCurrentRegionInterventionOptions)
+            updateInterventionOptions: mapMutationByName(RootMutation.SetCurrentRegionInterventionOptions),
+            updateInterventionSettings: mapMutationByName(RootMutation.SetCurrentRegionInterventionSettings)
         },
         components: {verticalTabs, impact, costEffectiveness, DynamicForm},
         mounted() {
             this.fetchData();
+        },
+        watch: {
+            options() {
+                this.$nextTick(() => {
+                    (this.$refs.settings as any).submit();
+                })
+            }
         }
     });
 

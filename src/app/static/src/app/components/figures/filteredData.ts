@@ -9,7 +9,7 @@ export interface FilteringProps {
 export function useFiltering(props: FilteringProps) {
     const filterBySettings = (row: any) => {
         for (let key of Object.keys(props.settings)) {
-            if (row[key] != undefined && row[key] != props.settings[key]) {
+            if (row[key] == undefined || row[key] != props.settings[key]) {
                 return false;
             }
         }
