@@ -16,8 +16,8 @@ export enum RootAction {
     FetchConfig = "FetchConfig"
 }
 
-const currentRegionBaseline = (state: RootState) =>{
-    return state.currentProject ? state.currentProject.currentRegion.baselineOptions : {};
+const currentRegionBaseline = (state: RootState) => {
+    return state.currentProject!!.currentRegion.baselineOptions;
 };
 
 export const actions: ActionTree<RootState, RootState> = {
