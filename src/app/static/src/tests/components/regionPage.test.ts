@@ -105,4 +105,18 @@ describe("region page", () => {
         expect(mockSetRegionStep.mock.calls[0][1]).toBe(2);
     });
 
+    it("makes step 2 disabled when baseline is not valid", async () => {
+        const store = createStore();
+        const wrapper = shallowMount(regionPage, {store});
+
+        wrapper.find(baseline).vm.$emit("validate", false);
+        await Vue.nextTick();
+        expect(wrapper.findAll(stepButton).at(1).props("disabled")).toBe(true);
+
+        //should re-enable on validate(true)
+        wrapper.find(baseline).vm.$emit("validate", true);
+        await Vue.nextTick();
+        expect(wrapper.findAll(stepButton).at(1).props("disabled")).toBe(false);
+    });
+
 });

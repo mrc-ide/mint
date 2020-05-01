@@ -1,6 +1,6 @@
 <template>
     <div class="step text-right" :class="{active: active}" @click="$emit('click')">
-        <button class="d-inline btn rounded-circle border">
+        <button class="d-inline btn rounded-circle border" :disabled="disabled">
             {{number}}
         </button>
         <span class="text-center pl-3">
@@ -12,6 +12,6 @@
 <script lang="ts">
     import Vue from "vue";
     export default Vue.extend({
-        props: ["number", "text", "active"]
+        props: ["number", "text", "active", "disabled"]
     });
 </script>

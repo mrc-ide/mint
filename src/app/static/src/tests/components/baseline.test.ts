@@ -55,4 +55,13 @@ describe("baseline", () => {
         await Vue.nextTick();
         expect(wrapper.emitted("submit")!!.length).toBe(1);
     });
+
+    it("emits validate event when form is validated", async () => {
+        const wrapper = getWrapper();
+        wrapper.find(DynamicForm).vm.$emit("validate", true);
+
+        await Vue.nextTick();
+        expect(wrapper.emitted("validate")!!.length).toBe(1);
+        expect(wrapper.emitted("validate")!![0][0]).toBe(true);
+    });
 });
