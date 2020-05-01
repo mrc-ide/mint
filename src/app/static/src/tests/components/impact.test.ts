@@ -1,7 +1,7 @@
 import Vuex from "vuex";
 import {shallowMount} from "@vue/test-utils";
 import impact from "../../app/components/impact.vue";
-import {mockGraph, mockRootState} from "../mocks";
+import {mockGraph, mockProject, mockRootState} from "../mocks";
 import plotlyGraph from "../../app/components/figures/graphs/plotlyGraph.vue";
 import {RootState} from "../../app/store";
 import dynamicTable from "../../app/components/figures/dynamicTable.vue";
@@ -15,7 +15,10 @@ describe("impact", () => {
     };
 
     it("shows prevalence graph under graph tab if graph config exists", () => {
+        const project = mockProject();
+        project.currentRegion.interventionSettings = {"test": 1}
         const store = createStore({
+            currentProject: project,
             prevalenceGraphConfig: mockGraph({
                 layout: {
                     whatever: 1
@@ -43,7 +46,10 @@ describe("impact", () => {
         expect(graph.props("series")).toEqual([{
             x: [1, 2],
             y: [100, 200]
-        }])
+        }]);
+        expect(graph.props("settings")).toEqual({
+            "test": 1
+        });
     });
 
     it("does not show prevalence graph under table tab", () => {
@@ -59,7 +65,10 @@ describe("impact", () => {
     });
 
     it("shows table under table tab if table config exists", () => {
+        const project = mockProject();
+        project.currentRegion.interventionSettings = {"test": 1}
         const store = createStore({
+            currentProject: project,
             impactTableConfig: {"col": "Column name"},
             impactTableData: [{col: 1}]
         });
@@ -68,6 +77,7 @@ describe("impact", () => {
         const table = wrapper.findAll(dynamicTable).at(0);
         expect(table.props("columns")).toEqual({"col": "Column name"});
         expect(table.props("data")).toEqual([{col: 1}]);
+        expect(table.props("settings")).toEqual({"test": 1});
     });
 
     it("does not show table under graph tab", () => {
