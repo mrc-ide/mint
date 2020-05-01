@@ -4,7 +4,6 @@ import {Project} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
-import {deepCopy} from "./utils";
 
 export enum RootMutation {
     AddProject = "AddProject",

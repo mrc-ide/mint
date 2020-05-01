@@ -77,7 +77,7 @@ describe("interventions", () => {
         expect(wrapper.find(impact).props("activeTab")).toBe("Table");
     });
 
-    it("fetches data", () => {
+    it("fetches data on mount", async () => {
         const mockFetch = jest.fn();
         const store = createStore({currentProject: mockProject()}, mockFetch);
         shallowMount(interventions, {store});
@@ -119,7 +119,28 @@ describe("interventions", () => {
         })
     });
 
-    it("submits form and updates settings when intervention options change", async () => {
+    it("updates settings on mount", async () => {
+        const project = mockProject();
+        project.currentRegion.interventionOptions = {
+            controlSections: [{
+                label: "S1",
+                controlGroups: [{
+                    controls: [
+                        {name: "c1", type: "number", required: true, value: 3}
+                    ]
+                }]
+            }]
+        };
+        const mockSetSettings = jest.fn();
+        const store = createStore({currentProject: project}, jest.fn(), jest.fn(), mockSetSettings);
+        mount(interventions, {store});
+
+        await Vue.nextTick();
+
+        expect(mockSetSettings.mock.calls[0][1]).toEqual({"c1": 3});
+    });
+
+    it("updates settings when intervention options change", async () => {
         const project = mockProject()
         const mockSetSettings = jest.fn();
         const store = createStore({currentProject: project}, jest.fn(), jest.fn(), mockSetSettings);
@@ -139,12 +160,37 @@ describe("interventions", () => {
 
         await Vue.nextTick();
 
-        expect(wrapper.find(DynamicForm).emitted("submit")!![0][0]).toEqual({"c1": 3})
+        expect(wrapper.find(DynamicForm).emitted("submit")!![0][0]).toEqual({}); // called on mount
+        expect(wrapper.find(DynamicForm).emitted("submit")!![1][0]).toEqual({"c1": 3}); // called after change
 
         await Vue.nextTick();
 
-        expect(mockSetSettings.mock.calls[0][1]).toEqual({"c1": 3})
+        expect(mockSetSettings.mock.calls[0][1]).toEqual({}); // called on mount
+        expect(mockSetSettings.mock.calls[1][1]).toEqual({"c1": 3}); // called after change
     });
 
+    it("fetches data on currentRegion change", async () => {
+        const mockFetch = jest.fn();
+
+        const project = mockProject();
+        const store = createStore({
+            projects: [project],
+            currentProject: project
+        }, mockFetch);
+
+        mount(interventions, {store});
+
+        store.state.currentProject!!.currentRegion =
+            {
+                name: "newRegion",
+                url: "/",
+                baselineOptions: {controlSections: []},
+                interventionOptions: {controlSections: []},
+                interventionSettings: {}
+            };
+        await Vue.nextTick();
+
+        expect(mockFetch.mock.calls.length).toBe(2);
+    });
 
 });

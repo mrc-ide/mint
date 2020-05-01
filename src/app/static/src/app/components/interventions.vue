@@ -45,8 +45,8 @@
     import costEffectiveness from "./costEffectiveness.vue";
     import {mapState} from "vuex";
     import {DynamicForm, DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
-    import {Project} from "../models/project";
     import {RootMutation} from "../mutations";
+    import {Project, Region} from "../models/project";
 
     interface ComponentData {
         verticalTabs: string[],
@@ -55,6 +55,7 @@
     }
 
     interface Methods {
+        submitForm: () => void
         changeVerticalTab: (name: string) => void
         changeHorizontalTab: (name: string) => void
         fetchData: () => void
@@ -63,8 +64,9 @@
     }
 
     interface Computed {
-        currentProject: Project,
         options: DynamicFormMeta
+        currentProject: Project
+        currentRegion: Region
     }
 
     export default Vue.extend<ComponentData, Methods, Computed, {}>({
@@ -84,9 +86,19 @@
                 set(value: DynamicFormMeta) {
                     this.updateInterventionOptions(value);
                 }
+            },
+            currentRegion() {
+                return this.currentProject.currentRegion;
             }
         },
         methods: {
+            submitForm() {
+                this.$nextTick(() => {
+                    // wait til the next tick so that the form has been updated
+                    const form = this.$refs.settings as any
+                    form.submit && form.submit();
+                });
+            },
             changeVerticalTab(name: string) {
                 this.activeVerticalTab = name;
             },
@@ -100,13 +112,14 @@
         components: {verticalTabs, impact, costEffectiveness, DynamicForm},
         mounted() {
             this.fetchData();
+            this.submitForm();
         },
         watch: {
             options() {
-                this.$nextTick(() => {
-                    // wait til the next tick so that the form has been updated
-                    (this.$refs.settings as any).submit();
-                })
+                this.submitForm();
+            },
+            currentRegion: function () {
+                this.fetchData();
             }
         }
     });
