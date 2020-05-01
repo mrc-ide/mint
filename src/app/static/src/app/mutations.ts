@@ -4,7 +4,6 @@ import {Project} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
-import {deepCopy} from "./utils";
 
 export enum RootMutation {
     AddProject = "AddProject",
@@ -32,7 +31,7 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.SetCurrentRegionBaselineOptions](state: RootState, payload: DynamicFormMeta) {
         if (state.currentProject) {
-            state.currentProject.currentRegion.baselineOptions = deepCopy(payload);
+            state.currentProject.currentRegion.baselineOptions = payload;
         }
     },
 
