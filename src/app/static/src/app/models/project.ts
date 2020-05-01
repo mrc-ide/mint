@@ -1,11 +1,13 @@
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {deepCopy} from "../utils";
+import {Dictionary} from "vue-router/types/router";
 
 export interface Region {
     name: string
     url: string
     baselineOptions: DynamicFormMeta
     interventionOptions: DynamicFormMeta
+    interventionSettings: Dictionary<any>
 }
 
 export class Region {
@@ -17,6 +19,7 @@ export class Region {
         this.url = `/projects/${parent.name}/regions/${name}`.replace(/\s/g, "-").toLowerCase();
         this.baselineOptions = deepCopy(baselineOptions);
         this.interventionOptions = deepCopy(interventionOptions);
+        this.interventionSettings = {}
     }
 }
 

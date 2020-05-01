@@ -1,7 +1,8 @@
 <template>
     <div class="row">
         <div class="col-4 interventions">
-            <dynamic-form v-model="options"
+            <dynamic-form ref="settings"
+                          v-model="options"
                           :include-submit-button="false"></dynamic-form>
         </div>
         <div class="col-8">
@@ -37,13 +38,14 @@
 <script lang="ts">
     import Vue from "vue";
     import verticalTabs from "./verticalTabs.vue";
-    import {mapActionByName} from "../utils";
+    import {mapActionByName, mapMutationByName} from "../utils";
     import {RootAction} from "../actions";
     import impact from "./impact.vue";
     import costEffectiveness from "./costEffectiveness.vue";
     import {mapState} from "vuex";
-    import {DynamicForm, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+    import {DynamicForm, DynamicFormMeta, DynamicFormData} from "@reside-ic/vue-dynamic-form";
     import {Project} from "../models/project";
+    import {RootMutation} from "../mutations";
 
     interface ComponentData {
         verticalTabs: string[],
@@ -55,6 +57,8 @@
         changeVerticalTab: (name: string) => void
         changeHorizontalTab: (name: string) => void
         fetchData: () => void
+        updateInterventionOptions:
+            (payload: { formMeta: DynamicFormMeta, formData: DynamicFormData }) => void
     }
 
     interface Computed {
@@ -77,7 +81,8 @@
                     return this.currentProject.currentRegion.interventionOptions
                 },
                 set(value: DynamicFormMeta) {
-                    // TODO update
+                    const data = (this.$refs.settings as any).submit();
+                    this.updateInterventionOptions({formMeta: value, formData: data});
                 }
             }
         },
@@ -88,7 +93,8 @@
             changeHorizontalTab(name: string) {
                 this.activeHorizontalTab = name;
             },
-            fetchData: mapActionByName(RootAction.FetchImpactData)
+            fetchData: mapActionByName(RootAction.FetchImpactData),
+            updateInterventionOptions: mapMutationByName(RootMutation.SetCurrentRegionInterventionOptions)
         },
         components: {verticalTabs, impact, costEffectiveness, DynamicForm},
         mounted() {

@@ -15,21 +15,19 @@
 </template>
 <script lang="ts">
     import Vue from "vue";
-    import { mapStateProp} from "../utils";
+    import {mapStateProp} from "../utils";
     import {RootState} from "../store";
     import {Data, Graph, TableDefinition} from "../generated";
     import plotlyGraph from "./figures/graphs/plotlyGraph.vue";
     import dynamicTable from "./figures/dynamicTable.vue";
+    import {DynamicFormData} from "@reside-ic/vue-dynamic-form";
 
     export default Vue.extend({
         components: {plotlyGraph, dynamicTable},
         props: ["activeTab"],
-        data() {
-            return {
-                settings: {'net_use': 0, 'irs_use': 0}
-            }
-        },
         computed: {
+            settings: mapStateProp<RootState, DynamicFormData | null>
+            (state => state.currentProject && state.currentProject.currentRegion.interventionSettings),
             prevalenceGraphConfig: mapStateProp<RootState, Graph | null>(state => state.prevalenceGraphConfig),
             prevalenceGraphData: mapStateProp<RootState, Data>(state => state.prevalenceGraphData),
             tableData: mapStateProp<RootState, Data>(state => state.impactTableData),
