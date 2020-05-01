@@ -34,20 +34,19 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.SetCurrentRegionBaselineOptions](state: RootState, payload: DynamicFormMeta) {
         if (state.currentProject) {
-            state.currentProject.currentRegion.baselineOptions = deepCopy(payload);
+            state.currentProject.currentRegion.baselineOptions = payload
         }
     },
 
     [RootMutation.SetCurrentRegionInterventionOptions](state: RootState,
                                                        payload: DynamicFormMeta) {
         if (state.currentProject) {
-            state.currentProject.currentRegion.interventionOptions = deepCopy(payload)
+            state.currentProject.currentRegion.interventionOptions = payload
         }
     },
 
     [RootMutation.SetCurrentRegionInterventionSettings](state: RootState, payload: DynamicFormData) {
         if (state.currentProject) {
-            console.log(payload)
             state.currentProject.currentRegion.interventionSettings = payload
         }
     },

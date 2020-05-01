@@ -8,7 +8,6 @@ export interface FilteringProps {
 
 export function useFiltering(props: FilteringProps) {
 
-
     const filterBySettings = (row: any) => {
         for (let key of Object.keys(props.settings)) {
             if (row[key] != undefined && (props.settings[key] === "" || row[key] != props.settings[key])) {

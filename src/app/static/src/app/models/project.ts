@@ -19,8 +19,16 @@ export class Region {
         this.url = `/projects/${parent.name}/regions/${name}`.replace(/\s/g, "-").toLowerCase();
         this.baselineOptions = deepCopy(baselineOptions);
         this.interventionOptions = deepCopy(interventionOptions);
-        this.interventionSettings = {}
+        this.interventionSettings =  {}
+        this.interventionOptions.controlSections.map(s => {
+            s.controlGroups.map(g => {
+                g.controls.map(c => {
+                    this.interventionSettings[c.name] = null;
+                })
+            })
+        });
     }
+
 }
 
 export interface Project {

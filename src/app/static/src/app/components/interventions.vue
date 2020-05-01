@@ -104,6 +104,7 @@
         watch: {
             options() {
                 this.$nextTick(() => {
+                    // wait til the next tick so that the form has been updated
                     (this.$refs.settings as any).submit();
                 })
             }
