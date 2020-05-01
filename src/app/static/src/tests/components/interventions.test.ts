@@ -7,10 +7,11 @@ import {RootState} from "../../app/store";
 import {RootAction} from "../../app/actions";
 import impact from "../../app/components/impact.vue";
 import costEffectiveness from "../../app/components/costEffectiveness.vue";
+import {DynamicForm} from "@reside-ic/vue-dynamic-form";
 
 describe("interventions", () => {
 
-    const createStore = (state: Partial<RootState> = {},
+    const createStore = (state: Partial<RootState> = {currentProject: mockProject()},
                          mockFetchData = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState(state),
@@ -71,9 +72,29 @@ describe("interventions", () => {
 
     it("fetches data on mount", async () => {
         const mockFetch = jest.fn();
-        const store = createStore({}, mockFetch);
+        const store = createStore({currentProject: mockProject()}, mockFetch);
         shallowMount(interventions, {store});
         expect(mockFetch.mock.calls.length).toBe(1);
+    });
+
+    it("renders intervention options", async () => {
+        const project = mockProject()
+        project.currentRegion
+            .interventionOptions
+            .controlSections.push({controlGroups: [], label: "S1"})
+        const store = createStore({currentProject: project});
+        const wrapper = shallowMount(interventions, {store});
+        const form = wrapper.find(DynamicForm);
+        expect(form.exists()).toBe(true);
+        expect(form.props("includeSubmitButton")).toBe(false);
+        expect(form.props("formMeta")).toEqual({
+            controlSections: [
+                {
+                    controlGroups: [],
+                    label: "S1"
+                }
+            ]
+        });
     });
 
     it("fetches data on currentRegion change", async () => {
@@ -87,7 +108,13 @@ describe("interventions", () => {
 
         shallowMount(interventions, {store});
 
-        store.state.currentProject!!.currentRegion = {name: "newRegion", url: "/", baselineOptions: {controlSections: []}};
+        store.state.currentProject!!.currentRegion =
+            {
+                name: "newRegion",
+                url: "/",
+                baselineOptions: {controlSections: []},
+                interventionOptions: {controlSections: []}
+            };
         await Vue.nextTick();
 
         expect(mockFetch.mock.calls.length).toBe(2);

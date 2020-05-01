@@ -65,6 +65,7 @@
         disabled: boolean
         placeholder: string
         baselineOptions: DynamicFormMeta
+        interventionOptions: DynamicFormMeta
     }
 
     interface Tag {
@@ -81,7 +82,7 @@
             }
         },
         computed: {
-            ... mapState(["baselineOptions"]),
+            ... mapState(["baselineOptions", "interventionOptions"]),
             disabled() {
                 return !this.newProject || (!this.newRegion && this.regions.length == 0)
             },
@@ -99,7 +100,7 @@
                     // so take this.newRegion as the only region
                     regionNames.push(this.newRegion)
                 }
-                const project = new Project(this.newProject, regionNames, this.baselineOptions);
+                const project = new Project(this.newProject, regionNames, this.baselineOptions, this.interventionOptions);
                 this.addProject(project);
                 this.$router.push({
                     path: project.currentRegion.url
