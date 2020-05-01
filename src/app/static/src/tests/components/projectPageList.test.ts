@@ -9,12 +9,14 @@ import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 describe("project page", () => {
 
-    const mockBaselineOptions: DynamicFormMeta = { controlSections: [] };
+    const mockBaselineOptions: DynamicFormMeta = {controlSections: []};
+    const mockInterventionOptions: DynamicFormMeta = {controlSections: []};
 
     const createStore = (addProjectMock = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState({
-                baselineOptions: mockBaselineOptions
+                baselineOptions: mockBaselineOptions,
+                interventionOptions: mockInterventionOptions
             }),
             mutations: {
                 [RootMutation.AddProject]: addProjectMock
@@ -89,12 +91,25 @@ describe("project page", () => {
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1]).toEqual({
             name: "new project",
-            regions: [{name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions, step: 1}],
-            currentRegion: {name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions, step: 1}
+            regions: [{
+                name: "South", url: "/projects/new-project/regions/south",
+                baselineOptions: mockBaselineOptions,
+                interventionOptions: mockInterventionOptions,
+                step: 1
+            }],
+            currentRegion: {
+                name: "South", url: "/projects/new-project/regions/south",
+                baselineOptions: mockBaselineOptions,
+                interventionOptions: mockInterventionOptions,
+                step: 1
+            }
         });
 
-        //Baseline options should equal options from store, but be fresh deep copy
-        expect(mockMutation.mock.calls[0][1].currentRegion.baselineOptions.controlSections).not.toBe(mockBaselineOptions.controlSections);
+        // options should equal options from store, but be fresh deep copy
+        expect(mockMutation.mock.calls[0][1].currentRegion.baselineOptions.controlSections)
+            .not.toBe(mockBaselineOptions.controlSections);
+        expect(mockMutation.mock.calls[0][1].currentRegion.interventionOptions.controlSections)
+            .not.toBe(mockInterventionOptions.controlSections);
 
         expect(mockRouter[0].path).toBe("/projects/new-project/regions/south");
     });
@@ -117,8 +132,20 @@ describe("project page", () => {
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1]).toEqual({
             name: "new project",
-            regions: [{name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions, step: 1}],
-            currentRegion: {name: "South", url: "/projects/new-project/regions/south", baselineOptions: mockBaselineOptions, step: 1}
+            regions: [{
+                name: "South",
+                url: "/projects/new-project/regions/south",
+                baselineOptions: mockBaselineOptions,
+                interventionOptions: mockInterventionOptions,
+                step: 1
+            }],
+            currentRegion: {
+                name: "South",
+                url: "/projects/new-project/regions/south",
+                baselineOptions: mockBaselineOptions,
+                interventionOptions: mockInterventionOptions,
+                step: 1
+            }
         });
 
         expect(mockRouter[0].path).toBe("/projects/new-project/regions/south");

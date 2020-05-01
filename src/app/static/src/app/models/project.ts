@@ -5,14 +5,19 @@ export interface Region {
     name: string
     url: string
     baselineOptions: DynamicFormMeta
+    interventionOptions: DynamicFormMeta
     step: number
 }
 
 export class Region {
-    constructor(name: string, parent: Project, baselineOptions: DynamicFormMeta) {
+    constructor(name: string,
+                parent: Project,
+                baselineOptions: DynamicFormMeta,
+                interventionOptions: DynamicFormMeta) {
         this.name = name;
         this.url = `/projects/${parent.name}/regions/${name}`.replace(/\s/g, "-").toLowerCase();
         this.baselineOptions = deepCopy(baselineOptions);
+        this.interventionOptions = deepCopy(interventionOptions);
         this.step = 1;
     }
 }
@@ -25,9 +30,13 @@ export interface Project {
 
 export class Project {
 
-    constructor(name: string, regionsName: string[], baselineOptions: DynamicFormMeta, currentRegion: Region | null = null) {
+    constructor(name: string,
+                regionsName: string[],
+                baselineOptions: DynamicFormMeta,
+                interventionOptions: DynamicFormMeta,
+                currentRegion: Region | null = null) {
         this.name = name;
-        this.regions = regionsName.map(n => new Region(n, this, baselineOptions));
+        this.regions = regionsName.map(n => new Region(n, this, baselineOptions, interventionOptions));
         this.currentRegion = currentRegion || this.regions[0]
     }
 
