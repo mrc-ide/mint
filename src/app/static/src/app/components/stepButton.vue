@@ -3,7 +3,7 @@
         <button class="d-inline btn rounded-circle border" :disabled="disabled">
             {{number}}
         </button>
-        <span class="text-center pl-3">
+        <span class="text-center pl-3" :class="{'text-muted': disabled}">
             {{text}}
         </span>
     </div>
