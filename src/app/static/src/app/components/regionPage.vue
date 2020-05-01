@@ -23,8 +23,10 @@
     import {RootMutation} from "../mutations";
     import {mapMutationByName} from "../utils";
     import stepButton from "./stepButton.vue";
-    import interventions from "./interventions.vue";
-    import baseline from "./baseline.vue";
+    // @ts-ignore
+    const baseline = () => import("./baseline.vue");
+    // @ts-ignore
+    const interventions = async () => import("./interventions.vue");
 
     export default Vue.extend({
         components: {stepButton, baseline, interventions},
@@ -43,4 +45,6 @@
             }
         }
     });
+
+    interventions().then(); //async load js from server
 </script>
