@@ -27,20 +27,21 @@ describe("mutations", () => {
     it("updates the current region", () => {
         const state = mockRootState({
             currentProject: new Project("my project", ["North region", "South region"],
-                {controlSections: []})
+                {controlSections: []}, {controlSections: []})
         });
         mutations[RootMutation.SetCurrentRegion](state, "/projects/my-project/regions/south-region");
         expect(state.currentProject!!.currentRegion).toEqual({
             name: "South region",
             url: "/projects/my-project/regions/south-region",
-            baselineOptions: {controlSections: []}
+            baselineOptions: {controlSections: []},
+            interventionOptions: {controlSections:[]}
         })
     });
 
     it("updates the current region's baseline options", () => {
         const state = mockRootState({
             currentProject: new Project("my project", ["North region", "South region"],
-                {controlSections: ["OLD BASELINE"]} as any)
+                {controlSections: ["OLD BASELINE"]} as any, {controlSections: []})
         });
 
         const newBaseline = {controlSections: ["NEWBASELINE"]} as any;
@@ -50,7 +51,7 @@ describe("mutations", () => {
 
     it("updating the current region's baseline options does nothing if no current project", () => {
         const projects = [new Project("my project", ["North region", "South region"],
-            {controlSections: ["OLD BASELINE"]} as any)];
+            {controlSections: ["OLD BASELINE"]} as any, {controlSections: []})];
         const state = mockRootState({
             projects,
             currentProject: null
