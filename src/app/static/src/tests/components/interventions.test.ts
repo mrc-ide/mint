@@ -87,7 +87,7 @@ describe("interventions", () => {
 
         shallowMount(interventions, {store});
 
-        store.state.currentProject!!.currentRegion = {name: "newRegion", url: "/", baselineOptions: {controlSections: []}};
+        store.state.currentProject!!.currentRegion = {name: "newRegion", url: "/", baselineOptions: {controlSections: []}, step: 1};
         await Vue.nextTick();
 
         expect(mockFetch.mock.calls.length).toBe(2);
