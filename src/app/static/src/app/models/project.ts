@@ -1,13 +1,12 @@
-import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {deepCopy} from "../utils";
-import {Dictionary} from "vue-router/types/router";
 
 export interface Region {
     name: string
     url: string
     baselineOptions: DynamicFormMeta
     interventionOptions: DynamicFormMeta
-    interventionSettings: Dictionary<any>
+    interventionSettings: DynamicFormData
 }
 
 export class Region {
