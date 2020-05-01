@@ -43,7 +43,7 @@
     import costEffectiveness from "./costEffectiveness.vue";
     import {mapState} from "vuex";
     import {DynamicForm, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
-    import {Project} from "../models/project";
+    import {Project, Region} from "../models/project";
 
     interface ComponentData {
         verticalTabs: string[],
@@ -58,8 +58,9 @@
     }
 
     interface Computed {
-        currentProject: Project,
         options: DynamicFormMeta
+        currentProject: Project
+        currentRegion: Region
     }
 
     export default Vue.extend<ComponentData, Methods, Computed, {}>({
@@ -79,6 +80,9 @@
                 set(value: DynamicFormMeta) {
                     // TODO update
                 }
+            },
+            currentRegion() {
+                return this.currentProject.currentRegion;
             }
         },
         methods: {
@@ -93,6 +97,11 @@
         components: {verticalTabs, impact, costEffectiveness, DynamicForm},
         mounted() {
             this.fetchData();
+        },
+        watch: {
+            currentRegion: function () {
+                this.fetchData();
+            }
         }
     });
 

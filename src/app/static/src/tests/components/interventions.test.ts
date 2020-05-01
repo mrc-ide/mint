@@ -70,7 +70,7 @@ describe("interventions", () => {
         expect(wrapper.find(impact).props("activeTab")).toBe("Table");
     });
 
-    it("fetches data", async () => {
+    it("fetches data on mount", async () => {
         const mockFetch = jest.fn();
         const store = createStore({currentProject: mockProject()}, mockFetch);
         shallowMount(interventions, {store});
@@ -95,6 +95,29 @@ describe("interventions", () => {
                 }
             ]
         });
+    });
+
+    it("fetches data on currentRegion change", async () => {
+        const mockFetch = jest.fn();
+
+        const project = mockProject();
+        const store = createStore({
+            projects: [project],
+            currentProject: project
+        }, mockFetch);
+
+        shallowMount(interventions, {store});
+
+        store.state.currentProject!!.currentRegion =
+            {
+                name: "newRegion",
+                url: "/",
+                baselineOptions: {controlSections: []},
+                interventionOptions: {controlSections: []}
+            };
+        await Vue.nextTick();
+
+        expect(mockFetch.mock.calls.length).toBe(2);
     });
 
 });
