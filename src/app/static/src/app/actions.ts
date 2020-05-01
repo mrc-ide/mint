@@ -16,6 +16,10 @@ export enum RootAction {
     FetchConfig = "FetchConfig"
 }
 
+const currentRegionBaseline = (state: RootState) => {
+    return state.currentProject!!.currentRegion.baselineOptions;
+};
+
 export const actions: ActionTree<RootState, RootState> = {
 
     async [RootAction.FetchBaselineOptions](context) {
@@ -37,7 +41,7 @@ export const actions: ActionTree<RootState, RootState> = {
             .freezeResponse()
             .withSuccess(RootMutation.AddPrevalenceGraphData)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", {anySettings: true})
+            .postAndReturn<Data>("/impact/graph/prevalence/data", currentRegionBaseline(context.state))
     },
 
     async [RootAction.FetchPrevalenceGraphConfig](context) {
@@ -52,7 +56,7 @@ export const actions: ActionTree<RootState, RootState> = {
             .freezeResponse()
             .withSuccess(RootMutation.AddImpactTableData)
             .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/table/data", {anySettings: true})
+            .postAndReturn<Data>("/impact/table/data", currentRegionBaseline(context.state))
     },
 
     async [RootAction.FetchImpactTableConfig](context) {
