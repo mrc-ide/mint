@@ -113,7 +113,9 @@ describe("interventions", () => {
                 name: "newRegion",
                 url: "/",
                 baselineOptions: {controlSections: []},
-                interventionOptions: {controlSections: []}
+                interventionOptions: {controlSections: []},
+                impactTableData: [],
+                prevalenceGraphData: []
             };
         await Vue.nextTick();
 

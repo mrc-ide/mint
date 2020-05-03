@@ -61,8 +61,12 @@ describe("impact", () => {
     it("shows table under table tab if table config exists", () => {
         const store = createStore({
             impactTableConfig: {"col": "Column name"},
-            impactTableData: [{col: 1}]
-        });
+            currentProject: {
+                currentRegion: {
+                    impactTableData: [{col: 1}]
+                }
+            }
+        } as any);
         const wrapper = shallowMount(impact, {propsData: {activeTab: "Table"}, store});
         expect(wrapper.findAll(dynamicTable).length).toBe(1);
         const table = wrapper.findAll(dynamicTable).at(0);

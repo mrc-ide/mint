@@ -1,5 +1,5 @@
 import {mutations, RootMutation} from "../../app/mutations";
-import {mockError, mockRootState} from "../mocks";
+import {mockError, mockProject, mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
 import {expectAllDefined} from "../testHelpers";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
@@ -11,7 +11,7 @@ describe("mutations", () => {
     });
 
     it("adds a new project", () => {
-        const state = mockRootState()
+        const state = mockRootState();
         mutations[RootMutation.AddProject](state, {
             name: "new project",
             regions: [{name: "South"}],
@@ -34,7 +34,9 @@ describe("mutations", () => {
             name: "South region",
             url: "/projects/my-project/regions/south-region",
             baselineOptions: {controlSections: []},
-            interventionOptions: {controlSections:[]}
+            interventionOptions: {controlSections:[]},
+            prevalenceGraphData: [],
+            impactTableData: []
         })
     });
 
@@ -89,10 +91,14 @@ describe("mutations", () => {
 
 
     it("adds prevalence graph data", () => {
-        const state = mockRootState();
+        const project = mockProject();
+        const state = mockRootState({
+            projects: [project],
+            currentProject: project
+        });
         mutations[RootMutation.AddPrevalenceGraphData](state, ["some data"]);
 
-        expect(state.prevalenceGraphData).toStrictEqual(["some data"]);
+        expect(state.currentProject!!.currentRegion.prevalenceGraphData).toStrictEqual(["some data"]);
     });
 
     it("adds prevalence graph config", () => {
@@ -103,10 +109,14 @@ describe("mutations", () => {
     });
 
     it("adds impact table data", () => {
-        const state = mockRootState();
+        const project = mockProject();
+        const state = mockRootState({
+            projects: [project],
+            currentProject: project
+        });
         mutations[RootMutation.AddImpactTableData](state, ["some data"]);
 
-        expect(state.impactTableData).toStrictEqual(["some data"]);
+        expect(state.currentProject!!.currentRegion.impactTableData).toStrictEqual(["some data"]);
     });
 
     it("adds impact table config", () => {
