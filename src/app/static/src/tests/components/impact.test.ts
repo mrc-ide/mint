@@ -86,4 +86,18 @@ describe("impact", () => {
         expect(wrapper.findAll(dynamicTable).length).toBe(0);
     });
 
+    it("graph data is empty if no current project", () => {
+        const store = createStore({prevalenceGraphConfig: {config: "TEST CONFIG"}} as any);
+        const wrapper = shallowMount(impact, {propsData: {activeTab: "Graphs"}, store});
+        const table = wrapper.find(plotlyGraph);
+        expect(table.props("data")).toEqual([]);
+    });
+
+    it("table data is empty if no current project", ()=>{
+        const store = createStore({impactTableConfig: {"col": "Column name"}});
+        const wrapper = shallowMount(impact, {propsData: {activeTab: "Table"}, store});
+        const table = wrapper.find(dynamicTable);
+        expect(table.props("data")).toEqual([]);
+    });
+
 });
