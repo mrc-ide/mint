@@ -32,6 +32,10 @@ export const mutations: MutationTree<RootState> = {
     [RootMutation.SetCurrentRegionBaselineOptions](state: RootState, payload: DynamicFormMeta) {
         if (state.currentProject) {
             state.currentProject.currentRegion.baselineOptions = payload;
+
+            //Invalidate current region data
+            state.currentProject.currentRegion.impactTableData = [];
+            state.currentProject.currentRegion.prevalenceGraphData = [];
         }
     },
 
