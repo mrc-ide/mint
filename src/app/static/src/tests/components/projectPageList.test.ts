@@ -94,12 +94,14 @@ describe("project page", () => {
             regions: [{
                 name: "South", url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
-                interventionOptions: mockInterventionOptions
+                interventionOptions: mockInterventionOptions,
+                step: 1
             }],
             currentRegion: {
                 name: "South", url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
-                interventionOptions: mockInterventionOptions
+                interventionOptions: mockInterventionOptions,
+                step: 1
             }
         });
 
@@ -134,13 +136,15 @@ describe("project page", () => {
                 name: "South",
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
-                interventionOptions: mockInterventionOptions
+                interventionOptions: mockInterventionOptions,
+                step: 1
             }],
             currentRegion: {
                 name: "South",
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
-                interventionOptions: mockInterventionOptions
+                interventionOptions: mockInterventionOptions,
+                step: 1
             }
         });
 
