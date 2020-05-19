@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import projectListPage from "./components/projectListPage.vue";
-// @ts-ignore
+// @ts-ignore Dynamic imports not supported error
 const regionPage = () => import("./components/regionPage.vue");
 
 const routes = [
