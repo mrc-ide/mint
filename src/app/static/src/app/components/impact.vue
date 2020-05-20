@@ -20,8 +20,17 @@
     import {Data, Graph, TableDefinition} from "../generated";
     import plotlyGraph from "./figures/graphs/plotlyGraph.vue";
     import dynamicTable from "./figures/dynamicTable.vue";
+    import {Project} from "../models/project";
 
-    export default Vue.extend({
+    interface Computed {
+        prevalenceGraphConfig: Graph | null,
+        tableConfig: TableDefinition | null,
+        currentProject: Project | null,
+        prevalenceGraphData: Data,
+        tableData: Data
+    }
+
+    export default Vue.extend<{}, {}, Computed, {}>({
         components: {plotlyGraph, dynamicTable},
         props: ["activeTab"],
         data() {
@@ -31,9 +40,14 @@
         },
         computed: {
             prevalenceGraphConfig: mapStateProp<RootState, Graph | null>(state => state.prevalenceGraphConfig),
-            prevalenceGraphData: mapStateProp<RootState, Data>(state => state.prevalenceGraphData),
-            tableData: mapStateProp<RootState, Data>(state => state.impactTableData),
-            tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.impactTableConfig)
+            tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.impactTableConfig),
+            currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
+            prevalenceGraphData() {
+                return this.currentProject ? this.currentProject.currentRegion.prevalenceGraphData : [];
+            },
+            tableData() {
+                return this.currentProject ? this.currentProject.currentRegion.impactTableData : [];
+            }
         }
     });
 

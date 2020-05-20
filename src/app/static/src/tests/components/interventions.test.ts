@@ -114,6 +114,8 @@ describe("interventions", () => {
                 url: "/",
                 baselineOptions: {controlSections: []},
                 interventionOptions: {controlSections: []},
+                impactTableData: [],
+                prevalenceGraphData: [],
                 step: 1
             };
         await Vue.nextTick();

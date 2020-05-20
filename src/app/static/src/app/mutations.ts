@@ -55,7 +55,9 @@ export const mutations: MutationTree<RootState> = {
     },
 
     [RootMutation.AddPrevalenceGraphData](state: RootState, payload: Data) {
-        state.prevalenceGraphData = payload
+        if (state.currentProject) {
+            state.currentProject.currentRegion.prevalenceGraphData = payload;
+        }
     },
 
     [RootMutation.AddPrevalenceGraphConfig](state: RootState, payload: Graph) {
@@ -63,7 +65,9 @@ export const mutations: MutationTree<RootState> = {
     },
 
     [RootMutation.AddImpactTableData](state: RootState, payload: Data) {
-        state.impactTableData = payload
+        if (state.currentProject) {
+            state.currentProject.currentRegion.impactTableData = payload;
+        }
     },
 
     [RootMutation.AddImpactTableConfig](state: RootState, payload: TableDefinition) {
