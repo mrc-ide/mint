@@ -36,7 +36,8 @@ describe("mutations", () => {
             baselineOptions: {controlSections: []},
             interventionOptions: {controlSections:[]},
             prevalenceGraphData: [],
-            impactTableData: []
+            impactTableData: [],
+            step: 1
         })
     });
 
@@ -48,7 +49,19 @@ describe("mutations", () => {
 
         const newBaseline = {controlSections: ["NEWBASELINE"]} as any;
         mutations[RootMutation.SetCurrentRegionBaselineOptions](state, newBaseline);
-        expect(state.currentProject!!.currentRegion.baselineOptions).toStrictEqual(newBaseline);
+        expect(state.currentProject!!.currentRegion.baselineOptions).toStrictEqual(newBaseline);{controlSections: []}
+    });
+
+    it("updates the current region's step", () => {
+        const state = mockRootState({
+            currentProject: new Project("my project", ["North region", "South region"],
+                {controlSections: []}, {controlSections: []})
+        });
+        const region = state.currentProject!!.currentRegion;
+        expect(region.step).toBe(1);
+
+        mutations[RootMutation.SetCurrentRegionStep](state, 2);
+        expect(region.step).toBe(2);
     });
 
     it("updating the current region's baseline options invalidates data", () => {

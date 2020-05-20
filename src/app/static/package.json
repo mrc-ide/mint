@@ -61,6 +61,6 @@
   },
   "dependencies": {
     "@johmun/vue-tags-input": "^2.1.0",
-    "@reside-ic/vue-dynamic-form": "0.0.8"
+    "@reside-ic/vue-dynamic-form": "0.0.9"
   }
 }

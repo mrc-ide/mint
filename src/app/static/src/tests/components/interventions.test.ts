@@ -115,7 +115,8 @@ describe("interventions", () => {
                 baselineOptions: {controlSections: []},
                 interventionOptions: {controlSections: []},
                 impactTableData: [],
-                prevalenceGraphData: []
+                prevalenceGraphData: [],
+                step: 1
             };
         await Vue.nextTick();
 
