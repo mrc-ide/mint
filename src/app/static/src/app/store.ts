@@ -6,10 +6,32 @@ import {MutationPayload, Store, StoreOptions} from "vuex";
 import {mutations} from "./mutations";
 import {Project} from "./models/project";
 import {APIError} from "./apiService";
-import {Data, Graph, TableDefinition} from "./generated";
+import {Data, Graph, SeriesDefinition, TableDefinition, WideFormatMetadata} from "./generated";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 import {actions} from "./actions";
+
+//TODO: ScatterMetadata to be generated from mintr, and Graph metadata options to include ScatterMetadata - just checking
+//we can get this format working in the front end for now
+export interface ScatterGraph {
+    metadata: ScatterMetadata;
+    series: SeriesDefinition[];
+    layout: {
+        [k: string]: any;
+    };
+    config?: {
+        [k: string]: any;
+    };
+}
+export interface ScatterMetadata {
+    x_col: string;
+    y_col: string;
+    id_col: string;
+    error_plus_col: string;
+    error_minus_col: string;
+    color_col: string;
+    format: "scatter";
+}
 
 export interface RootState {
     projects: Project[]
@@ -19,6 +41,7 @@ export interface RootState {
     interventionOptions: DynamicFormMeta | null
     prevalenceGraphConfig: Graph | null
     impactTableConfig: TableDefinition | null
+    costCasesGraphConfig: ScatterGraph | null
 }
 
 const logger = (store: Store<RootState>) => {

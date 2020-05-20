@@ -1,5 +1,5 @@
 import {MutationTree} from "vuex";
-import {RootState} from "./store";
+import {RootState, ScatterGraph} from "./store";
 import {Project} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
@@ -16,7 +16,9 @@ export enum RootMutation {
     AddPrevalenceGraphData = "AddPrevalenceGraphData",
     AddPrevalenceGraphConfig = "AddPrevalenceGraphConfig",
     AddImpactTableData = "AddImpactTableData",
-    AddImpactTableConfig = "AddImpactTableConfig"
+    AddImpactTableConfig = "AddImpactTableConfig",
+    AddCostGraphData = "AddCostGraphData",
+    AddCostCasesGraphConfig = "AddCostCasesGraphConfig"
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -72,5 +74,15 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.AddImpactTableConfig](state: RootState, payload: TableDefinition) {
         state.impactTableConfig = payload
+    },
+
+    [RootMutation.AddCostGraphData](state: RootState, payload: Data) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.costGraphData = payload;
+        }
+    },
+
+    [RootMutation.AddCostCasesGraphConfig](state: RootState, payload: ScatterGraph) {
+        state.costCasesGraphConfig = payload;
     }
 };

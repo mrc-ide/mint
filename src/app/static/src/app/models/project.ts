@@ -9,6 +9,7 @@ export interface Region {
     interventionOptions: DynamicFormMeta
     prevalenceGraphData: Data
     impactTableData: Data
+    costGraphData: Data
     step: number
 }
 
@@ -23,6 +24,7 @@ export class Region {
         this.interventionOptions = deepCopy(interventionOptions);
         this.prevalenceGraphData = [];
         this.impactTableData = [];
+        this.costGraphData = [];
         this.step = 1;
     }
 }

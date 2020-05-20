@@ -10,6 +10,8 @@ export enum RootAction {
     FetchPrevalenceGraphConfig = "FetchPrevalenceGraphConfig",
     FetchImpactTableData = "FetchImpactTableData",
     FetchImpactTableConfig = "FetchImpactTableConfig",
+    FetchCostCasesGraphConfig = "FetchCostCasesGraphConfig",
+    FetchCostGraphData = "FetchCostCasesGraphData",
     FetchBaselineOptions = "FetchBaselineOptions",
     FetchInterventionOptions = "FetchInterventionOptions",
     FetchImpactData = "FetchImpactData",
@@ -49,6 +51,99 @@ export const actions: ActionTree<RootState, RootState> = {
             .withSuccess(RootMutation.AddPrevalenceGraphConfig)
             .withError(RootMutation.AddError)
             .get<Graph>("/impact/graph/prevalence/config")
+    },
+
+    async [RootAction.FetchCostCasesGraphConfig](context) {
+        //TODO: Fetch from mintr via backend
+        context.commit(RootMutation.AddCostCasesGraphConfig,
+            {
+                metadata: {
+                    x_col: "cases_averted",
+                    y_col: "cost",
+                    id_col: "interventions",
+                    error_plus_col: "cases_averted_error_plus",
+                    error_minus_col: "cases_averted_error_minus",
+                    color_col: "color",
+                    format: "scatter"
+                },
+                config: {
+                    marker_size: 10
+                },
+                layout: {
+                    title: "Strategy costs over 3 years",
+                    xaxis: {
+                        title: 'Cases averted per 1,000 people across 3-years',
+                        showline: true,
+                        range: [-2, 800],
+                        tickvals: [0, 100, 200, 300, 400, 500, 600, 700],
+                        autorange: false,
+                        zeroline: false,
+                    },
+                    yaxis: {
+                        title: 'Total costs ($10,000 USD)',
+                        showline: true,
+                        range: [0, 30],
+                        tickvals: [0, 10 , 20],
+                        autorange: false
+                    }
+                },
+                series: []
+            });
+    },
+
+    async [RootAction.FetchCostGraphData](context) {
+        //TODO: Fetch from mintr via backend
+        context.commit(RootMutation.AddCostGraphData,
+            [
+                {
+                    intervention: "No intervention",
+                    cost: 0,
+                    cases_averted: 0,
+                    cases_averted_error_minus: 0,
+                    cases_averted_error_plus: 0,
+                    color: "grey"
+                },
+                {
+                    intervention: "Pyrethoid ITN",
+                    cost: 8,
+                    cases_averted: 280,
+                    cases_averted_error_minus: 90,
+                    cases_averted_error_plus: 85,
+                    color: "blue"
+                },
+                {
+                    intervention: "Switch to Pyrethoid-PBO ITN",
+                    cost: 9,
+                    cases_averted: 325,
+                    cases_averted_error_minus: 85,
+                    cases_averted_error_plus: 80,
+                    color: "aquamarine"
+                },
+                {
+                    intervention: "Only IRS",
+                    cost: 17,
+                    cases_averted: 630,
+                    cases_averted_error_minus: 120,
+                    cases_averted_error_plus: 140,
+                    color: "purple"
+                },
+                {
+                    intervention: "Add IRS to Pyrethoid ITN",
+                    cost: 22,
+                    cases_averted: 635,
+                    cases_averted_error_minus: 75,
+                    cases_averted_error_plus: 120,
+                    color: "darkred"
+                },
+                {
+                    intervention: "Add IRS to Pyrethoid-PBO ITN",
+                    cost: 23,
+                    cases_averted: 636,
+                    cases_averted_error_minus: 65,
+                    cases_averted_error_plus: 125,
+                    cases_color: "orange"
+                }
+            ]);
     },
 
     async [RootAction.FetchImpactTableData](context) {
