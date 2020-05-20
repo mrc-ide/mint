@@ -54,7 +54,7 @@
     interface Methods {
         changeVerticalTab: (name: string) => void
         changeHorizontalTab: (name: string) => void
-        fetchData: () => void
+        ensureData: () => void
     }
 
     interface Computed {
@@ -92,15 +92,15 @@
             changeHorizontalTab(name: string) {
                 this.activeHorizontalTab = name;
             },
-            fetchData: mapActionByName(RootAction.FetchImpactData)
+            ensureData: mapActionByName(RootAction.EnsureImpactData)
         },
         components: {verticalTabs, impact, costEffectiveness, DynamicForm},
         mounted() {
-            this.fetchData();
+            this.ensureData();
         },
         watch: {
             currentRegion: function () {
-                this.fetchData();
+                this.ensureData();
             }
         }
     });
