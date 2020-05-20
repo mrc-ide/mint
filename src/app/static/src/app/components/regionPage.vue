@@ -25,10 +25,11 @@
     import {RootMutation} from "../mutations";
     import {mapMutationByName} from "../utils";
     import stepButton from "./stepButton.vue";
-    import interventions from "./interventions.vue";
     import baseline from "./baseline.vue";
     import {mapState} from "vuex";
     import {Project, Region} from "../models/project";
+    // @ts-ignore Dynamic imports not supported error
+    const interventions = async () => import("./interventions.vue");
 
     interface Data {
         interventionsDisabled: Boolean
@@ -71,4 +72,6 @@
             }
         }
     });
+
+    interventions().then(); //async load js from server
 </script>

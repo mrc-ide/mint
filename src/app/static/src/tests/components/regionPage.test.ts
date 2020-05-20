@@ -45,12 +45,13 @@ describe("region page", () => {
         project.currentRegion.step = 2;
 
         const store = createStore(jest.fn(), jest.fn(), project);
-        const wrapper = shallowMount(regionPage,{store});
+        const stubs = ["interventions"];
+        const wrapper = shallowMount(regionPage,{store, stubs});
 
         const steps = wrapper.findAll(stepButton);
         expect(steps.at(1).props("active")).toBe(true);
         expect(steps.at(0).props("active")).toBe(false);
-        expect(wrapper.findAll(interventions).length).toBe(1);
+        expect(wrapper.findAll("interventions-stub").length).toBe(1);
         expect(wrapper.findAll(baseline).length).toBe(0);
     });
 
@@ -70,7 +71,6 @@ describe("region page", () => {
     });
 
     it("sets current step when step is clicked", async () => {
-
         const mockSetRegionStep = jest.fn();
         const store = createStore(jest.fn(), mockSetRegionStep);
         const wrapper = mount(regionPage, {localVue, store, router});
