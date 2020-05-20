@@ -45,12 +45,13 @@ describe("region page", () => {
         project.currentRegion.step = 2;
 
         const store = createStore(jest.fn(), jest.fn(), project);
-        const wrapper = shallowMount(regionPage,{store});
+        const stubs = ["interventions"];
+        const wrapper = shallowMount(regionPage,{store, stubs});
 
         const steps = wrapper.findAll(stepButton);
         expect(steps.at(1).props("active")).toBe(true);
         expect(steps.at(0).props("active")).toBe(false);
-        expect(wrapper.findAll(interventions).length).toBe(1);
+        expect(wrapper.findAll("interventions-stub").length).toBe(1);
         expect(wrapper.findAll(baseline).length).toBe(0);
     });
 
@@ -70,21 +71,14 @@ describe("region page", () => {
     });
 
     it("sets current step when step is clicked", async () => {
-        const stubs = ["interventions"];
         const mockSetRegionStep = jest.fn();
         const store = createStore(jest.fn(), mockSetRegionStep);
-        const wrapper = mount(regionPage, {localVue, store, router, stubs});
+        const wrapper = mount(regionPage, {localVue, store, router});
 
         const buttons = wrapper.findAll("button");
         buttons.at(1).trigger("click");
 
         await Vue.nextTick();
-
-        const steps = wrapper.findAll(stepButton);
-        expect(steps.at(1).props("active")).toBe(true);
-        expect(steps.at(0).props("active")).toBe(false);
-        expect(wrapper.findAll("interventions-stub").length).toBe(1);
-        expect(wrapper.findAll(baseline).length).toBe(0);
 
         expect(mockSetRegionStep.mock.calls.length).toBe(1);
         expect(mockSetRegionStep.mock.calls[0][1]).toBe(2);
@@ -93,10 +87,6 @@ describe("region page", () => {
 
         await Vue.nextTick();
 
-        expect(steps.at(0).props("active")).toBe(true);
-        expect(steps.at(1).props("active")).toBe(false);
-        expect(wrapper.findAll("interventions-stub").length).toBe(0);
-        expect(wrapper.findAll(baseline).length).toBe(1);
         expect(mockSetRegionStep.mock.calls.length).toBe(2);
         expect(mockSetRegionStep.mock.calls[1][1]).toBe(1);
 
@@ -105,20 +95,13 @@ describe("region page", () => {
     it("sets current step to 2 when baseline is submitted", async () => {
         const mockSetRegionStep = jest.fn();
         const store = createStore(jest.fn(), mockSetRegionStep);
-        const stubs = ["interventions"];
-        const wrapper = shallowMount(regionPage, {store, stubs});
+        const wrapper = shallowMount(regionPage, {store});
 
         const baselineComp = wrapper.find(baseline);
         baselineComp.vm.$emit("submit");
 
         await Vue.nextTick();
 
-        const steps = wrapper.findAll(stepButton);
-        expect(steps.at(1).props("active")).toBe(true);
-        expect(steps.at(0).props("active")).toBe(false);
-
-        expect(wrapper.findAll("interventions-stub").length).toBe(1);
-        expect(wrapper.findAll(baseline).length).toBe(0);
         expect(mockSetRegionStep.mock.calls.length).toBe(1);
         expect(mockSetRegionStep.mock.calls[0][1]).toBe(2);
     });
