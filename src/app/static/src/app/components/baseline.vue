@@ -3,7 +3,9 @@
         <dynamic-form v-model="options"
                       :include-submit-button="true"
                       submit-text="Next"
-                      @submit="$emit('submit')"></dynamic-form>
+                      @submit="$emit('submit')"
+                      @validate="$emit('validate', $event)"
+                    ></dynamic-form>
     </div>
 </template>
 <script lang="ts">
