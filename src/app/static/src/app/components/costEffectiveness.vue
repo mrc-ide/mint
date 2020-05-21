@@ -15,7 +15,7 @@
 <script lang="ts">
     import Vue from "vue";
     import {Project} from "../models/project";
-    import {Data, Graph, TableDefinition} from "../generated";
+    import {Data, Graph} from "../generated";
     import plotlyGraph from "./figures/graphs/plotlyGraph.vue";
     import {mapStateProp} from "../utils";
     import {RootState} from "../store";
