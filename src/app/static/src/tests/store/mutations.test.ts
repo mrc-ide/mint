@@ -37,6 +37,7 @@ describe("mutations", () => {
             interventionOptions: {controlSections:[]},
             prevalenceGraphData: [],
             impactTableData: [],
+            costGraphData: [],
             step: 1
         })
     });

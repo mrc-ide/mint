@@ -97,6 +97,7 @@ describe("project page", () => {
                 interventionOptions: mockInterventionOptions,
                 prevalenceGraphData: [],
                 impactTableData: [],
+                costGraphData: [],
                 step: 1
             }],
             currentRegion: {
@@ -105,6 +106,7 @@ describe("project page", () => {
                 interventionOptions: mockInterventionOptions,
                 prevalenceGraphData: [],
                 impactTableData: [],
+                costGraphData: [],
                 step: 1
             }
         });
@@ -143,6 +145,7 @@ describe("project page", () => {
                 interventionOptions: mockInterventionOptions,
                 prevalenceGraphData: [],
                 impactTableData: [],
+                costGraphData: [],
                 step: 1
             }],
             currentRegion: {
@@ -152,6 +155,7 @@ describe("project page", () => {
                 interventionOptions: mockInterventionOptions,
                 prevalenceGraphData: [],
                 impactTableData: [],
+                costGraphData: [],
                 step: 1
 
             }

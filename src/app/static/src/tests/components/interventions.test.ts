@@ -116,6 +116,7 @@ describe("interventions", () => {
                 interventionOptions: {controlSections: []},
                 impactTableData: [],
                 prevalenceGraphData: [],
+                costGraphData: [],
                 step: 1
             };
         await Vue.nextTick();
