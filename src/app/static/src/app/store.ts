@@ -58,7 +58,8 @@ const storeOptions: StoreOptions<RootState> = {
         prevalenceGraphConfig: null,
         baselineOptions: null,
         interventionOptions:  null,
-        impactTableConfig: null
+        impactTableConfig: null,
+        costCasesGraphConfig: null
     },
     actions,
     mutations,

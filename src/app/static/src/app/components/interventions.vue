@@ -55,6 +55,8 @@
         changeVerticalTab: (name: string) => void
         changeHorizontalTab: (name: string) => void
         fetchData: () => void
+        fetchImpactData: () => void
+        fetchCostEffectivenessData: () => void
     }
 
     interface Computed {
@@ -92,7 +94,12 @@
             changeHorizontalTab(name: string) {
                 this.activeHorizontalTab = name;
             },
-            fetchData: mapActionByName(RootAction.FetchImpactData)
+            fetchData: function() {
+                this.fetchImpactData();
+                this.fetchCostEffectivenessData();
+            },
+            fetchImpactData: mapActionByName(RootAction.FetchImpactData),
+            fetchCostEffectivenessData: mapActionByName(RootAction.FetchCostEffectivenessData)
         },
         components: {verticalTabs, impact, costEffectiveness, DynamicForm},
         mounted() {

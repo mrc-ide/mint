@@ -15,6 +15,7 @@ export enum RootAction {
     FetchBaselineOptions = "FetchBaselineOptions",
     FetchInterventionOptions = "FetchInterventionOptions",
     FetchImpactData = "FetchImpactData",
+    FetchCostEffectivenessData = "FetchCostEffectivenessData",
     FetchConfig = "FetchConfig"
 }
 
@@ -169,12 +170,19 @@ export const actions: ActionTree<RootState, RootState> = {
         ]);
     },
 
+    async [RootAction.FetchCostEffectivenessData](context) {
+        await Promise.all([
+            context.dispatch(RootAction.FetchCostGraphData)
+        ]);
+    },
+
     async [RootAction.FetchConfig](context) {
         await Promise.all([
             context.dispatch(RootAction.FetchBaselineOptions),
             context.dispatch(RootAction.FetchInterventionOptions),
             context.dispatch(RootAction.FetchPrevalenceGraphConfig),
-            context.dispatch(RootAction.FetchImpactTableConfig)
+            context.dispatch(RootAction.FetchImpactTableConfig),
+            context.dispatch(RootAction.FetchCostCasesGraphConfig)
         ]);
     }
 
