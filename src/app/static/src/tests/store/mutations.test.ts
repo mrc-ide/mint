@@ -153,4 +153,22 @@ describe("mutations", () => {
 
         expect(state.impactTableConfig).toStrictEqual(["some data"]);
     });
+
+    it("adds cost cases graph config", () => {
+        const state = mockRootState();
+        mutations[RootMutation.AddCostCasesGraphConfig](state, ["config data"]);
+
+        expect(state.costCasesGraphConfig).toStrictEqual(["config data"]);
+    });
+
+    it("adds cost graph data", () => {
+        const project = mockProject();
+        const state = mockRootState({
+            projects: [project],
+            currentProject: project
+        });
+        mutations[RootMutation.AddCostGraphData](state, ["some data"]);
+
+        expect(state.currentProject!!.currentRegion.costGraphData).toStrictEqual(["some data"]);
+    });
 });

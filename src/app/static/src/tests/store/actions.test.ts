@@ -29,7 +29,8 @@ describe("actions", () => {
             currentRegion: {
                 baselineOptions: options,
                 prevalenceGraphData: [],
-                impactTableData: []
+                impactTableData: [],
+                costGraphData: []
             }
         }
     };
@@ -122,6 +123,23 @@ describe("actions", () => {
         expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchInterventionOptions);
         expect(dispatch.mock.calls[2][0]).toBe(RootAction.FetchPrevalenceGraphConfig);
         expect(dispatch.mock.calls[3][0]).toBe(RootAction.FetchImpactTableConfig);
+        expect(dispatch.mock.calls[4][0]).toBe(RootAction.FetchCostCasesGraphConfig);
+    });
+
+    it("FetchCostCaseGraphConfig commits dummy data", async () => {
+        const commit = jest.fn();
+        await (actions[RootAction.FetchCostCasesGraphConfig] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostCasesGraphConfig);
+        expect(commit.mock.calls[0][1].series.length).toBe(6);
+    });
+
+    it("FetchCostGraphData commits dummy data", async () => {
+        const commit = jest.fn();
+        await(actions[RootAction.FetchCostGraphData] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostGraphData);
+        expect(commit.mock.calls[0][1].length).toBe(6);
     });
 
     it("EnsureImpactData fetches all impact figure data if none already present", async () => {
@@ -179,6 +197,28 @@ describe("actions", () => {
             }
         };
         await (actions[RootAction.EnsureImpactData] as any)({dispatch, state: stateWithAllImpactData} as any);
+
+        expect(dispatch.mock.calls.length).toBe(0);
+    });
+
+    it("EnsureCostEffectivenessData fetches cost effectiveness data if not already present", async () => {
+        const dispatch = jest.fn();
+        await (actions[RootAction.EnsureCostEffectivenessData] as any)({dispatch, state} as any);
+
+        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchCostGraphData);
+    });
+
+    it("EnsureCostEffectivenessData does not fetch cost effectiveness data if already present", async () => {
+        const dispatch = jest.fn();
+        const stateWithCostData = {
+            currentProject: {
+                currentRegion: {
+                    baselineOptions: options,
+                    costGraphData: ["TEST COST DATA"]
+                }
+            }
+        };
+        await (actions[RootAction.EnsureCostEffectivenessData] as any)({dispatch, state: stateWithCostData} as any);
 
         expect(dispatch.mock.calls.length).toBe(0);
     });
