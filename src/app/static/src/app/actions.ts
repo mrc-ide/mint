@@ -62,14 +62,82 @@ export const actions: ActionTree<RootState, RootState> = {
                     x_col: "cases_averted",
                     y_col: "cost",
                     id_col: "interventions",
-                    error_plus_col: "cases_averted_error_plus",
-                    error_minus_col: "cases_averted_error_minus",
-                    color_col: "color",
-                    format: "scatter"
+                    format: "long"
                 },
-                config: {
-                    marker_size: 10
-                },
+                series: [
+                    {
+                        id: "none",
+                        name: "No intervention",
+                        type: "scatter",
+                        marker: {color: "grey", size: 10},
+                        error_x: {
+                            type: "data",
+                            width: 0,
+                            cols: "cases_averted_error_plus",
+                            cols_minus: "cases_averted_error_minus"
+                        }
+                    },
+                    {
+                        id: "ITN",
+                        name: "Pyrethoid ITN",
+                        type: "scatter",
+                        marker: {color: "blue", size: 10},
+                        error_x: {
+                            type: "data",
+                            width: 0,
+                            cols: "cases_averted_error_plus",
+                            cols_minus: "cases_averted_error_minus"
+                        }
+                    },
+                    {
+                        id: "PBO",
+                        name: "Switch to Pyrethoid-PBO ITN",
+                        type: "scatter",
+                        marker: {color: "aquamarine", size: 10},
+                        error_x: {
+                            type: "data",
+                            width: 0,
+                            cols: "cases_averted_error_plus",
+                            cols_minus: "cases_averted_error_minus"
+                        }
+                    },
+                    {
+                        id: "IRS",
+                        name: "Only IRS",
+                        type: "scatter",
+                        marker: {color: "purple", size: 10},
+                        error_x: {
+                            type: "data",
+                            width: 0,
+                            cols: "cases_averted_error_plus",
+                            cols_minus: "cases_averted_error_minus"
+                        }
+                    },
+                    {
+                        id: "ITN-IRS",
+                        name: "Add IRS to Pyrethoid ITN",
+                        type: "scatter",
+                        marker: {color: "darkred", size: 10},
+                        error_x: {
+                            type: "data",
+                            width: 0,
+                            cols: "cases_averted_error_plus",
+                            cols_minus: "cases_averted_error_minus"
+                        }
+                    },
+                    {
+                        id: "PBO-IRS",
+                        name: "Add IRS to Pyrethoid-PBO ITN",
+                        type: "scatter",
+                        marker: {color: "orange", size: 10},
+                        error_x: {
+                            type: "data",
+                            width: 0,
+                            cols: "cases_averted_error_plus",
+                            cols_minus: "cases_averted_error_minus"
+                        }
+                    }
+                ],
                 layout: {
                     title: "Strategy costs over 3 years",
                     xaxis: {
@@ -87,8 +155,7 @@ export const actions: ActionTree<RootState, RootState> = {
                         tickvals: [0, 10 , 20],
                         autorange: false
                     }
-                },
-                series: []
+                }
             });
     },
 
@@ -97,52 +164,46 @@ export const actions: ActionTree<RootState, RootState> = {
         context.commit(RootMutation.AddCostGraphData,
             [
                 {
-                    intervention: "No intervention",
+                    intervention: "none",
                     cost: 0,
                     cases_averted: 0,
                     cases_averted_error_minus: 0,
-                    cases_averted_error_plus: 0,
-                    color: "grey"
+                    cases_averted_error_plus: 0
                 },
                 {
-                    intervention: "Pyrethoid ITN",
+                    id: "ITN",
                     cost: 8,
                     cases_averted: 280,
                     cases_averted_error_minus: 90,
-                    cases_averted_error_plus: 85,
-                    color: "blue"
+                    cases_averted_error_plus: 85
                 },
                 {
-                    intervention: "Switch to Pyrethoid-PBO ITN",
+                    id: "PBO",
                     cost: 9,
                     cases_averted: 325,
                     cases_averted_error_minus: 85,
-                    cases_averted_error_plus: 80,
-                    color: "aquamarine"
+                    cases_averted_error_plus: 80
                 },
                 {
-                    intervention: "Only IRS",
+                    id: "IRS",
                     cost: 17,
                     cases_averted: 630,
                     cases_averted_error_minus: 120,
-                    cases_averted_error_plus: 140,
-                    color: "purple"
+                    cases_averted_error_plus: 140
                 },
                 {
-                    intervention: "Add IRS to Pyrethoid ITN",
+                    id: "ITN-IRS",
                     cost: 22,
                     cases_averted: 635,
                     cases_averted_error_minus: 75,
-                    cases_averted_error_plus: 120,
-                    color: "darkred"
+                    cases_averted_error_plus: 120
                 },
                 {
-                    intervention: "Add IRS to Pyrethoid-PBO ITN",
+                    id: "PBO-IRS",
                     cost: 23,
                     cases_averted: 636,
                     cases_averted_error_minus: 65,
-                    cases_averted_error_plus: 125,
-                    cases_color: "orange"
+                    cases_averted_error_plus: 125
                 }
             ]);
     },

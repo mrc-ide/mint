@@ -1,5 +1,5 @@
 import {MutationTree} from "vuex";
-import {RootState, ScatterGraph} from "./store";
+import {RootState} from "./store";
 import {Project} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
@@ -82,7 +82,7 @@ export const mutations: MutationTree<RootState> = {
         }
     },
 
-    [RootMutation.AddCostCasesGraphConfig](state: RootState, payload: ScatterGraph) {
+    [RootMutation.AddCostCasesGraphConfig](state: RootState, payload: Graph) {
         state.costCasesGraphConfig = payload;
     }
 };

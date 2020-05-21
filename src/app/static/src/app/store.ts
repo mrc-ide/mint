@@ -13,7 +13,7 @@ import {actions} from "./actions";
 
 //TODO: ScatterMetadata to be generated from mintr, and Graph metadata options to include ScatterMetadata - just checking
 //we can get this format working in the front end for now
-export interface ScatterGraph {
+/*export interface ScatterGraph {
     metadata: ScatterMetadata;
     series: SeriesDefinition[];
     layout: {
@@ -27,11 +27,11 @@ export interface ScatterMetadata {
     x_col: string;
     y_col: string;
     id_col: string;
-    error_plus_col: string;
-    error_minus_col: string;
+    error_plus_col: string | null;
+    error_minus_col: string | null;
     color_col: string;
     format: "scatter";
-}
+}*/
 
 export interface RootState {
     projects: Project[]
@@ -41,7 +41,7 @@ export interface RootState {
     interventionOptions: DynamicFormMeta | null
     prevalenceGraphConfig: Graph | null
     impactTableConfig: TableDefinition | null
-    costCasesGraphConfig: ScatterGraph | null
+    costCasesGraphConfig: Graph | null
 }
 
 const logger = (store: Store<RootState>) => {
