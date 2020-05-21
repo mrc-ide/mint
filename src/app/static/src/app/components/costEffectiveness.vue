@@ -4,8 +4,7 @@
                       :layout="casesAvertedGraphConfig.layout"
                       :metadata="casesAvertedGraphConfig.metadata"
                       :series="casesAvertedGraphConfig.series"
-                      :data="graphData"
-                      :settings="settings"></plotly-graph>
+                      :data="graphData"></plotly-graph>
 
         <div v-if="activeTab === 'Table'">
             Cost effectiveness table
@@ -29,11 +28,6 @@
     export default Vue.extend<{}, {}, Computed, {}>({
         components: {plotlyGraph},
         props: ["activeTab"],
-        data() {
-            return {
-                settings: {'net_use': 0, 'irs_use': 0}
-            }
-        },
         computed: {
             currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
             casesAvertedGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costCasesGraphConfig),
