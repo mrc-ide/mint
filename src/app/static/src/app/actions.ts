@@ -14,8 +14,8 @@ export enum RootAction {
     FetchCostGraphData = "FetchCostCasesGraphData",
     FetchBaselineOptions = "FetchBaselineOptions",
     FetchInterventionOptions = "FetchInterventionOptions",
-    FetchImpactData = "FetchImpactData",
-    FetchCostEffectivenessData = "FetchCostEffectivenessData",
+    EnsureImpactData = "FetchImpactData",
+    EnsureCostEffectivenessData = "FetchCostEffectivenessData",
     FetchConfig = "FetchConfig"
 }
 
@@ -243,17 +243,23 @@ export const actions: ActionTree<RootState, RootState> = {
             .get<Data>("/impact/table/config")
     },
 
-    async [RootAction.FetchImpactData](context) {
-        await Promise.all([
-            context.dispatch(RootAction.FetchPrevalenceGraphData),
-            context.dispatch(RootAction.FetchImpactTableData)
-        ]);
+    async [RootAction.EnsureImpactData](context) {
+        const project = context.state.currentProject;
+        if (project && (!project.currentRegion.impactTableData.length || !project.currentRegion.prevalenceGraphData.length)) {
+            await Promise.all([
+                context.dispatch(RootAction.FetchPrevalenceGraphData),
+                context.dispatch(RootAction.FetchImpactTableData)
+            ]);
+        }
     },
 
-    async [RootAction.FetchCostEffectivenessData](context) {
-        await Promise.all([
-            context.dispatch(RootAction.FetchCostGraphData)
-        ]);
+    async [RootAction.EnsureCostEffectivenessData](context) {
+        const project = context.state.currentProject;
+        if (project && !project.currentRegion.costGraphData.length) {
+            await Promise.all([
+                context.dispatch(RootAction.FetchCostGraphData)
+            ]);
+        }
     },
 
     async [RootAction.FetchConfig](context) {

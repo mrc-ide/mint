@@ -12,11 +12,11 @@ import {DynamicForm} from "@reside-ic/vue-dynamic-form";
 describe("interventions", () => {
 
     const createStore = (state: Partial<RootState> = {currentProject: mockProject()},
-                         mockFetchData = jest.fn()) => {
+                         mockEnsureData = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.FetchImpactData]: mockFetchData
+                [RootAction.EnsureImpactData]: mockEnsureData
             }
         });
     };
