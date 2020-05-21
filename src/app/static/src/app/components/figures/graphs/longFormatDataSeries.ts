@@ -16,6 +16,10 @@ export function useLongFormatData(props: Props) {
 
         const error_cols = definition.error_x ? definition.error_x.cols : null;
         const error_cols_minus = definition.error_x ? definition.error_x.colsminus : null;
+
+        console.log("error_cols: " + error_cols);
+        console.log("error_cols_minus:" + error_cols_minus);
+
         const error_array = [] as any;
         const error_array_minus = [] as any;
 

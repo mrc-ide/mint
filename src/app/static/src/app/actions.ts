@@ -61,7 +61,7 @@ export const actions: ActionTree<RootState, RootState> = {
                 metadata: {
                     x_col: "cases_averted",
                     y_col: "cost",
-                    id_col: "interventions",
+                    id_col: "intervention",
                     format: "long"
                 },
                 series: [
@@ -74,7 +74,7 @@ export const actions: ActionTree<RootState, RootState> = {
                             type: "data",
                             width: 0,
                             cols: "cases_averted_error_plus",
-                            cols_minus: "cases_averted_error_minus"
+                            colsminus: "cases_averted_error_minus"
                         }
                     },
                     {
@@ -86,7 +86,7 @@ export const actions: ActionTree<RootState, RootState> = {
                             type: "data",
                             width: 0,
                             cols: "cases_averted_error_plus",
-                            cols_minus: "cases_averted_error_minus"
+                            colsminus: "cases_averted_error_minus"
                         }
                     },
                     {
@@ -98,7 +98,7 @@ export const actions: ActionTree<RootState, RootState> = {
                             type: "data",
                             width: 0,
                             cols: "cases_averted_error_plus",
-                            cols_minus: "cases_averted_error_minus"
+                            colsminus: "cases_averted_error_minus"
                         }
                     },
                     {
@@ -110,7 +110,7 @@ export const actions: ActionTree<RootState, RootState> = {
                             type: "data",
                             width: 0,
                             cols: "cases_averted_error_plus",
-                            cols_minus: "cases_averted_error_minus"
+                            colsminus: "cases_averted_error_minus"
                         }
                     },
                     {
@@ -122,7 +122,7 @@ export const actions: ActionTree<RootState, RootState> = {
                             type: "data",
                             width: 0,
                             cols: "cases_averted_error_plus",
-                            cols_minus: "cases_averted_error_minus"
+                            colsminus: "cases_averted_error_minus"
                         }
                     },
                     {
@@ -134,7 +134,7 @@ export const actions: ActionTree<RootState, RootState> = {
                             type: "data",
                             width: 0,
                             cols: "cases_averted_error_plus",
-                            cols_minus: "cases_averted_error_minus"
+                            colsminus: "cases_averted_error_minus"
                         }
                     }
                 ],
@@ -143,17 +143,18 @@ export const actions: ActionTree<RootState, RootState> = {
                     xaxis: {
                         title: 'Cases averted per 1,000 people across 3-years',
                         showline: true,
-                        range: [-2, 800],
+                        range: [-10, 800],
                         tickvals: [0, 100, 200, 300, 400, 500, 600, 700],
                         autorange: false,
-                        zeroline: false,
+                        zeroline: false
                     },
                     yaxis: {
                         title: 'Total costs ($10,000 USD)',
                         showline: true,
-                        range: [0, 30],
+                        range: [-2, 30],
                         tickvals: [0, 10 , 20],
-                        autorange: false
+                        autorange: false,
+                        zeroline: false
                     }
                 }
             });
@@ -168,42 +169,60 @@ export const actions: ActionTree<RootState, RootState> = {
                     cost: 0,
                     cases_averted: 0,
                     cases_averted_error_minus: 0,
-                    cases_averted_error_plus: 0
+                    cases_averted_error_plus: 0,
+                    efficacy: 0,
+                    efficacy_error_minus: 0,
+                    efficacy_error_plus: 0
                 },
                 {
-                    id: "ITN",
+                    intervention: "ITN",
                     cost: 8,
                     cases_averted: 280,
                     cases_averted_error_minus: 90,
-                    cases_averted_error_plus: 85
+                    cases_averted_error_plus: 85,
+                    efficacy: 40,
+                    efficacy_error_minus: 3,
+                    efficacy_error_plus: 1,
                 },
                 {
-                    id: "PBO",
+                    intervention: "PBO",
                     cost: 9,
                     cases_averted: 325,
                     cases_averted_error_minus: 85,
-                    cases_averted_error_plus: 80
+                    cases_averted_error_plus: 80,
+                    efficacy: 45,
+                    efficacy_error_minus: 4,
+                    efficacy_error_plus: 2,
                 },
                 {
-                    id: "IRS",
+                    intervention: "IRS",
                     cost: 17,
                     cases_averted: 630,
                     cases_averted_error_minus: 120,
-                    cases_averted_error_plus: 140
+                    cases_averted_error_plus: 140,
+                    efficacy: 72,
+                    efficacy_error_minus: 8,
+                    efficacy_error_plus: 3
                 },
                 {
-                    id: "ITN-IRS",
+                    intervention: "ITN-IRS",
                     cost: 22,
                     cases_averted: 635,
                     cases_averted_error_minus: 75,
-                    cases_averted_error_plus: 120
+                    cases_averted_error_plus: 120,
+                    efficacy: 70,
+                    efficacy_error_minus: 6,
+                    efficacy_error_plus: 4
                 },
                 {
-                    id: "PBO-IRS",
+                    intervention: "PBO-IRS",
                     cost: 23,
                     cases_averted: 636,
                     cases_averted_error_minus: 65,
-                    cases_averted_error_plus: 125
+                    cases_averted_error_plus: 125,
+                    efficacy: 74,
+                    efficacy_error_minus: 2,
+                    efficacy_error_plus: 5
                 }
             ]);
     },
