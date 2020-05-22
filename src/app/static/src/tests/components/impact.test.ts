@@ -65,13 +65,15 @@ describe("impact", () => {
     });
 
     it("shows table under table tab if table config exists", () => {
-        const project = mockProject();
-        project.currentRegion.interventionSettings = {"test": 1}
         const store = createStore({
-            currentProject: project,
             impactTableConfig: {"col": "Column name"},
-            impactTableData: [{col: 1}]
-        });
+            currentProject: {
+                currentRegion: {
+                    impactTableData: [{col: 1}],
+                    interventionSettings: {"test": 1}
+                }
+            }
+        } as any);
         const wrapper = shallowMount(impact, {propsData: {activeTab: "Table"}, store});
         expect(wrapper.findAll(dynamicTable).length).toBe(1);
         const table = wrapper.findAll(dynamicTable).at(0);
@@ -90,6 +92,20 @@ describe("impact", () => {
         const store = createStore();
         const wrapper = shallowMount(impact, {propsData: {activeTab: "Table"}, store});
         expect(wrapper.findAll(dynamicTable).length).toBe(0);
+    });
+
+    it("graph data is empty if no current project", () => {
+        const store = createStore({prevalenceGraphConfig: {config: "TEST CONFIG"}} as any);
+        const wrapper = shallowMount(impact, {propsData: {activeTab: "Graphs"}, store});
+        const table = wrapper.find(plotlyGraph);
+        expect(table.props("data")).toEqual([]);
+    });
+
+    it("table data is empty if no current project", ()=>{
+        const store = createStore({impactTableConfig: {"col": "Column name"}});
+        const wrapper = shallowMount(impact, {propsData: {activeTab: "Table"}, store});
+        const table = wrapper.find(dynamicTable);
+        expect(table.props("data")).toEqual([]);
     });
 
 });

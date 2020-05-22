@@ -1,5 +1,6 @@
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {deepCopy} from "../utils";
+import {Data} from "../generated";
 
 export interface Region {
     name: string
@@ -7,6 +8,9 @@ export interface Region {
     baselineOptions: DynamicFormMeta
     interventionOptions: DynamicFormMeta
     interventionSettings: DynamicFormData
+    prevalenceGraphData: Data
+    impactTableData: Data
+    step: number
 }
 
 export class Region {
@@ -26,6 +30,9 @@ export class Region {
                 })
             })
         });
+        this.prevalenceGraphData = [];
+        this.impactTableData = [];
+        this.step = 1;
     }
 
 }

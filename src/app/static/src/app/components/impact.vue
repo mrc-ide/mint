@@ -21,17 +21,32 @@
     import plotlyGraph from "./figures/graphs/plotlyGraph.vue";
     import dynamicTable from "./figures/dynamicTable.vue";
     import {DynamicFormData} from "@reside-ic/vue-dynamic-form";
+    import {Project} from "../models/project";
 
-    export default Vue.extend({
+    interface Computed {
+        prevalenceGraphConfig: Graph | null,
+        tableConfig: TableDefinition | null,
+        currentProject: Project | null,
+        prevalenceGraphData: Data,
+        tableData: Data,
+        settings: DynamicFormData | null
+    }
+
+    export default Vue.extend<{}, {}, Computed, {}>({
         components: {plotlyGraph, dynamicTable},
         props: ["activeTab"],
         computed: {
             settings: mapStateProp<RootState, DynamicFormData | null>
-            (state => state.currentProject && state.currentProject.currentRegion.interventionSettings),
+                (state => state.currentProject && state.currentProject.currentRegion.interventionSettings),
             prevalenceGraphConfig: mapStateProp<RootState, Graph | null>(state => state.prevalenceGraphConfig),
-            prevalenceGraphData: mapStateProp<RootState, Data>(state => state.prevalenceGraphData),
-            tableData: mapStateProp<RootState, Data>(state => state.impactTableData),
-            tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.impactTableConfig)
+            tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.impactTableConfig),
+            currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
+            prevalenceGraphData() {
+                return this.currentProject ? this.currentProject.currentRegion.prevalenceGraphData : [];
+            },
+            tableData() {
+                return this.currentProject ? this.currentProject.currentRegion.impactTableData : [];
+            }
         }
     });
 

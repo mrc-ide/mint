@@ -13,13 +13,13 @@ import {RootMutation} from "../../app/mutations";
 describe("interventions", () => {
 
     const createStore = (state: Partial<RootState> = {currentProject: mockProject()},
-                         mockFetchData = jest.fn(),
+                         mockEnsureData = jest.fn(),
                          mockSetOptions = jest.fn(),
                          mockSetSettings = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.FetchImpactData]: mockFetchData
+                [RootAction.EnsureImpactData]: mockEnsureData
             },
             mutations: {
                 [RootMutation.SetCurrentRegionInterventionOptions]: mockSetOptions,
@@ -186,7 +186,10 @@ describe("interventions", () => {
                 url: "/",
                 baselineOptions: {controlSections: []},
                 interventionOptions: {controlSections: []},
-                interventionSettings: {}
+                interventionSettings: {},
+                impactTableData: [],
+                prevalenceGraphData: [],
+                step: 1
             };
         await Vue.nextTick();
 

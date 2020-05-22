@@ -104,13 +104,19 @@ describe("project page", () => {
                 name: "South", url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
-                interventionSettings: {"c1": null}
+                interventionSettings: {"c1": null},
+                prevalenceGraphData: [],
+                impactTableData: [],
+                step: 1
             }],
             currentRegion: {
                 name: "South", url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
-                interventionSettings: {"c1": null}
+                interventionSettings: {"c1": null},
+                prevalenceGraphData: [],
+                impactTableData: [],
+                step: 1
             }
         });
 
@@ -146,14 +152,20 @@ describe("project page", () => {
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
-                interventionSettings: {"c1": null}
+                interventionSettings: {"c1": null},
+                prevalenceGraphData: [],
+                impactTableData: [],
+                step: 1
             }],
             currentRegion: {
                 name: "South",
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
-                interventionSettings: {"c1": null}
+                interventionSettings: {"c1": null},
+                prevalenceGraphData: [],
+                impactTableData: [],
+                step: 1
             }
         });
 

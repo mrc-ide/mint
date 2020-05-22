@@ -11,6 +11,7 @@ export enum RootMutation {
     SetCurrentRegionBaselineOptions = "SetCurrentRegionBaselineOptions",
     SetCurrentRegionInterventionOptions = "SetCurrentRegionInterventionOptions",
     SetCurrentRegionInterventionSettings="SetCurrentRegionInterventionSettings",
+    SetCurrentRegionStep = "SetCurrentRegionStep",
     AddError = "AddError",
     AddBaselineOptions = "AddBaselineOptions",
     AddInterventionOptions = "AddInterventionOptions",
@@ -33,7 +34,11 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.SetCurrentRegionBaselineOptions](state: RootState, payload: DynamicFormMeta) {
         if (state.currentProject) {
-            state.currentProject.currentRegion.baselineOptions = payload
+            state.currentProject.currentRegion.baselineOptions = payload;
+
+            //Invalidate current region data
+            state.currentProject.currentRegion.impactTableData = [];
+            state.currentProject.currentRegion.prevalenceGraphData = [];
         }
     },
 
@@ -46,7 +51,13 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.SetCurrentRegionInterventionSettings](state: RootState, payload: DynamicFormData) {
         if (state.currentProject) {
-            state.currentProject.currentRegion.interventionSettings = payload
+            state.currentProject.currentRegion.interventionSettings = payload;
+        }
+    },
+
+    [RootMutation.SetCurrentRegionStep](state: RootState, payload: number) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.step = payload;
         }
     },
 
@@ -63,7 +74,9 @@ export const mutations: MutationTree<RootState> = {
     },
 
     [RootMutation.AddPrevalenceGraphData](state: RootState, payload: Data) {
-        state.prevalenceGraphData = payload
+        if (state.currentProject) {
+            state.currentProject.currentRegion.prevalenceGraphData = payload;
+        }
     },
 
     [RootMutation.AddPrevalenceGraphConfig](state: RootState, payload: Graph) {
@@ -71,7 +84,9 @@ export const mutations: MutationTree<RootState> = {
     },
 
     [RootMutation.AddImpactTableData](state: RootState, payload: Data) {
-        state.impactTableData = payload
+        if (state.currentProject) {
+            state.currentProject.currentRegion.impactTableData = payload;
+        }
     },
 
     [RootMutation.AddImpactTableConfig](state: RootState, payload: TableDefinition) {

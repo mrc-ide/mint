@@ -27,7 +27,9 @@ describe("actions", () => {
     const state = {
         currentProject: {
             currentRegion: {
-                baselineOptions: options
+                baselineOptions: options,
+                prevalenceGraphData: [],
+                impactTableData: []
             }
         }
     };
@@ -122,12 +124,63 @@ describe("actions", () => {
         expect(dispatch.mock.calls[3][0]).toBe(RootAction.FetchImpactTableConfig);
     });
 
-    it("FetchImpactTableData fetches all impact figure data", async () => {
+    it("EnsureImpactData fetches all impact figure data if none already present", async () => {
         const dispatch = jest.fn();
-        await (actions[RootAction.FetchImpactData] as any)({dispatch} as any);
+        await (actions[RootAction.EnsureImpactData] as any)({dispatch, state} as any);
 
         expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
         expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchImpactTableData);
+    });
+
+    it("EnsureImpactData fetches all impact figure data if graph not already present", async () => {
+        const dispatch = jest.fn();
+        const stateWithoutImpactGraph = {
+            currentProject: {
+                currentRegion: {
+                    baselineOptions: options,
+                    prevalenceGraphData: [],
+                    impactTableData: ["TEST TABLE DATA"] as any
+                }
+            }
+        };
+        await (actions[RootAction.EnsureImpactData] as any)({dispatch, state: stateWithoutImpactGraph} as any);
+
+        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
+        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchImpactTableData);
+    });
+
+    it("EnsureImpactData fetches all impact figure data if table not already present", async () => {
+        const dispatch = jest.fn();
+        const stateWithoutImpactTable = {
+            currentProject: {
+                currentRegion: {
+                    baselineOptions: options,
+                    prevalenceGraphData: ["TEST GRAPH DATA"] as any,
+                    impactTableData: []
+                }
+            }
+        };
+        await (actions[RootAction.EnsureImpactData] as any)({dispatch, state: stateWithoutImpactTable} as any);
+
+        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
+        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchImpactTableData);
+
+    });
+
+    it("EnsureImpactData does not fetch impact figure data if all data already present", async () => {
+        const dispatch = jest.fn();
+        const stateWithAllImpactData = {
+            currentProject: {
+                currentRegion: {
+                    baselineOptions: options,
+                    prevalenceGraphData: ["TEST GRAPH DATA"] as any,
+                    impactTableData: ["TEST TABLE DATA"] as any
+                }
+            }
+        };
+        await (actions[RootAction.EnsureImpactData] as any)({dispatch, state: stateWithAllImpactData} as any);
+
+        expect(dispatch.mock.calls.length).toBe(0);
     });
 
 });

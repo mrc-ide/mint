@@ -58,9 +58,9 @@
         submitForm: () => void
         changeVerticalTab: (name: string) => void
         changeHorizontalTab: (name: string) => void
-        fetchData: () => void
         updateInterventionOptions: (payload: DynamicFormMeta) => void
         updateInterventionSettings: (payload: DynamicFormData) => void
+        ensureData: () => void
     }
 
     interface Computed {
@@ -105,13 +105,13 @@
             changeHorizontalTab(name: string) {
                 this.activeHorizontalTab = name;
             },
-            fetchData: mapActionByName(RootAction.FetchImpactData),
+            ensureData: mapActionByName(RootAction.EnsureImpactData),
             updateInterventionOptions: mapMutationByName(RootMutation.SetCurrentRegionInterventionOptions),
             updateInterventionSettings: mapMutationByName(RootMutation.SetCurrentRegionInterventionSettings)
         },
         components: {verticalTabs, impact, costEffectiveness, DynamicForm},
         mounted() {
-            this.fetchData();
+            this.ensureData();
             this.submitForm();
         },
         watch: {
@@ -119,7 +119,7 @@
                 this.submitForm();
             },
             currentRegion: function () {
-                this.fetchData();
+                this.ensureData();
             }
         }
     });
