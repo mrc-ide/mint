@@ -12,11 +12,13 @@ import {DynamicForm} from "@reside-ic/vue-dynamic-form";
 describe("interventions", () => {
 
     const createStore = (state: Partial<RootState> = {currentProject: mockProject()},
-                         mockEnsureData = jest.fn()) => {
+                         mockEnsureImpactData = jest.fn(),
+                         mockEnsureCostData = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.EnsureImpactData]: mockEnsureData
+                [RootAction.EnsureImpactData]: mockEnsureImpactData,
+                [RootAction.EnsureCostEffectivenessData]: mockEnsureCostData
             }
         });
     };
@@ -71,10 +73,12 @@ describe("interventions", () => {
     });
 
     it("fetches data on mount", async () => {
-        const mockFetch = jest.fn();
-        const store = createStore({currentProject: mockProject()}, mockFetch);
+        const mockFetchImpact = jest.fn();
+        const mockFetchCost = jest.fn();
+        const store = createStore({currentProject: mockProject()}, mockFetchImpact, mockFetchCost);
         shallowMount(interventions, {store});
-        expect(mockFetch.mock.calls.length).toBe(1);
+        expect(mockFetchImpact.mock.calls.length).toBe(1);
+        expect(mockFetchCost.mock.calls.length).toBe(1);
     });
 
     it("renders intervention options", async () => {

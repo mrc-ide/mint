@@ -14,8 +14,8 @@ export function useLongFormatData(props: Props) {
         const y = [] as any[];
         const meta = props.metadata as LongFormatMetadata;
 
-        const error_cols = definition.error_x ? definition.error_x.cols : null;
-        const error_cols_minus = definition.error_x ? definition.error_x.colsminus : null;
+        const error_col = definition.error_x ? definition.error_x.col : null;
+        const error_col_minus = definition.error_x ? definition.error_x.colminus : null;
 
         const error_array = [] as any;
         const error_array_minus = [] as any;
@@ -25,9 +25,9 @@ export function useLongFormatData(props: Props) {
                 x.push(row[meta.x_col]);
                 y.push(row[meta.y_col]);
 
-                if (error_cols && error_cols_minus) {
-                    error_array.push(row[error_cols]);
-                    error_array_minus.push(row[error_cols_minus]);
+                if (error_col && error_col_minus) {
+                    error_array.push(row[error_col]);
+                    error_array_minus.push(row[error_col_minus]);
                 }
             }
         });

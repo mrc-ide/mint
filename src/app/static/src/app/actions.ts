@@ -73,8 +73,8 @@ export const actions: ActionTree<RootState, RootState> = {
                         error_x: {
                             type: "data",
                             width: 0,
-                            cols: "cases_averted_error_plus",
-                            colsminus: "cases_averted_error_minus"
+                            col: "cases_averted_error_plus",
+                            colminus: "cases_averted_error_minus"
                         }
                     },
                     {
@@ -85,8 +85,8 @@ export const actions: ActionTree<RootState, RootState> = {
                         error_x: {
                             type: "data",
                             width: 0,
-                            cols: "cases_averted_error_plus",
-                            colsminus: "cases_averted_error_minus"
+                            col: "cases_averted_error_plus",
+                            colminus: "cases_averted_error_minus"
                         }
                     },
                     {
@@ -97,8 +97,8 @@ export const actions: ActionTree<RootState, RootState> = {
                         error_x: {
                             type: "data",
                             width: 0,
-                            cols: "cases_averted_error_plus",
-                            colsminus: "cases_averted_error_minus"
+                            col: "cases_averted_error_plus",
+                            colminus: "cases_averted_error_minus"
                         }
                     },
                     {
@@ -109,8 +109,8 @@ export const actions: ActionTree<RootState, RootState> = {
                         error_x: {
                             type: "data",
                             width: 0,
-                            cols: "cases_averted_error_plus",
-                            colsminus: "cases_averted_error_minus"
+                            col: "cases_averted_error_plus",
+                            colminus: "cases_averted_error_minus"
                         }
                     },
                     {
@@ -121,8 +121,8 @@ export const actions: ActionTree<RootState, RootState> = {
                         error_x: {
                             type: "data",
                             width: 0,
-                            cols: "cases_averted_error_plus",
-                            colsminus: "cases_averted_error_minus"
+                            col: "cases_averted_error_plus",
+                            colminus: "cases_averted_error_minus"
                         }
                     },
                     {
@@ -133,8 +133,8 @@ export const actions: ActionTree<RootState, RootState> = {
                         error_x: {
                             type: "data",
                             width: 0,
-                            cols: "cases_averted_error_plus",
-                            colsminus: "cases_averted_error_minus"
+                            col: "cases_averted_error_plus",
+                            colminus: "cases_averted_error_minus"
                         }
                     }
                 ],
