@@ -7,13 +7,14 @@ export interface FilteringProps {
 }
 
 export function useFiltering(props: FilteringProps) {
+
     const filterBySettings = (row: any) => {
         if (!props.settings) {
             return true;
         }
 
         for (let key of Object.keys(props.settings)) {
-            if (row[key] != undefined && row[key] != props.settings[key]) {
+            if (row[key] != undefined && (props.settings[key] === "" || row[key] != props.settings[key])) {
                 return false;
             }
         }

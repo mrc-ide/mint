@@ -3,12 +3,14 @@ import {RootState} from "./store";
 import {Project} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
-import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 export enum RootMutation {
     AddProject = "AddProject",
     SetCurrentRegion = "SetCurrentRegion",
     SetCurrentRegionBaselineOptions = "SetCurrentRegionBaselineOptions",
+    SetCurrentRegionInterventionOptions = "SetCurrentRegionInterventionOptions",
+    SetCurrentRegionInterventionSettings="SetCurrentRegionInterventionSettings",
     SetCurrentRegionStep = "SetCurrentRegionStep",
     AddError = "AddError",
     AddBaselineOptions = "AddBaselineOptions",
@@ -39,6 +41,19 @@ export const mutations: MutationTree<RootState> = {
             //Invalidate current region data
             state.currentProject.currentRegion.impactTableData = [];
             state.currentProject.currentRegion.prevalenceGraphData = [];
+        }
+    },
+
+    [RootMutation.SetCurrentRegionInterventionOptions](state: RootState,
+                                                       payload: DynamicFormMeta) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.interventionOptions = payload
+        }
+    },
+
+    [RootMutation.SetCurrentRegionInterventionSettings](state: RootState, payload: DynamicFormData) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.interventionSettings = payload;
         }
     },
 

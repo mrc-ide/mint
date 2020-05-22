@@ -10,7 +10,16 @@ import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 describe("project page", () => {
 
     const mockBaselineOptions: DynamicFormMeta = {controlSections: []};
-    const mockInterventionOptions: DynamicFormMeta = {controlSections: []};
+    const mockInterventionOptions: DynamicFormMeta = {
+        controlSections: [{
+            label: "S1",
+            controlGroups: [{
+                controls: [
+                    {name: "c1", type: "number", required: true}
+                ]
+            }]
+        }]
+    };
 
     const createStore = (addProjectMock = jest.fn()) => {
         return new Vuex.Store({
@@ -95,6 +104,7 @@ describe("project page", () => {
                 name: "South", url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
+                interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
                 impactTableData: [],
                 costGraphData: [],
@@ -104,6 +114,7 @@ describe("project page", () => {
                 name: "South", url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
+                interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
                 impactTableData: [],
                 costGraphData: [],
@@ -143,6 +154,7 @@ describe("project page", () => {
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
+                interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
                 impactTableData: [],
                 costGraphData: [],
@@ -153,11 +165,11 @@ describe("project page", () => {
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
+                interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
                 impactTableData: [],
                 costGraphData: [],
                 step: 1
-
             }
         });
 
