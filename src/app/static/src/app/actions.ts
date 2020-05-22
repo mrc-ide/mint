@@ -155,6 +155,9 @@ export const actions: ActionTree<RootState, RootState> = {
                         tickvals: [0, 10 , 20],
                         autorange: false,
                         zeroline: false
+                    },
+                    hoverlabel: {
+                        namelength: -1
                     }
                 }
             });
