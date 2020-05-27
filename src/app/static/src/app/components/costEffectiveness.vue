@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="plotly-horizontal-errors">
         <plotly-graph v-if="activeTab === 'Graphs' && casesAvertedGraphConfig"
                       :layout="casesAvertedGraphConfig.layout"
                       :metadata="casesAvertedGraphConfig.metadata"

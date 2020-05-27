@@ -93,7 +93,7 @@ export const actions: ActionTree<RootState, RootState> = {
                         id: "PBO",
                         name: "Switch to Pyrethoid-PBO ITN",
                         type: "scatter",
-                        marker: {color: "aquamarine", size: 10},
+                        marker: {color: "turquoise", size: 10},
                         error_x: {
                             type: "data",
                             width: 0,
@@ -158,7 +158,8 @@ export const actions: ActionTree<RootState, RootState> = {
                     },
                     hoverlabel: {
                         namelength: -1
-                    }
+                    },
+                    hovermode: 'closest'
                 }
             });
     },
