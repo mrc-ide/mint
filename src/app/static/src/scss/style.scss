@@ -5,6 +5,7 @@
 @import "partials/tooltips.scss";
 @import "partials/baseline.scss";
 @import "partials/interventions.scss";
+@import "partials/graph.scss";
 
 html {
   overflow-y: scroll;
@@ -36,21 +37,5 @@ html {
 
   .ti-content {
     max-width: calc(100% - 15px);
-  }
-}
-
-.plotly-horizontal-errors {
-  .hoverlayer {
-    .hovertext {
-      rect {
-        transform: translate(-20px, 20px);
-      }
-      text {
-        transform: translate(-20px, 24px);
-      }
-      path {
-        transform: translate(-20px, 20px);
-      }
-    }
   }
 }

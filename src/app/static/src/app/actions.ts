@@ -159,6 +159,9 @@ export const actions: ActionTree<RootState, RootState> = {
                     hoverlabel: {
                         namelength: -1
                     },
+                    mint_custom: {
+                        hover_below: true
+                    },
                     hovermode: 'closest'
                 }
             });
@@ -180,7 +183,7 @@ export const actions: ActionTree<RootState, RootState> = {
                 },
                 {
                     intervention: "ITN",
-                    cost: 8,
+                    cost: 8.132,
                     cases_averted: 280,
                     cases_averted_error_minus: 90,
                     cases_averted_error_plus: 85,
@@ -190,7 +193,7 @@ export const actions: ActionTree<RootState, RootState> = {
                 },
                 {
                     intervention: "PBO",
-                    cost: 9,
+                    cost: 9.534,
                     cases_averted: 325,
                     cases_averted_error_minus: 85,
                     cases_averted_error_plus: 80,
@@ -200,7 +203,7 @@ export const actions: ActionTree<RootState, RootState> = {
                 },
                 {
                     intervention: "IRS",
-                    cost: 17,
+                    cost: 17.194,
                     cases_averted: 630,
                     cases_averted_error_minus: 120,
                     cases_averted_error_plus: 140,
@@ -210,7 +213,7 @@ export const actions: ActionTree<RootState, RootState> = {
                 },
                 {
                     intervention: "ITN-IRS",
-                    cost: 22,
+                    cost: 22.426,
                     cases_averted: 635,
                     cases_averted_error_minus: 75,
                     cases_averted_error_plus: 120,
@@ -220,7 +223,7 @@ export const actions: ActionTree<RootState, RootState> = {
                 },
                 {
                     intervention: "PBO-IRS",
-                    cost: 23,
+                    cost: 23.284,
                     cases_averted: 636,
                     cases_averted_error_minus: 65,
                     cases_averted_error_plus: 125,
