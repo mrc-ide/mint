@@ -5,7 +5,7 @@
 </template>
 <script lang="ts">
     import {Plotly} from "vue-plotly"
-    import {defineComponent} from "@vue/composition-api";
+    import {defineComponent, ref} from "@vue/composition-api";
     import {FilteringProps} from "../filteredData";
     import {useLongFormatData} from "./longFormatDataSeries";
     import {useWideFormatData} from "./wideFormatDataSeries";
@@ -26,9 +26,10 @@
         props: {settings: Object, data: Array, series: Array, metadata: Object, layout: Object},
         setup(props: Props) {
             let hoverBelow = false;
-            if (props.layout.mint_custom && props.layout.mint_custom.hover_below) {
+            let observer = ref<MutationObserver | null>(null);
+            if (props.layout.mintcustom && props.layout.mintcustom.hoverposition == "below") {
                 hoverBelow = true;
-                setupHoverBelowObserver("hoverbelow");
+                setupHoverBelowObserver(observer, "hoverbelow");
             }
 
             let dataSeries = null;
@@ -40,7 +41,8 @@
 
             return {
                 dataSeries,
-                hoverBelow
+                hoverBelow,
+                observer //Not required but makes testing much easier
             }
         }
     })

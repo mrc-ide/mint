@@ -1,11 +1,10 @@
 import $ from 'jquery';
-import {onBeforeUnmount, onMounted} from "@vue/composition-api";
+import {onBeforeUnmount, onMounted, Ref} from "@vue/composition-api";
 
-export function setupHoverBelowObserver(className: string) {
-    let observer: MutationObserver | null = null;
+export function setupHoverBelowObserver(observer: Ref<MutationObserver | null>, className: string) {
 
     onMounted(() => {
-        const target = $(`.${className}`)[0];
+       const target = $(`.${className}`)[0];
 
         if (target) {
             const config = {
@@ -16,9 +15,11 @@ export function setupHoverBelowObserver(className: string) {
                 subtree: true
             };
 
-            observer = new MutationObserver(function (mutations) {
+            observer.value = new MutationObserver(function (mutations) {
                 mutations.forEach(function (mutation) {
-                    const text = $([mutation.target]).filter(".hoverlayer .hovertext text");
+                   const nodes = mutation.addedNodes.length ? mutation.addedNodes : [mutation.target];
+
+                    const text = $(nodes).filter(".hoverlayer .hovertext text");
                     if (text.length && text.attr("y") !== "0") {
                         text.attr("y", "0");
                     }
@@ -42,13 +43,13 @@ export function setupHoverBelowObserver(className: string) {
                 });
             });
 
-            observer.observe(target, config);
+            observer.value.observe(target, config);
         }
     });
 
     onBeforeUnmount(() => {
-        if (observer) {
-            observer.disconnect();
+        if (observer.value) {
+            observer.value.disconnect();
         }
     });
 }

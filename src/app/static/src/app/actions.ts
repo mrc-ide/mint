@@ -159,8 +159,8 @@ export const actions: ActionTree<RootState, RootState> = {
                     hoverlabel: {
                         namelength: -1
                     },
-                    mint_custom: {
-                        hover_below: true
+                    mintcustom: {
+                        hoverposition: "below"
                     },
                     hovermode: 'closest'
                 }

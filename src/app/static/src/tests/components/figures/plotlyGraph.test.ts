@@ -1,9 +1,9 @@
+import $ from 'jquery';
 import {Plotly} from "vue-plotly";
-import {mount} from "@vue/test-utils";
+import {mount, shallowMount} from "@vue/test-utils";
 import plotlyGraph from "../../../app/components/figures/graphs/plotlyGraph.vue";
 
 describe("plotly graph", () => {
-
     it("renders long format data graph", async () => {
 
         const wrapper = mount(plotlyGraph, {
@@ -101,6 +101,112 @@ describe("plotly graph", () => {
             marker: {color: "aquamarine"},
             x: ["PBO"],
             y: [500]
+        });
+    });
+
+    const simplePropsData =  {
+        series: [
+            {x: ["ITN"], id: "ITN", name: "Pyrethoid ITN"},
+        ],
+        metadata: { cols: ["cases_averted"], id_col: "intervention", format: "wide"},
+        data: [
+            {"intervention": "ITN", "net_use": 0, "prevalence": 0.2315, "cases_averted": 1000}
+        ]
+    };
+
+    it("does not set up hoverbelow if not configured in layout", () => {
+        const wrapper = shallowMount(plotlyGraph, {
+            attachToDocument: true,
+            propsData: {
+                ...simplePropsData,
+                layout: {
+                    mintcustom: {
+                        hoverposition: "none"
+                    }
+                }
+            }
+        });
+
+        expect(wrapper.find("div").classes()).not.toContain("hoverbelow");
+        expect((wrapper.vm as any).observer).toBeNull();
+
+        wrapper.destroy();
+    });
+
+    it("sets up hoverbelow if configured in layout", () => {
+        const wrapper = shallowMount(plotlyGraph, {
+            attachToDocument: true,
+            propsData: {
+                ...simplePropsData,
+                layout: {
+                    mintcustom: {
+                        hoverposition: "below"
+                    }
+                }
+            }
+        });
+
+        expect(wrapper.find("div").classes()).toContain("hoverbelow");
+        expect((wrapper.vm as any).observer).not.toBeNull();
+        wrapper.destroy();
+    });
+
+   it("sets y value of new hover text elements to 0", async (done) => {
+         const wrapper = shallowMount(plotlyGraph, {
+            attachToDocument: true,
+            propsData: {
+                ...simplePropsData,
+                layout: {
+                    mintcustom: {
+                        hoverposition: "below"
+                    }
+                }
+            }
+        });
+
+        $(".hoverbelow").append(`
+            <g class='hoverlayer'>
+                <g id='test-y-add' class='hovertext'/>
+            </g>`);
+        $("#test-y-add").append("<text x='100' y='100'/>");
+
+        setTimeout(() => {
+            expect(wrapper.find("#test-y-add text").attributes().x).toBe("100");
+            expect(wrapper.find("#test-y-add text").attributes().y).toBe("0");
+            wrapper.destroy();
+            done();
+        });
+
+
+    });
+
+   it("sets y value of mutated hover text elements to 0", async (done) => {
+        const wrapper = shallowMount(plotlyGraph, {
+            attachToDocument: true,
+            propsData: {
+                ...simplePropsData,
+                layout: {
+                    mintcustom: {
+                        hoverposition: "below"
+                    }
+                }
+            }
+        });
+
+        $(".hoverbelow").append(`
+            <g class='hoverlayer'>
+                <g id='test-y-mutate' class='hovertext'>
+                    <text x='100' y='50'/>
+                </g>
+            </g>`);
+
+        $("#test-y-mutate text").attr("y", "200");
+
+        setTimeout(() => {
+            expect(wrapper.find("#test-y-mutate text").attributes().x).toBe("100");
+            expect(wrapper.find("#test-y-mutate text").attributes().y).toBe("0");
+            wrapper.destroy();
+            done();
         });
     });
 
