@@ -24,15 +24,15 @@ export function setupHoverBelowObserver(observer: Ref<MutationObserver | null>, 
                         text.attr("y", "0");
                     }
 
-                    const path = $([mutation.target]).filter(".hoverlayer .hovertext path");
+                    const path = $(nodes).filter(".hoverlayer .hovertext path");
                     if (path.length) {
                         const w = path.siblings("rect").attr("x") || 0;
-                        const h = path.siblings("rect").height() || 0;
-                        const newPath = "M4,-" + h / 2 + //path is clockwise, starting at top left
-                            "v" + h + //vertical line to bottom
-                            "H" + w + //horizontal line to right
-                            "v-" + h + //vertical line to top
-                            "h-" + (+w - 20) + //horizontal line left to start of 'up' indicator
+                        const h = path.siblings("rect").attr("height") || 0;
+                        const newPath = `M4,-${+h/2}` + //path is clockwise, starting at top left
+                            `v${h}` + //vertical line to bottom
+                            `H${w}` + //horizontal line to right
+                            `v-${h}` + //vertical line to top
+                            `h-${+w-20}` + //horizontal line left to start of 'up' indicator
                             "l-6,-6" +  //diagonal line to top of 'up' indicator
                             "l-6,6" + //diagonal line to bottom of 'up' indicator
                             "Z"; //close path
