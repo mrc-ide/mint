@@ -55,4 +55,20 @@ class MintrAPIClientTests {
         assertThat(result.statusCodeValue).isEqualTo(200)
         JSONValidator().validateSuccess(result.body!!, "Data")
     }
+
+    @Test
+    fun `can get graph cost cases averted config`() {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getCostCasesAvertedGraphConfig()
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "Graph")
+    }
+
+    @Test
+    fun `can get graph cost data`() {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getCostGraphData(mapOf())
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "Data")
+    }
 }
