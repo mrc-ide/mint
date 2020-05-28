@@ -6,7 +6,7 @@ import {MutationPayload, Store, StoreOptions} from "vuex";
 import {mutations} from "./mutations";
 import {Project} from "./models/project";
 import {APIError} from "./apiService";
-import {Data, Graph, TableDefinition} from "./generated";
+import {Graph, TableDefinition} from "./generated";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 import {actions} from "./actions";
@@ -19,6 +19,7 @@ export interface RootState {
     interventionOptions: DynamicFormMeta | null
     prevalenceGraphConfig: Graph | null
     impactTableConfig: TableDefinition | null
+    costCasesGraphConfig: Graph | null
 }
 
 const logger = (store: Store<RootState>) => {
@@ -35,7 +36,8 @@ const storeOptions: StoreOptions<RootState> = {
         prevalenceGraphConfig: null,
         baselineOptions: null,
         interventionOptions:  null,
-        impactTableConfig: null
+        impactTableConfig: null,
+        costCasesGraphConfig: null
     },
     actions,
     mutations,

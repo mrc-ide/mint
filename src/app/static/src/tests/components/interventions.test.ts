@@ -14,12 +14,14 @@ describe("interventions", () => {
 
     const createStore = (state: Partial<RootState> = {currentProject: mockProject()},
                          mockEnsureData = jest.fn(),
+                         mockEnsureCostData = jest.fn(),
                          mockSetOptions = jest.fn(),
                          mockSetSettings = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.EnsureImpactData]: mockEnsureData
+                [RootAction.EnsureImpactData]: mockEnsureData,
+                [RootAction.EnsureCostEffectivenessData]: mockEnsureCostData
             },
             mutations: {
                 [RootMutation.SetCurrentRegionInterventionOptions]: mockSetOptions,
@@ -78,10 +80,12 @@ describe("interventions", () => {
     });
 
     it("fetches data on mount", async () => {
-        const mockFetch = jest.fn();
-        const store = createStore({currentProject: mockProject()}, mockFetch);
+        const mockFetchImpact = jest.fn();
+        const mockFetchCost = jest.fn();
+        const store = createStore({currentProject: mockProject()}, mockFetchImpact, mockFetchCost);
         shallowMount(interventions, {store});
-        expect(mockFetch.mock.calls.length).toBe(1);
+        expect(mockFetchImpact.mock.calls.length).toBe(1);
+        expect(mockFetchCost.mock.calls.length).toBe(1);
     });
 
     it("renders intervention options", () => {
@@ -107,7 +111,7 @@ describe("interventions", () => {
     it("updates intervention options when the form changes", async () => {
         const project = mockProject()
         const mockUpdateOptions = jest.fn();
-        const store = createStore({currentProject: project}, jest.fn(), mockUpdateOptions);
+        const store = createStore({currentProject: project}, jest.fn(), jest.fn(), mockUpdateOptions);
         const wrapper = shallowMount(interventions, {store});
         wrapper.find(DynamicForm).vm.$emit("change", {
             controlSections: ["TEST" as any]
@@ -132,7 +136,7 @@ describe("interventions", () => {
             }]
         };
         const mockSetSettings = jest.fn();
-        const store = createStore({currentProject: project}, jest.fn(), jest.fn(), mockSetSettings);
+        const store = createStore({currentProject: project}, jest.fn(), jest.fn(), jest.fn(), mockSetSettings);
         mount(interventions, {store});
 
         await Vue.nextTick();
@@ -143,7 +147,7 @@ describe("interventions", () => {
     it("updates settings when intervention options change", async () => {
         const project = mockProject()
         const mockSetSettings = jest.fn();
-        const store = createStore({currentProject: project}, jest.fn(), jest.fn(), mockSetSettings);
+        const store = createStore({currentProject: project}, jest.fn(), jest.fn(), jest.fn(), mockSetSettings);
         const wrapper = mount(interventions, {store});
 
         store.state.currentProject!!.currentRegion.interventionOptions =
@@ -189,6 +193,7 @@ describe("interventions", () => {
                 interventionSettings: {},
                 impactTableData: [],
                 prevalenceGraphData: [],
+                costGraphData: [],
                 step: 1
             };
         await Vue.nextTick();

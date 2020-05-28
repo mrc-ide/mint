@@ -107,6 +107,7 @@ describe("project page", () => {
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
                 impactTableData: [],
+                costGraphData: [],
                 step: 1
             }],
             currentRegion: {
@@ -116,6 +117,7 @@ describe("project page", () => {
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
                 impactTableData: [],
+                costGraphData: [],
                 step: 1
             }
         });
@@ -155,6 +157,7 @@ describe("project page", () => {
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
                 impactTableData: [],
+                costGraphData: [],
                 step: 1
             }],
             currentRegion: {
@@ -165,6 +168,7 @@ describe("project page", () => {
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
                 impactTableData: [],
+                costGraphData: [],
                 step: 1
             }
         });

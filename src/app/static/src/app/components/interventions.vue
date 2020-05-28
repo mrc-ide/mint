@@ -61,6 +61,8 @@
         updateInterventionOptions: (payload: DynamicFormMeta) => void
         updateInterventionSettings: (payload: DynamicFormData) => void
         ensureData: () => void
+        ensureImpactData: () => void
+        ensureCostEffectivenessData: () => void
     }
 
     interface Computed {
@@ -105,7 +107,12 @@
             changeHorizontalTab(name: string) {
                 this.activeHorizontalTab = name;
             },
-            ensureData: mapActionByName(RootAction.EnsureImpactData),
+            ensureData: function() {
+                this.ensureImpactData();
+                this.ensureCostEffectivenessData();
+            },
+            ensureImpactData: mapActionByName(RootAction.EnsureImpactData),
+            ensureCostEffectivenessData: mapActionByName(RootAction.EnsureCostEffectivenessData),
             updateInterventionOptions: mapMutationByName(RootMutation.SetCurrentRegionInterventionOptions),
             updateInterventionSettings: mapMutationByName(RootMutation.SetCurrentRegionInterventionSettings)
         },
