@@ -202,7 +202,7 @@ describe("plotly graph", () => {
         });
     });
 
-   it("hoverbelow sets expected path of new hover elements", async(done) => {
+   it("hoverbelow sets expected path and classes of new hover elements", async(done) => {
        wrapper = shallowMount(plotlyGraph, {
            attachToDocument: true,
            propsData: {
@@ -218,11 +218,13 @@ describe("plotly graph", () => {
 
        setTimeout(() => {
            expect(wrapper!!.find("#test-path-add path").attributes().d).toBe("M4,-20v40H60v-40h-40l-6,-6l-6,6Z");
+           expect(wrapper!!.find("#test-path-add path").classes()).toContain("hoverbelow-right");
+           expect(wrapper!!.find("#test-path-add rect").classes()).toContain("hoverbelow-right");
            done();
        });
    });
 
-    it("hoverbelow sets expected path of mutated hover elements", async(done) => {
+    it("hoverbelow sets expected path and classes of mutated hover elements", async(done) => {
         wrapper = shallowMount(plotlyGraph, {
             attachToDocument: true,
             propsData: {
@@ -241,6 +243,30 @@ describe("plotly graph", () => {
 
         setTimeout(() => {
             expect(wrapper!!.find("#test-path-mutate path").attributes().d).toBe("M4,-20v40H60v-40h-40l-6,-6l-6,6Z");
+            expect(wrapper!!.find("#test-path-mutate path").classes()).toContain("hoverbelow-right");
+            expect(wrapper!!.find("#test-path-mutate rect").classes()).toContain("hoverbelow-right");
+            done();
+        });
+    });
+
+    it("hoverbelow sets expected path and classes of new hover elements when label is to left", async(done) => {
+        wrapper = shallowMount(plotlyGraph, {
+            attachToDocument: true,
+            propsData: {
+                ...hoverbelowPropsData
+            }
+        });
+
+        $(".hoverbelow").append(`
+            <g class='hoverlayer'>
+                <g id='test-path-add' class='hovertext'></g>
+            </g>`);
+        $("#test-path-add").append("<rect x='-260' y='0' width='200' height='40'/><path d='some default path'/>");
+
+        setTimeout(() => {
+            expect(wrapper!!.find("#test-path-add path").attributes().d).toBe("M-4,-20v40H-60v-40h40l6,-6l6,6Z");
+            expect(wrapper!!.find("#test-path-add path").classes()).toContain("hoverbelow-left");
+            expect(wrapper!!.find("#test-path-add rect").classes()).toContain("hoverbelow-left");
             done();
         });
     });

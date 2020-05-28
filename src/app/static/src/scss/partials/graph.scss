@@ -1,14 +1,24 @@
 .hoverbelow {
   .hoverlayer {
     .hovertext {
-      rect {
-        transform: translate(-20px, 20px);
+      rect.hoverbelow-right {
+        transform: translate(-20px, 22px);
       }
-      text {
-        transform: translate(-20px, 24px);
+      text.hoverbelow-right {
+        transform: translate(-20px, 26px);
       }
-      path {
-        transform: translate(-20px, 20px);
+      path.hoverbelow-right {
+        transform: translate(-20px, 22px);
+      }
+
+      rect.hoverbelow-left {
+        transform: translate(20px, 22px);
+      }
+      text.hoverbelow-left {
+        transform: translate(20px, 26px);
+      }
+      path.hoverbelow-left {
+        transform: translate(20px, 22px);
       }
     }
   }
