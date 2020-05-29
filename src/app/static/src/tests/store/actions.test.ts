@@ -131,6 +131,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[2][0]).toBe(RootAction.FetchPrevalenceGraphConfig);
         expect(dispatch.mock.calls[3][0]).toBe(RootAction.FetchImpactTableConfig);
         expect(dispatch.mock.calls[4][0]).toBe(RootAction.FetchCostCasesGraphConfig);
+        expect(dispatch.mock.calls[5][0]).toBe(RootAction.FetchCostEfficacyGraphConfig);
     });
 
     it("fetches cost cases averted config", async () => {
@@ -148,12 +149,38 @@ describe("actions", () => {
         expect(commit.mock.calls[0][1]).toStrictEqual(testConfig);
     });
 
-    it("adds any error when fetching cost cases averted config", async () => {
+    it("fetches cost efficacy config", async () => {
+        const url = "/cost/graph/efficacy/config";
+        const testConfig = {data: {test: 1}, layout: {test_layout: "TEST"}};
+        mockAxios.onGet(url)
+            .reply(200, mockSuccess(testConfig));
+
+        const commit = jest.fn();
+        await (actions[RootAction.FetchCostEfficacyGraphConfig] as any)({commit} as any);
+
+        expect(mockAxios.history.get[0].url).toBe(url);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostEfficacyGraphConfig);
+        expect(commit.mock.calls[0][1]).toStrictEqual(testConfig);
+    });
+
+    it("adds any error when fetching graph cost cases averted config", async () => {
         mockAxios.onGet("/cost/graph/cases-averted/config")
             .reply(500, mockFailure("TEST ERROR"));
 
         const commit = jest.fn();
         await (actions[RootAction.FetchCostCasesGraphConfig] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddError);
+        expect(commit.mock.calls[0][1]).toStrictEqual(mockError("TEST ERROR"));
+    });
+
+    it("adds any error when fetching graph cost efficacy config", async () => {
+        mockAxios.onGet("/cost/graph/efficacy/config")
+            .reply(500, mockFailure("TEST ERROR"));
+
+        const commit = jest.fn();
+        await (actions[RootAction.FetchCostEfficacyGraphConfig] as any)({commit} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddError);
         expect(commit.mock.calls[0][1]).toStrictEqual(mockError("TEST ERROR"));
