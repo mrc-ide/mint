@@ -13,6 +13,12 @@ class CostController(private val apiClient: APIClient) {
         return apiClient.getCostCasesAvertedGraphConfig()
     }
 
+    @GetMapping("/graph/efficacy/config")
+    @ResponseBody
+    fun graphEfficacyConfig(): ResponseEntity<String> {
+        return apiClient.getCostEfficacyGraphConfig()
+    }
+
     @PostMapping("/graph/data")
     @ResponseBody
     fun graphData(@RequestBody dataOptions: Map<String, Any>): ResponseEntity<String> {

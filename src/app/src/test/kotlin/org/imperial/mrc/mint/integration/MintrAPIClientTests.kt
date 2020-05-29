@@ -65,6 +65,14 @@ class MintrAPIClientTests {
     }
 
     @Test
+    fun `can get graph cost efficacy config`() {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getCostEfficacyGraphConfig()
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "Graph")
+    }
+
+    @Test
     fun `can get graph cost data`() {
         val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
         val result = sut.getCostGraphData(mapOf())
