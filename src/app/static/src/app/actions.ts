@@ -23,6 +23,10 @@ const currentRegionBaseline = (state: RootState) => {
     return state.currentProject!!.currentRegion.baselineOptions;
 };
 
+const currentRegionInterventions = (state: RootState) => {
+    return state.currentProject!!.currentRegion.interventionSettings;
+};
+
 export const actions: ActionTree<RootState, RootState> = {
 
     async [RootAction.FetchBaselineOptions](context) {
@@ -55,183 +59,22 @@ export const actions: ActionTree<RootState, RootState> = {
     },
 
     async [RootAction.FetchCostCasesGraphConfig](context) {
-        //TODO: Fetch from mintr via backend
-        context.commit(RootMutation.AddCostCasesGraphConfig,
-            {
-                metadata: {
-                    x_col: "cases_averted",
-                    y_col: "cost",
-                    id_col: "intervention",
-                    format: "long"
-                },
-                series: [
-                    {
-                        id: "none",
-                        name: "No intervention",
-                        type: "scatter",
-                        marker: {color: "grey", size: 10},
-                        error_x: {
-                            type: "data",
-                            width: 0,
-                            col: "cases_averted_error_plus",
-                            colminus: "cases_averted_error_minus"
-                        }
-                    },
-                    {
-                        id: "ITN",
-                        name: "Pyrethoid ITN",
-                        type: "scatter",
-                        marker: {color: "blue", size: 10},
-                        error_x: {
-                            type: "data",
-                            width: 0,
-                            col: "cases_averted_error_plus",
-                            colminus: "cases_averted_error_minus"
-                        }
-                    },
-                    {
-                        id: "PBO",
-                        name: "Switch to Pyrethoid-PBO ITN",
-                        type: "scatter",
-                        marker: {color: "turquoise", size: 10},
-                        error_x: {
-                            type: "data",
-                            width: 0,
-                            col: "cases_averted_error_plus",
-                            colminus: "cases_averted_error_minus"
-                        }
-                    },
-                    {
-                        id: "IRS",
-                        name: "Only IRS",
-                        type: "scatter",
-                        marker: {color: "purple", size: 10},
-                        error_x: {
-                            type: "data",
-                            width: 0,
-                            col: "cases_averted_error_plus",
-                            colminus: "cases_averted_error_minus"
-                        }
-                    },
-                    {
-                        id: "ITN-IRS",
-                        name: "Add IRS to Pyrethoid ITN",
-                        type: "scatter",
-                        marker: {color: "darkred", size: 10},
-                        error_x: {
-                            type: "data",
-                            width: 0,
-                            col: "cases_averted_error_plus",
-                            colminus: "cases_averted_error_minus"
-                        }
-                    },
-                    {
-                        id: "PBO-IRS",
-                        name: "Add IRS to Pyrethoid-PBO ITN",
-                        type: "scatter",
-                        marker: {color: "orange", size: 10},
-                        error_x: {
-                            type: "data",
-                            width: 0,
-                            col: "cases_averted_error_plus",
-                            colminus: "cases_averted_error_minus"
-                        }
-                    }
-                ],
-                layout: {
-                    title: "Strategy costs over 3 years",
-                    xaxis: {
-                        title: 'Cases averted per 1,000 people across 3-years',
-                        showline: true,
-                        range: [-10, 800],
-                        tickvals: [0, 100, 200, 300, 400, 500, 600, 700],
-                        autorange: false,
-                        zeroline: false
-                    },
-                    yaxis: {
-                        title: 'Total costs ($10,000 USD)',
-                        showline: true,
-                        range: [-2, 30],
-                        tickvals: [0, 10 , 20],
-                        autorange: false,
-                        zeroline: false
-                    },
-                    hoverlabel: {
-                        namelength: -1
-                    },
-                    mintcustom: {
-                        hoverposition: "below"
-                    },
-                    hovermode: 'closest'
-                }
-            });
+        await api(context)
+            .withSuccess(RootMutation.AddCostCasesGraphConfig)
+            .withError(RootMutation.AddError)
+            .get<Graph>("/cost/graph/cases-averted/config");
     },
 
     async [RootAction.FetchCostGraphData](context) {
-        //TODO: Fetch from mintr via backend
-        context.commit(RootMutation.AddCostGraphData,
-            [
-                {
-                    intervention: "none",
-                    cost: 0,
-                    cases_averted: 0,
-                    cases_averted_error_minus: 0,
-                    cases_averted_error_plus: 0,
-                    efficacy: 0,
-                    efficacy_error_minus: 0,
-                    efficacy_error_plus: 0
-                },
-                {
-                    intervention: "ITN",
-                    cost: 8.132,
-                    cases_averted: 280,
-                    cases_averted_error_minus: 90,
-                    cases_averted_error_plus: 85,
-                    efficacy: 40,
-                    efficacy_error_minus: 3,
-                    efficacy_error_plus: 1,
-                },
-                {
-                    intervention: "PBO",
-                    cost: 9.534,
-                    cases_averted: 325,
-                    cases_averted_error_minus: 85,
-                    cases_averted_error_plus: 80,
-                    efficacy: 45,
-                    efficacy_error_minus: 4,
-                    efficacy_error_plus: 2,
-                },
-                {
-                    intervention: "IRS",
-                    cost: 17.194,
-                    cases_averted: 630,
-                    cases_averted_error_minus: 120,
-                    cases_averted_error_plus: 140,
-                    efficacy: 72,
-                    efficacy_error_minus: 8,
-                    efficacy_error_plus: 3
-                },
-                {
-                    intervention: "ITN-IRS",
-                    cost: 22.426,
-                    cases_averted: 635,
-                    cases_averted_error_minus: 75,
-                    cases_averted_error_plus: 120,
-                    efficacy: 70,
-                    efficacy_error_minus: 6,
-                    efficacy_error_plus: 4
-                },
-                {
-                    intervention: "PBO-IRS",
-                    cost: 23.284,
-                    cases_averted: 636,
-                    cases_averted_error_minus: 65,
-                    cases_averted_error_plus: 125,
-                    efficacy: 74,
-                    efficacy_error_minus: 2,
-                    efficacy_error_plus: 5
-                }
-            ]);
+        const combinedSettings = {
+            ...currentRegionBaseline(context.state),
+            ...currentRegionInterventions(context.state)
+        };
+        await api(context)
+            .freezeResponse()
+            .withSuccess(RootMutation.AddCostGraphData)
+            .withError(RootMutation.AddError)
+            .postAndReturn("/cost/graph/data", combinedSettings);
     },
 
     async [RootAction.FetchImpactTableData](context) {
