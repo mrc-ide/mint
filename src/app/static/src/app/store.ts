@@ -20,6 +20,7 @@ export interface RootState {
     prevalenceGraphConfig: Graph | null
     impactTableConfig: TableDefinition | null
     costCasesGraphConfig: Graph | null
+    costTableConfig: TableDefinition | null
 }
 
 const logger = (store: Store<RootState>) => {
@@ -37,7 +38,8 @@ const storeOptions: StoreOptions<RootState> = {
         baselineOptions: null,
         interventionOptions:  null,
         impactTableConfig: null,
-        costCasesGraphConfig: null
+        costCasesGraphConfig: null,
+        costTableConfig: null
     },
     actions,
     mutations,
