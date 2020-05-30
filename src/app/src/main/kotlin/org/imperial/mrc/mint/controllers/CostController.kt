@@ -18,4 +18,16 @@ class CostController(private val apiClient: APIClient) {
     fun graphData(@RequestBody dataOptions: Map<String, Any>): ResponseEntity<String> {
         return apiClient.getCostGraphData(dataOptions)
     }
+
+    @GetMapping("/table/config")
+    @ResponseBody
+    fun tableConfig(): ResponseEntity<String> {
+        return apiClient.getCostTableConfig()
+    }
+
+    @PostMapping("/table/data")
+    @ResponseBody
+    fun tableData(@RequestBody dataOptions: Map<String, Any>): ResponseEntity<String> {
+        return apiClient.getCostTableData(dataOptions)
+    }
 }

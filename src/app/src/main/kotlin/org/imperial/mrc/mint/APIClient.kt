@@ -16,6 +16,8 @@ interface APIClient {
     fun getImpactTableData(dataOptions: Map<String, Any>): ResponseEntity<String>
     fun getCostCasesAvertedGraphConfig(): ResponseEntity<String>
     fun getCostGraphData(dataOptions: Map<String, Any>): ResponseEntity<String>
+    fun getCostTableConfig(): ResponseEntity<String>
+    fun getCostTableData(dataOptions: Map<String, Any>): ResponseEntity<String>
 }
 
 @Component
@@ -56,6 +58,14 @@ class MintrAPIClient(
 
     override fun getCostGraphData(dataOptions: Map<String, Any>): ResponseEntity<String> {
         return postJson("graph/cost/data", optionsJson(dataOptions))
+    }
+
+    override fun getCostTableConfig(): ResponseEntity<String> {
+        return get("table/cost/config")
+    }
+
+    override fun getCostTableData(dataOptions: Map<String, Any>): ResponseEntity<String> {
+        return postJson("table/cost/data", optionsJson(dataOptions))
     }
 
     fun get(url: String): ResponseEntity<String> {
