@@ -42,6 +42,34 @@ describe("actions", () => {
         expect(commit.mock.calls[0][1].layout.title).toBeDefined(); // just confirm it's the expected type
     });
 
+    it("can get cost graph data", async () => {
+        const commit = jest.fn();
+        const state = await getStateWithBaselineOptions();
+        await (actions[RootAction.FetchCostGraphData] as any)({commit, state} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostGraphData);
+        const firstRow = commit.mock.calls[0][1][0];
+        expect(Object.keys(firstRow).sort())
+            .toEqual([
+                "cases_averted",
+                "cases_averted_error_minus",
+                "cases_averted_error_plus",
+                "cost",
+                "efficacy",
+                "efficacy_error_minus",
+                "efficacy_error_plus",
+                "intervention"]);
+    });
+
+    it("can get cost cases averted graph config", async () => {
+        const commit = jest.fn();
+
+        await (actions[RootAction.FetchCostCasesGraphConfig] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostCasesGraphConfig);
+        expect(commit.mock.calls[0][1].layout.title).toBeDefined(); // just confirm it's the expected type
+    });
+
     it("can get baseline options", async () => {
         const commit = jest.fn();
 
@@ -96,5 +124,40 @@ describe("actions", () => {
                 "prev_year_2",
                 "prev_year_3"]);
     });
+
+    it("can get cost table data", async () => {
+        const commit = jest.fn();
+        const state = await getStateWithBaselineOptions();
+        await (actions[RootAction.FetchCostTableData] as any)({commit, state} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableData);
+        const firstRow = commit.mock.calls[0][1][0];
+        expect(Object.keys(firstRow).sort())
+            .toEqual([
+                "cost",
+                "cost_increment",
+                "cost_per_case_averted",
+                "intervention",
+                "irs_use",
+                "mean_cases_averted",
+                "net_use"]);
+    });
+
+    it("can get cost table config", async () => {
+        const commit = jest.fn();
+        await (actions[RootAction.FetchCostTableConfig] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableConfig);
+        expect(Object.keys(commit.mock.calls[0][1]).sort())
+            .toEqual([
+                "cost",
+                "cost_increment",
+                "cost_per_case_averted",
+                "intervention",
+                "irs_use",
+                "mean_cases_averted",
+                "net_use"]);
+    });
+
 
 });
