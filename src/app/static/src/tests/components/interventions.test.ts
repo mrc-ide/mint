@@ -194,6 +194,7 @@ describe("interventions", () => {
                 impactTableData: [],
                 prevalenceGraphData: [],
                 costGraphData: [],
+                costTableData: [],
                 step: 1
             };
         await Vue.nextTick();
