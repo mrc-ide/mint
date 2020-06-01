@@ -1,5 +1,10 @@
 <template>
-    <div class="plotly-horizontal-errors">
+    <div>
+        <plotly-graph v-if="activeTab === 'Graphs' && efficacyGraphConfig"
+                      :layout="efficacyGraphConfig.layout"
+                      :metadata="efficacyGraphConfig.metadata"
+                      :series="efficacyGraphConfig.series"
+                      :data="graphData"></plotly-graph>
         <plotly-graph v-if="activeTab === 'Graphs' && casesAvertedGraphConfig"
                       :layout="casesAvertedGraphConfig.layout"
                       :metadata="casesAvertedGraphConfig.metadata"
@@ -26,9 +31,11 @@
         settings: DynamicFormData | null,
         currentProject: Project | null,
         graphData: Data,
+        efficacyGraphConfig: Graph,
         casesAvertedGraphConfig: Graph,
         tableData: Data,
         tableConfig: TableDefinition | null
+
     }
 
     export default Vue.extend<{}, {}, Computed, {}>({
@@ -38,6 +45,7 @@
             settings: mapStateProp<RootState, DynamicFormData | null>
             (state => state.currentProject && state.currentProject.currentRegion.interventionSettings),
             currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
+            efficacyGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costEfficacyGraphConfig),
             casesAvertedGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costCasesGraphConfig),
             graphData() {
                 return this.currentProject ? this.currentProject.currentRegion.costGraphData : [];

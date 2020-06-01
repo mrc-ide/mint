@@ -180,6 +180,13 @@ describe("mutations", () => {
         expect(state.costCasesGraphConfig).toStrictEqual(["config data"]);
     });
 
+    it("adds cost efficacy graph config", () => {
+        const state = mockRootState();
+        mutations[RootMutation.AddCostEfficacyGraphConfig](state, ["config data"]);
+
+        expect(state.costEfficacyGraphConfig).toStrictEqual(["config data"]);
+    });
+
     it("adds cost graph data", () => {
         const project = mockProject();
         const state = mockRootState({

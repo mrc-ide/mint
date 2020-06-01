@@ -21,6 +21,7 @@ export interface RootState {
     impactTableConfig: TableDefinition | null
     costCasesGraphConfig: Graph | null
     costTableConfig: TableDefinition | null
+    costEfficacyGraphConfig: Graph | null
 }
 
 const logger = (store: Store<RootState>) => {
@@ -39,7 +40,8 @@ const storeOptions: StoreOptions<RootState> = {
         interventionOptions:  null,
         impactTableConfig: null,
         costCasesGraphConfig: null,
-        costTableConfig: null
+        costTableConfig: null,
+        costEfficacyGraphConfig: null
     },
     actions,
     mutations,
