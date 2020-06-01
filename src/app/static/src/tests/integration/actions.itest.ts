@@ -42,6 +42,15 @@ describe("actions", () => {
         expect(commit.mock.calls[0][1].layout.title).toBeDefined(); // just confirm it's the expected type
     });
 
+    it("can get cost efficacy graph config", async () => {
+        const commit = jest.fn();
+
+        await (actions[RootAction.FetchCostEfficacyGraphConfig] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostEfficacyGraphConfig);
+        expect(commit.mock.calls[0][1].layout.title).toBeDefined(); // just confirm it's the expected type
+    });
+
     it("can get baseline options", async () => {
         const commit = jest.fn();
 

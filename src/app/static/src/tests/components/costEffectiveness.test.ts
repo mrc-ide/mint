@@ -22,9 +22,23 @@ describe("costEffectiveness", () => {
 
     it("renders as expected when activeTab is Graphs", function () {
         const state = {
-            costCasesGraphConfig:  mockGraph({
+            costEfficacyGraphConfig:  mockGraph({
                 layout: {
                     whatever: 1
+                },
+                series: [{
+                    id: "none"
+                }],
+                metadata: {
+                    format: "long",
+                    id_col: "intervention",
+                    x_col: "efficacy",
+                    y_col: "cost"
+                }
+            }),
+            costCasesGraphConfig:  mockGraph({
+                layout: {
+                    whatever: 2
                 },
                 series: [{
                     id: "none"
@@ -46,11 +60,17 @@ describe("costEffectiveness", () => {
 
         const wrapper = shallowMount(costEffectiveness, {propsData: {activeTab: "Graphs"}, store});
 
-        const graph = wrapper.find(plotlyGraph);
-        expect(graph.props().layout).toBe(state.costCasesGraphConfig.layout);
-        expect(graph.props().metadata).toBe(state.costCasesGraphConfig.metadata);
-        expect(graph.props().series).toBe(state.costCasesGraphConfig.series);
-        expect(graph.props().data).toBe(state.currentProject.currentRegion.costGraphData);
+        const efficacyGraph = wrapper.findAll(plotlyGraph).at(0);
+        expect(efficacyGraph.props().layout).toBe(state.costEfficacyGraphConfig.layout);
+        expect(efficacyGraph.props().metadata).toBe(state.costEfficacyGraphConfig.metadata);
+        expect(efficacyGraph.props().series).toBe(state.costEfficacyGraphConfig.series);
+        expect(efficacyGraph.props().data).toBe(state.currentProject.currentRegion.costGraphData);
+
+        const casesGraph = wrapper.findAll(plotlyGraph).at(1);
+        expect(casesGraph.props().layout).toBe(state.costCasesGraphConfig.layout);
+        expect(casesGraph.props().metadata).toBe(state.costCasesGraphConfig.metadata);
+        expect(casesGraph.props().series).toBe(state.costCasesGraphConfig.series);
+        expect(casesGraph.props().data).toBe(state.currentProject.currentRegion.costGraphData);
 
         expect(wrapper.text()).toBe("");
     });
