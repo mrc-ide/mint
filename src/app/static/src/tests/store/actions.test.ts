@@ -37,10 +37,28 @@ describe("actions", () => {
                 interventionSettings,
                 prevalenceGraphData: [],
                 impactTableData: [],
-                costGraphData: []
+                costGraphData: [],
+                costTableData: []
             }
         }
     };
+
+    async function expectAddsErrorOn500(action: any, url: string, post: boolean = false) {
+        mockAxios.reset();
+
+        const failure = mockFailure("TEST ERROR");
+        if (post) {
+            mockAxios.onPost(url).reply(500, failure);
+        } else {
+            mockAxios.onGet(url).reply(500, failure);
+        }
+
+        const commit = jest.fn();
+        await action({commit, state} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddError);
+        expect(commit.mock.calls[0][1]).toStrictEqual(mockError("TEST ERROR"));
+    }
 
     it("implements all defined actions", () => {
         expectAllDefined(RootAction, actions);
@@ -122,6 +140,39 @@ describe("actions", () => {
         expectEqualsFrozen(commit.mock.calls[0][1], {net_use: "Net use"});
     });
 
+    it("fetches cost table data", async () => {
+        const url = "/cost/table/data";
+        const testData = [{prev: 1, net_use: 0.2, resistance: "low"}];
+        mockAxios.onPost(url, baselineOptions)
+            .reply(200, mockSuccess(testData));
+
+        const commit = jest.fn();
+        await (actions[RootAction.FetchCostTableData] as any)({commit, state} as any);
+
+        expect(mockAxios.history.post[0].url).toBe(url);
+        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(baselineOptions));
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableData);
+        expectEqualsFrozen(commit.mock.calls[0][1], testData);
+
+        expectAddsErrorOn500(actions[RootAction.FetchCostTableData], url, true);
+    });
+
+    it("fetches cost table config", async () => {
+        const testConfig = {net_use: "Net use"};
+        const url = "/cost/table/config";
+        mockAxios.onGet(url)
+            .reply(200, mockSuccess(testConfig));
+
+        const commit = jest.fn();
+        await (actions[RootAction.FetchCostTableConfig] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableConfig);
+        expectEqualsFrozen(commit.mock.calls[0][1], testConfig);
+
+        expectAddsErrorOn500(actions[RootAction.FetchCostTableConfig], url);
+    });
+
     it("FetchConfig fetches options and figures config", async () => {
         const dispatch = jest.fn();
         await (actions[RootAction.FetchConfig] as any)({dispatch} as any);
@@ -132,6 +183,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[3][0]).toBe(RootAction.FetchImpactTableConfig);
         expect(dispatch.mock.calls[4][0]).toBe(RootAction.FetchCostCasesGraphConfig);
         expect(dispatch.mock.calls[5][0]).toBe(RootAction.FetchCostEfficacyGraphConfig);
+        expect(dispatch.mock.calls[6][0]).toBe(RootAction.FetchCostTableConfig);
     });
 
     it("fetches cost cases averted config", async () => {
@@ -147,6 +199,8 @@ describe("actions", () => {
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostCasesGraphConfig);
         expect(commit.mock.calls[0][1]).toStrictEqual(testConfig);
+
+        expectAddsErrorOn500(actions[RootAction.FetchCostCasesGraphConfig], url);
     });
 
     it("fetches cost efficacy config", async () => {
@@ -162,29 +216,10 @@ describe("actions", () => {
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostEfficacyGraphConfig);
         expect(commit.mock.calls[0][1]).toStrictEqual(testConfig);
+
+        expectAddsErrorOn500(actions[RootAction.FetchCostEfficacyGraphConfig], url);
     });
 
-    it("adds any error when fetching graph cost cases averted config", async () => {
-        mockAxios.onGet("/cost/graph/cases-averted/config")
-            .reply(500, mockFailure("TEST ERROR"));
-
-        const commit = jest.fn();
-        await (actions[RootAction.FetchCostCasesGraphConfig] as any)({commit} as any);
-
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddError);
-        expect(commit.mock.calls[0][1]).toStrictEqual(mockError("TEST ERROR"));
-    });
-
-    it("adds any error when fetching graph cost efficacy config", async () => {
-        mockAxios.onGet("/cost/graph/efficacy/config")
-            .reply(500, mockFailure("TEST ERROR"));
-
-        const commit = jest.fn();
-        await (actions[RootAction.FetchCostEfficacyGraphConfig] as any)({commit} as any);
-
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddError);
-        expect(commit.mock.calls[0][1]).toStrictEqual(mockError("TEST ERROR"));
-    });
 
     it("fetches cost graph data", async () => {
         const url = "/cost/graph/data";
@@ -201,17 +236,8 @@ describe("actions", () => {
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostGraphData);
         expectEqualsFrozen(commit.mock.calls[0][1], testData);
-    });
 
-    it("adds any error when fetching cost graph data", async () => {
-        mockAxios.onPost("/cost/graph/data")
-            .reply(500, mockFailure("TEST ERROR"));
-
-        const commit = jest.fn();
-        await (actions[RootAction.FetchCostGraphData] as any)({commit, state} as any);
-
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddError);
-        expect(commit.mock.calls[0][1]).toStrictEqual(mockError("TEST ERROR"));
+        await expectAddsErrorOn500(actions[RootAction.FetchCostGraphData], url, true);
     });
 
     it("EnsureImpactData fetches all impact figure data if none already present", async () => {
@@ -278,6 +304,7 @@ describe("actions", () => {
         await (actions[RootAction.EnsureCostEffectivenessData] as any)({dispatch, state} as any);
 
         expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchCostGraphData);
+        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchCostTableData);
     });
 
     it("EnsureCostEffectivenessData does not fetch cost effectiveness data if already present", async () => {

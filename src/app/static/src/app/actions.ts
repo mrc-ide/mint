@@ -13,6 +13,8 @@ export enum RootAction {
     FetchCostCasesGraphConfig = "FetchCostCasesGraphConfig",
     FetchCostEfficacyGraphConfig = "FetchCostEfficacyGraphConfig",
     FetchCostGraphData = "FetchCostCasesGraphData",
+    FetchCostTableData = "FetchCostTableData",
+    FetchCostTableConfig = "FetchCostTableConfig",
     FetchBaselineOptions = "FetchBaselineOptions",
     FetchInterventionOptions = "FetchInterventionOptions",
     EnsureImpactData = "FetchImpactData",
@@ -101,6 +103,22 @@ export const actions: ActionTree<RootState, RootState> = {
             .get<Data>("/impact/table/config")
     },
 
+    async [RootAction.FetchCostTableData](context) {
+        await api(context)
+            .freezeResponse()
+            .withSuccess(RootMutation.AddCostTableData)
+            .withError(RootMutation.AddError)
+            .postAndReturn<Data>("/cost/table/data", currentRegionBaseline(context.state))
+    },
+
+    async [RootAction.FetchCostTableConfig](context) {
+        await api(context)
+            .freezeResponse()
+            .withSuccess(RootMutation.AddCostTableConfig)
+            .withError(RootMutation.AddError)
+            .get<Data>("/cost/table/config")
+    },
+
     async [RootAction.EnsureImpactData](context) {
         const project = context.state.currentProject;
         if (project && (!project.currentRegion.impactTableData.length || !project.currentRegion.prevalenceGraphData.length)) {
@@ -115,7 +133,8 @@ export const actions: ActionTree<RootState, RootState> = {
         const project = context.state.currentProject;
         if (project && !project.currentRegion.costGraphData.length) {
             await Promise.all([
-                context.dispatch(RootAction.FetchCostGraphData)
+                context.dispatch(RootAction.FetchCostGraphData),
+                context.dispatch(RootAction.FetchCostTableData)
             ]);
         }
     },
@@ -127,7 +146,8 @@ export const actions: ActionTree<RootState, RootState> = {
             context.dispatch(RootAction.FetchPrevalenceGraphConfig),
             context.dispatch(RootAction.FetchImpactTableConfig),
             context.dispatch(RootAction.FetchCostCasesGraphConfig),
-            context.dispatch(RootAction.FetchCostEfficacyGraphConfig)
+            context.dispatch(RootAction.FetchCostEfficacyGraphConfig),
+            context.dispatch(RootAction.FetchCostTableConfig)
         ]);
     }
 

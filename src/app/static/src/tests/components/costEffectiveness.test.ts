@@ -4,6 +4,7 @@ import costEffectiveness from "../../app/components/costEffectiveness.vue";
 import {RootState} from "../../app/store";
 import {mockGraph, mockRootState} from "../mocks";
 import plotlyGraph from "../../app/components/figures/graphs/plotlyGraph.vue";
+import dynamicTable from "../../app/components/figures/dynamicTable.vue";
 
 describe("costEffectiveness", () => {
 
@@ -14,10 +15,25 @@ describe("costEffectiveness", () => {
     };
 
     it("renders as expected when activeTab is Table", () => {
-        const store = createStore();
+        const state = {
+            costTableConfig: {"col": "Column name"},
+            currentProject: {
+                currentRegion: {
+                    tableData: [{cost: 1000, cases_averted: 100}],
+                    interventionSettings: {setting: 1}
+                } as any
+            } as any
+        };
+        const store = createStore(state);
+
         const wrapper = shallowMount(costEffectiveness, {propsData: {activeTab: "Table"}, store});
+
+        const table = wrapper.find(dynamicTable);
+        expect(table.props().columns).toBe(state.costTableConfig);
+        expect(table.props().data).toBe(state.currentProject.currentRegion.costTableData);
+        expect(table.props().settings).toBe(state.currentProject.currentRegion.interventionSettings);
+
         expect(wrapper.findAll(plotlyGraph).length).toBe(0);
-        expect(wrapper.text()).toBe("Cost effectiveness table");
     });
 
     it("renders as expected when activeTab is Graphs", function () {
@@ -72,13 +88,18 @@ describe("costEffectiveness", () => {
         expect(casesGraph.props().series).toBe(state.costCasesGraphConfig.series);
         expect(casesGraph.props().data).toBe(state.currentProject.currentRegion.costGraphData);
 
-        expect(wrapper.text()).toBe("");
+        expect(wrapper.findAll(dynamicTable).length).toBe(0);
     });
 
     it("does not render graph if config is null", () => {
         const store = createStore();
         const wrapper = shallowMount(costEffectiveness, {propsData: {activeTab: "Graphs"}, store});
         expect(wrapper.findAll(plotlyGraph).length).toBe(0);
-        expect(wrapper.text()).toBe("");
+    });
+
+    it("does not render table if config is null", () => {
+        const store = createStore();
+        const wrapper = shallowMount(costEffectiveness, {propsData: {activeTab: "Table"}, store});
+        expect(wrapper.findAll(dynamicTable).length).toBe(0);
     });
 });

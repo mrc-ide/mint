@@ -39,6 +39,7 @@ describe("mutations", () => {
             prevalenceGraphData: [],
             impactTableData: [],
             costGraphData: [],
+            costTableData: [],
             step: 1
         })
     });
@@ -147,11 +148,29 @@ describe("mutations", () => {
         expect(state.currentProject!!.currentRegion.impactTableData).toStrictEqual(["some data"]);
     });
 
+    it("adds cost table data", () => {
+        const project = mockProject();
+        const state = mockRootState({
+            projects: [project],
+            currentProject: project
+        });
+        mutations[RootMutation.AddCostTableData](state, ["some data"]);
+
+        expect(state.currentProject!!.currentRegion.costTableData).toStrictEqual(["some data"]);
+    });
+
     it("adds impact table config", () => {
         const state = mockRootState();
         mutations[RootMutation.AddImpactTableConfig](state, ["some data"]);
 
         expect(state.impactTableConfig).toStrictEqual(["some data"]);
+    });
+
+    it("adds cost table config", () => {
+        const state = mockRootState();
+        mutations[RootMutation.AddCostTableConfig](state, ["some data"]);
+
+        expect(state.costTableConfig).toStrictEqual(["some data"]);
     });
 
     it("adds cost cases graph config", () => {

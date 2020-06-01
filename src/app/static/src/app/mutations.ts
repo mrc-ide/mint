@@ -10,7 +10,7 @@ export enum RootMutation {
     SetCurrentRegion = "SetCurrentRegion",
     SetCurrentRegionBaselineOptions = "SetCurrentRegionBaselineOptions",
     SetCurrentRegionInterventionOptions = "SetCurrentRegionInterventionOptions",
-    SetCurrentRegionInterventionSettings="SetCurrentRegionInterventionSettings",
+    SetCurrentRegionInterventionSettings = "SetCurrentRegionInterventionSettings",
     SetCurrentRegionStep = "SetCurrentRegionStep",
     AddError = "AddError",
     AddBaselineOptions = "AddBaselineOptions",
@@ -21,6 +21,8 @@ export enum RootMutation {
     AddImpactTableConfig = "AddImpactTableConfig",
     AddCostGraphData = "AddCostGraphData",
     AddCostCasesGraphConfig = "AddCostCasesGraphConfig",
+    AddCostTableData = "AddCostTableData",
+    AddCostTableConfig = "AddCostTableConfig",
     AddCostEfficacyGraphConfig = "AddCostEfficacyGraphConfig"
 }
 
@@ -104,6 +106,17 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.AddCostCasesGraphConfig](state: RootState, payload: Graph) {
         state.costCasesGraphConfig = payload;
+    },
+
+    [RootMutation.AddCostTableData](state: RootState, payload: Data) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.costTableData = payload;
+        }
+    },
+
+    [RootMutation.AddCostTableConfig](state: RootState, payload: TableDefinition)
+    {
+        state.costTableConfig = payload
     },
 
     [RootMutation.AddCostEfficacyGraphConfig](state: RootState, payload: Graph) {

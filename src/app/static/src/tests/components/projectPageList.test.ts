@@ -108,6 +108,7 @@ describe("project page", () => {
                 prevalenceGraphData: [],
                 impactTableData: [],
                 costGraphData: [],
+                costTableData: [],
                 step: 1
             }],
             currentRegion: {
@@ -118,6 +119,7 @@ describe("project page", () => {
                 prevalenceGraphData: [],
                 impactTableData: [],
                 costGraphData: [],
+                costTableData: [],
                 step: 1
             }
         });
@@ -158,6 +160,7 @@ describe("project page", () => {
                 prevalenceGraphData: [],
                 impactTableData: [],
                 costGraphData: [],
+                costTableData: [],
                 step: 1
             }],
             currentRegion: {
@@ -169,6 +172,7 @@ describe("project page", () => {
                 prevalenceGraphData: [],
                 impactTableData: [],
                 costGraphData: [],
+                costTableData: [],
                 step: 1
             }
         });

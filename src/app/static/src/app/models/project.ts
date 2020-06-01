@@ -11,6 +11,7 @@ export interface Region {
     prevalenceGraphData: Data
     impactTableData: Data
     costGraphData: Data
+    costTableData: Data
     step: number
 }
 
@@ -34,6 +35,7 @@ export class Region {
         this.prevalenceGraphData = [];
         this.impactTableData = [];
         this.costGraphData = [];
+        this.costTableData = [];
         this.step = 1;
     }
 

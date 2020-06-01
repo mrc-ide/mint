@@ -20,6 +20,7 @@ export interface RootState {
     prevalenceGraphConfig: Graph | null
     impactTableConfig: TableDefinition | null
     costCasesGraphConfig: Graph | null
+    costTableConfig: TableDefinition | null
     costEfficacyGraphConfig: Graph | null
 }
 
@@ -39,6 +40,7 @@ const storeOptions: StoreOptions<RootState> = {
         interventionOptions:  null,
         impactTableConfig: null,
         costCasesGraphConfig: null,
+        costTableConfig: null,
         costEfficacyGraphConfig: null
     },
     actions,

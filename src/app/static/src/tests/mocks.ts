@@ -15,6 +15,7 @@ export function mockRootState(state: Partial<RootState> = {}): RootState {
         prevalenceGraphConfig: null,
         impactTableConfig: null,
         costCasesGraphConfig: null,
+        costTableConfig: null,
         costEfficacyGraphConfig: null,
         ...state
     }
