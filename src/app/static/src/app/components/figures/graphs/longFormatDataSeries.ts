@@ -12,15 +12,34 @@ export function useLongFormatData(props: Props) {
     const getRows = (definition: SeriesDefinition) => {
         const x = [] as any[];
         const y = [] as any[];
-        const meta = props.metadata as LongFormatMetadata
+        const meta = props.metadata as LongFormatMetadata;
+
+        const error_col = definition.error_x ? definition.error_x.col : null;
+        const error_col_minus = definition.error_x ? definition.error_x.colminus : null;
+
+        const error_array = [] as any;
+        const error_array_minus = [] as any;
+
         filteredData.value.map((row: any) => {
             if (row[meta.id_col] == definition.id) {
-                x.push(row[meta.x_col])
-                y.push(row[meta.y_col])
+                x.push(row[meta.x_col]);
+                y.push(row[meta.y_col]);
+
+                if (error_col && error_col_minus) {
+                    error_array.push(row[error_col]);
+                    error_array_minus.push(row[error_col_minus]);
+                }
             }
         });
-        return [x, y]
-    }
+
+        const result =  [x, y];
+        if (error_array.length) {
+            result.push(error_array);
+            result.push(error_array_minus);
+        }
+
+        return result;
+    };
 
     const dataSeries = computed(() => {
         const result: any[] = []
@@ -37,11 +56,22 @@ export function useLongFormatData(props: Props) {
                     return null;
 
                 }
-                result.push({
+
+                const dataSeries = {
                     ...d,
                     x: rows[0],
                     y: rows[1]
-                });
+                };
+
+                if (d.error_x) {
+                    (dataSeries as any).error_x = {
+                        ...d.error_x,
+                        array: rows[2],
+                        arrayminus: rows[3]
+                    }
+                }
+
+                result.push(dataSeries);
                 return;
             }
             return;

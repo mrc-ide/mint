@@ -1,11 +1,18 @@
-import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {deepCopy} from "../utils";
+import {Data} from "../generated";
 
 export interface Region {
     name: string
     url: string
     baselineOptions: DynamicFormMeta
     interventionOptions: DynamicFormMeta
+    interventionSettings: DynamicFormData
+    prevalenceGraphData: Data
+    impactTableData: Data
+    costGraphData: Data
+    costTableData: Data
+    step: number
 }
 
 export class Region {
@@ -17,7 +24,21 @@ export class Region {
         this.url = `/projects/${parent.name}/regions/${name}`.replace(/\s/g, "-").toLowerCase();
         this.baselineOptions = deepCopy(baselineOptions);
         this.interventionOptions = deepCopy(interventionOptions);
+        this.interventionSettings =  {}
+        this.interventionOptions.controlSections.map(s => {
+            s.controlGroups.map(g => {
+                g.controls.map(c => {
+                    this.interventionSettings[c.name] = null;
+                })
+            })
+        });
+        this.prevalenceGraphData = [];
+        this.impactTableData = [];
+        this.costGraphData = [];
+        this.costTableData = [];
+        this.step = 1;
     }
+
 }
 
 export interface Project {

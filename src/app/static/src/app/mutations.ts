@@ -3,20 +3,28 @@ import {RootState} from "./store";
 import {Project, Region} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
-import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 export enum RootMutation {
     AddProject = "AddProject",
     AddRegion = "AddRegion",
     SetCurrentRegion = "SetCurrentRegion",
     SetCurrentRegionBaselineOptions = "SetCurrentRegionBaselineOptions",
+    SetCurrentRegionInterventionOptions = "SetCurrentRegionInterventionOptions",
+    SetCurrentRegionInterventionSettings = "SetCurrentRegionInterventionSettings",
+    SetCurrentRegionStep = "SetCurrentRegionStep",
     AddError = "AddError",
     AddBaselineOptions = "AddBaselineOptions",
     AddInterventionOptions = "AddInterventionOptions",
     AddPrevalenceGraphData = "AddPrevalenceGraphData",
     AddPrevalenceGraphConfig = "AddPrevalenceGraphConfig",
     AddImpactTableData = "AddImpactTableData",
-    AddImpactTableConfig = "AddImpactTableConfig"
+    AddImpactTableConfig = "AddImpactTableConfig",
+    AddCostGraphData = "AddCostGraphData",
+    AddCostCasesGraphConfig = "AddCostCasesGraphConfig",
+    AddCostTableData = "AddCostTableData",
+    AddCostTableConfig = "AddCostTableConfig",
+    AddCostEfficacyGraphConfig = "AddCostEfficacyGraphConfig"
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -38,6 +46,29 @@ export const mutations: MutationTree<RootState> = {
     [RootMutation.SetCurrentRegionBaselineOptions](state: RootState, payload: DynamicFormMeta) {
         if (state.currentProject) {
             state.currentProject.currentRegion.baselineOptions = payload;
+
+            //Invalidate current region data
+            state.currentProject.currentRegion.impactTableData = [];
+            state.currentProject.currentRegion.prevalenceGraphData = [];
+        }
+    },
+
+    [RootMutation.SetCurrentRegionInterventionOptions](state: RootState,
+                                                       payload: DynamicFormMeta) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.interventionOptions = payload
+        }
+    },
+
+    [RootMutation.SetCurrentRegionInterventionSettings](state: RootState, payload: DynamicFormData) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.interventionSettings = payload;
+        }
+    },
+
+    [RootMutation.SetCurrentRegionStep](state: RootState, payload: number) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.step = payload;
         }
     },
 
@@ -54,7 +85,9 @@ export const mutations: MutationTree<RootState> = {
     },
 
     [RootMutation.AddPrevalenceGraphData](state: RootState, payload: Data) {
-        state.prevalenceGraphData = payload
+        if (state.currentProject) {
+            state.currentProject.currentRegion.prevalenceGraphData = payload;
+        }
     },
 
     [RootMutation.AddPrevalenceGraphConfig](state: RootState, payload: Graph) {
@@ -62,10 +95,37 @@ export const mutations: MutationTree<RootState> = {
     },
 
     [RootMutation.AddImpactTableData](state: RootState, payload: Data) {
-        state.impactTableData = payload
+        if (state.currentProject) {
+            state.currentProject.currentRegion.impactTableData = payload;
+        }
     },
 
     [RootMutation.AddImpactTableConfig](state: RootState, payload: TableDefinition) {
         state.impactTableConfig = payload
+    },
+
+    [RootMutation.AddCostGraphData](state: RootState, payload: Data) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.costGraphData = payload;
+        }
+    },
+
+    [RootMutation.AddCostCasesGraphConfig](state: RootState, payload: Graph) {
+        state.costCasesGraphConfig = payload;
+    },
+
+    [RootMutation.AddCostTableData](state: RootState, payload: Data) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.costTableData = payload;
+        }
+    },
+
+    [RootMutation.AddCostTableConfig](state: RootState, payload: TableDefinition)
+    {
+        state.costTableConfig = payload
+    },
+
+    [RootMutation.AddCostEfficacyGraphConfig](state: RootState, payload: Graph) {
+        state.costEfficacyGraphConfig = payload;
     }
 };

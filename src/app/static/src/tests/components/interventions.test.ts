@@ -8,15 +8,24 @@ import {RootAction} from "../../app/actions";
 import impact from "../../app/components/impact.vue";
 import costEffectiveness from "../../app/components/costEffectiveness.vue";
 import {DynamicForm} from "@reside-ic/vue-dynamic-form";
+import {RootMutation} from "../../app/mutations";
 
 describe("interventions", () => {
 
     const createStore = (state: Partial<RootState> = {currentProject: mockProject()},
-                         mockFetchData = jest.fn()) => {
+                         mockEnsureData = jest.fn(),
+                         mockEnsureCostData = jest.fn(),
+                         mockSetOptions = jest.fn(),
+                         mockSetSettings = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.FetchImpactData]: mockFetchData
+                [RootAction.EnsureImpactData]: mockEnsureData,
+                [RootAction.EnsureCostEffectivenessData]: mockEnsureCostData
+            },
+            mutations: {
+                [RootMutation.SetCurrentRegionInterventionOptions]: mockSetOptions,
+                [RootMutation.SetCurrentRegionInterventionSettings]: mockSetSettings
             }
         });
     };
@@ -71,13 +80,15 @@ describe("interventions", () => {
     });
 
     it("fetches data on mount", async () => {
-        const mockFetch = jest.fn();
-        const store = createStore({currentProject: mockProject()}, mockFetch);
+        const mockFetchImpact = jest.fn();
+        const mockFetchCost = jest.fn();
+        const store = createStore({currentProject: mockProject()}, mockFetchImpact, mockFetchCost);
         shallowMount(interventions, {store});
-        expect(mockFetch.mock.calls.length).toBe(1);
+        expect(mockFetchImpact.mock.calls.length).toBe(1);
+        expect(mockFetchCost.mock.calls.length).toBe(1);
     });
 
-    it("renders intervention options", async () => {
+    it("renders intervention options", () => {
         const project = mockProject()
         project.currentRegion
             .interventionOptions
@@ -97,6 +108,71 @@ describe("interventions", () => {
         });
     });
 
+    it("updates intervention options when the form changes", async () => {
+        const project = mockProject()
+        const mockUpdateOptions = jest.fn();
+        const store = createStore({currentProject: project}, jest.fn(), jest.fn(), mockUpdateOptions);
+        const wrapper = shallowMount(interventions, {store});
+        wrapper.find(DynamicForm).vm.$emit("change", {
+            controlSections: ["TEST" as any]
+        });
+
+        await Vue.nextTick();
+        expect(mockUpdateOptions.mock.calls[0][1]).toEqual({
+            controlSections: ["TEST" as any]
+        })
+    });
+
+    it("updates settings on mount", async () => {
+        const project = mockProject();
+        project.currentRegion.interventionOptions = {
+            controlSections: [{
+                label: "S1",
+                controlGroups: [{
+                    controls: [
+                        {name: "c1", type: "number", required: true, value: 3}
+                    ]
+                }]
+            }]
+        };
+        const mockSetSettings = jest.fn();
+        const store = createStore({currentProject: project}, jest.fn(), jest.fn(), jest.fn(), mockSetSettings);
+        mount(interventions, {store});
+
+        await Vue.nextTick();
+
+        expect(mockSetSettings.mock.calls[0][1]).toEqual({"c1": 3});
+    });
+
+    it("updates settings when intervention options change", async () => {
+        const project = mockProject()
+        const mockSetSettings = jest.fn();
+        const store = createStore({currentProject: project}, jest.fn(), jest.fn(), jest.fn(), mockSetSettings);
+        const wrapper = mount(interventions, {store});
+
+        store.state.currentProject!!.currentRegion.interventionOptions =
+            {
+                controlSections: [{
+                    label: "S1",
+                    controlGroups: [{
+                        controls: [
+                            {name: "c1", type: "number", required: true, value: 3}
+                        ]
+                    }]
+                }]
+            };
+
+        await Vue.nextTick();
+
+        expect(wrapper.find(DynamicForm).emitted("submit")!![0][0]).toEqual({}); // called on mount
+        expect(wrapper.find(DynamicForm).emitted("submit")!![1][0]).toEqual({"c1": 3}); // called after change
+
+        await Vue.nextTick();
+
+        expect(mockSetSettings.mock.calls[0][1]).toEqual({}); // called on mount
+        expect(mockSetSettings.mock.calls[1][1]).toEqual({"c1": 3}); // called after change
+    });
+
     it("fetches data on currentRegion change", async () => {
         const mockFetch = jest.fn();
 
@@ -106,14 +182,20 @@ describe("interventions", () => {
             currentProject: project
         }, mockFetch);
 
-        shallowMount(interventions, {store});
+        mount(interventions, {store});
 
         store.state.currentProject!!.currentRegion =
             {
                 name: "newRegion",
                 url: "/",
                 baselineOptions: {controlSections: []},
-                interventionOptions: {controlSections: []}
+                interventionOptions: {controlSections: []},
+                interventionSettings: {},
+                impactTableData: [],
+                prevalenceGraphData: [],
+                costGraphData: [],
+                costTableData: [],
+                step: 1
             };
         await Vue.nextTick();
 

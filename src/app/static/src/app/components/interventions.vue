@@ -1,7 +1,9 @@
 <template>
     <div class="row">
         <div class="col-4 interventions">
-            <dynamic-form v-model="options"
+            <dynamic-form ref="settings"
+                          v-model="options"
+                          @submit="updateInterventionSettings"
                           :include-submit-button="false"></dynamic-form>
         </div>
         <div class="col-8">
@@ -37,12 +39,13 @@
 <script lang="ts">
     import Vue from "vue";
     import verticalTabs from "./verticalTabs.vue";
-    import {mapActionByName} from "../utils";
+    import {mapActionByName, mapMutationByName} from "../utils";
     import {RootAction} from "../actions";
     import impact from "./impact.vue";
     import costEffectiveness from "./costEffectiveness.vue";
     import {mapState} from "vuex";
-    import {DynamicForm, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+    import {DynamicForm, DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+    import {RootMutation} from "../mutations";
     import {Project, Region} from "../models/project";
 
     interface ComponentData {
@@ -52,9 +55,14 @@
     }
 
     interface Methods {
+        submitForm: () => void
         changeVerticalTab: (name: string) => void
         changeHorizontalTab: (name: string) => void
-        fetchData: () => void
+        updateInterventionOptions: (payload: DynamicFormMeta) => void
+        updateInterventionSettings: (payload: DynamicFormData) => void
+        ensureData: () => void
+        ensureImpactData: () => void
+        ensureCostEffectivenessData: () => void
     }
 
     interface Computed {
@@ -78,7 +86,7 @@
                     return this.currentProject.currentRegion.interventionOptions
                 },
                 set(value: DynamicFormMeta) {
-                    // TODO update
+                    this.updateInterventionOptions(value);
                 }
             },
             currentRegion() {
@@ -86,21 +94,39 @@
             }
         },
         methods: {
+            submitForm() {
+                this.$nextTick(() => {
+                    // wait til the next tick so that the form has been updated
+                    const form = this.$refs.settings as any
+                    form.submit && form.submit();
+                });
+            },
             changeVerticalTab(name: string) {
                 this.activeVerticalTab = name;
             },
             changeHorizontalTab(name: string) {
                 this.activeHorizontalTab = name;
             },
-            fetchData: mapActionByName(RootAction.FetchImpactData)
+            ensureData: function() {
+                this.ensureImpactData();
+                this.ensureCostEffectivenessData();
+            },
+            ensureImpactData: mapActionByName(RootAction.EnsureImpactData),
+            ensureCostEffectivenessData: mapActionByName(RootAction.EnsureCostEffectivenessData),
+            updateInterventionOptions: mapMutationByName(RootMutation.SetCurrentRegionInterventionOptions),
+            updateInterventionSettings: mapMutationByName(RootMutation.SetCurrentRegionInterventionSettings)
         },
         components: {verticalTabs, impact, costEffectiveness, DynamicForm},
         mounted() {
-            this.fetchData();
+            this.ensureData();
+            this.submitForm();
         },
         watch: {
+            options() {
+                this.submitForm();
+            },
             currentRegion: function () {
-                this.fetchData();
+                this.ensureData();
             }
         }
     });
