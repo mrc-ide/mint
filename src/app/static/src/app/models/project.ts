@@ -61,6 +61,7 @@ export class Project {
 
     setCurrentRegion(url: string) {
         const region = this.regions.find(r => r.url == url);
+        console.log(url, region)
         if (!region) {
             throw Error(`${url} does not correspond to a valid region`)
         }

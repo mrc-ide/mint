@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping
 class HomeController(
         private val appProperties: AppProperties) {
 
-    @GetMapping("/")
+    @GetMapping("/", "/projects/{project}/regions/{region}")
     fun index(model: Model): String {
         model["title"] = appProperties.applicationTitle
         return "index"

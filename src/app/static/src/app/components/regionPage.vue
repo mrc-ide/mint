@@ -42,7 +42,7 @@
     }
 
     interface Computed {
-        currentProject: Project,
+        currentProject: Project | null,
         currentStep: Number
     }
 
@@ -56,7 +56,7 @@
         computed: {
             ...mapState(["currentProject"]),
             currentStep: function() {
-                return this.currentProject.currentRegion.step;
+                return this.currentProject ? this.currentProject.currentRegion.step : 0
             }
         },
         methods: {
@@ -69,6 +69,13 @@
         watch: {
             $route(to) {
                 this.setCurrentRegion(to.path);
+            }
+        },
+        mounted() {
+            if (!this.currentProject) {
+                this.$router.push({
+                    path: "/"
+                })
             }
         }
     });
