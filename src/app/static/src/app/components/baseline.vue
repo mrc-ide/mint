@@ -31,7 +31,6 @@
         components: {DynamicForm},
         methods: {
             submit: function(settings: DynamicFormData) {
-                alert("settings: " + JSON.stringify(settings));
                 this.updateBaselineSettings(settings);
                 this.$emit('submit');
             },
