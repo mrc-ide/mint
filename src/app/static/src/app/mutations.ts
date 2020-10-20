@@ -9,6 +9,7 @@ export enum RootMutation {
     AddProject = "AddProject",
     SetCurrentRegion = "SetCurrentRegion",
     SetCurrentRegionBaselineOptions = "SetCurrentRegionBaselineOptions",
+    SetCurrentRegionBaselineSettings = "SetCurrentRegionBaselineSettings",
     SetCurrentRegionInterventionOptions = "SetCurrentRegionInterventionOptions",
     SetCurrentRegionInterventionSettings = "SetCurrentRegionInterventionSettings",
     SetCurrentRegionStep = "SetCurrentRegionStep",
@@ -51,6 +52,12 @@ export const mutations: MutationTree<RootState> = {
                                                        payload: DynamicFormMeta) {
         if (state.currentProject) {
             state.currentProject.currentRegion.interventionOptions = payload
+        }
+    },
+
+    [RootMutation.SetCurrentRegionBaselineSettings](state: RootState, payload: DynamicFormData) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.baselineSettings = payload;
         }
     },
 
