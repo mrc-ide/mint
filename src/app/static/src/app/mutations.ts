@@ -1,12 +1,13 @@
 import {MutationTree} from "vuex";
 import {RootState} from "./store";
-import {Project} from "./models/project";
+import {Project, Region} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 export enum RootMutation {
     AddProject = "AddProject",
+    AddRegion = "AddRegion",
     SetCurrentRegion = "SetCurrentRegion",
     SetCurrentRegionBaselineOptions = "SetCurrentRegionBaselineOptions",
     AddError = "AddError",
@@ -23,6 +24,11 @@ export const mutations: MutationTree<RootState> = {
     [RootMutation.AddProject](state: RootState, payload: Project) {
         state.projects.push(payload)
         state.currentProject = payload
+    },
+
+    [RootMutation.AddRegion](state: RootState, payload: Region) {
+        // it is an error to call this mutation before current project is set
+        state.currentProject!!.regions.push(payload);
     },
 
     [RootMutation.SetCurrentRegion](state: RootState, payload: string) {

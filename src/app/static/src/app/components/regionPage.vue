@@ -40,6 +40,7 @@
         watch: {
             $route(to) {
                 this.setCurrentRegion(to.path);
+                this.currentStep = 1;
             }
         }
     });

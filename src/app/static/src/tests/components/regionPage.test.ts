@@ -8,6 +8,7 @@ import {RootMutation} from "../../app/mutations";
 import stepButton from "../../app/components/stepButton.vue";
 import interventions from "../../app/components/interventions.vue";
 import baseline from "../../app/components/baseline.vue";
+import {RootAction} from "../../app/actions";
 
 describe("region page", () => {
 
@@ -20,6 +21,9 @@ describe("region page", () => {
             state: mockRootState({
                 currentProject: mockProject()
             }),
+            actions: {
+                [RootAction.FetchImpactData]: jest.fn()
+            },
             mutations: {
                 [RootMutation.SetCurrentRegion]: setCurrentRegionMock
             }
@@ -39,6 +43,26 @@ describe("region page", () => {
         await Vue.nextTick();
         expect(setCurrentRegionMock.mock.calls.length).toBe(1);
         expect(setCurrentRegionMock.mock.calls[0][1]).toBe("/projects/new-project/regions/new-region");
+    });
+
+    it("sets step to baseline when route changes", async () => {
+        const store = createStore();
+        const wrapper = mount(regionPage, {localVue, store, router});
+
+        const steps = wrapper.findAll(stepButton);
+
+        const buttons = wrapper.findAll("button");
+        buttons.at(1).trigger("click");
+
+        await Vue.nextTick();
+
+        expect(steps.at(1).props("active")).toBe(true);
+
+        await router.push({
+            path: "/projects/new-project/regions/another-region"
+        });
+        await Vue.nextTick();
+        expect(steps.at(0).props("active")).toBe(true);
     });
 
     it("sets current step when step is clicked", async () => {
