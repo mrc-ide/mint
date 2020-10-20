@@ -4,8 +4,7 @@
                       :include-submit-button="true"
                       submit-text="Next"
                       @submit="submit"
-                      @validate="$emit('validate', $event)"
-                    ></dynamic-form>
+                      @validate="$emit('validate', $event)" ></dynamic-form>
     </div>
 </template>
 <script lang="ts">
