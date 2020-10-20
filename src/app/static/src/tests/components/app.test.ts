@@ -2,8 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 import {shallowMount} from "@vue/test-utils";
 import app from "../../app/components/app.vue";
-import {mockRootState} from "../mocks";
-import {Project} from "../../app/models/project";
+import {mockProject, mockRootState} from "../mocks";
+import {Project, Region} from "../../app/models/project";
 import {RootAction} from "../../app/actions";
 import {BModal} from "bootstrap-vue";
 import {RootMutation} from "../../app/mutations";
@@ -66,9 +66,7 @@ describe("app", () => {
 
     it("adds new region and navigates to it", async () => {
         const state = {
-            currentProject: new Project(
-                "my project", ["region1"], {controlSections: []}, {controlSections: []}
-            ),
+            currentProject: mockProject("my project"),
             baselineOptions: {controlSections: []},
             interventionOptions: {controlSections: []}
         };
@@ -82,12 +80,12 @@ describe("app", () => {
         rendered.find(BModal).vm.$emit("ok");
         await Vue.nextTick();
         expect(addRegionMock.mock.calls.length).toBe(1);
-        expect(addRegionMock.mock.calls[0][1]).toEqual({
-            baselineOptions: {controlSections: []},
-            interventionOptions: {controlSections: []},
-            name: "region2",
-            url: "/projects/my-project/regions/region2"
-        });
+        expect(addRegionMock.mock.calls[0][1]).toEqual(
+            new Region("region2",
+                state.currentProject,
+                {controlSections: []},
+                {controlSections: []})
+        );
 
         expect($router[0]).toEqual({path: "/projects/my-project/regions/region2"});
     });

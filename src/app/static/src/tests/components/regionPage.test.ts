@@ -71,26 +71,6 @@ describe("region page", () => {
         expect(setCurrentRegionMock.mock.calls[0][1]).toBe("/projects/new-project/regions/new-region");
     });
 
-    it("sets step to baseline when route changes", async () => {
-        const store = createStore();
-        const wrapper = mount(regionPage, {localVue, store, router});
-
-        const steps = wrapper.findAll(stepButton);
-
-        const buttons = wrapper.findAll("button");
-        buttons.at(1).trigger("click");
-
-        await Vue.nextTick();
-
-        expect(steps.at(1).props("active")).toBe(true);
-
-        await router.push({
-            path: "/projects/new-project/regions/another-region"
-        });
-        await Vue.nextTick();
-        expect(steps.at(0).props("active")).toBe(true);
-    });
-
     it("sets current step when step is clicked", async () => {
         const mockSetRegionStep = jest.fn();
         const store = createStore(jest.fn(), mockSetRegionStep);
