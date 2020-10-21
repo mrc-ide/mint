@@ -18,12 +18,13 @@
                         <label class="col-sm-3 col-form-label text-right">Regions</label>
                         <div class="col-sm-9">
                             <vue-tags-input
-                                    :tags="regions"
-                                    v-model="newRegion"
-                                    :add-on-key="[13, ',']"
-                                    :placeholder="placeholder"
-                                    @tags-changed="tagAdded"
-                            />
+                                :tags="regions"
+                                v-model="newRegion"
+                                :add-on-key="[13, ',']"
+                                :placeholder="placeholder"
+                                @tags-changed="tagAdded"
+                                :is-duplicate="isDuplicate"
+                                :avoid-adding-duplicates="true"/>
                             <span class="text-muted small">You can always add and remove regions later</span>
                         </div>
                     </div>
@@ -45,7 +46,7 @@
     import VueTagsInput from '@johmun/vue-tags-input';
     import {RootMutation} from "../mutations";
     import {mapMutationByName} from "../utils";
-    import {Project} from "../models/project";
+    import {getSlug, Project} from "../models/project";
     import {mapState} from "vuex";
     import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
@@ -59,6 +60,7 @@
         addProject: (project: Project) => void
         createProject: () => void
         tagAdded: (newTags: Tag[]) => void
+        isDuplicate: (tags: Tag[], tag: Tag) => boolean
     }
 
     interface Computed {
@@ -82,7 +84,7 @@
             }
         },
         computed: {
-            ... mapState(["baselineOptions", "interventionOptions"]),
+            ...mapState(["baselineOptions", "interventionOptions"]),
             disabled() {
                 return !this.newProject || (!this.newRegion && this.regions.length == 0)
             },
@@ -93,8 +95,8 @@
         methods: {
             addProject: mapMutationByName(RootMutation.AddProject),
             createProject() {
-                const regionNames = this.regions.map((tag) => tag.text);
-                if (regionNames.length == 0){
+                const regionNames = this.regions.map((tag) => tag.text.trim());
+                if (regionNames.length == 0) {
                     // user has only entered one region name and has not blurred the input
                     // so this.regions is empty even though this.newRegion is populated
                     // so take this.newRegion as the only region
@@ -109,6 +111,9 @@
             tagAdded: function (newTags: Tag[]) {
                 this.regions = newTags;
                 this.newRegion = "";
+            },
+            isDuplicate(tags: Tag[], tag: Tag) {
+                return !!tags.find(t => getSlug(t.text.trim()) == getSlug(tag.text.trim()));
             }
         }
     });

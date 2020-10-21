@@ -89,7 +89,7 @@ describe("project page", () => {
         const wrapper = shallowMount(projectListPage, {store, mocks: {$router: mockRouter}});
 
         wrapper.find("input").setValue("new project");
-        wrapper.find(VueTagsInput).vm.$emit("tags-changed", [{text: "South"}])
+        wrapper.find(VueTagsInput).vm.$emit("tags-changed", [{text: " South "}])
 
         await Vue.nextTick();
 
@@ -102,7 +102,7 @@ describe("project page", () => {
             name: "new project",
             slug: "new-project",
             regions: [{
-                name: "South",
+                name: "South", // check trimmed whitespace
                 slug: "south",
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
@@ -201,6 +201,20 @@ describe("project page", () => {
         await Vue.nextTick();
         expect(tagsInput.props("placeholder")).toBe("...");
 
+    });
+
+    it("cannot add regions with duplicate slugs", async () => {
+        const store = createStore();
+        const wrapper = shallowMount(projectListPage, {store});
+
+        // this is a bit awkward to test, but we assume the third party component
+        // works as expected and just check that the props are set up correctly
+        let tagsInput = wrapper.find(VueTagsInput);
+        const isDuplicate = tagsInput.props("isDuplicate") as any;
+        expect(isDuplicate([{text: "south region"}], {text: "South-Region"})).toBe(true);
+        expect(isDuplicate([{text: "south region"}], {text: " south region "})).toBe(true);
+        expect(isDuplicate([{text: "south region"}], {text: "North region"})).toBe(false);
+        expect(tagsInput.props("avoidAddingDuplicates")).toBe(true);
     });
 
 });
