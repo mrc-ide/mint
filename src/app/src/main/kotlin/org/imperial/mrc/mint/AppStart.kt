@@ -12,12 +12,12 @@ import org.springframework.web.servlet.resource.PathResourceResolver
 class MintApplication
 
 fun main(args: Array<String>) {
-    SpringApplication.run(MintApplication::class.java, *args)
+    SpringApplication.run(MintApplication::class.java)
 }
 
 @Configuration
 @EnableWebMvc
-class MvcConfig() : WebMvcConfigurer {
+class MvcConfig : WebMvcConfigurer {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/public/**")
                 .addResourceLocations("file:/static/public/", "file:static/public/")
@@ -26,6 +26,7 @@ class MvcConfig() : WebMvcConfigurer {
                 .addResolver(PathResourceResolver())
     }
 
+    @Suppress("MagicNumber")
     override fun configureAsyncSupport(configurer: AsyncSupportConfigurer) {
         val t = ThreadPoolTaskExecutor()
         t.corePoolSize = 10

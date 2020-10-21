@@ -35,6 +35,7 @@ fun Response.asResponseEntity(): ResponseEntity<String> {
 
 }
 
+@Suppress("MagicNumber")
 fun httpStatusFromCode(code: Int): HttpStatus {
     return when (code) {
         200 -> HttpStatus.OK
