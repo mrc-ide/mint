@@ -4,6 +4,7 @@ import {Data} from "../generated";
 
 export interface Region {
     name: string
+    slug: string
     url: string
     baselineOptions: DynamicFormMeta
     interventionOptions: DynamicFormMeta
@@ -15,13 +16,16 @@ export interface Region {
     step: number
 }
 
+export const getSlug = (name: string) => name.replace(/\s/g, "-").toLowerCase();
+
 export class Region {
     constructor(name: string,
                 parent: Project,
                 baselineOptions: DynamicFormMeta,
                 interventionOptions: DynamicFormMeta) {
         this.name = name;
-        this.url = `/projects/${parent.name}/regions/${name}`.replace(/\s/g, "-").toLowerCase();
+        this.slug = getSlug(name);
+        this.url = `/projects/${parent.slug}/regions/${this.slug}`;
         this.baselineOptions = deepCopy(baselineOptions);
         this.interventionOptions = deepCopy(interventionOptions);
         this.interventionSettings =  {}
@@ -43,6 +47,7 @@ export class Region {
 
 export interface Project {
     name: string;
+    slug: string;
     regions: Region[];
     currentRegion: Region;
 }
@@ -55,6 +60,7 @@ export class Project {
                 interventionOptions: DynamicFormMeta,
                 currentRegion: Region | null = null) {
         this.name = name;
+        this.slug = getSlug(name);
         this.regions = regionsName.map(n => new Region(n, this, baselineOptions, interventionOptions));
         this.currentRegion = currentRegion || this.regions[0]
     }

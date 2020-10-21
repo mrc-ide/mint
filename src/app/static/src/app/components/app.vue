@@ -51,7 +51,7 @@
     import {RootAction} from "../actions";
     import {mapActionByName, mapMutationByName} from "../utils";
     import {store} from "../store";
-    import {Project, Region} from "../models/project";
+    import {getSlug, Project, Region} from "../models/project";
     import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
     import {RootMutation} from "../mutations";
 
@@ -91,8 +91,8 @@
 
                 // because of how urls are normalized, "My region" and "my-region"
                 // also represent a naming clash, so compare slugs rather than names
-                const newRegionSlug = this.newRegionName.replace(/\s/g, "-").toLowerCase();
-                return !this.currentProject.regions.find(r => r.url.split("/")[4] == newRegionSlug);
+                const newRegionSlug = getSlug(this.newRegionName);
+                return !this.currentProject.regions.find(r => r.slug == newRegionSlug);
             }
         },
         methods: {

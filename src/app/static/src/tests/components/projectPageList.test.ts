@@ -100,8 +100,11 @@ describe("project page", () => {
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1]).toEqual({
             name: "new project",
+            slug: "new-project",
             regions: [{
-                name: "South", url: "/projects/new-project/regions/south",
+                name: "South",
+                slug: "south",
+                url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
                 interventionSettings: {"c1": null},
@@ -112,7 +115,9 @@ describe("project page", () => {
                 step: 1
             }],
             currentRegion: {
-                name: "South", url: "/projects/new-project/regions/south",
+                name: "South",
+                slug: "south",
+                url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
                 interventionSettings: {"c1": null},
@@ -151,8 +156,10 @@ describe("project page", () => {
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1]).toEqual({
             name: "new project",
+            slug: "new-project",
             regions: [{
                 name: "South",
+                slug: "south",
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
@@ -165,6 +172,7 @@ describe("project page", () => {
             }],
             currentRegion: {
                 name: "South",
+                slug: "south",
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions,
