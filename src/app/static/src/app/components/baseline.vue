@@ -3,14 +3,13 @@
         <dynamic-form v-model="options"
                       :include-submit-button="true"
                       submit-text="Next"
-                      @submit="$emit('submit')"
-                      @validate="$emit('validate', $event)"
-                    ></dynamic-form>
+                      @submit="submit"
+                      @validate="$emit('validate', $event)" ></dynamic-form>
     </div>
 </template>
 <script lang="ts">
     import Vue from "vue";
-    import {DynamicForm, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+    import {DynamicForm, DynamicFormMeta, DynamicFormData} from "@reside-ic/vue-dynamic-form";
     import {Project} from "../models/project";
     import {mapState} from "vuex";
     import {mapMutationByName} from "../utils";
@@ -23,12 +22,19 @@
 
     interface Methods {
         update: (value: DynamicFormMeta) => void
+        submit: (settings: DynamicFormData) => void
+        updateBaselineSettings: (settings: DynamicFormData) => void
     }
 
     export default Vue.extend<{}, Methods, Computed, {}>({
         components: {DynamicForm},
         methods: {
-            update: mapMutationByName(RootMutation.SetCurrentRegionBaselineOptions)
+            submit: function(settings: DynamicFormData) {
+                this.updateBaselineSettings(settings);
+                this.$emit('submit');
+            },
+            update: mapMutationByName(RootMutation.SetCurrentRegionBaselineOptions),
+            updateBaselineSettings: mapMutationByName(RootMutation.SetCurrentRegionBaselineSettings)
         },
         computed: {
             ...mapState(["currentProject"]),

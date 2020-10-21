@@ -34,6 +34,7 @@ describe("mutations", () => {
             name: "South region",
             url: "/projects/my-project/regions/south-region",
             baselineOptions: {controlSections: []},
+            baselineSettings: {},
             interventionOptions: {controlSections:[]},
             interventionSettings: {},
             prevalenceGraphData: [],
@@ -233,6 +234,25 @@ describe("mutations", () => {
         const state = mockRootState();
         const newSettings: DynamicFormData = {"c1": 3};
         mutations[RootMutation.SetCurrentRegionInterventionSettings](state, newSettings);
+        expect(state.currentProject).toBeNull();
+    });
+
+    it("updates the current region's baseline settings", () => {
+        const state = mockRootState({
+            currentProject: new Project("my project", ["North region", "South region"],
+                {controlSections: []}, {controlSections: []})
+        });
+
+        const newSettings: DynamicFormData = {"c1": 3};
+        mutations[RootMutation.SetCurrentRegionBaselineSettings](state, newSettings);
+        expect(state.currentProject!!.currentRegion.baselineSettings)
+            .toEqual(newSettings);
+    });
+
+    it("updating the current region's baseline settings does nothing if no current project", () => {
+        const state = mockRootState();
+        const newSettings: DynamicFormData = {"c1": 3};
+        mutations[RootMutation.SetCurrentRegionBaselineSettings](state, newSettings);
         expect(state.currentProject).toBeNull();
     });
 });
