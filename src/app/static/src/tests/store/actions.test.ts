@@ -17,12 +17,8 @@ describe("actions", () => {
         (console.log as jest.Mock).mockClear();
     });
 
-    const baselineOptions: BaselineOptions = {
-        controlSections:
-            [{
-                label: "section",
-                controlGroups: []
-            }]
+    const baselineSettings: DynamicFormData = {
+        population: 1000
     };
 
     const interventionSettings: DynamicFormData = {
@@ -33,7 +29,8 @@ describe("actions", () => {
     const state = {
         currentProject: {
             currentRegion: {
-                baselineOptions,
+                baselineOptions: [],
+                baselineSettings,
                 interventionSettings,
                 prevalenceGraphData: [],
                 impactTableData: [],
@@ -90,14 +87,14 @@ describe("actions", () => {
 
     it("fetches prevalence graph data", async () => {
         const url = "/impact/graph/prevalence/data";
-        mockAxios.onPost(url, baselineOptions)
+        mockAxios.onPost(url, baselineSettings)
             .reply(200, mockSuccess([{prev: 1, net_use: 0.2, resistance: "low"}]));
 
         const commit = jest.fn();
         await (actions[RootAction.FetchPrevalenceGraphData] as any)({commit, state} as any);
 
         expect(mockAxios.history.post[0].url).toBe(url);
-        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(baselineOptions));
+        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(baselineSettings));
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddPrevalenceGraphData);
         expectEqualsFrozen(commit.mock.calls[0][1], [{prev: 1, net_use: 0.2, resistance: "low"}]);
@@ -116,14 +113,14 @@ describe("actions", () => {
 
     it("fetches impact table data", async () => {
         const url = "/impact/table/data";
-        mockAxios.onPost(url, baselineOptions)
+        mockAxios.onPost(url, baselineSettings)
                 .reply(200, mockSuccess([{prev: 1, net_use: 0.2, resistance: "low"}]));
 
         const commit = jest.fn();
         await (actions[RootAction.FetchImpactTableData] as any)({commit, state} as any);
 
         expect(mockAxios.history.post[0].url).toBe(url);
-        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(baselineOptions));
+        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(baselineSettings));
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData);
         expectEqualsFrozen(commit.mock.calls[0][1], [{prev: 1, net_use: 0.2, resistance: "low"}]);
@@ -143,14 +140,14 @@ describe("actions", () => {
     it("fetches cost table data", async () => {
         const url = "/cost/table/data";
         const testData = [{prev: 1, net_use: 0.2, resistance: "low"}];
-        mockAxios.onPost(url, baselineOptions)
+        mockAxios.onPost(url, baselineSettings)
             .reply(200, mockSuccess(testData));
 
         const commit = jest.fn();
         await (actions[RootAction.FetchCostTableData] as any)({commit, state} as any);
 
         expect(mockAxios.history.post[0].url).toBe(url);
-        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(baselineOptions));
+        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(baselineSettings));
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableData);
         expectEqualsFrozen(commit.mock.calls[0][1], testData);
@@ -224,7 +221,7 @@ describe("actions", () => {
     it("fetches cost graph data", async () => {
         const url = "/cost/graph/data";
         const testData = [{cases_averted: 1, cost: 10}];
-        const expectedSettings = {...baselineOptions, ...interventionSettings};
+        const expectedSettings = {...baselineSettings, ...interventionSettings};
         mockAxios.onPost(url, expectedSettings)
             .reply(200, mockSuccess(testData));
 
@@ -253,14 +250,14 @@ describe("actions", () => {
         const stateWithoutImpactGraph = {
             currentProject: {
                 currentRegion: {
-                    baselineOptions: baselineOptions,
+                    baselineSettings,
                     prevalenceGraphData: [],
                     impactTableData: ["TEST TABLE DATA"] as any
                 }
             }
         };
         await (actions[RootAction.EnsureImpactData] as any)({dispatch, state: stateWithoutImpactGraph} as any);
-
+        baselineSettings
         expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
         expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchImpactTableData);
     });
@@ -270,7 +267,7 @@ describe("actions", () => {
         const stateWithoutImpactTable = {
             currentProject: {
                 currentRegion: {
-                    baselineOptions: baselineOptions,
+                    baselineSettings,
                     prevalenceGraphData: ["TEST GRAPH DATA"] as any,
                     impactTableData: []
                 }
@@ -288,7 +285,7 @@ describe("actions", () => {
         const stateWithAllImpactData = {
             currentProject: {
                 currentRegion: {
-                    baselineOptions: baselineOptions,
+                    baselineSettings,
                     prevalenceGraphData: ["TEST GRAPH DATA"] as any,
                     impactTableData: ["TEST TABLE DATA"] as any
                 }
@@ -312,7 +309,7 @@ describe("actions", () => {
         const stateWithCostData = {
             currentProject: {
                 currentRegion: {
-                    baselineOptions: baselineOptions,
+                    baselineSettings,
                     costGraphData: ["TEST COST DATA"]
                 }
             }

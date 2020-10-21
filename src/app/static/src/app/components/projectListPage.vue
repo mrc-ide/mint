@@ -75,7 +75,7 @@
     }
 
     interface Methods {
-        startNewProject: () => void
+        startNewProject: (event: Event) => void
         setCurrentProject: (project: Project | null) => void
         addProject: (project: Project) => void
         createProject: () => void
@@ -125,7 +125,8 @@
         methods: {
             setCurrentProject: mapMutationByName(RootMutation.SetCurrentProject),
             addProject: mapMutationByName(RootMutation.AddProject),
-            startNewProject() {
+            startNewProject(event: Event) {
+                event.preventDefault();
                 this.showNewProject = true;
             },
             createProject() {

@@ -4,14 +4,22 @@ import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 describe("actions", () => {
 
-    const getStateWithBaselineOptions = async () => {
+    const getStateWithBaselineSettings = async () => {
         const commit = jest.fn();
-        await (actions[RootAction.FetchPrevalenceGraphConfig] as any)({commit} as any);
+        await (actions[RootAction.FetchBaselineOptions] as any)({commit} as any);
         const options = commit.mock.calls[0][1] as DynamicFormMeta;
+        const settings = {} as any;
+        options.controlSections.forEach((section) => {
+            section.controlGroups.forEach((group) => {
+                group.controls.forEach((control) => {
+                    settings[control.name] = control.value
+                });
+            });
+        });
         return {
             currentProject: {
                 currentRegion: {
-                    baselineOptions: options
+                    baselineSettings: settings
                 }
             }
         };
@@ -19,7 +27,7 @@ describe("actions", () => {
 
     it("can get prevalence graph data", async () => {
         const commit = jest.fn();
-        const state = await getStateWithBaselineOptions();
+        const state = await getStateWithBaselineSettings();
         await (actions[RootAction.FetchPrevalenceGraphData] as any)({commit, state} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddPrevalenceGraphData);
@@ -27,9 +35,10 @@ describe("actions", () => {
         expect(Object.keys(firstRow).sort())
             .toEqual([
                 "intervention",
-                "irs_use",
+                "irsUse",
                 "month",
-                "net_use",
+                "netType",
+                "netUse",
                 "value"]);
     });
 
@@ -44,7 +53,7 @@ describe("actions", () => {
 
     it("can get cost graph data", async () => {
         const commit = jest.fn();
-        const state = await getStateWithBaselineOptions();
+        const state = await getStateWithBaselineSettings();
         await (actions[RootAction.FetchCostGraphData] as any)({commit, state} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostGraphData);
@@ -102,7 +111,7 @@ describe("actions", () => {
 
     it("can get impact table data", async () => {
         const commit = jest.fn();
-        const state = await getStateWithBaselineOptions();
+        const state = await getStateWithBaselineSettings();
         await (actions[RootAction.FetchImpactTableData] as any)({commit, state} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData);
@@ -135,7 +144,7 @@ describe("actions", () => {
 
     it("can get cost table data", async () => {
         const commit = jest.fn();
-        const state = await getStateWithBaselineOptions();
+        const state = await getStateWithBaselineSettings();
         await (actions[RootAction.FetchCostTableData] as any)({commit, state} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableData);

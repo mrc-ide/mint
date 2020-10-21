@@ -16,13 +16,15 @@ describe("baseline", () => {
             { label: "section3", controlGroups: [] }
         ]
     };
-    const getWrapper = (setBaselineMock = jest.fn()) => {
+    const getWrapper = (setBaselineMock = jest.fn(), setBaselineSettingsMock = jest.fn()) => {
+        const currentProject = new Project("project 1", ["region 1"], baselineOptions, {controlSections: []});
         const store =  new Vuex.Store({
             state: mockRootState({
-                currentProject: new Project("project 1", ["region 1"], baselineOptions, {controlSections: []})
+                currentProject
             }),
             mutations: {
-                [RootMutation.SetCurrentRegionBaselineOptions]: setBaselineMock
+                [RootMutation.SetCurrentRegionBaselineOptions]: setBaselineMock,
+                [RootMutation.SetCurrentRegionBaselineSettings]: setBaselineSettingsMock
             }
         });
 
@@ -48,12 +50,16 @@ describe("baseline", () => {
         expect(mockMutation.mock.calls[0][1][0]).toBe(newBaseline);
     });
 
-    it("emits submit event when form is submitted", async () => {
-        const wrapper = getWrapper();
-        wrapper.find(DynamicForm).vm.$emit("submit");
+    it("commits update baseline settings and emits submit event when form is submitted", async () => {
+        const mockSetBaselineSettings = jest.fn();
+        const wrapper = getWrapper(jest.fn(), mockSetBaselineSettings);
+        const mockSettings = {population: 1000};
+        wrapper.find(DynamicForm).vm.$emit("submit", mockSettings);
 
         await Vue.nextTick();
         expect(wrapper.emitted("submit")!!.length).toBe(1);
+        expect(mockSetBaselineSettings.mock.calls.length).toBe(1);
+        expect(mockSetBaselineSettings.mock.calls[0][1]).toBe(mockSettings);
     });
 
     it("emits validate event when form is validated", async () => {

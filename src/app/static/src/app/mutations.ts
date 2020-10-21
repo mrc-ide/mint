@@ -10,6 +10,7 @@ export enum RootMutation {
     SetCurrentProject = "SetCurrentProject",
     SetCurrentRegion = "SetCurrentRegion",
     SetCurrentRegionBaselineOptions = "SetCurrentRegionBaselineOptions",
+    SetCurrentRegionBaselineSettings = "SetCurrentRegionBaselineSettings",
     SetCurrentRegionInterventionOptions = "SetCurrentRegionInterventionOptions",
     SetCurrentRegionInterventionSettings = "SetCurrentRegionInterventionSettings",
     SetCurrentRegionStep = "SetCurrentRegionStep",
@@ -38,8 +39,9 @@ export const mutations: MutationTree<RootState> = {
         state.currentProject = project;
     },
 
-    [RootMutation.SetCurrentRegion](state: RootState, region: Region) {
-        state.currentProject!!.currentRegion = region;
+    [RootMutation.SetCurrentRegion](state: RootState, payload: Region) {
+        // this will and should be an error if called when current project does not exist
+        state.currentProject!!.currentRegion = payload;
     },
 
     [RootMutation.SetCurrentRegionBaselineOptions](state: RootState, payload: DynamicFormMeta) {
@@ -56,6 +58,12 @@ export const mutations: MutationTree<RootState> = {
                                                        payload: DynamicFormMeta) {
         if (state.currentProject) {
             state.currentProject.currentRegion.interventionOptions = payload
+        }
+    },
+
+    [RootMutation.SetCurrentRegionBaselineSettings](state: RootState, payload: DynamicFormData) {
+        if (state.currentProject) {
+            state.currentProject.currentRegion.baselineSettings = payload;
         }
     },
 

@@ -189,6 +189,7 @@ describe("interventions", () => {
                 name: "newRegion",
                 url: "/",
                 baselineOptions: {controlSections: []},
+                baselineSettings: {},
                 interventionOptions: {controlSections: []},
                 interventionSettings: {},
                 impactTableData: [],

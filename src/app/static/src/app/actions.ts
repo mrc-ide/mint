@@ -25,7 +25,7 @@ export enum RootAction {
 }
 
 const currentRegionBaseline = (state: RootState) => {
-    return state.currentProject!!.currentRegion.baselineOptions;
+    return state.currentProject!!.currentRegion.baselineSettings;
 };
 
 const currentRegionInterventions = (state: RootState) => {
