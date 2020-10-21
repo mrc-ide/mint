@@ -4,6 +4,7 @@ import {api} from "./apiService";
 import {Data, Graph} from "./generated";
 import {RootMutation} from "./mutations";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {router} from "./router";
 
 export enum RootAction {
     FetchPrevalenceGraphData = "FetchPrevalenceGraphData",
@@ -19,7 +20,8 @@ export enum RootAction {
     FetchInterventionOptions = "FetchInterventionOptions",
     EnsureImpactData = "FetchImpactData",
     EnsureCostEffectivenessData = "FetchCostEffectivenessData",
-    FetchConfig = "FetchConfig"
+    FetchConfig = "FetchConfig",
+    SetCurrentRegion = "SetCurrentRegion"
 }
 
 const currentRegionBaseline = (state: RootState) => {
@@ -31,6 +33,20 @@ const currentRegionInterventions = (state: RootState) => {
 };
 
 export const actions: ActionTree<RootState, RootState> = {
+
+    async [RootAction.SetCurrentRegion](context, regionUrl: string) {
+        const {state, commit} = context;
+        const proj = state.currentProject;
+
+        const region = proj && proj.regions.find(r => r.url == regionUrl);
+        if (region) {
+            commit(RootMutation.SetCurrentRegion, region);
+        } else {
+            await router.push({
+                path: "/"
+            })
+        }
+    },
 
     async [RootAction.FetchBaselineOptions](context) {
         await api(context)

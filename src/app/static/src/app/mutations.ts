@@ -1,12 +1,13 @@
 import {MutationTree} from "vuex";
 import {RootState} from "./store";
-import {Project} from "./models/project";
+import {Project, Region} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 export enum RootMutation {
     AddProject = "AddProject",
+    SetCurrentProject = "SetCurrentProject",
     SetCurrentRegion = "SetCurrentRegion",
     SetCurrentRegionBaselineOptions = "SetCurrentRegionBaselineOptions",
     SetCurrentRegionInterventionOptions = "SetCurrentRegionInterventionOptions",
@@ -33,8 +34,12 @@ export const mutations: MutationTree<RootState> = {
         state.currentProject = payload
     },
 
-    [RootMutation.SetCurrentRegion](state: RootState, payload: string) {
-        state.currentProject && state.currentProject.setCurrentRegion(payload);
+    [RootMutation.SetCurrentProject](state: RootState, project: Project | null) {
+        state.currentProject = project;
+    },
+
+    [RootMutation.SetCurrentRegion](state: RootState, region: Region) {
+        state.currentProject!!.currentRegion = region;
     },
 
     [RootMutation.SetCurrentRegionBaselineOptions](state: RootState, payload: DynamicFormMeta) {
@@ -114,8 +119,7 @@ export const mutations: MutationTree<RootState> = {
         }
     },
 
-    [RootMutation.AddCostTableConfig](state: RootState, payload: TableDefinition)
-    {
+    [RootMutation.AddCostTableConfig](state: RootState, payload: TableDefinition) {
         state.costTableConfig = payload
     },
 
