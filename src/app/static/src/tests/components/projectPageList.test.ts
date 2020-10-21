@@ -103,6 +103,7 @@ describe("project page", () => {
             regions: [{
                 name: "South", url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
+                baselineSettings: {},
                 interventionOptions: mockInterventionOptions,
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
@@ -114,6 +115,7 @@ describe("project page", () => {
             currentRegion: {
                 name: "South", url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
+                baselineSettings: {},
                 interventionOptions: mockInterventionOptions,
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
@@ -155,6 +157,7 @@ describe("project page", () => {
                 name: "South",
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
+                baselineSettings: {},
                 interventionOptions: mockInterventionOptions,
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
@@ -167,6 +170,7 @@ describe("project page", () => {
                 name: "South",
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
+                baselineSettings: {},
                 interventionOptions: mockInterventionOptions,
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],

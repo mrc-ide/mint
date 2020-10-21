@@ -34,6 +34,7 @@ describe("mutations", () => {
             name: "South region",
             url: "/projects/my-project/regions/south-region",
             baselineOptions: {controlSections: []},
+            baselineSettings: {},
             interventionOptions: {controlSections:[]},
             interventionSettings: {},
             prevalenceGraphData: [],
