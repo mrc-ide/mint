@@ -4,10 +4,12 @@ import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 describe("actions", () => {
 
-    const getStateWithBaselineOptions = async () => {
+    const getStateWithBaselineSettings = async () => {
         const commit = jest.fn();
         await (actions[RootAction.FetchPrevalenceGraphConfig] as any)({commit} as any);
         const options = commit.mock.calls[0][1] as DynamicFormMeta;
+        const settings = {};
+        settings.forEach
         return {
             currentProject: {
                 currentRegion: {
@@ -19,7 +21,7 @@ describe("actions", () => {
 
     it("can get prevalence graph data", async () => {
         const commit = jest.fn();
-        const state = await getStateWithBaselineOptions();
+        const state = await getStateWithBaselineSettings();
         await (actions[RootAction.FetchPrevalenceGraphData] as any)({commit, state} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddPrevalenceGraphData);
@@ -44,7 +46,7 @@ describe("actions", () => {
 
     it("can get cost graph data", async () => {
         const commit = jest.fn();
-        const state = await getStateWithBaselineOptions();
+        const state = await getStateWithBaselineSettings();
         await (actions[RootAction.FetchCostGraphData] as any)({commit, state} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostGraphData);
@@ -102,7 +104,7 @@ describe("actions", () => {
 
     it("can get impact table data", async () => {
         const commit = jest.fn();
-        const state = await getStateWithBaselineOptions();
+        const state = await getStateWithBaselineSettings();
         await (actions[RootAction.FetchImpactTableData] as any)({commit, state} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData);
@@ -135,7 +137,7 @@ describe("actions", () => {
 
     it("can get cost table data", async () => {
         const commit = jest.fn();
-        const state = await getStateWithBaselineOptions();
+        const state = await getStateWithBaselineSettings();
         await (actions[RootAction.FetchCostTableData] as any)({commit, state} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableData);
