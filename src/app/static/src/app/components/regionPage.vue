@@ -37,7 +37,7 @@
     }
 
     interface Methods {
-        setCurrentRegion: (regionUrl: string) => void,
+        setCurrentRegion: (params: {project: string, region: string}) => void,
         setCurrentStep: (step: number) => void,
         baselineValidated: (value: boolean) => void
     }
@@ -70,13 +70,15 @@
         watch: {
             $route(to) {
                 // navigation has occurred within the app, i.e. by clicking an internal link
-                this.setCurrentRegion(to.path);
+                const params = to.params;
+                this.setCurrentRegion({project: params["project"], region: params["region"]});
             }
         },
         mounted() {
             // navigation has occurred outside the app, e.g. by refreshing the page, or
             // directly entering a url
-            this.setCurrentRegion(this.$router.currentRoute.path);
+            const params = this.$router.currentRoute.params;
+            this.setCurrentRegion({project: params["project"], region: params["region"]});
         }
     });
 

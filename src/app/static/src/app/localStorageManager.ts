@@ -4,8 +4,8 @@ const appStateKey = "MINTappState";
 
 export const serialiseState = (rootState: RootState): Partial<RootState> => {
     return {
-        ...rootState,
-        errors: []
+        projects: rootState.projects,
+        currentProject: rootState.currentProject
     };
 };
 

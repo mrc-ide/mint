@@ -34,11 +34,10 @@ const currentRegionInterventions = (state: RootState) => {
 
 export const actions: ActionTree<RootState, RootState> = {
 
-    async [RootAction.SetCurrentRegion](context, regionUrl: string) {
+    async [RootAction.SetCurrentRegion](context, payload: {project: string, region: string}) {
         const {state, commit} = context;
-        const proj = state.currentProject;
-
-        const region = proj && proj.regions.find(r => r.url == regionUrl);
+        const proj = state.projects.find(p => p.slug == payload.project);
+        const region = proj && proj.regions.find(r => r.slug == payload.region);
         if (region) {
             commit(RootMutation.SetCurrentRegion, region);
         } else {
