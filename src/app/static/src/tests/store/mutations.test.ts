@@ -24,6 +24,15 @@ describe("mutations", () => {
         })
     });
 
+    it("sets the current project", () => {
+        const state = mockRootState();
+        const proj = mockProject()
+        mutations[RootMutation.SetCurrentProject](state, proj);
+        expect(state.currentProject).toEqual(proj);
+        mutations[RootMutation.SetCurrentProject](state, null);
+        expect(state.currentProject).toBe(null);
+    });
+
     it("updates the current region", () => {
         const state = mockRootState({
             currentProject: new Project("my project", ["North region", "South region"],
