@@ -13,6 +13,9 @@
                         <div class="dropdown-item" v-for="region in currentProject.regions">
                             <router-link :to="region.url" class="text-success">{{region.name}}</router-link>
                         </div>
+                        <div class="dropdown-item">
+                            <a v-b-modal.add-region>+ Add region</a>
+                        </div>
                     </drop-down>
                 </div>
                 <a href="#" class="px-2 full-height text-dark project-nav">Strategize across regions
@@ -21,26 +24,77 @@
             </div>
         </div>
         <router-view></router-view>
+        <b-modal id="add-region" @ok="createNewRegion" @cancel="cancel" title="Add region">
+            <div class="form-group">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="region">Region name:</label>
+                        <input type="text"
+                               id="region"
+                               class="form-control mx-sm-3"
+                               v-model="newRegionName">
+                    </div>
+                </form>
+            </div>
+        </b-modal>
     </div>
 </template>
 <script lang="ts">
     import Vue from "vue"
     import {mapState} from "vuex";
     import dropDown from "./dropDown.vue";
-    import {BIconGraphUp} from "bootstrap-vue";
+    import {BIconGraphUp, BModal, VBModal} from "bootstrap-vue";
     import {RootAction} from "../actions";
-    import {mapActionByName} from "../utils";
+    import {mapActionByName, mapMutationByName} from "../utils";
     import {store} from "../store";
+    import {Project, Region} from "../models/project";
+    import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+    import {RootMutation} from "../mutations";
 
     interface Methods {
         fetchConfig: () => void
+        addRegion: (region: Region) => void,
+        createNewRegion: () => void
+        cancel: () => void
     }
 
-    export default Vue.extend<{}, Methods, {}, {}>({
+    interface Data {
+        newRegionName: string
+    }
+
+    interface Computed {
+        currentProject: Project
+        baselineOptions: DynamicFormMeta
+        interventionOptions: DynamicFormMeta
+    }
+
+    export default Vue.extend<Data, Methods, Computed, {}>({
         store,
-        components: {dropDown, BIconGraphUp},
-        computed: mapState(["currentProject"]),
+        data() {
+            return {
+                newRegionName: ""
+            }
+        },
+        components: {dropDown, BIconGraphUp, BModal},
+        directives: {"BModal": VBModal},
+        computed: mapState(["currentProject", "baselineOptions", "interventionOptions"]),
         methods: {
+            addRegion: mapMutationByName(RootMutation.AddRegion),
+            createNewRegion() {
+                const region = new Region(
+                    this.newRegionName,
+                    this.currentProject,
+                    this.baselineOptions,
+                    this.interventionOptions);
+                this.addRegion(region);
+                this.newRegionName = "";
+                this.$router.push({
+                    path: region.url
+                });
+            },
+            cancel() {
+                this.newRegionName = "";
+            },
             fetchConfig: mapActionByName(RootAction.FetchConfig)
         },
         beforeMount: function () {

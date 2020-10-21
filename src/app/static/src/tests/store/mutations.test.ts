@@ -1,5 +1,5 @@
 import {mutations, RootMutation} from "../../app/mutations";
-import {mockError, mockProject, mockRootState} from "../mocks";
+import {mockError, mockProject, mockRegion, mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
 import {expectAllDefined} from "../testHelpers";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
@@ -22,6 +22,15 @@ describe("mutations", () => {
             regions: [{name: "South"}],
             currentRegion: {name: "South"}
         })
+    });
+
+    it("adds a new region", () => {
+        const state = mockRootState({
+            currentProject: mockProject()
+        })
+        const region = mockRegion();
+        mutations[RootMutation.AddRegion](state, region);
+        expect(state.currentProject!!.regions[0]).toEqual(region);
     });
 
     it("updates the current region", () => {
