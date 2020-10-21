@@ -90,4 +90,24 @@ describe("app", () => {
         expect($router[0]).toEqual({path: "/projects/my-project/regions/region2"});
     });
 
+    it("clears new region input on cancel", async () => {
+        const state = {
+            currentProject: mockProject("my project")
+        };
+        const rendered = getWrapper(state);
+        rendered.findAll(".dropdown-item").at(1).find("a").trigger("click");
+        await Vue.nextTick();
+
+        rendered.find(BModal).find("input").setValue("region2");
+        await Vue.nextTick();
+        rendered.find(BModal).vm.$emit("cancel");
+        await Vue.nextTick();
+
+        // open it up again
+        rendered.findAll(".dropdown-item").at(1).find("a").trigger("click");
+        await Vue.nextTick();
+
+        expect((rendered.find(BModal).find("input").element as HTMLInputElement).value).toBe("");
+    });
+
 });

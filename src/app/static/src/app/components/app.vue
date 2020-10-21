@@ -24,7 +24,7 @@
             </div>
         </div>
         <router-view></router-view>
-        <b-modal id="add-region" @ok="createNewRegion" title="Add region">
+        <b-modal id="add-region" @ok="createNewRegion" @cancel="cancel" title="Add region">
             <div class="form-group">
                 <form class="form-inline">
                     <div class="form-group">
@@ -55,6 +55,7 @@
         fetchConfig: () => void
         addRegion: (region: Region) => void,
         createNewRegion: () => void
+        cancel: () => void
     }
 
     interface Data {
@@ -90,6 +91,9 @@
                 this.$router.push({
                     path: region.url
                 });
+            },
+            cancel() {
+                this.newRegionName = "";
             },
             fetchConfig: mapActionByName(RootAction.FetchConfig)
         },
