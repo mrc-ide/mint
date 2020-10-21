@@ -6,14 +6,20 @@ describe("actions", () => {
 
     const getStateWithBaselineSettings = async () => {
         const commit = jest.fn();
-        await (actions[RootAction.FetchPrevalenceGraphConfig] as any)({commit} as any);
+        await (actions[RootAction.FetchBaselineOptions] as any)({commit} as any);
         const options = commit.mock.calls[0][1] as DynamicFormMeta;
-        const settings = {};
-        settings.forEach
+        const settings = {} as any;
+        options.controlSections.forEach((section) => {
+            section.controlGroups.forEach((group) => {
+                group.controls.forEach((control) => {
+                    settings[control.name] = control.value
+                });
+            });
+        });
         return {
             currentProject: {
                 currentRegion: {
-                    baselineOptions: options
+                    baselineSettings: settings
                 }
             }
         };
@@ -29,9 +35,10 @@ describe("actions", () => {
         expect(Object.keys(firstRow).sort())
             .toEqual([
                 "intervention",
-                "irs_use",
+                "irsUse",
                 "month",
-                "net_use",
+                "netType",
+                "netUse",
                 "value"]);
     });
 
