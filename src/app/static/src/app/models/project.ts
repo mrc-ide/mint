@@ -7,6 +7,7 @@ export interface Region {
     slug: string
     url: string
     baselineOptions: DynamicFormMeta
+    baselineSettings: DynamicFormData
     interventionOptions: DynamicFormMeta
     interventionSettings: DynamicFormData
     prevalenceGraphData: Data
@@ -27,8 +28,9 @@ export class Region {
         this.slug = getSlug(name);
         this.url = `/projects/${parent.slug}/regions/${this.slug}`;
         this.baselineOptions = deepCopy(baselineOptions);
+        this.baselineSettings = {};
         this.interventionOptions = deepCopy(interventionOptions);
-        this.interventionSettings =  {}
+        this.interventionSettings =  {};
         this.interventionOptions.controlSections.map(s => {
             s.controlGroups.map(g => {
                 g.controls.map(c => {
