@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
-import org.leadpony.justify.api.JsonSchema
-import org.leadpony.justify.api.JsonValidationService
-import org.leadpony.justify.api.Problem
-import org.leadpony.justify.api.ProblemHandler
+import org.leadpony.justify.api.*
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -23,15 +20,23 @@ class JSONValidator {
     private val objectMapper = ObjectMapper()
     private val mintrVersion = File("../config/mintr_version").readLines().first()
 
-    private val readerFactory = service.createSchemaReaderFactoryBuilder()
-            .withSchemaResolver(this::resolveSchema)
+    private val modelSchemaReaderFactory = service.createSchemaReaderFactoryBuilder()
+            .withSchemaResolver(this::resolveModelSchema)
+            .build()
+
+    private val responseSchemaReaderFactory = service.createSchemaReaderFactoryBuilder()
+            .withSchemaResolver(this::resolveResponseSchema)
             .build()
 
     fun validateError(response: String,
                       expectedErrorCode: String,
                       expectedErrorMessage: String? = null) {
-        val error = objectMapper.readValue<JsonNode>(response)["errors"].first()
-        val status = objectMapper.readValue<JsonNode>(response)["status"].textValue()
+        val responseSchema = getResponseSchema("response-failure")
+        val responseJson = objectMapper.readValue<JsonNode>(response)
+        assertValidates(response, responseSchema, "response-failure")
+
+        val error = responseJson["errors"].first()
+        val status = responseJson["status"].textValue()
 
         assertThat(status).isEqualTo("failure")
         assertThat(error["error"].asText()).isEqualTo(expectedErrorCode)
@@ -75,15 +80,17 @@ class JSONValidator {
 
     private fun getModelSchema(name: String): JsonSchema
     {
-        return getSchema(name, "https://raw.githubusercontent.com/mrc-ide/mintr/$mintrVersion/inst/schema/")
+        val location = "https://raw.githubusercontent.com/mrc-ide/mintr/$mintrVersion/inst/schema/"
+        return getSchema(name, location, modelSchemaReaderFactory)
     }
 
     private fun getResponseSchema(name: String): JsonSchema
     {
-        return getSchema(name, "https://raw.githubusercontent.com/reside-ic/pkgapi/master/inst/schema/")
+        val location = "https://raw.githubusercontent.com/reside-ic/pkgapi/master/inst/schema/"
+        return getSchema(name, location, responseSchemaReaderFactory)
     }
 
-    private fun getSchema(name: String, location: String): JsonSchema
+    private fun getSchema(name: String, location: String, factory: JsonSchemaReaderFactory): JsonSchema
     {
         val path = if (name.endsWith(".schema.json")) {
             name
@@ -94,7 +101,7 @@ class JSONValidator {
 
         val conn = url.openConnection() as HttpURLConnection
         return BufferedReader(InputStreamReader(conn.getInputStream())).use {
-            val reader = readerFactory.createSchemaReader(it)
+            val reader = factory.createSchemaReader(it)
             try {
                 reader.read()
             } catch (e: JsonParsingException) {
@@ -103,7 +110,11 @@ class JSONValidator {
         }
     }
 
-    private fun resolveSchema(id: URI): JsonSchema {
+    private fun resolveModelSchema(id: URI): JsonSchema {
         return getModelSchema(id.path)
+    }
+
+    private fun resolveResponseSchema(id: URI): JsonSchema {
+        return getResponseSchema(id.path)
     }
 }
