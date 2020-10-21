@@ -11,6 +11,11 @@ html {
   overflow-y: scroll;
 }
 
+a {
+  @extend .text-success;
+  @extend a.text-success;
+}
+
 .nav-link {
   cursor: pointer;
 }
@@ -38,4 +43,8 @@ html {
   .ti-content {
     max-width: calc(100% - 15px);
   }
+}
+
+.dropdown-item:active {
+  background-color: $gray-200 !important;
 }
