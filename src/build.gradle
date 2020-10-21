@@ -14,7 +14,7 @@ buildscript {
 
 plugins {
     id 'org.springframework.boot' version '2.1.6.RELEASE' apply false
-    //id 'io.gitlab.arturbosch.detekt' version "1.14.0"
+    id 'io.gitlab.arturbosch.detekt' version "1.14.0"
 }
 
 subprojects {
