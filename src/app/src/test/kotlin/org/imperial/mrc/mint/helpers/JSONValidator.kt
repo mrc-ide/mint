@@ -45,11 +45,16 @@ class JSONValidator {
     }
 
     fun validateSuccess(response: String, schemaName: String) {
-        val data = objectMapper.readValue<JsonNode>(response)["data"]
-        val status = objectMapper.readValue<JsonNode>(response)["status"].textValue()
+        val responseSchema = getResponseSchema("response-success")
+        val responseJson = objectMapper.readValue<JsonNode>(response)
+        assertValidates(response, responseSchema, "response-success")
+
+        val data = responseJson["data"]
+        val status = responseJson["status"].textValue()
 
         assertThat(status).isEqualTo("success")
-        val dataSchema = getSchema(schemaName)
+
+        val dataSchema = getModelSchema(schemaName)
         assertValidates(objectMapper.writeValueAsString(data), dataSchema, schemaName)
     }
 
@@ -68,13 +73,24 @@ class JSONValidator {
         }
     }
 
-    private fun getSchema(name: String): JsonSchema {
+    private fun getModelSchema(name: String): JsonSchema
+    {
+        return getSchema(name, "https://raw.githubusercontent.com/mrc-ide/mintr/$mintrVersion/inst/schema/")
+    }
+
+    private fun getResponseSchema(name: String): JsonSchema
+    {
+        return getSchema(name, "https://raw.githubusercontent.com/reside-ic/pkgapi/master/inst/schema/")
+    }
+
+    private fun getSchema(name: String, location: String): JsonSchema
+    {
         val path = if (name.endsWith(".schema.json")) {
             name
         } else {
             "$name.schema.json"
         }
-        val url = URL("https://raw.githubusercontent.com/mrc-ide/mintr/$mintrVersion/inst/schema/$path")
+        val url = URL("$location$path")
 
         val conn = url.openConnection() as HttpURLConnection
         return BufferedReader(InputStreamReader(conn.getInputStream())).use {
@@ -88,6 +104,6 @@ class JSONValidator {
     }
 
     private fun resolveSchema(id: URI): JsonSchema {
-        return getSchema(id.path)
+        return getModelSchema(id.path)
     }
 }
