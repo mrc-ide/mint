@@ -8,10 +8,10 @@
         <div class="navbar navbar-secondary" v-if="currentProject">
             <div class="container-fluid">
                 <div class="navbar-header project-header">
-                    <span>{{currentProject.name}}:</span>
+                    <span>{{ currentProject.name }}:</span>
                     <drop-down :text="currentProject.currentRegion.name" parent-class="px-2" toggle-class="text-dark">
                         <div class="dropdown-item" v-for="region in currentProject.regions">
-                            <router-link :to="region.url" class="text-success">{{region.name}}</router-link>
+                            <router-link :to="region.url" class="text-success">{{ region.name }}</router-link>
                         </div>
                         <div class="dropdown-item">
                             <a v-b-modal.add-region>+ Add region</a>
@@ -24,7 +24,11 @@
             </div>
         </div>
         <router-view></router-view>
-        <b-modal id="add-region" @ok="createNewRegion" @cancel="cancel" title="Add region">
+        <b-modal id="add-region"
+                 @ok="createNewRegion"
+                 @cancel="cancel"
+                 title="Add region"
+                 :ok-disabled="!validNewRegion">
             <div class="form-group">
                 <form class="form-inline">
                     <div class="form-group">
@@ -66,6 +70,7 @@
         currentProject: Project
         baselineOptions: DynamicFormMeta
         interventionOptions: DynamicFormMeta
+        validNewRegion: boolean
     }
 
     export default Vue.extend<Data, Methods, Computed, {}>({
@@ -77,7 +82,19 @@
         },
         components: {dropDown, BIconGraphUp, BModal},
         directives: {"BModal": VBModal},
-        computed: mapState(["currentProject", "baselineOptions", "interventionOptions"]),
+        computed: {
+            ...mapState(["currentProject", "baselineOptions", "interventionOptions"]),
+            validNewRegion() {
+                if (this.newRegionName.length == 0) {
+                    return false;
+                }
+
+                // because of how urls are normalized, "My region" and "my-region"
+                // also represent a naming clash, so compare slugs rather than names
+                const newRegionSlug = this.newRegionName.replace(/\s/g, "-").toLowerCase();
+                return !this.currentProject.regions.find(r => r.url.split("/")[4] == newRegionSlug);
+            }
+        },
         methods: {
             addRegion: mapMutationByName(RootMutation.AddRegion),
             createNewRegion() {
