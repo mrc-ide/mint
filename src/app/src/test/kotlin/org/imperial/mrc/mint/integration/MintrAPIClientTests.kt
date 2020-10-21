@@ -5,6 +5,7 @@ import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.imperial.mrc.mint.ConfiguredAppProperties
 import org.imperial.mrc.mint.MintrAPIClient
 import org.imperial.mrc.mint.helpers.JSONValidator
+import org.imperial.mrc.mint.helpers.Settings
 import org.junit.jupiter.api.Test
 
 class MintrAPIClientTests {
@@ -35,7 +36,7 @@ class MintrAPIClientTests {
     @Test
     fun `can get impact graph prevalence data`() {
         val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
-        val result = sut.getImpactGraphPrevalenceData(mapOf())
+        val result = sut.getImpactGraphPrevalenceData(Settings.Baseline)
         assertThat(result.statusCodeValue).isEqualTo(200)
         JSONValidator().validateSuccess(result.body!!, "Data")
     }
@@ -51,7 +52,7 @@ class MintrAPIClientTests {
     @Test
     fun `can get impact table data`() {
         val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
-        val result = sut.getImpactTableData(mapOf())
+        val result = sut.getImpactTableData(Settings.Baseline)
         assertThat(result.statusCodeValue).isEqualTo(200)
         JSONValidator().validateSuccess(result.body!!, "Data")
     }

@@ -1,5 +1,6 @@
 package org.imperial.mrc.mint.integration.endpoints
 
+import org.imperial.mrc.mint.helpers.Settings
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.boot.test.web.client.postForEntity
@@ -14,7 +15,7 @@ class ImpactTests: EndpointTests() {
     @Test
     fun `can get impact graph prevalence data`() {
         val responseEntity = testRestTemplate.postForEntity<String>("/impact/graph/prevalence/data",
-                mapOf<String, Any>())
+                Settings.Baseline)
         assertSuccess(responseEntity, "Data")
     }
 
@@ -27,7 +28,7 @@ class ImpactTests: EndpointTests() {
     @Test
     fun `can get impact table data`() {
         val responseEntity = testRestTemplate.postForEntity<String>("/impact/table/data",
-                mapOf<String, Any>())
+                Settings.Baseline)
         assertSuccess(responseEntity, "Data")
     }
 }
