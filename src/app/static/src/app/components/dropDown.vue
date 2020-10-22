@@ -3,7 +3,7 @@
         <a class="dropdown-toggle"
            :class="toggleClass"
            v-on:click="toggle">
-            {{text}}
+            {{ text }}
         </a>
         <div class="dropdown-menu" :class="show && 'show'">
             <slot></slot>
@@ -46,7 +46,7 @@
             }
         },
         mounted() {
-            window.document.onclick = (e: any) => {
+            window.addEventListener("click", (e: any) => {
                 let target = e.target
                 let closeDropdown = true;
                 while (target.parentElement) {
@@ -64,7 +64,7 @@
                 if (closeDropdown) {
                     this.close();
                 }
-            };
+            });
         }
     })
 </script>
