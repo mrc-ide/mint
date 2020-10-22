@@ -26,6 +26,10 @@ class MintrAPIClient(
         appProperties: AppProperties,
         private val objectMapper: ObjectMapper) : APIClient {
 
+    companion object {
+        const val TIMEOUT = 60000
+    }
+
     private val baseUrl = appProperties.apiUrl
 
     override fun getBaselineOptions(): ResponseEntity<String> {
@@ -98,7 +102,7 @@ class MintrAPIClient(
     }
 
     private fun Request.addTimeouts(): Request {
-        return this.timeout(60000)
-                .timeoutRead(60000)
+        return this.timeout(TIMEOUT)
+                .timeoutRead(TIMEOUT)
     }
 }
