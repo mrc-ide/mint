@@ -8,6 +8,7 @@ import {RootMutation} from "../../app/mutations";
 import stepButton from "../../app/components/stepButton.vue";
 import interventions from "../../app/components/interventions.vue";
 import baseline from "../../app/components/baseline.vue";
+import {RootAction} from "../../app/actions";
 import {Project} from "../../app/models/project";
 
 describe("region page", () => {

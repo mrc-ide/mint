@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 import {RootState} from "../app/store";
 import {Graph, ResponseFailure, ResponseSuccess} from "../app/generated";
 import {APIError} from "../app/apiService";
-import {Project} from "../app/models/project";
+import {Project, Region} from "../app/models/project";
 
 export function mockRootState(state: Partial<RootState> = {}): RootState {
     return {
@@ -34,8 +34,12 @@ export function mockGraph(props: Partial<Graph> = {}): Graph {
     }
 }
 
-export function mockProject(): Project {
-    return new Project("project 1", ["region 1"], {controlSections: []}, {controlSections: []});
+export function mockProject(name: string = "project 1"): Project {
+    return new Project(name, ["region 1"], {controlSections: []}, {controlSections: []});
+}
+
+export function mockRegion(name: string = "region 1"): Region {
+    return new Region(name, mockProject(), {controlSections: []}, {controlSections: []});
 }
 
 export const mockSuccess = (data: any): ResponseSuccess => {
