@@ -42,6 +42,14 @@ class MintrAPIClientTests {
     }
 
     @Test
+    fun `can get error on send invalid settings for graph prevalence data`()
+    {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getImpactGraphPrevalenceData(mapOf())
+        JSONValidator().validateError(result.body!!, "SERVER_ERROR")
+    }
+
+    @Test
     fun `can get impact table config`() {
         val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
         val result = sut.getImpactTableConfig()
