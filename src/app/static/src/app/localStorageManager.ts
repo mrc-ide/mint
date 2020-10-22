@@ -1,11 +1,25 @@
 import {RootState} from "./store";
+import {Project, Region} from "./models/project";
 
-const appStateKey = "MINTappState";
+// in case the stored data format changes in subsequent versions
+const appStateKey = "MINTv0.0.1";
+
+const stripDataFromRegion = (region: Region): Region => {
+    return {...region, prevalenceGraphData: [], impactTableData: [], costGraphData: [], costTableData: []}
+}
+
+const stripDataFromProject = (project: Project): Project => {
+    return {
+        ...project,
+        currentRegion: stripDataFromRegion(project.currentRegion),
+        regions: project.regions.map(stripDataFromRegion)
+    }
+}
 
 export const serialiseState = (rootState: RootState): Partial<RootState> => {
     return {
-        projects: rootState.projects,
-        currentProject: rootState.currentProject
+        projects: rootState.projects.map(stripDataFromProject),
+        currentProject: rootState.currentProject ? stripDataFromProject(rootState.currentProject) : null
     };
 };
 
