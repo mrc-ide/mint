@@ -1,5 +1,5 @@
 import {mutations, RootMutation} from "../../app/mutations";
-import {mockError, mockProject, mockRootState} from "../mocks";
+import {mockError, mockProject, mockRegion, mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
 import {expectAllDefined} from "../testHelpers";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
@@ -33,14 +33,24 @@ describe("mutations", () => {
         expect(state.currentProject).toBe(null);
     });
 
+    it("adds a new region", () => {
+        const state = mockRootState({
+            currentProject: mockProject()
+        })
+        const region = mockRegion();
+        mutations[RootMutation.AddRegion](state, region);
+        expect(state.currentProject!!.regions[0]).toEqual(region);
+    });
+
     it("updates the current region", () => {
         const state = mockRootState({
             currentProject: new Project("my project", ["North region", "South region"],
                 {controlSections: []}, {controlSections: []})
         });
-        mutations[RootMutation.SetCurrentRegion](state, "/projects/my-project/regions/south-region");
+        mutations[RootMutation.SetCurrentRegion](state, state.currentProject!!.regions[1]);
         expect(state.currentProject!!.currentRegion).toEqual({
             name: "South region",
+            slug: "south-region",
             url: "/projects/my-project/regions/south-region",
             baselineOptions: {controlSections: []},
             baselineSettings: {},
@@ -62,7 +72,7 @@ describe("mutations", () => {
 
         const newBaseline = {controlSections: ["NEWBASELINE"]} as any;
         mutations[RootMutation.SetCurrentRegionBaselineOptions](state, newBaseline);
-        expect(state.currentProject!!.currentRegion.baselineOptions).toStrictEqual(newBaseline);{controlSections: []}
+        expect(state.currentProject!!.currentRegion.baselineOptions).toStrictEqual(newBaseline);
     });
 
     it("updates the current region's step", () => {

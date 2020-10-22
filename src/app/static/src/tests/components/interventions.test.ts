@@ -188,6 +188,7 @@ describe("interventions", () => {
             {
                 name: "newRegion",
                 url: "/",
+                slug: "newRegion",
                 baselineOptions: {controlSections: []},
                 baselineSettings: {},
                 interventionOptions: {controlSections: []},

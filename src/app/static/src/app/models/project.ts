@@ -17,6 +17,8 @@ export interface Region {
     step: number
 }
 
+export const getSlug = (name: string) => name.replace(/\s/g, "-").toLowerCase();
+
 export class Region {
     constructor(name: string,
                 parent: Project,
@@ -47,7 +49,7 @@ export class Region {
 
 export interface Project {
     name: string;
-    slug: string
+    slug: string;
     regions: Region[];
     currentRegion: Region;
 }
@@ -65,5 +67,3 @@ export class Project {
         this.currentRegion = currentRegion || this.regions[0]
     }
 }
-
-export const getSlug = (name: string) => name.replace(/\s/g, "-").toLowerCase();

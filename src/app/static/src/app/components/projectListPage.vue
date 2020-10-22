@@ -39,7 +39,8 @@
                                     :add-on-key="[13, ',']"
                                     :placeholder="placeholder"
                                     @tags-changed="tagAdded"
-                                />
+                                    :is-duplicate="isDuplicate"
+                                    :avoid-adding-duplicates="true"/>
                                 <span class="text-muted small">You can always add and remove regions later</span>
                             </div>
                         </div>
@@ -62,7 +63,8 @@
     import VueTagsInput from '@johmun/vue-tags-input';
     import {RootMutation} from "../mutations";
     import {mapMutationByName} from "../utils";
-    import {Project, Region} from "../models/project";
+    import {Project, Region, getSlug} from "../models/project";
+
     import {mapState} from "vuex";
     import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
     import dropDown from "./dropDown.vue";
@@ -81,6 +83,7 @@
         createProject: () => void
         tagAdded: (newTags: Tag[]) => void
         navigate: (event: Event, project: Project, region: Region) => void
+        isDuplicate: (tags: Tag[], tag: Tag) => boolean
     }
 
     interface Computed {
@@ -130,7 +133,7 @@
                 this.showNewProject = true;
             },
             createProject() {
-                const regionNames = this.regions.map((tag) => tag.text);
+                const regionNames = this.regions.map((tag) => tag.text.trim());
                 if (regionNames.length == 0) {
                     // user has only entered one region name and has not blurred the input
                     // so this.regions is empty even though this.newRegion is populated
@@ -147,12 +150,16 @@
                 this.regions = newTags;
                 this.newRegion = "";
             },
+
             navigate(event: Event, project: Project, region: Region) {
                 event.preventDefault();
                 this.setCurrentProject(project);
                 this.$router.push({
                     path: region.url
                 })
+            },
+            isDuplicate(tags: Tag[], tag: Tag) {
+                return !!tags.find(t => getSlug(t.text.trim()) == getSlug(tag.text.trim()));
             }
         },
         mounted() {

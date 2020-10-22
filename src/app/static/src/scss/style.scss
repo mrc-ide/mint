@@ -6,6 +6,7 @@
 @import "partials/baseline.scss";
 @import "partials/interventions.scss";
 @import "partials/graph.scss";
+@import '../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
 
 html {
   overflow-y: scroll;
@@ -48,3 +49,4 @@ a {
 .dropdown-item:active {
   background-color: $gray-200 !important;
 }
+
