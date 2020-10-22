@@ -35,15 +35,12 @@ fun Response.asResponseEntity(): ResponseEntity<String> {
 
 }
 
-@Suppress("MagicNumber")
 fun httpStatusFromCode(code: Int): HttpStatus {
-    return when (code) {
-        200 -> HttpStatus.OK
-        201 -> HttpStatus.CREATED
-        400 -> HttpStatus.BAD_REQUEST
-        401 -> HttpStatus.UNAUTHORIZED
-        403 -> HttpStatus.FORBIDDEN
-        404 -> HttpStatus.NOT_FOUND
-        else -> HttpStatus.INTERNAL_SERVER_ERROR
+    val status = HttpStatus.resolve(code) ?: return HttpStatus.INTERNAL_SERVER_ERROR
+    return if (status <= HttpStatus.NOT_FOUND) {
+        status
+    } else {
+        HttpStatus.INTERNAL_SERVER_ERROR
     }
 }
+
