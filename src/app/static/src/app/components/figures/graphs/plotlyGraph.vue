@@ -25,6 +25,7 @@
         },
         props: {settings: Object, data: Array, series: Array, metadata: Object, layout: Object},
         setup(props: Props) {
+            console.log("SETTINGS: " + JSON.stringify(props.settings));
             let hoverBelow = false;
             let observer = ref<MutationObserver | null>(null);
             if (props.layout.mintcustom && props.layout.mintcustom.hoverposition == "below") {

@@ -1,10 +1,12 @@
 import {computed} from "@vue/composition-api";
 import {FilteringProps, useFiltering} from "../filteredData";
 import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
+import {Dictionary} from "vue-router/types/router";
 
 interface Props extends FilteringProps {
     series: SeriesDefinition[]
     metadata: LongFormatMetadata | WideFormatMetadata
+    layout: Dictionary<any>
 }
 
 export function useLongFormatData(props: Props) {
@@ -43,6 +45,7 @@ export function useLongFormatData(props: Props) {
 
     const dataSeries = computed(() => {
         const result: any[] = []
+        const hovertemplate = props.layout.mintcustom ? props.layout.mintcustom.hovertemplate : undefined;
         props.series.map((d: SeriesDefinition) => {
             if (d.x && d.y) {
                 // all values are given explicitly
@@ -60,7 +63,8 @@ export function useLongFormatData(props: Props) {
                 const dataSeries = {
                     ...d,
                     x: rows[0],
-                    y: rows[1]
+                    y: rows[1],
+                    hovertemplate
                 };
 
                 if (d.error_x) {
