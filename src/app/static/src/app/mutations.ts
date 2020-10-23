@@ -270,9 +270,9 @@ export const mutations: MutationTree<RootState> = {
                 "yaxis": {
                     "title": "prevalence (%)",
                     "showline": true,
-                    "autorange": false,
-                    "range": [0, 0.03],
-                    "tickformat": ".1%"
+                    "autorange": true,
+                    //"range": [0, 0.03],
+                    //"tickformat": ".1%"
                 },
                 "mintcustom": {
                     "hovertemplate": "%{y:.2%}",
