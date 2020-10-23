@@ -23,7 +23,16 @@ describe("mutations", () => {
             currentRegion: {name: "South"}
         })
     });
-
+  
+    it("sets the current project", () => {
+        const state = mockRootState();
+        const proj = mockProject()
+        mutations[RootMutation.SetCurrentProject](state, proj);
+        expect(state.currentProject).toEqual(proj);
+        mutations[RootMutation.SetCurrentProject](state, null);
+        expect(state.currentProject).toBe(null);
+    });
+  
     it("adds a new region", () => {
         const state = mockRootState({
             currentProject: mockProject()

@@ -3,9 +3,11 @@ import Vuex from "vuex";
 import {shallowMount} from "@vue/test-utils";
 import VueTagsInput from '@johmun/vue-tags-input';
 import projectListPage from "../../app/components/projectListPage.vue";
-import {mockRootState} from "../mocks";
+import {mockProject, mockRootState} from "../mocks";
 import {RootMutation} from "../../app/mutations";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import dropDown from "../../app/components/dropDown.vue";
+import {Project} from "../../app/models/project";
 
 describe("project page", () => {
 
@@ -21,13 +23,14 @@ describe("project page", () => {
         }]
     };
 
-    const createStore = (addProjectMock = jest.fn()) => {
+    const createStore = (addProjectMock = jest.fn(), setProjectMock = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState({
                 baselineOptions: mockBaselineOptions,
                 interventionOptions: mockInterventionOptions
             }),
             mutations: {
+                [RootMutation.SetCurrentProject]: setProjectMock,
                 [RootMutation.AddProject]: addProjectMock
             }
         });
@@ -197,6 +200,79 @@ describe("project page", () => {
         await Vue.nextTick();
         expect(tagsInput.props("placeholder")).toBe("...");
 
+    });
+
+    it("welcome text changes based on number of projects", async () => {
+        const store = createStore();
+        const wrapper = shallowMount(projectListPage, {store});
+        expect(wrapper.find("h1").text()).toBe("Create a project to get started");
+
+        store.state.projects.push(mockProject());
+
+        await Vue.nextTick();
+
+        expect(wrapper.find("h1").text()).toBe("You have 1 project");
+
+        store.state.projects.push(mockProject());
+
+        await Vue.nextTick();
+
+        expect(wrapper.find("h1").text()).toBe("You have 2 projects");
+    });
+
+    it("renders list of projects", () => {
+        const store = createStore();
+        store.state.projects.push(new Project("testproj", ["region 1", "region 2"], {controlSections: []}, {controlSections: []}));
+        store.state.projects.push(mockProject());
+        const wrapper = shallowMount(projectListPage, {store});
+        expect(wrapper.findAll(dropDown).length).toBe(2);
+
+        const testproj = wrapper.findAll(dropDown).at(0);
+        expect(testproj.findAll("a").length).toBe(2);
+        expect(testproj.findAll("a").at(0).text()).toBe("region 1");
+        expect(testproj.findAll("a").at(1).text()).toBe("region 2");
+    });
+
+    it("can start new project", async () => {
+        const store = createStore();
+        store.state.projects.push(mockProject());
+        const wrapper = shallowMount(projectListPage, {store});
+        expect(wrapper.findAll(".card").length).toBe(0);
+
+        const startNewProjectLink = wrapper.findAll("li").at(1);
+        expect(startNewProjectLink.text()).toBe("+ Start new project");
+        startNewProjectLink.find("a").trigger("click");
+
+        await Vue.nextTick();
+
+        expect(wrapper.findAll(".card").length).toBe(1);
+    });
+
+    it("sets current project to null on mount", () => {
+        const setCurrentProjectMock = jest.fn();
+        const store = createStore(jest.fn(), setCurrentProjectMock);
+        shallowMount(projectListPage, {store});
+        expect(setCurrentProjectMock.mock.calls.length).toBe(1);
+        expect(setCurrentProjectMock.mock.calls[0][1]).toBe(null);
+    });
+
+    it("can navigate to project region", async () => {
+        const setCurrentProjectMock = jest.fn();
+        const mockRouter = [] as any[];
+        const store = createStore(jest.fn(), setCurrentProjectMock);
+        const testProj = new Project("testproj", ["region 1", "region 2"], {controlSections: []}, {controlSections: []})
+        store.state.projects.push(testProj);
+        const wrapper = shallowMount(projectListPage, {store, mocks: {$router: mockRouter}});
+
+        expect(setCurrentProjectMock.mock.calls.length).toBe(1);
+        expect(setCurrentProjectMock.mock.calls[0][1]).toBe(null);
+
+        wrapper.find(dropDown).find("a").trigger("click");
+        await Vue.nextTick();
+
+        expect(setCurrentProjectMock.mock.calls.length).toBe(2);
+        expect(setCurrentProjectMock.mock.calls[1][1]).toBe(testProj);
+        expect(mockRouter[0].path).toBe("/projects/testproj/regions/region-1");
     });
 
 });

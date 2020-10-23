@@ -7,6 +7,7 @@ import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 export enum RootMutation {
     AddProject = "AddProject",
+    SetCurrentProject = "SetCurrentProject",
     AddRegion = "AddRegion",
     SetCurrentRegion = "SetCurrentRegion",
     SetCurrentRegionBaselineOptions = "SetCurrentRegionBaselineOptions",
@@ -34,7 +35,11 @@ export const mutations: MutationTree<RootState> = {
         state.projects.push(payload)
         state.currentProject = payload
     },
-
+  
+    [RootMutation.SetCurrentProject](state: RootState, project: Project | null) {
+        state.currentProject = project
+    },
+  
     [RootMutation.AddRegion](state: RootState, payload: Region) {
         // it is an error to call this mutation before current project is set
         state.currentProject!!.regions.push(payload);
@@ -127,8 +132,7 @@ export const mutations: MutationTree<RootState> = {
         }
     },
 
-    [RootMutation.AddCostTableConfig](state: RootState, payload: TableDefinition)
-    {
+    [RootMutation.AddCostTableConfig](state: RootState, payload: TableDefinition) {
         state.costTableConfig = payload
     },
 
