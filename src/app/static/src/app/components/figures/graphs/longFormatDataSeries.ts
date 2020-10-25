@@ -63,8 +63,7 @@ export function useLongFormatData(props: Props) {
                 const dataSeries = {
                     ...d,
                     x: rows[0],
-                    y: rows[1],
-                    hovertemplate
+                    y: rows[1]
                 };
 
                 if (d.error_x) {
@@ -73,6 +72,10 @@ export function useLongFormatData(props: Props) {
                         array: rows[2],
                         arrayminus: rows[3]
                     }
+                }
+
+                if (hovertemplate) {
+                    (dataSeries as any).hovertemplate = hovertemplate;
                 }
 
                 result.push(dataSeries);

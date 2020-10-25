@@ -29,7 +29,8 @@ describe("long format data series", () => {
         ],
         settings: {
             net_use: 0
-        }
+        },
+        layout: {}
     };
 
     it("filters rows by settings", () => {
@@ -153,6 +154,31 @@ describe("long format data series", () => {
                 array: [0.05, 0.07],
                 arrayminus: [0.06, 0.08]
             }
+        });
+    });
+
+    it("includes hovertemplate in data series when definied", () => {
+        const localProps = {...props,
+            layout: {
+                mintcustom: {
+                    hovertemplate: "%{y:.2%}"
+                }
+            }
+        };
+        const dataSeries = useLongFormatData(localProps).dataSeries.value;
+        expect(dataSeries.length).toBe(2);
+        expect(dataSeries[0]).toEqual({
+            id: "none",
+            x: [1, 2],
+            y: [0.1, 0.3],
+            hovertemplate: "%{y:.2%}"
+        });
+
+        expect(dataSeries[1]).toEqual({
+            id: "ITN",
+            x: [1, 2],
+            y: [0.5, 0.7],
+            hovertemplate: "%{y:.2%}"
         });
     });
 
