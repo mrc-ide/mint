@@ -10,6 +10,7 @@ matrix:
         - npm run build --prefix=src/app/static
       before_script:
         - ./src/app/static/scripts/run-dependencies-for-integration-tests.sh
+        - ./src/gradlew -p src app::detektMain
       script:
         - npm test --prefix=src/app/static
         - npm run integration-test --prefix=src/app/static

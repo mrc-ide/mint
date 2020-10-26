@@ -134,15 +134,18 @@ describe("app", () => {
         await Vue.nextTick();
 
         expect(rendered.find(BModal).vm.$props.okDisabled).toBe(true);
+        expect(rendered.find(BModal).find(".text-danger").isVisible()).toBe(false);
         rendered.find(BModal).find("input").setValue("region 1");
         await Vue.nextTick();
 
         expect(rendered.find(BModal).vm.$props.okDisabled).toBe(true);
+        expect(rendered.find(BModal).find(".text-danger").isVisible()).toBe(true);
 
         rendered.find(BModal).find("input").setValue("region 2");
         await Vue.nextTick();
 
         expect(rendered.find(BModal).vm.$props.okDisabled).toBe(false);
+        expect(rendered.find(BModal).find(".text-danger").isVisible()).toBe(false);
     });
 
     it("cannot add new region with a name that will result in duplicate urls", async () => {
