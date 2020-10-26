@@ -42,7 +42,7 @@
                                     :is-duplicate="isDuplicate"
                                     :avoid-adding-duplicates="true"
                                     @adding-duplicate="addingDuplicate"
-                                    @keydown.native="validateTag"/>
+                                    @keydown.native="resetValidation"/>
                                 <div class="text-danger small" v-show="invalidTag">Region names must be unique</div>
                                 <div class="text-muted small">
                                     Add multiple region names separated by commas.
@@ -92,7 +92,7 @@
         isDuplicate: (tags: Tag[], tag: Tag) => boolean
         addingDuplicate: () => void
         navigate: (event: Event, project: Project, region: Region) => void
-        validateTag: (event: KeyboardEvent) => void
+        resetValidation: (event: KeyboardEvent) => void
     }
 
     interface Computed {
@@ -175,7 +175,7 @@
             isDuplicate(tags: Tag[], tag: Tag) {
                 return !!tags.find(t => getSlug(t.text.trim()) == getSlug(tag.text.trim()));
             },
-            validateTag(event: KeyboardEvent) {
+            resetValidation(event: KeyboardEvent) {
                 if ([",", "Enter"].indexOf(event.key) == -1) {
                     this.invalidTag = false;
                 }
