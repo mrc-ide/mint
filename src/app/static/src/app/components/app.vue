@@ -38,6 +38,9 @@
                                class="form-control mx-sm-3"
                                v-model="newRegionName">
                     </div>
+                    <div class="text-danger small" v-show="this.newRegionName && !validNewRegion">
+                        Region names must be unique
+                    </div>
                 </form>
             </div>
         </b-modal>
@@ -85,7 +88,7 @@
         computed: {
             ...mapState(["currentProject", "baselineOptions", "interventionOptions"]),
             validNewRegion() {
-                if (this.newRegionName.length == 0) {
+                if (this.newRegionName.trim().length == 0) {
                     return false;
                 }
 
