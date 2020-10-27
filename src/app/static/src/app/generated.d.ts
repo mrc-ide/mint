@@ -4,7 +4,13 @@
   * Instead, modify the mintr JSON schema files
   * and run ./generate-types.sh to regenerate this file.
 */
-export interface BaselineOptions {
+export type Data = {
+  [k: string]: any;
+}[];
+export interface DataOptions {
+  [k: string]: any;
+}
+export interface DynamicFormOptions {
   controlSections: ControlSection[];
 }
 export interface ControlSection {
@@ -41,12 +47,6 @@ export interface NumberControl {
   min?: number;
   max?: number;
 }
-export type Data = {
-  [k: string]: any;
-}[];
-export interface DataOptions {
-  [k: string]: any;
-}
 export interface ErrorDetail {
   error: string;
   detail: string | null;
@@ -64,18 +64,21 @@ export interface Graph {
 }
 export interface LongFormatMetadata {
   x_col: string;
-  y_col: string;
+  y_col?: string;
   id_col: string;
   format: "long";
+  settings?: string[];
 }
 export interface WideFormatMetadata {
   cols: string[];
   id_col: string;
   format: "wide";
+  settings?: string[];
 }
 export interface SeriesDefinition {
   x?: (number | string)[];
   y?: number[];
+  y_formula?: string[];
   id?: string;
   name?: string;
   type?: string;

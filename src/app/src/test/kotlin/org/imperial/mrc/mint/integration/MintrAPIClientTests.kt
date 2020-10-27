@@ -58,14 +58,6 @@ class MintrAPIClientTests {
     }
 
     @Test
-    fun `can get impact table data`() {
-        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
-        val result = sut.getImpactTableData(Settings.Baseline)
-        assertThat(result.statusCodeValue).isEqualTo(200)
-        JSONValidator().validateSuccess(result.body!!, "Data")
-    }
-
-    @Test
     fun `can get graph cost cases averted config`() {
         val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
         val result = sut.getCostCasesAvertedGraphConfig()
@@ -82,14 +74,6 @@ class MintrAPIClientTests {
     }
 
     @Test
-    fun `can get graph cost data`() {
-        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
-        val result = sut.getCostGraphData(mapOf())
-        assertThat(result.statusCodeValue).isEqualTo(200)
-        JSONValidator().validateSuccess(result.body!!, "Data")
-    }
-
-    @Test
     fun `can get cost table config`() {
         val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
         val result = sut.getCostTableConfig()
@@ -98,9 +82,9 @@ class MintrAPIClientTests {
     }
 
     @Test
-    fun `can get cost table data`() {
+    fun `can get table data`() {
         val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
-        val result = sut.getCostTableData(mapOf())
+        val result = sut.getTableData(mapOf())
         assertThat(result.statusCodeValue).isEqualTo(200)
         JSONValidator().validateSuccess(result.body!!, "Data")
     }

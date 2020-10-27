@@ -24,11 +24,4 @@ class ImpactTests: EndpointTests() {
         val responseEntity = testRestTemplate.getForEntity<String>("/impact/table/config")
         assertSuccess(responseEntity, "TableDefinition")
     }
-
-    @Test
-    fun `can get impact table data`() {
-        val responseEntity = testRestTemplate.postForEntity<String>("/impact/table/data",
-                Settings.Baseline)
-        assertSuccess(responseEntity, "Data")
-    }
 }

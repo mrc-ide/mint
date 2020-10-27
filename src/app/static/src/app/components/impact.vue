@@ -45,7 +45,7 @@
                 return this.currentProject ? this.currentProject.currentRegion.prevalenceGraphData : [];
             },
             tableData() {
-                return this.currentProject ? this.currentProject.currentRegion.impactTableData : [];
+                return this.currentProject ? this.currentProject.currentRegion.tableData : [];
             }
         }
     });

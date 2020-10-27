@@ -8,17 +8,15 @@ import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 export enum RootAction {
     FetchPrevalenceGraphData = "FetchPrevalenceGraphData",
     FetchPrevalenceGraphConfig = "FetchPrevalenceGraphConfig",
-    FetchImpactTableData = "FetchImpactTableData",
     FetchImpactTableConfig = "FetchImpactTableConfig",
     FetchCostCasesGraphConfig = "FetchCostCasesGraphConfig",
     FetchCostEfficacyGraphConfig = "FetchCostEfficacyGraphConfig",
-    FetchCostGraphData = "FetchCostCasesGraphData",
-    FetchCostTableData = "FetchCostTableData",
     FetchCostTableConfig = "FetchCostTableConfig",
     FetchBaselineOptions = "FetchBaselineOptions",
     FetchInterventionOptions = "FetchInterventionOptions",
     EnsureImpactData = "FetchImpactData",
     EnsureCostEffectivenessData = "FetchCostEffectivenessData",
+    FetchTableData = "FetchTableData",
     FetchConfig = "FetchConfig"
 }
 
@@ -75,24 +73,12 @@ export const actions: ActionTree<RootState, RootState> = {
             .get<Graph>("/cost/graph/efficacy/config");
     },
 
-    async [RootAction.FetchCostGraphData](context) {
-        const combinedSettings = {
-            ...currentRegionBaseline(context.state),
-            ...currentRegionInterventions(context.state)
-        };
+    async [RootAction.FetchTableData](context) {
         await api(context)
             .freezeResponse()
-            .withSuccess(RootMutation.AddCostGraphData)
+            .withSuccess(RootMutation.AddTableData)
             .withError(RootMutation.AddError)
-            .postAndReturn("/cost/graph/data", combinedSettings);
-    },
-
-    async [RootAction.FetchImpactTableData](context) {
-        await api(context)
-            .freezeResponse()
-            .withSuccess(RootMutation.AddImpactTableData)
-            .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/table/data", currentRegionBaseline(context.state))
+            .postAndReturn<Data>("/table/data", currentRegionBaseline(context.state))
     },
 
     async [RootAction.FetchImpactTableConfig](context) {
@@ -101,14 +87,6 @@ export const actions: ActionTree<RootState, RootState> = {
             .withSuccess(RootMutation.AddImpactTableConfig)
             .withError(RootMutation.AddError)
             .get<Data>("/impact/table/config")
-    },
-
-    async [RootAction.FetchCostTableData](context) {
-        await api(context)
-            .freezeResponse()
-            .withSuccess(RootMutation.AddCostTableData)
-            .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/cost/table/data", currentRegionBaseline(context.state))
     },
 
     async [RootAction.FetchCostTableConfig](context) {
@@ -121,20 +99,19 @@ export const actions: ActionTree<RootState, RootState> = {
 
     async [RootAction.EnsureImpactData](context) {
         const project = context.state.currentProject;
-        if (project && (!project.currentRegion.impactTableData.length || !project.currentRegion.prevalenceGraphData.length)) {
+        if (project && (!project.currentRegion.tableData.length || !project.currentRegion.prevalenceGraphData.length)) {
             await Promise.all([
                 context.dispatch(RootAction.FetchPrevalenceGraphData),
-                context.dispatch(RootAction.FetchImpactTableData)
+                context.dispatch(RootAction.FetchTableData)
             ]);
         }
     },
 
     async [RootAction.EnsureCostEffectivenessData](context) {
         const project = context.state.currentProject;
-        if (project && !project.currentRegion.costGraphData.length) {
+        if (project && !project.currentRegion.tableData.length) {
             await Promise.all([
-                context.dispatch(RootAction.FetchCostGraphData),
-                context.dispatch(RootAction.FetchCostTableData)
+                context.dispatch(RootAction.FetchTableData)
             ]);
         }
     },
