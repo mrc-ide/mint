@@ -30,9 +30,8 @@ describe("costEffectiveness", () => {
 
         const table = wrapper.find(dynamicTable);
         expect(table.props().columns).toBe(state.costTableConfig);
-        expect(table.props().data).toBe(state.currentProject.currentRegion.costTableData);
-        expect(table.props().settings).toBe(state.currentProject.currentRegion.interventionSettings);
-
+        expect(table.props().data).toBe(state.currentProject.currentRegion.tableData);
+        expect(table.props().settings).toEqual(state.currentProject.currentRegion.interventionSettings);
         expect(wrapper.findAll(plotlyGraph).length).toBe(0);
     });
 
@@ -68,7 +67,7 @@ describe("costEffectiveness", () => {
             }),
             currentProject: {
                 currentRegion: {
-                    costGraphData: [{cost: 1000, cases_averted: 100}]
+                    tableData: [{cost: 1000, cases_averted: 100}]
                 } as any
             } as any
         };
@@ -80,13 +79,13 @@ describe("costEffectiveness", () => {
         expect(efficacyGraph.props().layout).toBe(state.costEfficacyGraphConfig.layout);
         expect(efficacyGraph.props().metadata).toBe(state.costEfficacyGraphConfig.metadata);
         expect(efficacyGraph.props().series).toBe(state.costEfficacyGraphConfig.series);
-        expect(efficacyGraph.props().data).toBe(state.currentProject.currentRegion.costGraphData);
+        expect(efficacyGraph.props().data).toBe(state.currentProject.currentRegion.tableData);
 
         const casesGraph = wrapper.findAll(plotlyGraph).at(1);
         expect(casesGraph.props().layout).toBe(state.costCasesGraphConfig.layout);
         expect(casesGraph.props().metadata).toBe(state.costCasesGraphConfig.metadata);
         expect(casesGraph.props().series).toBe(state.costCasesGraphConfig.series);
-        expect(casesGraph.props().data).toBe(state.currentProject.currentRegion.costGraphData);
+        expect(casesGraph.props().data).toBe(state.currentProject.currentRegion.tableData);
 
         expect(wrapper.findAll(dynamicTable).length).toBe(0);
     });

@@ -2,8 +2,11 @@ import {computed} from "@vue/composition-api";
 import {FilteringProps, useFiltering} from "../filteredData";
 import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
 import {useTransformation} from "../transformedData";
+import {Dictionary} from "vue-router/types/router";
 
-interface Props extends FilteringProps {
+interface Props {
+    settings: Dictionary<string | number> | null
+    data: any[]
     series: SeriesDefinition[]
     metadata: LongFormatMetadata | WideFormatMetadata
 }
@@ -50,8 +53,6 @@ export function useLongFormatData(props: Props) {
             result.push(error_array);
             result.push(error_array_minus);
         }
-
-        console.log(x)
 
         return result;
     };

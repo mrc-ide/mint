@@ -3,7 +3,6 @@ import {expectAllDefined, expectEqualsFrozen} from "../testHelpers";
 import {actions, RootAction} from "../../app/actions";
 import {RootMutation} from "../../app/mutations";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
-import {BaselineOptions} from "../../app/generated";
 
 describe("actions", () => {
 
@@ -33,9 +32,7 @@ describe("actions", () => {
                 baselineSettings,
                 interventionSettings,
                 prevalenceGraphData: [],
-                impactTableData: [],
-                costGraphData: [],
-                costTableData: []
+                tableData: []
             }
         }
     };
@@ -111,18 +108,18 @@ describe("actions", () => {
         expect(commit.mock.calls[0][1]).toStrictEqual({data: {whatever: 1}, layout: {something: "hi"}});
     });
 
-    it("fetches impact table data", async () => {
-        const url = "/impact/table/data";
+    it("fetches table data", async () => {
+        const url = "/table/data";
         mockAxios.onPost(url, baselineSettings)
                 .reply(200, mockSuccess([{prev: 1, net_use: 0.2, resistance: "low"}]));
 
         const commit = jest.fn();
-        await (actions[RootAction.FetchImpactTableData] as any)({commit, state} as any);
+        await (actions[RootAction.FetchTableData] as any)({commit, state} as any);
 
         expect(mockAxios.history.post[0].url).toBe(url);
         expect(mockAxios.history.post[0].data).toBe(JSON.stringify(baselineSettings));
 
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddTableData);
         expectEqualsFrozen(commit.mock.calls[0][1], [{prev: 1, net_use: 0.2, resistance: "low"}]);
     });
 
@@ -135,24 +132,6 @@ describe("actions", () => {
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableConfig)
         expectEqualsFrozen(commit.mock.calls[0][1], {net_use: "Net use"});
-    });
-
-    it("fetches cost table data", async () => {
-        const url = "/cost/table/data";
-        const testData = [{prev: 1, net_use: 0.2, resistance: "low"}];
-        mockAxios.onPost(url, baselineSettings)
-            .reply(200, mockSuccess(testData));
-
-        const commit = jest.fn();
-        await (actions[RootAction.FetchCostTableData] as any)({commit, state} as any);
-
-        expect(mockAxios.history.post[0].url).toBe(url);
-        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(baselineSettings));
-
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableData);
-        expectEqualsFrozen(commit.mock.calls[0][1], testData);
-
-        expectAddsErrorOn500(actions[RootAction.FetchCostTableData], url, true);
     });
 
     it("fetches cost table config", async () => {
@@ -217,49 +196,12 @@ describe("actions", () => {
         expectAddsErrorOn500(actions[RootAction.FetchCostEfficacyGraphConfig], url);
     });
 
-
-    it("fetches cost graph data", async () => {
-        const url = "/cost/graph/data";
-        const testData = [{cases_averted: 1, cost: 10}];
-        const expectedSettings = {...baselineSettings, ...interventionSettings};
-        mockAxios.onPost(url, expectedSettings)
-            .reply(200, mockSuccess(testData));
-
-        const commit = jest.fn();
-        await (actions[RootAction.FetchCostGraphData] as any)({commit, state} as any);
-
-        expect(mockAxios.history.post[0].url).toBe(url);
-        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(expectedSettings));
-
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostGraphData);
-        expectEqualsFrozen(commit.mock.calls[0][1], testData);
-
-        await expectAddsErrorOn500(actions[RootAction.FetchCostGraphData], url, true);
-    });
-
     it("EnsureImpactData fetches all impact figure data if none already present", async () => {
         const dispatch = jest.fn();
         await (actions[RootAction.EnsureImpactData] as any)({dispatch, state} as any);
 
         expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
-        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchImpactTableData);
-    });
-
-    it("EnsureImpactData fetches all impact figure data if graph not already present", async () => {
-        const dispatch = jest.fn();
-        const stateWithoutImpactGraph = {
-            currentProject: {
-                currentRegion: {
-                    baselineSettings,
-                    prevalenceGraphData: [],
-                    impactTableData: ["TEST TABLE DATA"] as any
-                }
-            }
-        };
-        await (actions[RootAction.EnsureImpactData] as any)({dispatch, state: stateWithoutImpactGraph} as any);
-        baselineSettings
-        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
-        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchImpactTableData);
+        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchTableData);
     });
 
     it("EnsureImpactData fetches all impact figure data if table not already present", async () => {
@@ -269,14 +211,14 @@ describe("actions", () => {
                 currentRegion: {
                     baselineSettings,
                     prevalenceGraphData: ["TEST GRAPH DATA"] as any,
-                    impactTableData: []
+                    tableData: []
                 }
             }
         };
         await (actions[RootAction.EnsureImpactData] as any)({dispatch, state: stateWithoutImpactTable} as any);
 
         expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
-        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchImpactTableData);
+        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchTableData);
 
     });
 
@@ -287,7 +229,7 @@ describe("actions", () => {
                 currentRegion: {
                     baselineSettings,
                     prevalenceGraphData: ["TEST GRAPH DATA"] as any,
-                    impactTableData: ["TEST TABLE DATA"] as any
+                    tableData: ["TEST TABLE DATA"] as any
                 }
             }
         };
@@ -300,8 +242,7 @@ describe("actions", () => {
         const dispatch = jest.fn();
         await (actions[RootAction.EnsureCostEffectivenessData] as any)({dispatch, state} as any);
 
-        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchCostGraphData);
-        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchCostTableData);
+        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchTableData);
     });
 
     it("EnsureCostEffectivenessData does not fetch cost effectiveness data if already present", async () => {
@@ -310,7 +251,7 @@ describe("actions", () => {
             currentProject: {
                 currentRegion: {
                     baselineSettings,
-                    costGraphData: ["TEST COST DATA"]
+                    tableData: ["TEST COST DATA"]
                 }
             }
         };

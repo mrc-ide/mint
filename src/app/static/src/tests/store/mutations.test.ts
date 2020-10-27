@@ -57,9 +57,7 @@ describe("mutations", () => {
             interventionOptions: {controlSections:[]},
             interventionSettings: {},
             prevalenceGraphData: [],
-            impactTableData: [],
-            costGraphData: [],
-            costTableData: [],
+            tableData: [],
             step: 1
         })
     });
@@ -93,12 +91,12 @@ describe("mutations", () => {
                 {controlSections: ["OLD BASELINE"]} as any, {controlSections: []})
         });
         state.currentProject!!.currentRegion.prevalenceGraphData = ["TEST GRAPH DATA"] as any;
-        state.currentProject!!.currentRegion.impactTableData = ["TEST TABLE DATA"] as any;
+        state.currentProject!!.currentRegion.tableData = ["TEST TABLE DATA"] as any;
 
         const newBaseline = {controlSections: ["NEWBASELINE"]} as any;
         mutations[RootMutation.SetCurrentRegionBaselineOptions](state, newBaseline);
         expect(state.currentProject!!.currentRegion.prevalenceGraphData).toStrictEqual([]);
-        expect(state.currentProject!!.currentRegion.impactTableData).toStrictEqual([]);
+        expect(state.currentProject!!.currentRegion.tableData).toStrictEqual([]);
     });
 
     it("updating the current region's baseline options does nothing if no current project", () => {
@@ -157,26 +155,15 @@ describe("mutations", () => {
         expect(state.prevalenceGraphConfig).toStrictEqual({data: {whatever: 1}, layout: {something: "hi"}});
     });
 
-    it("adds impact table data", () => {
+    it("adds table data", () => {
         const project = mockProject();
         const state = mockRootState({
             projects: [project],
             currentProject: project
         });
-        mutations[RootMutation.AddImpactTableData](state, ["some data"]);
+        mutations[RootMutation.AddTableData](state, ["some data"]);
 
-        expect(state.currentProject!!.currentRegion.impactTableData).toStrictEqual(["some data"]);
-    });
-
-    it("adds cost table data", () => {
-        const project = mockProject();
-        const state = mockRootState({
-            projects: [project],
-            currentProject: project
-        });
-        mutations[RootMutation.AddCostTableData](state, ["some data"]);
-
-        expect(state.currentProject!!.currentRegion.costTableData).toStrictEqual(["some data"]);
+        expect(state.currentProject!!.currentRegion.tableData).toStrictEqual(["some data"]);
     });
 
     it("adds impact table config", () => {
@@ -205,17 +192,6 @@ describe("mutations", () => {
         mutations[RootMutation.AddCostEfficacyGraphConfig](state, ["config data"]);
 
         expect(state.costEfficacyGraphConfig).toStrictEqual(["config data"]);
-    });
-
-    it("adds cost graph data", () => {
-        const project = mockProject();
-        const state = mockRootState({
-            projects: [project],
-            currentProject: project
-        });
-        mutations[RootMutation.AddCostGraphData](state, ["some data"]);
-
-        expect(state.currentProject!!.currentRegion.costGraphData).toStrictEqual(["some data"]);
     });
 
     it("updates the current region's intervention options", () => {

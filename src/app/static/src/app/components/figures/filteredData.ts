@@ -2,9 +2,9 @@ import {computed} from "@vue/composition-api";
 import {Dictionary} from "vue-router/types/router";
 
 export interface FilteringProps {
-    settings: Dictionary<string> | null
+    settings: Dictionary<string | number> | null
     data: any[]
-    settingNames: string[] | undefined
+    settingNames?: string[]
 }
 
 export function useFiltering(props: FilteringProps) {
@@ -18,10 +18,10 @@ export function useFiltering(props: FilteringProps) {
         if (props.settingNames) {
             // filter to those settings specified in the metadata
             settings = props.settingNames
-                .reduce((acc: Dictionary<string>, value: string) => {
+                .reduce((acc: Dictionary<string | number>, value: string) => {
                     acc[value] = props.settings!![value];
                     return acc
-                }, {} as Dictionary<string>)
+                }, {} as Dictionary<string | number>)
         }
 
         for (let key of Object.keys(settings)) {
