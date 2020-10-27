@@ -60,13 +60,13 @@ describe("actions", () => {
         const firstRow = commit.mock.calls[0][1][0];
         expect(Object.keys(firstRow).sort())
             .toEqual([
-                "cases_averted",
-                "cases_averted_error_minus",
-                "cases_averted_error_plus",
+                "casesAverted",
+                "casesAvertedErrorMinus",
+                "casesAvertedErrorPlus",
                 "cost",
                 "efficacy",
-                "efficacy_error_minus",
-                "efficacy_error_plus",
+                "efficacyErrorMinus",
+                "efficacyErrorPlus",
                 "intervention"]);
     });
 
@@ -118,13 +118,13 @@ describe("actions", () => {
         const firstRow = commit.mock.calls[0][1][0];
         expect(Object.keys(firstRow).sort())
             .toEqual([
-                "cases_averted",
+                "casesAverted",
                 "intervention",
-                "irs_use",
-                "net_use",
-                "prev_year_1",
-                "prev_year_2",
-                "prev_year_3"]);
+                "irsUse",
+                "netUse",
+                "prevYear1",
+                "prevYear2",
+                "prevYear3"]);
     });
 
     it("can get impact table config", async () => {
@@ -134,12 +134,12 @@ describe("actions", () => {
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableConfig);
         expect(Object.keys(commit.mock.calls[0][1]).sort())
             .toEqual([
-                "cases_averted",
+                "casesAverted",
                 "intervention",
-                "net_use",
-                "prev_year_1",
-                "prev_year_2",
-                "prev_year_3"]);
+                "netUse",
+                "prevYear1",
+                "prevYear2",
+                "prevYear3"]);
     });
 
     it("can get cost table data", async () => {
@@ -152,12 +152,12 @@ describe("actions", () => {
         expect(Object.keys(firstRow).sort())
             .toEqual([
                 "cost",
-                "cost_increment",
-                "cost_per_case_averted",
+                "costIncrement",
+                "costPerCaseAverted",
                 "intervention",
-                "irs_use",
-                "mean_cases_averted",
-                "net_use"]);
+                "irsUse",
+                "meanCasesAverted",
+                "netUse"]);
     });
 
     it("can get cost table config", async () => {
@@ -168,13 +168,12 @@ describe("actions", () => {
         expect(Object.keys(commit.mock.calls[0][1]).sort())
             .toEqual([
                 "cost",
-                "cost_increment",
-                "cost_per_case_averted",
+                "costIncrement",
+                "costPerCaseAverted",
                 "intervention",
-                "irs_use",
-                "mean_cases_averted",
-                "net_use"]);
+                "irsUse",
+                "meanCasesAverted",
+                "netUse"]);
     });
-
 
 });
