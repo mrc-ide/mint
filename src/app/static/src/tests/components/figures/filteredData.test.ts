@@ -1,4 +1,5 @@
 import {FilteringProps, useFiltering} from "../../../app/components/figures/filteredData";
+import {WideFormatMetadata} from "../../../app/generated";
 
 describe("use filtering", () => {
 
@@ -67,7 +68,9 @@ describe("use filtering", () => {
                 netUse: 0,
                 irsUse: 1
             },
-            settingNames: ["netUse"]
+            metadata: {
+                settings: ["netUse"]
+            } as WideFormatMetadata
         };
 
         const result = useFiltering(localProps).filteredData.value

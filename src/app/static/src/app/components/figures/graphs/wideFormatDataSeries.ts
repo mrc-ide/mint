@@ -1,21 +1,15 @@
 import {computed} from "@vue/composition-api";
 import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
 import {FilteringProps, useFiltering} from "../filteredData";
-import {Dictionary} from "vue-router/types/router";
 
-interface Props {
-    settings: Dictionary<string | number> | null
-    data: any[]
+interface Props extends FilteringProps {
     series: SeriesDefinition[]
     metadata: LongFormatMetadata | WideFormatMetadata
 }
 
 export function useWideFormatData(props: Props) {
-    const {filteredData} = useFiltering({
-        settingNames: props.metadata.settings,
-        settings: props.settings,
-        data: props.data
-    });
+    const {filteredData} = useFiltering(props);
+
     const getRow = (id: string) => {
         return filteredData.value.find((row: any) => row[props.metadata.id_col] == id);
     }
@@ -28,7 +22,7 @@ export function useWideFormatData(props: Props) {
         }
     }
     const dataSeries = computed(() => {
-        const meta = props.metadata as WideFormatMetadata
+        const meta = props.metadata as WideFormatMetadata;
         const result: any[] = [];
         props.series.map((d: SeriesDefinition) => {
             if (d.x && d.y) {

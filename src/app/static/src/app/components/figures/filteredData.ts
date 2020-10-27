@@ -1,10 +1,11 @@
 import {computed} from "@vue/composition-api";
 import {Dictionary} from "vue-router/types/router";
+import {LongFormatMetadata, WideFormatMetadata} from "../../generated";
 
 export interface FilteringProps {
     settings: Dictionary<string | number> | null
     data: any[]
-    settingNames?: string[]
+    metadata?: LongFormatMetadata | WideFormatMetadata
 }
 
 export function useFiltering(props: FilteringProps) {
@@ -15,9 +16,9 @@ export function useFiltering(props: FilteringProps) {
         }
 
         let settings = props.settings;
-        if (props.settingNames) {
+        if (props.metadata && props.metadata.settings) {
             // filter to those settings specified in the metadata
-            settings = props.settingNames
+            settings = props.metadata.settings
                 .reduce((acc: Dictionary<string | number>, value: string) => {
                     acc[value] = props.settings!![value];
                     return acc
