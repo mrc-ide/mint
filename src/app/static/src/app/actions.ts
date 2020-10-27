@@ -39,6 +39,7 @@ export const actions: ActionTree<RootState, RootState> = {
         const proj = state.projects.find(p => p.slug == payload.project);
         const region = proj && proj.regions.find(r => r.slug == payload.region);
         if (region) {
+            commit(RootMutation.SetCurrentProject, proj);
             commit(RootMutation.SetCurrentRegion, region);
         } else {
             await router.push({

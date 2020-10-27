@@ -61,7 +61,7 @@ describe("mutations", () => {
             costGraphData: [],
             costTableData: [],
             step: 1
-        })
+        });
     });
 
     it("updates the current region's baseline options", () => {
