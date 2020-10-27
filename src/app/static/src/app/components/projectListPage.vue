@@ -39,16 +39,23 @@
                                     :add-on-key="[13, ',']"
                                     :placeholder="placeholder"
                                     @tags-changed="tagAdded"
-                                />
-                                <span class="text-muted small">You can always add and remove regions later</span>
+                                    :is-duplicate="isDuplicate"
+                                    :avoid-adding-duplicates="true"
+                                    @adding-duplicate="addingDuplicate"
+                                    @keydown.native="resetValidation"/>
+                                <div class="text-danger small" v-show="invalidTag">Region names must be unique</div>
+                                <div class="text-muted small">
+                                    Add multiple region names separated by commas.
+                                    You can always add and remove regions later
+                                </div>
+                                <div class="form-group text-center">
+                                    <button class="btn btn-primary"
+                                            :class="{'disabled': disabled}"
+                                            :disabled="disabled"
+                                            @click="createProject">Create
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group text-center">
-                            <button class="btn btn-primary"
-                                    :class="{'disabled': disabled}"
-                                    :disabled="disabled"
-                                    @click="createProject">Create
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -62,7 +69,8 @@
     import VueTagsInput from '@johmun/vue-tags-input';
     import {RootMutation} from "../mutations";
     import {mapMutationByName} from "../utils";
-    import {Project, Region} from "../models/project";
+    import {getSlug, Project, Region} from "../models/project";
+
     import {mapState} from "vuex";
     import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
     import dropDown from "./dropDown.vue";
@@ -72,6 +80,7 @@
         regions: Tag[]
         newRegion: string
         showNewProject: boolean
+        invalidTag: boolean
     }
 
     interface Methods {
@@ -80,7 +89,10 @@
         addProject: (project: Project) => void
         createProject: () => void
         tagAdded: (newTags: Tag[]) => void
+        isDuplicate: (tags: Tag[], tag: Tag) => boolean
+        addingDuplicate: () => void
         navigate: (event: Event, project: Project, region: Region) => void
+        resetValidation: (event: KeyboardEvent) => void
     }
 
     interface Computed {
@@ -103,7 +115,8 @@
                 newProject: "",
                 regions: [],
                 newRegion: "",
-                showNewProject: false
+                showNewProject: false,
+                invalidTag: false
             }
         },
         computed: {
@@ -116,7 +129,7 @@
                 return `You have ${len} project${len === 1 ? "" : "s"}`
             },
             disabled() {
-                return !this.newProject || (!this.newRegion && this.regions.length == 0)
+                return !this.newProject || (!this.newRegion && this.regions.length == 0) || this.invalidTag
             },
             placeholder() {
                 return this.regions.length == 0 ? "First region, second region" : "...";
@@ -130,22 +143,42 @@
                 this.showNewProject = true;
             },
             createProject() {
-                const regionNames = this.regions.map((tag) => tag.text);
-                if (regionNames.length == 0) {
-                    // user has only entered one region name and has not blurred the input
-                    // so this.regions is empty even though this.newRegion is populated
-                    // so take this.newRegion as the only region
-                    regionNames.push(this.newRegion)
+                const regionNames = this.regions.map((tag) => tag.text.trim());
+                const newRegion = this.newRegion.trim();
+                if (newRegion.length > 0) {
+                    // user has entered a region name but not blurred the input
+                    // so manually validate their last typed region and add to list
+                    const valid = !regionNames.find(t => getSlug(t) == getSlug(newRegion));
+                    if (valid) {
+                        regionNames.push(newRegion);
+                    }
+                    else {
+                        this.invalidTag = true
+                    }
                 }
-                const project = new Project(this.newProject, regionNames, this.baselineOptions, this.interventionOptions);
-                this.addProject(project);
-                this.$router.push({
-                    path: project.currentRegion.url
-                })
+                if (!this.invalidTag) {
+                    const project = new Project(this.newProject, regionNames, this.baselineOptions, this.interventionOptions);
+                    this.addProject(project);
+                    this.$router.push({
+                        path: project.currentRegion.url
+                    });
+                }
             },
             tagAdded(newTags: Tag[]) {
                 this.regions = newTags;
                 this.newRegion = "";
+                this.invalidTag = false;
+            },
+            addingDuplicate() {
+                this.invalidTag = true;
+            },
+            isDuplicate(tags: Tag[], tag: Tag) {
+                return !!tags.find(t => getSlug(t.text.trim()) == getSlug(tag.text.trim()));
+            },
+            resetValidation(event: KeyboardEvent) {
+                if ([",", "Enter"].indexOf(event.key) == -1) {
+                    this.invalidTag = false;
+                }
             },
             navigate(event: Event, project: Project, region: Region) {
                 event.preventDefault();

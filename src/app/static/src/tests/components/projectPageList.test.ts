@@ -8,6 +8,7 @@ import {RootMutation} from "../../app/mutations";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import dropDown from "../../app/components/dropDown.vue";
 import {Project} from "../../app/models/project";
+import {BModal} from "bootstrap-vue";
 
 describe("project page", () => {
 
@@ -92,7 +93,7 @@ describe("project page", () => {
         const wrapper = shallowMount(projectListPage, {store, mocks: {$router: mockRouter}});
 
         wrapper.find("input").setValue("new project");
-        wrapper.find(VueTagsInput).vm.$emit("tags-changed", [{text: "South"}])
+        wrapper.find(VueTagsInput).vm.$emit("tags-changed", [{text: " South "}])
 
         await Vue.nextTick();
 
@@ -103,8 +104,11 @@ describe("project page", () => {
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1]).toEqual({
             name: "new project",
+            slug: "new-project",
             regions: [{
-                name: "South", url: "/projects/new-project/regions/south",
+                name: "South", // check trimmed whitespace
+                slug: "south",
+                url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 baselineSettings: {},
                 interventionOptions: mockInterventionOptions,
@@ -116,7 +120,9 @@ describe("project page", () => {
                 step: 1
             }],
             currentRegion: {
-                name: "South", url: "/projects/new-project/regions/south",
+                name: "South",
+                slug: "south",
+                url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 baselineSettings: {},
                 interventionOptions: mockInterventionOptions,
@@ -145,7 +151,7 @@ describe("project page", () => {
         const wrapper = shallowMount(projectListPage, {store, mocks: {$router: mockRouter}});
 
         wrapper.find("input").setValue("new project");
-        wrapper.setData({newRegion: "South"})
+        wrapper.setData({newRegion: "South"});
 
         await Vue.nextTick();
 
@@ -156,8 +162,10 @@ describe("project page", () => {
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1]).toEqual({
             name: "new project",
+            slug: "new-project",
             regions: [{
                 name: "South",
+                slug: "south",
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 baselineSettings: {},
@@ -171,6 +179,7 @@ describe("project page", () => {
             }],
             currentRegion: {
                 name: "South",
+                slug: "south",
                 url: "/projects/new-project/regions/south",
                 baselineOptions: mockBaselineOptions,
                 baselineSettings: {},
@@ -187,6 +196,35 @@ describe("project page", () => {
         expect(mockRouter[0].path).toBe("/projects/new-project/regions/south");
     });
 
+    it("validates last typed but not entered region", async () => {
+        const mockMutation = jest.fn();
+        const mockRouter = [] as any[];
+        const store = createStore(mockMutation);
+        const wrapper = shallowMount(projectListPage, {store, mocks: {$router: mockRouter}});
+
+        wrapper.find("input").setValue("new project");
+
+        // set invalid state
+        wrapper.setData({newRegion: "South", regions: [{text: "South"}]});
+        await Vue.nextTick();
+        wrapper.find("button").trigger("click");
+        await Vue.nextTick();
+
+        expect(mockMutation.mock.calls.length).toBe(0);
+        expect(wrapper.find(".text-danger").isVisible()).toBe(true);
+
+        // now set valid region
+        wrapper.setData({newRegion: "North", invalidTag: false});
+        await Vue.nextTick();
+        wrapper.find("button").trigger("click");
+        await Vue.nextTick();
+
+        expect(mockMutation.mock.calls.length).toBe(1);
+        expect(mockMutation.mock.calls[0][1].regions.length).toBe(2);
+        expect(mockMutation.mock.calls[0][1].regions[0].name).toBe("South");
+        expect(mockMutation.mock.calls[0][1].regions[1].name).toBe("North");
+    });
+
     it("placeholder text goes away once at least one region is entered", async () => {
 
         const store = createStore();
@@ -199,6 +237,53 @@ describe("project page", () => {
 
         await Vue.nextTick();
         expect(tagsInput.props("placeholder")).toBe("...");
+
+    });
+
+    it("cannot add regions with duplicate slugs", async () => {
+        const store = createStore();
+        const wrapper = shallowMount(projectListPage, {store});
+
+        // this is a bit awkward to test, but we assume the third party component
+        // works as expected and just check that the props are set up correctly
+        const tagsInput = wrapper.find(VueTagsInput);
+        const isDuplicate = tagsInput.props("isDuplicate") as any;
+        expect(isDuplicate([{text: "south region"}], {text: "South-Region"})).toBe(true);
+        expect(isDuplicate([{text: "south region"}], {text: " south region "})).toBe(true);
+        expect(isDuplicate([{text: "south region"}], {text: "North region"})).toBe(false);
+        expect(tagsInput.props("avoidAddingDuplicates")).toBe(true);
+
+        tagsInput.vm.$emit("adding-duplicate");
+        await Vue.nextTick();
+        expect(wrapper.find(".text-danger").isVisible()).toBe(true);
+    });
+
+    it("validation message disappears when tag is edited", async () => {
+        const store = createStore();
+        const wrapper = shallowMount(projectListPage, {store});
+
+        const tagsInput = wrapper.find(VueTagsInput);
+        tagsInput.vm.$emit("adding-duplicate");
+        await Vue.nextTick();
+        expect(wrapper.find(".text-danger").isVisible()).toBe(true);
+
+        // enter and comma are handled by the tags input, so should not do anything
+        tagsInput.trigger("keydown", {
+            key: "Enter"
+        });
+        await Vue.nextTick();
+        expect(wrapper.find(".text-danger").isVisible()).toBe(true);
+
+        tagsInput.trigger("keydown", {
+            key: ","
+        });
+        await Vue.nextTick();
+        expect(wrapper.find(".text-danger").isVisible()).toBe(true);
+
+        // other keys should remove message
+        tagsInput.trigger("keydown");
+        await Vue.nextTick();
+        expect(wrapper.find(".text-danger").isVisible()).toBe(false);
 
     });
 

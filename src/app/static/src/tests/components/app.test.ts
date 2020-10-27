@@ -110,4 +110,67 @@ describe("app", () => {
         expect((rendered.find(BModal).find("input").element as HTMLInputElement).value).toBe("");
     });
 
+    it("cannot add new region without providing a name", async () => {
+        const state = {
+            currentProject: mockProject("my project")
+        };
+        const rendered = getWrapper(state);
+        rendered.findAll(".dropdown-item").at(1).find("a").trigger("click");
+        await Vue.nextTick();
+
+        expect(rendered.find(BModal).vm.$props.okDisabled).toBe(true);
+        rendered.find(BModal).find("input").setValue("region2");
+        await Vue.nextTick();
+
+        expect(rendered.find(BModal).vm.$props.okDisabled).toBe(false);
+    });
+
+    it("cannot add new region with the same name as an existing one", async () => {
+        const state = {
+            currentProject: new Project(name, ["region 1"], {controlSections: []}, {controlSections: []})
+        };
+        const rendered = getWrapper(state);
+        rendered.findAll(".dropdown-item").at(1).find("a").trigger("click");
+        await Vue.nextTick();
+
+        expect(rendered.find(BModal).vm.$props.okDisabled).toBe(true);
+        expect(rendered.find(BModal).find(".text-danger").isVisible()).toBe(false);
+        rendered.find(BModal).find("input").setValue("region 1");
+        await Vue.nextTick();
+
+        expect(rendered.find(BModal).vm.$props.okDisabled).toBe(true);
+        expect(rendered.find(BModal).find(".text-danger").isVisible()).toBe(true);
+
+        rendered.find(BModal).find("input").setValue("region 2");
+        await Vue.nextTick();
+
+        expect(rendered.find(BModal).vm.$props.okDisabled).toBe(false);
+        expect(rendered.find(BModal).find(".text-danger").isVisible()).toBe(false);
+    });
+
+    it("cannot add new region with a name that will result in duplicate urls", async () => {
+        const state = {
+            currentProject: new Project(name, ["region 1"], {controlSections: []}, {controlSections: []})
+        };
+        const rendered = getWrapper(state);
+        rendered.findAll(".dropdown-item").at(1).find("a").trigger("click");
+        await Vue.nextTick();
+
+        expect(rendered.find(BModal).vm.$props.okDisabled).toBe(true);
+        rendered.find(BModal).find("input").setValue("region 1");
+        await Vue.nextTick();
+
+        expect(rendered.find(BModal).vm.$props.okDisabled).toBe(true);
+
+        rendered.find(BModal).find("input").setValue("REGION 1");
+        await Vue.nextTick();
+
+        expect(rendered.find(BModal).vm.$props.okDisabled).toBe(true);
+
+        rendered.find(BModal).find("input").setValue("region-1");
+        await Vue.nextTick();
+
+        expect(rendered.find(BModal).vm.$props.okDisabled).toBe(true);
+    });
+
 });

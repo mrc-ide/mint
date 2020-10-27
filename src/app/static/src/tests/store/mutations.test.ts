@@ -50,6 +50,7 @@ describe("mutations", () => {
         mutations[RootMutation.SetCurrentRegion](state, "/projects/my-project/regions/south-region");
         expect(state.currentProject!!.currentRegion).toEqual({
             name: "South region",
+            slug: "south-region",
             url: "/projects/my-project/regions/south-region",
             baselineOptions: {controlSections: []},
             baselineSettings: {},
@@ -71,7 +72,7 @@ describe("mutations", () => {
 
         const newBaseline = {controlSections: ["NEWBASELINE"]} as any;
         mutations[RootMutation.SetCurrentRegionBaselineOptions](state, newBaseline);
-        expect(state.currentProject!!.currentRegion.baselineOptions).toStrictEqual(newBaseline);{controlSections: []}
+        expect(state.currentProject!!.currentRegion.baselineOptions).toStrictEqual(newBaseline);
     });
 
     it("updates the current region's step", () => {
