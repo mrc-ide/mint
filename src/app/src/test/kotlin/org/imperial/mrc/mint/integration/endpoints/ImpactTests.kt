@@ -6,7 +6,7 @@ import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.boot.test.web.client.postForEntity
 
 class ImpactTests: EndpointTests() {
-    
+
     @Test
     fun `can get impact graph prevalence config`() {
         val responseEntity = testRestTemplate.getForEntity<String>("/impact/graph/prevalence/config")

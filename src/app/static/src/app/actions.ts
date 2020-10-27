@@ -8,6 +8,7 @@ import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 export enum RootAction {
     FetchPrevalenceGraphData = "FetchPrevalenceGraphData",
     FetchPrevalenceGraphConfig = "FetchPrevalenceGraphConfig",
+    FetchCasesGraphConfig = "FetchCasesGraphConfig",
     FetchImpactTableConfig = "FetchImpactTableConfig",
     FetchCostCasesGraphConfig = "FetchCostCasesGraphConfig",
     FetchCostEfficacyGraphConfig = "FetchCostEfficacyGraphConfig",
@@ -22,10 +23,6 @@ export enum RootAction {
 
 const currentRegionBaseline = (state: RootState) => {
     return state.currentProject!!.currentRegion.baselineSettings;
-};
-
-const currentRegionInterventions = (state: RootState) => {
-    return state.currentProject!!.currentRegion.interventionSettings;
 };
 
 export const actions: ActionTree<RootState, RootState> = {
@@ -57,6 +54,13 @@ export const actions: ActionTree<RootState, RootState> = {
             .withSuccess(RootMutation.AddPrevalenceGraphConfig)
             .withError(RootMutation.AddError)
             .get<Graph>("/impact/graph/prevalence/config")
+    },
+
+    async [RootAction.FetchCasesGraphConfig](context) {
+        await api(context)
+            .withSuccess(RootMutation.AddCasesGraphConfig)
+            .withError(RootMutation.AddError)
+            .get<Graph>("/impact/graph/cases-averted/config")
     },
 
     async [RootAction.FetchCostCasesGraphConfig](context) {
@@ -124,7 +128,8 @@ export const actions: ActionTree<RootState, RootState> = {
             context.dispatch(RootAction.FetchImpactTableConfig),
             context.dispatch(RootAction.FetchCostCasesGraphConfig),
             context.dispatch(RootAction.FetchCostEfficacyGraphConfig),
-            context.dispatch(RootAction.FetchCostTableConfig)
+            context.dispatch(RootAction.FetchCostTableConfig),
+            context.dispatch(RootAction.FetchCasesGraphConfig)
         ]);
     }
 

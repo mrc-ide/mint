@@ -13,7 +13,7 @@ REGISTRY=mrcide
 MINTR_IMAGE=$REGISTRY/$API:$MINTR_VERSION
 
 docker network create $NETWORK
-docker pull $MINTR_IMAGE
+#docker pull $MINTR_IMAGE
 
 docker run --rm -d \
   --network=$NETWORK \
