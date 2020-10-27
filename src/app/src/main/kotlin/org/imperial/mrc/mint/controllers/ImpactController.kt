@@ -14,6 +14,12 @@ class ImpactController(private val apiClient: APIClient){
         return apiClient.getImpactGraphPrevalenceConfig()
     }
 
+    @GetMapping("/graph/cases-averted/config")
+    @ResponseBody
+    fun graphCasesAvertedConfig(): ResponseEntity<String> {
+        return apiClient.getImpactGraphCasesAvertedConfig()
+    }
+
     @PostMapping("/graph/prevalence/data")
     @ResponseBody
     fun graphPrevalenceData(@RequestBody dataOptions: Map<String, Any>): ResponseEntity<String> {
