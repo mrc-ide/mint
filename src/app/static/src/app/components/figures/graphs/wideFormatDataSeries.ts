@@ -8,7 +8,8 @@ interface Props extends FilteringProps {
 }
 
 export function useWideFormatData(props: Props) {
-    const {filteredData} = useFiltering(props)
+    const {filteredData} = useFiltering(props);
+
     const getRow = (id: string) => {
         return filteredData.value.find((row: any) => row[props.metadata.id_col] == id);
     }
@@ -21,7 +22,7 @@ export function useWideFormatData(props: Props) {
         }
     }
     const dataSeries = computed(() => {
-        const meta = props.metadata as WideFormatMetadata
+        const meta = props.metadata as WideFormatMetadata;
         const result: any[] = [];
         props.series.map((d: SeriesDefinition) => {
             if (d.x && d.y) {

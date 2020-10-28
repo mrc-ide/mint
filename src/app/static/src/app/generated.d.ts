@@ -67,15 +67,18 @@ export interface LongFormatMetadata {
   y_col: string;
   id_col: string;
   format: "long";
+  settings?: string[];
 }
 export interface WideFormatMetadata {
   cols: string[];
   id_col: string;
   format: "wide";
+  settings?: string[];
 }
 export interface SeriesDefinition {
   x?: (number | string)[];
   y?: number[];
+  y_formula?: string[];
   id?: string;
   name?: string;
   type?: string;

@@ -55,6 +55,40 @@ describe("wide format data series", () => {
         expect(dataSeries.length).toBe(0);
     });
 
+    it("uses setting names to filter settings", () => {
+        const localProps = {
+            series: [
+                {
+                    x: ["ITN"],
+                    id: "ITN"
+                }
+            ],
+            metadata: {
+                cols: ["cases_averted"],
+                id_col: "int",
+                format: "wide" as "wide",
+                settings: ["netUse"]
+            },
+            layout: {title: "Test title"},
+            data: [
+                {"int": "ITN", "netUse": 0, "irsUse": 0, "cases_averted": 100},
+                {"int": "ITN", "netUse": 0.1, "irsUse": 0, "cases_averted": 110},
+            ],
+            settings: {
+                netUse: 0,
+                irsUse: 0
+            }
+        };
+
+        const dataSeries = useWideFormatData(localProps).dataSeries.value;
+        expect(dataSeries.length).toBe(1);
+        expect(dataSeries[0]).toEqual({
+            id: "ITN",
+            x: ["ITN"],
+            y: [100]
+        });
+    });
+
     it("does not include series definitions with invalid ids", () => {
         const localProps = {
             ...props,
