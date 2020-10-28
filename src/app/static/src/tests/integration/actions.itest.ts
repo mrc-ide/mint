@@ -51,6 +51,15 @@ describe("actions", () => {
         expect(commit.mock.calls[0][1].layout.title).toBeDefined(); // just confirm it's the expected type
     });
 
+    it("can get cases avertd graph config", async () => {
+        const commit = jest.fn();
+
+        await (actions[RootAction.FetchCasesGraphConfig] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCasesGraphConfig);
+        expect(commit.mock.calls[0][1].layout.title).toBeDefined(); // just confirm it's the expected type
+    });
+
     it("can get cost cases averted graph config", async () => {
         const commit = jest.fn();
 
