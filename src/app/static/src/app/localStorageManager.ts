@@ -7,7 +7,7 @@ const appStateKey = "MINTv0.0.1";
 // we don't want to save large data arrays to local storage,
 // just region metadata
 const stripDataFromRegion = (region: Region): Region => {
-    return {...region, prevalenceGraphData: [], impactTableData: [], costGraphData: [], costTableData: []}
+    return {...region, prevalenceGraphData: [], tableData: []}
 }
 
 const stripDataFromProject = (project: Project): Project => {
