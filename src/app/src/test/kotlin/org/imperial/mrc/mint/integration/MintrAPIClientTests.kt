@@ -34,6 +34,14 @@ class MintrAPIClientTests {
     }
 
     @Test
+    fun `can get impact graph cases config`() {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getImpactGraphCasesAvertedConfig()
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "Graph")
+    }
+
+    @Test
     fun `can get impact graph prevalence data`() {
         val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
         val result = sut.getImpactGraphPrevalenceData(Settings.Baseline)

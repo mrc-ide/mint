@@ -25,6 +25,17 @@ class ImpactControllerTests {
     }
 
     @Test
+    fun `gets graph cases config from the api`()
+    {
+        val mockAPI = mock<APIClient>{
+            on{ getImpactGraphCasesAvertedConfig() } doReturn mockResponse
+        }
+
+        val sut = ImpactController(mockAPI)
+        assertThat(sut.graphCasesAvertedConfig()).isSameAs(mockResponse)
+    }
+
+    @Test
     fun `gets graph prevalence data from the api`()
     {
         val mockAPI = mock<APIClient>{

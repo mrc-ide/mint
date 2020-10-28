@@ -11,6 +11,7 @@ interface APIClient {
     fun getBaselineOptions(): ResponseEntity<String>
     fun getInterventionOptions(): ResponseEntity<String>
     fun getImpactGraphPrevalenceConfig(): ResponseEntity<String>
+    fun getImpactGraphCasesAvertedConfig(): ResponseEntity<String>
     fun getImpactGraphPrevalenceData(dataOptions: Map<String, Any>): ResponseEntity<String>
     fun getImpactTableConfig(): ResponseEntity<String>
     fun getImpactTableData(dataOptions: Map<String, Any>): ResponseEntity<String>
@@ -42,6 +43,10 @@ class MintrAPIClient(
 
     override fun getImpactGraphPrevalenceConfig(): ResponseEntity<String> {
         return get("graph/prevalence/config")
+    }
+
+    override fun getImpactGraphCasesAvertedConfig(): ResponseEntity<String> {
+        return get("graph/impact/cases-averted/config")
     }
 
     override fun getImpactGraphPrevalenceData(dataOptions: Map<String, Any>): ResponseEntity<String>
