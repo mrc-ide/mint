@@ -1,21 +1,19 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import {shallowMount} from "@vue/test-utils";
+import {createLocalVue, shallowMount} from "@vue/test-utils";
 import app from "../../app/components/app.vue";
 import {mockProject, mockRootState} from "../mocks";
 import {Project, Region} from "../../app/models/project";
 import {RootAction} from "../../app/actions";
 import {BModal} from "bootstrap-vue";
 import {RootMutation} from "../../app/mutations";
-import {Route} from "vue-router";
+import VueRouter from "vue-router";
 
 describe("app", () => {
 
-    let $router: Route[] = [];
-
-    beforeEach(() => {
-        $router = [];
-    });
+    const localVue = createLocalVue();
+    localVue.use(VueRouter);
+    const router = new VueRouter({routes: [{path: '/projects/:project/regions/:region'}]});
 
     const getWrapper = (state = {},
                         fetchConfigMock = jest.fn(),
@@ -30,9 +28,10 @@ describe("app", () => {
             }
         });
         return shallowMount(app, {
+            localVue,
+            router,
             store,
-            stubs: ['router-link', 'router-view'],
-            mocks: {$router}
+            stubs: ['router-link', 'router-view']
         });
     };
 
@@ -55,7 +54,7 @@ describe("app", () => {
         const firstNavLink = wrapper.findAll(".dropdown-item").at(0).find("router-link-stub")
         expect(firstNavLink.html())
             .toBe("<router-link-stub to=\"/projects/my-project/regions/region1\"" +
-                " class=\"text-success\">region1</router-link-stub>");
+                " tag=\"a\" event=\"click\" class=\"text-success\">region1</router-link-stub>");
     });
 
     it("fetches config before mount", () => {
@@ -87,7 +86,7 @@ describe("app", () => {
                 {controlSections: []})
         );
 
-        expect($router[0]).toEqual({path: "/projects/my-project/regions/region2"});
+        expect(router.currentRoute.path).toBe("/projects/my-project/regions/region2");
     });
 
     it("clears new region input on cancel", async () => {
