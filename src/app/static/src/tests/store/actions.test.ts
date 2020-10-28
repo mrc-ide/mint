@@ -1,8 +1,10 @@
-import {mockAxios, mockError, mockSuccess, mockFailure} from "../mocks";
+import {mockAxios, mockError, mockFailure, mockProject, mockRootState, mockSuccess} from "../mocks";
 import {expectAllDefined, expectEqualsFrozen} from "../testHelpers";
 import {actions, RootAction} from "../../app/actions";
 import {RootMutation} from "../../app/mutations";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {router} from "../../app/router";
+import {Project} from "../../app/models/project";
 
 describe("actions", () => {
 
@@ -58,8 +60,47 @@ describe("actions", () => {
         expectAllDefined(RootAction, actions);
     });
 
+    it("SetCurrentRegion sets current region if valid", async () => {
+        const commit = jest.fn();
+        const proj = new Project("p 1", ["r 1"], {controlSections: []}, {controlSections: []})
+        const state = mockRootState({
+            projects: [proj]
+        })
+        await (actions[RootAction.SetCurrentRegion] as any)({commit, state} as any,
+            {project: "p-1", region: "r-1"});
+        expect(commit.mock.calls.length).toBe(2);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.SetCurrentProject);
+        expect(commit.mock.calls[0][1]).toEqual(proj);
+        expect(commit.mock.calls[1][0]).toBe(RootMutation.SetCurrentRegion);
+        expect(commit.mock.calls[1][1]).toEqual(proj.regions[0]);
+    });
+
+    it("SetCurrentRegion navigates home if there is no matching project", async () => {
+        const commit = jest.fn();
+        await router.push({path: "/project/p-1/regions/r-1"});
+        const state = mockRootState({
+            projects: [new Project("project", ["r 1"], {controlSections: []}, {controlSections: []})]
+        })
+        await (actions[RootAction.SetCurrentRegion] as any)({commit, state} as any,
+            {project: "p-1", region: "r-1"});
+        expect(commit.mock.calls.length).toBe(0);
+        expect(router.currentRoute.fullPath).toBe("/");
+    });
+
+    it("SetCurrentRegion navigates home if there is no matching region", async () => {
+        const commit = jest.fn();
+        const state = mockRootState({
+            projects: [new Project("p 1", ["region"], {controlSections: []}, {controlSections: []})]
+        })
+        await router.push({path: "/project/p-1/regions/r-1"});
+        await (actions[RootAction.SetCurrentRegion] as any)({commit, state} as any,
+            {project: "p-1", region: "r-1"});
+        expect(commit.mock.calls.length).toBe(0);
+        expect(router.currentRoute.fullPath).toBe("/");
+    });
+
     it("fetches baseline options", async () => {
-        const options: DynamicFormMeta = {"controlSections":[]};
+        const options: DynamicFormMeta = {"controlSections": []};
         mockAxios.onGet("/baseline/options")
             .reply(200, mockSuccess(options));
 
@@ -71,7 +112,7 @@ describe("actions", () => {
     });
 
     it("fetches intervention options", async () => {
-        const options: DynamicFormMeta = {"controlSections":[]};
+        const options: DynamicFormMeta = {"controlSections": []};
         mockAxios.onGet("/intervention/options")
             .reply(200, mockSuccess(options));
 
@@ -111,7 +152,7 @@ describe("actions", () => {
     it("fetches table data", async () => {
         const url = "/table/data";
         mockAxios.onPost(url, baselineSettings)
-                .reply(200, mockSuccess([{prev: 1, net_use: 0.2, resistance: "low"}]));
+            .reply(200, mockSuccess([{prev: 1, net_use: 0.2, resistance: "low"}]));
 
         const commit = jest.fn();
         await (actions[RootAction.FetchTableData] as any)({commit, state} as any);

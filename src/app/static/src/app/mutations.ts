@@ -33,18 +33,19 @@ export const mutations: MutationTree<RootState> = {
         state.projects.push(payload)
         state.currentProject = payload
     },
-  
+
     [RootMutation.SetCurrentProject](state: RootState, project: Project | null) {
-        state.currentProject = project
+        state.currentProject = project;
     },
-  
+
+    [RootMutation.SetCurrentRegion](state: RootState, payload: Region) {
+        // this will and should be an error if called when current project does not exist
+        state.currentProject!!.currentRegion = payload;
+    },
+
     [RootMutation.AddRegion](state: RootState, payload: Region) {
         // it is an error to call this mutation before current project is set
         state.currentProject!!.regions.push(payload);
-    },
-
-    [RootMutation.SetCurrentRegion](state: RootState, payload: string) {
-        state.currentProject && state.currentProject.setCurrentRegion(payload);
     },
 
     [RootMutation.SetCurrentRegionBaselineOptions](state: RootState, payload: DynamicFormMeta) {

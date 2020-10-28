@@ -8,7 +8,6 @@ import {RootMutation} from "../../app/mutations";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import dropDown from "../../app/components/dropDown.vue";
 import {Project} from "../../app/models/project";
-import {BModal} from "bootstrap-vue";
 
 describe("project page", () => {
 
@@ -351,5 +350,4 @@ describe("project page", () => {
         expect(setCurrentProjectMock.mock.calls[1][1]).toBe(testProj);
         expect(mockRouter[0].path).toBe("/projects/testproj/regions/region-1");
     });
-
 });

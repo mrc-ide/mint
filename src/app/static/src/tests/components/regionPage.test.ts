@@ -1,4 +1,4 @@
-import {createLocalVue, mount, shallowMount, Wrapper} from "@vue/test-utils";
+import {createLocalVue, mount, shallowMount} from "@vue/test-utils";
 import Vue from "vue";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
@@ -8,8 +8,8 @@ import {RootMutation} from "../../app/mutations";
 import stepButton from "../../app/components/stepButton.vue";
 import interventions from "../../app/components/interventions.vue";
 import baseline from "../../app/components/baseline.vue";
-import {RootAction} from "../../app/actions";
 import {Project} from "../../app/models/project";
+import {RootAction} from "../../app/actions";
 
 describe("region page", () => {
 
@@ -23,15 +23,17 @@ describe("region page", () => {
                 currentProject: project
             }),
             mutations: {
-                [RootMutation.SetCurrentRegion]: setCurrentRegionMock,
                 [RootMutation.SetCurrentRegionStep]: setCurrentRegionStepMock
+            },
+            actions: {
+                [RootAction.SetCurrentRegion]: setCurrentRegionMock
             }
         });
     };
 
     it("shows baseline if current region's step is 1", () => {
         const store = createStore();
-        const wrapper = shallowMount(regionPage,{store});
+        const wrapper = shallowMount(regionPage, {store, localVue, router});
 
         const steps = wrapper.findAll(stepButton);
         expect(steps.at(0).props("active")).toBe(true);
@@ -47,7 +49,7 @@ describe("region page", () => {
 
         const store = createStore(jest.fn(), jest.fn(), project);
         const stubs = ["interventions"];
-        const wrapper = shallowMount(regionPage,{store, stubs});
+        const wrapper = shallowMount(regionPage, {store, stubs, localVue, router});
 
         const steps = wrapper.findAll(stepButton);
         expect(steps.at(1).props("active")).toBe(true);
@@ -62,13 +64,15 @@ describe("region page", () => {
         const store = createStore(setCurrentRegionMock);
 
         shallowMount(regionPage, {localVue, store, router});
+        expect(setCurrentRegionMock.mock.calls.length).toBe(1);
 
         await router.push({
             path: "/projects/new-project/regions/new-region"
         });
         await Vue.nextTick();
-        expect(setCurrentRegionMock.mock.calls.length).toBe(1);
-        expect(setCurrentRegionMock.mock.calls[0][1]).toBe("/projects/new-project/regions/new-region");
+
+        expect(setCurrentRegionMock.mock.calls.length).toBe(2);
+        expect(setCurrentRegionMock.mock.calls[1][1]).toEqual({project: "new-project", region: "new-region"});
     });
 
     it("sets current step when step is clicked", async () => {
@@ -96,7 +100,7 @@ describe("region page", () => {
     it("sets current step to 2 when baseline is submitted", async () => {
         const mockSetRegionStep = jest.fn();
         const store = createStore(jest.fn(), mockSetRegionStep);
-        const wrapper = shallowMount(regionPage, {store});
+        const wrapper = shallowMount(regionPage, {store, localVue, router});
 
         const baselineComp = wrapper.find(baseline);
         baselineComp.vm.$emit("submit");
@@ -109,7 +113,7 @@ describe("region page", () => {
 
     it("makes step 2 disabled when baseline is not valid", async () => {
         const store = createStore();
-        const wrapper = shallowMount(regionPage, {store});
+        const wrapper = shallowMount(regionPage, {store, localVue, router});
 
         wrapper.find(baseline).vm.$emit("validate", false);
         await Vue.nextTick();

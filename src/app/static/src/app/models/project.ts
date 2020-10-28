@@ -62,12 +62,4 @@ export class Project {
         this.regions = regionsName.map(n => new Region(n, this, baselineOptions, interventionOptions));
         this.currentRegion = currentRegion || this.regions[0]
     }
-
-    setCurrentRegion(url: string) {
-        const region = this.regions.find(r => r.url == url);
-        if (!region) {
-            throw Error(`${url} does not correspond to a valid region`)
-        }
-        this.currentRegion = region;
-    }
 }

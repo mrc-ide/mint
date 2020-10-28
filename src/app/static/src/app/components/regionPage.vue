@@ -23,27 +23,28 @@
 <script lang="ts">
     import Vue from "vue";
     import {RootMutation} from "../mutations";
-    import {mapMutationByName} from "../utils";
+    import {mapActionByName, mapMutationByName} from "../utils";
     import stepButton from "./stepButton.vue";
     import baseline from "./baseline.vue";
     import {mapState} from "vuex";
-    import {Project, Region} from "../models/project";
+    import {Project} from "../models/project";
+    import {RootAction} from "../actions";
     // @ts-ignore Dynamic imports not supported error
     const interventions = async () => import("./interventions.vue");
 
     interface Data {
-        interventionsDisabled: Boolean
+        interventionsDisabled: boolean
     }
 
     interface Methods {
-        setCurrentRegion: (region: Region) => void,
-        setCurrentStep: (step: Number) => void,
-        baselineValidated: (value: Boolean) => void
+        setCurrentRegion: (params: {project: string, region: string}) => void,
+        setCurrentStep: (step: number) => void,
+        baselineValidated: (value: boolean) => void
     }
 
     interface Computed {
-        currentProject: Project,
-        currentStep: Number
+        currentProject: Project | null,
+        currentStep: number
     }
 
     export default Vue.extend<Data, Methods, Computed, {}>({
@@ -55,21 +56,29 @@
         },
         computed: {
             ...mapState(["currentProject"]),
-            currentStep: function() {
-                return this.currentProject.currentRegion.step;
+            currentStep: function () {
+                return this.currentProject ? this.currentProject.currentRegion.step : 0
             }
         },
         methods: {
-            setCurrentRegion: mapMutationByName(RootMutation.SetCurrentRegion),
+            setCurrentRegion: mapActionByName(RootAction.SetCurrentRegion),
             setCurrentStep: mapMutationByName(RootMutation.SetCurrentRegionStep),
-            baselineValidated: function(valid: Boolean) {
+            baselineValidated: function (valid: Boolean) {
                 this.interventionsDisabled = !valid;
             }
         },
         watch: {
             $route(to) {
-                this.setCurrentRegion(to.path);
+                // navigation has occurred within the app, i.e. by clicking an internal link
+                const params = to.params;
+                this.setCurrentRegion({project: params["project"], region: params["region"]});
             }
+        },
+        mounted() {
+            // navigation has occurred outside the app, e.g. by refreshing the page, or
+            // directly entering a url
+            const params = this.$router.currentRoute.params;
+            this.setCurrentRegion({project: params["project"], region: params["region"]});
         }
     });
 

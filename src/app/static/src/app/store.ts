@@ -1,15 +1,14 @@
 import Vue from "vue"
-import Vuex from "vuex"
+import Vuex, {MutationPayload, Store, StoreOptions} from "vuex"
 import CompositionApi from '@vue/composition-api'
-import {MutationPayload, Store, StoreOptions} from "vuex";
 
+import {actions} from "./actions";
 import {mutations} from "./mutations";
 import {Project} from "./models/project";
 import {APIError} from "./apiService";
 import {Graph, TableDefinition} from "./generated";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
-
-import {actions} from "./actions";
+import {localStorageManager} from "./localStorageManager";
 
 export interface RootState {
     projects: Project[]
@@ -25,10 +24,13 @@ export interface RootState {
 }
 
 const logger = (store: Store<RootState>) => {
-    store.subscribe((mutation: MutationPayload) => {
+    store.subscribe((mutation: MutationPayload, state: RootState) => {
         console.log(mutation.type);
+        localStorageManager.saveState(state);
     })
 };
+
+const existingState = localStorageManager.getState();
 
 const storeOptions: StoreOptions<RootState> = {
     state: {
@@ -37,11 +39,12 @@ const storeOptions: StoreOptions<RootState> = {
         errors: [],
         prevalenceGraphConfig: null,
         baselineOptions: null,
-        interventionOptions:  null,
+        interventionOptions: null,
         impactTableConfig: null,
         costCasesGraphConfig: null,
         costTableConfig: null,
-        costEfficacyGraphConfig: null
+        costEfficacyGraphConfig: null,
+        ...existingState
     },
     actions,
     mutations,
