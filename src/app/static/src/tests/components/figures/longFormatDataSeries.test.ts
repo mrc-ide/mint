@@ -97,6 +97,39 @@ describe("long format data series", () => {
         });
     });
 
+    it("uses setting names to filter settings", () => {
+        const localProps = {
+            series: [
+                {
+                    id: "none"
+                }
+            ],
+            metadata: {
+                x_col: "month",
+                y_col: "value",
+                id_col: "intervention",
+                format: "long" as "long",
+                settings: ["netUse"]
+            },
+            data: [
+                {"month": 1, "intervention": "none", "netUse": 0, "irsUse": 0, "value": 0.1},
+                {"month": 1, "intervention": "none", "netUse": 0.1, "irsUse": 0, "value": 0.2},
+            ],
+            settings: {
+                netUse: 0,
+                irsUse: 1
+            }
+        };
+
+        const dataSeries = useLongFormatData(localProps).dataSeries.value;
+        expect(dataSeries.length).toBe(1);
+        expect(dataSeries[0]).toEqual({
+            id: "none",
+            x: [1],
+            y: [0.1]
+        });
+    });
+
     it("does not include invalid series definitions", () => {
         const localProps = {
             ...props,

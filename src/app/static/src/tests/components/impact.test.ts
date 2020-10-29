@@ -69,7 +69,7 @@ describe("impact", () => {
             impactTableConfig: {"col": "Column name"},
             currentProject: {
                 currentRegion: {
-                    impactTableData: [{col: 1}],
+                    tableData: [{col: 1}],
                     interventionSettings: {"test": 1}
                 }
             }

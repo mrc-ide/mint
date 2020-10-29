@@ -1,5 +1,5 @@
 <template>
-    <table class="table">
+    <table class="table table-responsive">
         <thead class="thead-light">
         <tr>
             <th scope="col" v-for="key in Object.keys(columns)">{{columns[key]}}</th>
