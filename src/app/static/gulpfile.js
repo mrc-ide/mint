@@ -23,7 +23,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('inject', function () {
-    const target = gulp.src(['public/*.ftl']);
+    const target = gulp.src(['public/**/*.ftl']);
     const sources = gulp.src(['public/css/*.min.css'], {read: false});
     return target.pipe(inject(sources))
         .pipe(gulp.dest('public'));
@@ -36,7 +36,7 @@ gulp.task('cssmap', function () {
 });
 
 gulp.task('copy-templates', function () {
-    return gulp.src('templates/**.ftl')
+    return gulp.src('templates/**/*.ftl')
         .pipe(gulp.dest('public'));
 });
 

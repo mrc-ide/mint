@@ -1,10 +1,5 @@
 <template>
     <div>
-        <div class="navbar navbar-primary navbar-default">
-            <div class="container-fluid">
-                <div class="bg-secondary text-light font-weight-bold navbar-header">MINT</div>
-            </div>
-        </div>
         <div class="navbar navbar-secondary" v-if="currentProject">
             <div class="container-fluid">
                 <div class="navbar-header project-header">
