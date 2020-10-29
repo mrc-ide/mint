@@ -1,6 +1,7 @@
 package org.imperial.mrc.mint.controllers
 
 import org.imperial.mrc.mint.AppProperties
+import org.imperial.mrc.mint.httpStatusFromCode
 import org.springframework.boot.web.servlet.error.ErrorController
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
@@ -20,7 +21,9 @@ class MINTErrorController(private val appProperties: AppProperties) : ErrorContr
     @RequestMapping("/error")
     fun handleError(request: HttpServletRequest): ModelAndView {
         val status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE)
-        val viewName = if (status?.toString()?.toInt() == HttpStatus.NOT_FOUND.value()) {
+                ?.toString()?.toInt()?: 0
+        val codesToReturnNotFound = listOf(HttpStatus.NOT_FOUND, HttpStatus.UNAUTHORIZED, HttpStatus.FORBIDDEN)
+        val viewName = if (codesToReturnNotFound.contains(httpStatusFromCode(status))) {
             "404"
         } else {
             "500"
