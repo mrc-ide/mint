@@ -11,8 +11,14 @@ import javax.servlet.http.HttpServletRequest
 
 class ErrorControllerTests {
 
-    val mockProps = mock<AppProperties> {
+    private val mockProps = mock<AppProperties> {
         on { applicationTitle } doReturn "MINT"
+    }
+
+    @Test
+    fun `returns error path`() {
+        val sut = MINTErrorController(mockProps)
+        assertThat(sut.errorPath).isEqualTo("/error")
     }
 
     @Test
