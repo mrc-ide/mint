@@ -111,6 +111,17 @@ describe("actions", () => {
         expect(commit.mock.calls[0][1]).toStrictEqual(options);
     });
 
+    it("fetches cases averted graph config", async () => {
+        mockAxios.onGet("/impact/graph/cases-averted/config")
+            .reply(200, mockSuccess({data: {whatever: 1}, layout: {something: "hi"}}));
+
+        const commit = jest.fn();
+        await (actions[RootAction.FetchCasesGraphConfig] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCasesGraphConfig)
+        expect(commit.mock.calls[0][1]).toStrictEqual({data: {whatever: 1}, layout: {something: "hi"}});
+    });
+
     it("fetches intervention options", async () => {
         const options: DynamicFormMeta = {"controlSections": []};
         mockAxios.onGet("/intervention/options")

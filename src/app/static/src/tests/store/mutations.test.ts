@@ -155,6 +155,13 @@ describe("mutations", () => {
         expect(state.prevalenceGraphConfig).toStrictEqual({data: {whatever: 1}, layout: {something: "hi"}});
     });
 
+    it("adds cases averted graph config", () => {
+        const state = mockRootState();
+        mutations[RootMutation.AddCasesGraphConfig](state, {data: {whatever: 1}, layout: {something: "hi"}});
+
+        expect(state.casesGraphConfig).toStrictEqual({data: {whatever: 1}, layout: {something: "hi"}});
+    });
+
     it("adds table data", () => {
         const project = mockProject();
         const state = mockRootState({

@@ -17,6 +17,7 @@ export interface RootState {
     baselineOptions: DynamicFormMeta | null
     interventionOptions: DynamicFormMeta | null
     prevalenceGraphConfig: Graph | null
+    casesGraphConfig: Graph | null
     impactTableConfig: TableDefinition | null
     costCasesGraphConfig: Graph | null
     costTableConfig: TableDefinition | null
@@ -38,6 +39,7 @@ const storeOptions: StoreOptions<RootState> = {
         currentProject: null,
         errors: [],
         prevalenceGraphConfig: null,
+        casesGraphConfig: null,
         baselineOptions: null,
         interventionOptions: null,
         impactTableConfig: null,
