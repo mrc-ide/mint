@@ -11,9 +11,7 @@ export interface Region {
     interventionOptions: DynamicFormMeta
     interventionSettings: DynamicFormData
     prevalenceGraphData: Data
-    impactTableData: Data
-    costGraphData: Data
-    costTableData: Data
+    tableData: Data
     step: number
 }
 
@@ -39,9 +37,7 @@ export class Region {
             })
         });
         this.prevalenceGraphData = [];
-        this.impactTableData = [];
-        this.costGraphData = [];
-        this.costTableData = [];
+        this.tableData = [];
         this.step = 1;
     }
 

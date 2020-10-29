@@ -20,9 +20,7 @@ describe("local storage manager", () => {
         region.step = 1;
 
         // data should all we wiped
-        region.costGraphData = [{"something": 1}]
-        region.costTableData = [{"something": 2}]
-        region.impactTableData = [{"something": 3}]
+        region.tableData = [{"something": 1}]
         region.prevalenceGraphData = [{"something": 4}]
 
         return project
@@ -49,9 +47,7 @@ describe("local storage manager", () => {
             interventionOptions: "INT_OPTS" as any,
             interventionSettings: "INT_SETTINGS" as any,
             prevalenceGraphData: [],
-            impactTableData: [],
-            costGraphData: [],
-            costTableData: [],
+            tableData: [],
             step: 1
         }
 
@@ -66,9 +62,7 @@ describe("local storage manager", () => {
             interventionOptions: "INT_OPTS" as any,
             interventionSettings: "INT_SETTINGS" as any,
             prevalenceGraphData: [],
-            impactTableData: [],
-            costGraphData: [],
-            costTableData: [],
+            tableData: [],
             step: 1
         });
 

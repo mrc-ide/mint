@@ -113,9 +113,7 @@ describe("project page", () => {
                 interventionOptions: mockInterventionOptions,
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
-                impactTableData: [],
-                costGraphData: [],
-                costTableData: [],
+                tableData: [],
                 step: 1
             }],
             currentRegion: {
@@ -127,9 +125,7 @@ describe("project page", () => {
                 interventionOptions: mockInterventionOptions,
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
-                impactTableData: [],
-                costGraphData: [],
-                costTableData: [],
+                tableData: [],
                 step: 1
             }
         });
@@ -171,9 +167,7 @@ describe("project page", () => {
                 interventionOptions: mockInterventionOptions,
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
-                impactTableData: [],
-                costGraphData: [],
-                costTableData: [],
+                tableData: [],
                 step: 1
             }],
             currentRegion: {
@@ -185,9 +179,7 @@ describe("project page", () => {
                 interventionOptions: mockInterventionOptions,
                 interventionSettings: {"c1": null},
                 prevalenceGraphData: [],
-                impactTableData: [],
-                costGraphData: [],
-                costTableData: [],
+                tableData: [],
                 step: 1
             }
         });

@@ -51,25 +51,6 @@ describe("actions", () => {
         expect(commit.mock.calls[0][1].layout.title).toBeDefined(); // just confirm it's the expected type
     });
 
-    it("can get cost graph data", async () => {
-        const commit = jest.fn();
-        const state = await getStateWithBaselineSettings();
-        await (actions[RootAction.FetchCostGraphData] as any)({commit, state} as any);
-
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostGraphData);
-        const firstRow = commit.mock.calls[0][1][0];
-        expect(Object.keys(firstRow).sort())
-            .toEqual([
-                "casesAverted",
-                "casesAvertedErrorMinus",
-                "casesAvertedErrorPlus",
-                "cost",
-                "efficacy",
-                "efficacyErrorMinus",
-                "efficacyErrorPlus",
-                "intervention"]);
-    });
-
     it("can get cost cases averted graph config", async () => {
         const commit = jest.fn();
 
@@ -109,22 +90,30 @@ describe("actions", () => {
         expect(options.controlSections[0].label).toBe("Procurement and distribution");
     });
 
-    it("can get impact table data", async () => {
+    it("can get table data", async () => {
         const commit = jest.fn();
         const state = await getStateWithBaselineSettings();
-        await (actions[RootAction.FetchImpactTableData] as any)({commit, state} as any);
+        await (actions[RootAction.FetchTableData] as any)({commit, state} as any);
 
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableData);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddTableData);
         const firstRow = commit.mock.calls[0][1][0];
         expect(Object.keys(firstRow).sort())
             .toEqual([
                 "casesAverted",
+                "casesAvertedPer1000",
+                "casesAvertedPer1000ErrorMinus",
+                "casesAvertedPer1000ErrorPlus",
                 "intervention",
                 "irsUse",
+                "meanCases",
                 "netUse",
                 "prevYear1",
                 "prevYear2",
-                "prevYear3"]);
+                "prevYear3",
+                "reductionInCases",
+                "reductionInCasesErrorMinus",
+                "reductionInCasesErrorPlus",
+                "reductionInPrevalence"]);
     });
 
     it("can get impact table config", async () => {
@@ -135,29 +124,16 @@ describe("actions", () => {
         expect(Object.keys(commit.mock.calls[0][1]).sort())
             .toEqual([
                 "casesAverted",
+                "casesAvertedPer1000",
                 "intervention",
+                "irsUse",
+                "meanCases",
                 "netUse",
                 "prevYear1",
                 "prevYear2",
-                "prevYear3"]);
-    });
-
-    it("can get cost table data", async () => {
-        const commit = jest.fn();
-        const state = await getStateWithBaselineSettings();
-        await (actions[RootAction.FetchCostTableData] as any)({commit, state} as any);
-
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableData);
-        const firstRow = commit.mock.calls[0][1][0];
-        expect(Object.keys(firstRow).sort())
-            .toEqual([
-                "cost",
-                "costIncrement",
-                "costPerCaseAverted",
-                "intervention",
-                "irsUse",
-                "meanCasesAverted",
-                "netUse"]);
+                "prevYear3",
+                "reductionInCases",
+                "reductionInPrevalence"]);
     });
 
     it("can get cost table config", async () => {
@@ -167,12 +143,9 @@ describe("actions", () => {
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableConfig);
         expect(Object.keys(commit.mock.calls[0][1]).sort())
             .toEqual([
-                "cost",
-                "costIncrement",
-                "costPerCaseAverted",
+                "casesAvertedPer1000",
                 "intervention",
                 "irsUse",
-                "meanCasesAverted",
                 "netUse"]);
     });
 
