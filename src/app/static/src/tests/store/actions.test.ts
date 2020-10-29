@@ -208,10 +208,11 @@ describe("actions", () => {
         expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchBaselineOptions);
         expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchInterventionOptions);
         expect(dispatch.mock.calls[2][0]).toBe(RootAction.FetchPrevalenceGraphConfig);
-        expect(dispatch.mock.calls[3][0]).toBe(RootAction.FetchImpactTableConfig);
-        expect(dispatch.mock.calls[4][0]).toBe(RootAction.FetchCostCasesGraphConfig);
-        expect(dispatch.mock.calls[5][0]).toBe(RootAction.FetchCostEfficacyGraphConfig);
-        expect(dispatch.mock.calls[6][0]).toBe(RootAction.FetchCostTableConfig);
+        expect(dispatch.mock.calls[3][0]).toBe(RootAction.FetchCasesGraphConfig);
+        expect(dispatch.mock.calls[4][0]).toBe(RootAction.FetchImpactTableConfig);
+        expect(dispatch.mock.calls[5][0]).toBe(RootAction.FetchCostCasesGraphConfig);
+        expect(dispatch.mock.calls[6][0]).toBe(RootAction.FetchCostEfficacyGraphConfig);
+        expect(dispatch.mock.calls[7][0]).toBe(RootAction.FetchCostTableConfig);
     });
 
     it("fetches cost cases averted config", async () => {
