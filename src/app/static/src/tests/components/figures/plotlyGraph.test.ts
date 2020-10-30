@@ -6,6 +6,12 @@ import plotlyGraph from "../../../app/components/figures/graphs/plotlyGraph.vue"
 describe("plotly graph", () => {
 
     let wrapper: Wrapper<plotlyGraph> | null;
+    const expectedFontSettings = {
+        // use the same font settings as Bootstrap, which the rest of the app uses
+        family: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
+        size: '1rem',
+        color: '#212529'
+    }
 
     afterEach(() => {
         if (wrapper) {
@@ -41,7 +47,7 @@ describe("plotly graph", () => {
             }
         });
 
-        expect(wrapper.find(Plotly).props("layout")).toEqual({title: "Test title"});
+        expect(wrapper.find(Plotly).props("layout")).toEqual({title: "Test title", font: expectedFontSettings});
         expect(wrapper.find(Plotly).props("data").length).toBe(1);
         expect(wrapper.find(Plotly).props("data")[0]).toEqual({
             id: "none",
@@ -55,7 +61,7 @@ describe("plotly graph", () => {
 
     it("renders wide format data graph", async () => {
 
-       wrapper = mount(plotlyGraph, {
+        wrapper = mount(plotlyGraph, {
             propsData: {
                 series: [
                     {
@@ -93,7 +99,7 @@ describe("plotly graph", () => {
             }
         });
 
-        expect(wrapper.find(Plotly).props("layout")).toEqual({title: "Test title"});
+        expect(wrapper.find(Plotly).props("layout")).toEqual({title: "Test title", font: expectedFontSettings});
         expect(wrapper.find(Plotly).props("data").length).toBe(2);
         expect(wrapper.find(Plotly).props("data")[0]).toEqual({
             id: "ITN",
@@ -113,11 +119,11 @@ describe("plotly graph", () => {
         });
     });
 
-    const hoverbelowPropsData =  {
+    const hoverbelowPropsData = {
         series: [
             {x: ["ITN"], id: "ITN", name: "Pyrethoid ITN"},
         ],
-        metadata: { cols: ["cases_averted"], id_col: "intervention", format: "wide"},
+        metadata: {cols: ["cases_averted"], id_col: "intervention", format: "wide"},
         data: [
             {"intervention": "ITN", "net_use": 0, "prevalence": 0.2315, "cases_averted": 1000}
         ],
@@ -157,7 +163,7 @@ describe("plotly graph", () => {
         expect((wrapper.vm as any).observer).not.toBeNull();
     });
 
-   it("hoverbelow sets y value of new hover text elements to 0", async (done) => {
+    it("hoverbelow sets y value of new hover text elements to 0", async (done) => {
         wrapper = shallowMount(plotlyGraph, {
             attachToDocument: true,
             propsData: {
@@ -178,7 +184,7 @@ describe("plotly graph", () => {
         });
     });
 
-   it("hoverbelow sets y value of mutated hover text elements to 0", async (done) => {
+    it("hoverbelow sets y value of mutated hover text elements to 0", async (done) => {
         wrapper = shallowMount(plotlyGraph, {
             attachToDocument: true,
             propsData: {
@@ -202,29 +208,29 @@ describe("plotly graph", () => {
         });
     });
 
-   it("hoverbelow sets expected path and classes of new hover elements", async(done) => {
-       wrapper = shallowMount(plotlyGraph, {
-           attachToDocument: true,
-           propsData: {
-               ...hoverbelowPropsData
-           }
-       });
+    it("hoverbelow sets expected path and classes of new hover elements", async (done) => {
+        wrapper = shallowMount(plotlyGraph, {
+            attachToDocument: true,
+            propsData: {
+                ...hoverbelowPropsData
+            }
+        });
 
-       $(".hoverbelow").append(`
+        $(".hoverbelow").append(`
             <g class='hoverlayer'>
                 <g id='test-path-add' class='hovertext'></g>
             </g>`);
-       $("#test-path-add").append("<rect x='60' y='0' width='200' height='40'/><path d='some default path'/>");
+        $("#test-path-add").append("<rect x='60' y='0' width='200' height='40'/><path d='some default path'/>");
 
-       setTimeout(() => {
-           expect(wrapper!!.find("#test-path-add path").attributes().d).toBe("M4,-20v40H60v-40h-40l-6,-6l-6,6Z");
-           expect(wrapper!!.find("#test-path-add path").classes()).toContain("hoverbelow-right");
-           expect(wrapper!!.find("#test-path-add rect").classes()).toContain("hoverbelow-right");
-           done();
-       });
-   });
+        setTimeout(() => {
+            expect(wrapper!!.find("#test-path-add path").attributes().d).toBe("M4,-20v40H60v-40h-40l-6,-6l-6,6Z");
+            expect(wrapper!!.find("#test-path-add path").classes()).toContain("hoverbelow-right");
+            expect(wrapper!!.find("#test-path-add rect").classes()).toContain("hoverbelow-right");
+            done();
+        });
+    });
 
-    it("hoverbelow sets expected path and classes of mutated hover elements", async(done) => {
+    it("hoverbelow sets expected path and classes of mutated hover elements", async (done) => {
         wrapper = shallowMount(plotlyGraph, {
             attachToDocument: true,
             propsData: {
@@ -249,7 +255,7 @@ describe("plotly graph", () => {
         });
     });
 
-    it("hoverbelow sets expected path and classes of new hover elements when label is to left", async(done) => {
+    it("hoverbelow sets expected path and classes of new hover elements when label is to left", async (done) => {
         wrapper = shallowMount(plotlyGraph, {
             attachToDocument: true,
             propsData: {
