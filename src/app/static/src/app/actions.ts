@@ -9,6 +9,7 @@ import {router} from "./router";
 export enum RootAction {
     FetchPrevalenceGraphData = "FetchPrevalenceGraphData",
     FetchPrevalenceGraphConfig = "FetchPrevalenceGraphConfig",
+    FetchCasesGraphConfig = "FetchCasesGraphConfig",
     FetchImpactTableConfig = "FetchImpactTableConfig",
     FetchCostCasesGraphConfig = "FetchCostCasesGraphConfig",
     FetchCostEfficacyGraphConfig = "FetchCostEfficacyGraphConfig",
@@ -24,10 +25,6 @@ export enum RootAction {
 
 const currentRegionBaseline = (state: RootState) => {
     return state.currentProject!!.currentRegion.baselineSettings;
-};
-
-const currentRegionInterventions = (state: RootState) => {
-    return state.currentProject!!.currentRegion.interventionSettings;
 };
 
 export const actions: ActionTree<RootState, RootState> = {
@@ -58,6 +55,13 @@ export const actions: ActionTree<RootState, RootState> = {
             .withSuccess(RootMutation.AddInterventionOptions)
             .withError(RootMutation.AddError)
             .get<DynamicFormMeta>("/intervention/options")
+    },
+
+    async [RootAction.FetchCasesGraphConfig](context) {
+        await api(context)
+            .withSuccess(RootMutation.AddCasesGraphConfig)
+            .withError(RootMutation.AddError)
+            .get<Graph>("/impact/graph/cases-averted/config")
     },
 
     async [RootAction.FetchPrevalenceGraphData](context) {
@@ -137,6 +141,7 @@ export const actions: ActionTree<RootState, RootState> = {
             context.dispatch(RootAction.FetchBaselineOptions),
             context.dispatch(RootAction.FetchInterventionOptions),
             context.dispatch(RootAction.FetchPrevalenceGraphConfig),
+            context.dispatch(RootAction.FetchCasesGraphConfig),
             context.dispatch(RootAction.FetchImpactTableConfig),
             context.dispatch(RootAction.FetchCostCasesGraphConfig),
             context.dispatch(RootAction.FetchCostEfficacyGraphConfig),
