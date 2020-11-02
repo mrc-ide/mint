@@ -52,8 +52,14 @@ class ErrorControllerTests {
         var result = sut.handleError(mockRequest)
         assertThat(result.viewName).isEqualTo("500")
 
-        mockRequest = mock<HttpServletRequest> {
+        mockRequest = mock {
             on { getAttribute(RequestDispatcher.ERROR_STATUS_CODE) } doReturn "111"
+        }
+        result = sut.handleError(mockRequest)
+        assertThat(result.viewName).isEqualTo("500")
+
+        mockRequest = mock {
+            on { getAttribute(RequestDispatcher.ERROR_STATUS_CODE) } doReturn null
         }
         result = sut.handleError(mockRequest)
         assertThat(result.viewName).isEqualTo("500")
