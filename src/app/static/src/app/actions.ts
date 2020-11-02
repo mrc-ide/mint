@@ -9,27 +9,22 @@ import {router} from "./router";
 export enum RootAction {
     FetchPrevalenceGraphData = "FetchPrevalenceGraphData",
     FetchPrevalenceGraphConfig = "FetchPrevalenceGraphConfig",
-    FetchImpactTableData = "FetchImpactTableData",
+    FetchCasesGraphConfig = "FetchCasesGraphConfig",
     FetchImpactTableConfig = "FetchImpactTableConfig",
     FetchCostCasesGraphConfig = "FetchCostCasesGraphConfig",
     FetchCostEfficacyGraphConfig = "FetchCostEfficacyGraphConfig",
-    FetchCostGraphData = "FetchCostCasesGraphData",
-    FetchCostTableData = "FetchCostTableData",
     FetchCostTableConfig = "FetchCostTableConfig",
     FetchBaselineOptions = "FetchBaselineOptions",
     FetchInterventionOptions = "FetchInterventionOptions",
     EnsureImpactData = "FetchImpactData",
     EnsureCostEffectivenessData = "FetchCostEffectivenessData",
+    FetchTableData = "FetchTableData",
     FetchConfig = "FetchConfig",
     SetCurrentRegion = "SetCurrentRegion"
 }
 
 const currentRegionBaseline = (state: RootState) => {
     return state.currentProject!!.currentRegion.baselineSettings;
-};
-
-const currentRegionInterventions = (state: RootState) => {
-    return state.currentProject!!.currentRegion.interventionSettings;
 };
 
 export const actions: ActionTree<RootState, RootState> = {
@@ -62,6 +57,13 @@ export const actions: ActionTree<RootState, RootState> = {
             .get<DynamicFormMeta>("/intervention/options")
     },
 
+    async [RootAction.FetchCasesGraphConfig](context) {
+        await api(context)
+            .withSuccess(RootMutation.AddCasesGraphConfig)
+            .withError(RootMutation.AddError)
+            .get<Graph>("/impact/graph/cases-averted/config")
+    },
+
     async [RootAction.FetchPrevalenceGraphData](context) {
         await api(context)
             .freezeResponse()
@@ -91,24 +93,12 @@ export const actions: ActionTree<RootState, RootState> = {
             .get<Graph>("/cost/graph/efficacy/config");
     },
 
-    async [RootAction.FetchCostGraphData](context) {
-        const combinedSettings = {
-            ...currentRegionBaseline(context.state),
-            ...currentRegionInterventions(context.state)
-        };
+    async [RootAction.FetchTableData](context) {
         await api(context)
             .freezeResponse()
-            .withSuccess(RootMutation.AddCostGraphData)
+            .withSuccess(RootMutation.AddTableData)
             .withError(RootMutation.AddError)
-            .postAndReturn("/cost/graph/data", combinedSettings);
-    },
-
-    async [RootAction.FetchImpactTableData](context) {
-        await api(context)
-            .freezeResponse()
-            .withSuccess(RootMutation.AddImpactTableData)
-            .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/table/data", currentRegionBaseline(context.state))
+            .postAndReturn<Data>("/table/data", currentRegionBaseline(context.state))
     },
 
     async [RootAction.FetchImpactTableConfig](context) {
@@ -117,14 +107,6 @@ export const actions: ActionTree<RootState, RootState> = {
             .withSuccess(RootMutation.AddImpactTableConfig)
             .withError(RootMutation.AddError)
             .get<Data>("/impact/table/config")
-    },
-
-    async [RootAction.FetchCostTableData](context) {
-        await api(context)
-            .freezeResponse()
-            .withSuccess(RootMutation.AddCostTableData)
-            .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/cost/table/data", currentRegionBaseline(context.state))
     },
 
     async [RootAction.FetchCostTableConfig](context) {
@@ -137,20 +119,19 @@ export const actions: ActionTree<RootState, RootState> = {
 
     async [RootAction.EnsureImpactData](context) {
         const project = context.state.currentProject;
-        if (project && (!project.currentRegion.impactTableData.length || !project.currentRegion.prevalenceGraphData.length)) {
+        if (project && (!project.currentRegion.tableData.length || !project.currentRegion.prevalenceGraphData.length)) {
             await Promise.all([
                 context.dispatch(RootAction.FetchPrevalenceGraphData),
-                context.dispatch(RootAction.FetchImpactTableData)
+                context.dispatch(RootAction.FetchTableData)
             ]);
         }
     },
 
     async [RootAction.EnsureCostEffectivenessData](context) {
         const project = context.state.currentProject;
-        if (project && !project.currentRegion.costGraphData.length) {
+        if (project && !project.currentRegion.tableData.length) {
             await Promise.all([
-                context.dispatch(RootAction.FetchCostGraphData),
-                context.dispatch(RootAction.FetchCostTableData)
+                context.dispatch(RootAction.FetchTableData)
             ]);
         }
     },
@@ -160,6 +141,7 @@ export const actions: ActionTree<RootState, RootState> = {
             context.dispatch(RootAction.FetchBaselineOptions),
             context.dispatch(RootAction.FetchInterventionOptions),
             context.dispatch(RootAction.FetchPrevalenceGraphConfig),
+            context.dispatch(RootAction.FetchCasesGraphConfig),
             context.dispatch(RootAction.FetchImpactTableConfig),
             context.dispatch(RootAction.FetchCostCasesGraphConfig),
             context.dispatch(RootAction.FetchCostEfficacyGraphConfig),

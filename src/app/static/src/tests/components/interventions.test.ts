@@ -193,10 +193,8 @@ describe("interventions", () => {
                 baselineSettings: {},
                 interventionOptions: {controlSections: []},
                 interventionSettings: {},
-                impactTableData: [],
                 prevalenceGraphData: [],
-                costGraphData: [],
-                costTableData: [],
+                tableData: [],
                 step: 1
             };
         await Vue.nextTick();

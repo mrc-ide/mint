@@ -1,11 +1,11 @@
 <template>
     <div :class="{hoverbelow: hoverBelow}">
-        <plotly :data="dataSeries" :layout="layout" :display-mode-bar="true"></plotly>
+        <plotly :data="dataSeries" :layout="layoutWithFont" :display-mode-bar="true"></plotly>
     </div>
 </template>
 <script lang="ts">
     import {Plotly} from "vue-plotly"
-    import {defineComponent, ref} from "@vue/composition-api";
+    import {computed, defineComponent, ref} from "@vue/composition-api";
     import {FilteringProps} from "../filteredData";
     import {useLongFormatData} from "./longFormatDataSeries";
     import {useWideFormatData} from "./wideFormatDataSeries";
@@ -39,7 +39,18 @@
                 dataSeries = useWideFormatData(props).dataSeries
             }
 
+            const layoutWithFont = computed<any>(() => ({
+                ...props.layout,
+                font: {
+                    // use the same font settings as Bootstrap, which the rest of the app uses
+                    family: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
+                    size: '1rem',
+                    color: '#212529'
+                }
+            }))
+
             return {
+                layoutWithFont,
                 dataSeries,
                 hoverBelow,
                 observer //Not required but makes testing much easier

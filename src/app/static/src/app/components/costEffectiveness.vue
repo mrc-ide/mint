@@ -4,12 +4,14 @@
                       :layout="efficacyGraphConfig.layout"
                       :metadata="efficacyGraphConfig.metadata"
                       :series="efficacyGraphConfig.series"
-                      :data="graphData"></plotly-graph>
+                      :data="tableData"
+                      :settings="settings"></plotly-graph>
         <plotly-graph v-if="activeTab === 'Graphs' && casesAvertedGraphConfig"
                       :layout="casesAvertedGraphConfig.layout"
                       :metadata="casesAvertedGraphConfig.metadata"
                       :series="casesAvertedGraphConfig.series"
-                      :data="graphData"></plotly-graph>
+                      :data="tableData"
+                      :settings="settings"></plotly-graph>
 
         <dynamic-table v-if="activeTab === 'Table' && tableConfig"
                        :data="tableData"
@@ -30,12 +32,10 @@
     interface Computed {
         settings: DynamicFormData | null,
         currentProject: Project | null,
-        graphData: Data,
         efficacyGraphConfig: Graph,
         casesAvertedGraphConfig: Graph,
         tableData: Data,
         tableConfig: TableDefinition | null
-
     }
 
     export default Vue.extend<{}, {}, Computed, {}>({
@@ -43,16 +43,16 @@
         props: ["activeTab"],
         computed: {
             settings: mapStateProp<RootState, DynamicFormData | null>
-            (state => state.currentProject && state.currentProject.currentRegion.interventionSettings),
+            (state => state.currentProject && {
+                ...state.currentProject.currentRegion.interventionSettings,
+                ...state.currentProject.currentRegion.baselineSettings
+            }),
             currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
             efficacyGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costEfficacyGraphConfig),
             casesAvertedGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costCasesGraphConfig),
-            graphData() {
-                return this.currentProject ? this.currentProject.currentRegion.costGraphData : [];
-            },
             tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.costTableConfig),
             tableData() {
-                return this.currentProject ? this.currentProject.currentRegion.costTableData : [];
+                return this.currentProject ? this.currentProject.currentRegion.tableData : [];
             }
         }
     });

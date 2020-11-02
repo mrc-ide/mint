@@ -20,11 +20,10 @@ export enum RootMutation {
     AddInterventionOptions = "AddInterventionOptions",
     AddPrevalenceGraphData = "AddPrevalenceGraphData",
     AddPrevalenceGraphConfig = "AddPrevalenceGraphConfig",
-    AddImpactTableData = "AddImpactTableData",
+    AddCasesGraphConfig = "AddCasesGraphConfig",
     AddImpactTableConfig = "AddImpactTableConfig",
-    AddCostGraphData = "AddCostGraphData",
     AddCostCasesGraphConfig = "AddCostCasesGraphConfig",
-    AddCostTableData = "AddCostTableData",
+    AddTableData = "AddTableData",
     AddCostTableConfig = "AddCostTableConfig",
     AddCostEfficacyGraphConfig = "AddCostEfficacyGraphConfig"
 }
@@ -55,7 +54,7 @@ export const mutations: MutationTree<RootState> = {
             state.currentProject.currentRegion.baselineOptions = payload;
 
             //Invalidate current region data
-            state.currentProject.currentRegion.impactTableData = [];
+            state.currentProject.currentRegion.tableData = [];
             state.currentProject.currentRegion.prevalenceGraphData = [];
         }
     },
@@ -107,9 +106,13 @@ export const mutations: MutationTree<RootState> = {
         state.prevalenceGraphConfig = payload
     },
 
-    [RootMutation.AddImpactTableData](state: RootState, payload: Data) {
+    [RootMutation.AddCasesGraphConfig](state: RootState, payload: Graph) {
+        state.casesGraphConfig = payload
+    },
+
+    [RootMutation.AddTableData](state: RootState, payload: Data) {
         if (state.currentProject) {
-            state.currentProject.currentRegion.impactTableData = payload;
+            state.currentProject.currentRegion.tableData = payload;
         }
     },
 
@@ -117,20 +120,8 @@ export const mutations: MutationTree<RootState> = {
         state.impactTableConfig = payload
     },
 
-    [RootMutation.AddCostGraphData](state: RootState, payload: Data) {
-        if (state.currentProject) {
-            state.currentProject.currentRegion.costGraphData = payload;
-        }
-    },
-
     [RootMutation.AddCostCasesGraphConfig](state: RootState, payload: Graph) {
         state.costCasesGraphConfig = payload;
-    },
-
-    [RootMutation.AddCostTableData](state: RootState, payload: Data) {
-        if (state.currentProject) {
-            state.currentProject.currentRegion.costTableData = payload;
-        }
     },
 
     [RootMutation.AddCostTableConfig](state: RootState, payload: TableDefinition) {

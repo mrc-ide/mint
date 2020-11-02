@@ -7,6 +7,13 @@
                       :data="prevalenceGraphData"
                       :settings="settings"></plotly-graph>
 
+        <plotly-graph v-if="activeTab === 'Graphs' && casesGraphConfig"
+                      :layout="casesGraphConfig.layout"
+                      :metadata="casesGraphConfig.metadata"
+                      :series="casesGraphConfig.series"
+                      :data="tableData"
+                      :settings="settings"></plotly-graph>
+
         <dynamic-table v-if="activeTab === 'Table' && tableConfig"
                        :data="tableData"
                        :columns="tableConfig"
@@ -25,6 +32,7 @@
 
     interface Computed {
         prevalenceGraphConfig: Graph | null,
+        casesGraphConfig: Graph | null,
         tableConfig: TableDefinition | null,
         currentProject: Project | null,
         prevalenceGraphData: Data,
@@ -39,13 +47,14 @@
             settings: mapStateProp<RootState, DynamicFormData | null>
                 (state => state.currentProject && state.currentProject.currentRegion.interventionSettings),
             prevalenceGraphConfig: mapStateProp<RootState, Graph | null>(state => state.prevalenceGraphConfig),
+            casesGraphConfig: mapStateProp<RootState, Graph | null>(state => state.casesGraphConfig),
             tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.impactTableConfig),
             currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
             prevalenceGraphData() {
                 return this.currentProject ? this.currentProject.currentRegion.prevalenceGraphData : [];
             },
             tableData() {
-                return this.currentProject ? this.currentProject.currentRegion.impactTableData : [];
+                return this.currentProject ? this.currentProject.currentRegion.tableData : [];
             }
         }
     });
