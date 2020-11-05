@@ -1,0 +1,14 @@
+steps:
+  - label: ":construction_worker: Make shared build env"
+    command: buildkite/make-build-env.sh
+
+  - wait
+
+  - label: ":construction_worker: Build app image"
+    command: buildkite/build.sh && buildkite/push.sh
+
+  - label: ":mag: Test back-end"
+    command: buildkite/test.sh
+
+  - label: ":mag: Test front-end"
+    command: buildkite/test-front-end.sh
