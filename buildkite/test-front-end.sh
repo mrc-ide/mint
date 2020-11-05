@@ -19,5 +19,5 @@ docker build --tag mint-test \
 
 # Run the created image
 docker run --rm \
-    --network=mint_nw \
+    --network=$NETWORK \
     mint-test

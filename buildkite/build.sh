@@ -6,7 +6,7 @@ HERE=$(dirname $0)
 # Optional spring profile argument passed when building a testing image
 # If it is passed, also use it as the image tag
 if [ -z "$1" ]; then
-  TAG=$APP_DOCKER_COMMIT_TAG
+  TAG=$TAG_SHA
 else
   TAG=$1
 fi

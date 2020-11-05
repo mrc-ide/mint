@@ -3,7 +3,6 @@ set -ex
 HERE=$(realpath "$(dirname $0)")
 . $HERE/common
 
-NETWORK=mint_nw
 TEST_CONFIG=$HERE/../src/app/static/test.properties
 
 $HERE/../scripts/run-dependencies.sh
