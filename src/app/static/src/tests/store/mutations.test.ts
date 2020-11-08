@@ -24,6 +24,22 @@ describe("mutations", () => {
         })
     });
 
+    it("can delete a project", () => {
+        const state = mockRootState()
+        const proj = {
+            name: "new project",
+            regions: [{name: "South"}],
+            currentRegion: {name: "South"}
+        }
+        mutations[RootMutation.AddProject](state, proj);
+        expect(state.projects).toHaveLength(1)
+        expect(state.currentProject).toStrictEqual(proj)
+   
+        mutations[RootMutation.DeleteProject](state, proj);
+        expect(state.projects).toHaveLength(0)
+        expect(state.projects).not.toBe(proj);
+    });
+
     it("sets the current project", () => {
         const state = mockRootState();
         const proj = mockProject()
