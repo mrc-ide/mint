@@ -3,7 +3,7 @@ set -ex
 
 docker network prune -f
 
-HERE=$(readlink -f "$(dirname $0)")
+HERE=$(realpath "$(dirname $0)")
 
 NETWORK=mint_nw
 API=mintr

@@ -1,19 +1,23 @@
 <template>
-    <div class="container mt-5">
+     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-6 offset-lg-3 col-10 offset-1">
                 <h1 class="h3">{{ welcomeText }}</h1>
                 <div v-if="projects.length > 0">
                     <ul class="list-unstyled lead">
-                        <li v-for="project in projects">
-                            <drop-down :text="project.name">
-                                <a class="dropdown-item"
-                                   v-for="region in project.regions"
-                                   href="#"
-                                   @click="(event) => navigate(event, project, region)">
-                                    {{ region.name }}
+                        <li v-for="(project, index) in projects" :key="index"
+                        class="my-1 d-flex justify-content-between">
+                           <drop-down :text="project.name">
+                               <a class="dropdown-item"
+                                v-for="(region, index) in project.regions" :key="index"
+                                href="#"
+                                @click="(event) => navigate(event, project, region)">
+                                {{ region.name }}
                                 </a>
                             </drop-down>
+                            <button class="btn btn-sm btn-danger" 
+                            v-on:click="deleteProject(project)">x
+                            </button>
                         </li>
                         <li><a href="#" @click="startNewProject">+ Start new project</a></li>
                     </ul>
@@ -31,7 +35,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label text-right">Regions</label>
+                            <label class="col-sm-3 col-form-label text-right">Regions</label> 
                             <div class="col-sm-9">
                                 <vue-tags-input
                                     :tags="regions"
@@ -93,6 +97,7 @@
         addingDuplicate: () => void
         navigate: (event: Event, project: Project, region: Region) => void
         resetValidation: (event: KeyboardEvent) => void
+        deleteProject: (project: Project) => void
     }
 
     interface Computed {
@@ -186,7 +191,8 @@
                 this.$router.push({
                     path: region.url
                 })
-            }
+            }, 
+            deleteProject : mapMutationByName(RootMutation.DeleteProject)
         },
         mounted() {
             this.setCurrentProject(null);

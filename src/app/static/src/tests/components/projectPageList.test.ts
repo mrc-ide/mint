@@ -7,7 +7,7 @@ import {mockProject, mockRootState} from "../mocks";
 import {RootMutation} from "../../app/mutations";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import dropDown from "../../app/components/dropDown.vue";
-import {Project} from "../../app/models/project";
+import {getSlug, Project} from "../../app/models/project";
 
 describe("project page", () => {
 
@@ -23,7 +23,7 @@ describe("project page", () => {
         }]
     };
 
-    const createStore = (addProjectMock = jest.fn(), setProjectMock = jest.fn()) => {
+    const createStore = (addProjectMock = jest.fn(), setProjectMock = jest.fn(), deleteProjectMock = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState({
                 baselineOptions: mockBaselineOptions,
@@ -31,7 +31,8 @@ describe("project page", () => {
             }),
             mutations: {
                 [RootMutation.SetCurrentProject]: setProjectMock,
-                [RootMutation.AddProject]: addProjectMock
+                [RootMutation.AddProject]: addProjectMock,
+                [RootMutation.DeleteProject]: deleteProjectMock
             }
         });
     };
@@ -349,5 +350,25 @@ describe("project page", () => {
         expect(setCurrentProjectMock.mock.calls.length).toBe(2);
         expect(setCurrentProjectMock.mock.calls[1][1]).toBe(testProj);
         expect(mockRouter[0].path).toBe("/projects/testproj/regions/region-1");
+    });
+
+    it("can delete a project", async () => {
+        const deleteProjectMock = jest.fn();
+        const mockRouter = [] as any[];
+        const store = createStore(jest.fn(), jest.fn(), deleteProjectMock);
+        const testProj = new Project("testproj", ["region 1", "region 2"], {controlSections: []}, {controlSections: []})
+        store.state.projects.push(testProj);
+        const wrapper = shallowMount(projectListPage, {store});
+
+        expect(deleteProjectMock.mock.calls.length).toBe(0);
+        expect(wrapper.findAll(dropDown).length).toBe(1);
+        expect(wrapper.find("li").find("button").classes()).toContain("btn-danger")
+       
+        wrapper.find("li").find("button").trigger("click")
+        await Vue.nextTick();
+        
+        expect(deleteProjectMock.mock.calls[0][1]).toBe(testProj);
+        expect(deleteProjectMock.mock.calls.length).toBe(1);
+      
     });
 });
