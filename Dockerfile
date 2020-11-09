@@ -2,9 +2,9 @@ FROM openjdk:8u121
 
 RUN mkdir /static/public -p
 
-COPY ./src/app/static/public /static/public
+COPY ./app/static/public /static/public
 
-ADD ./src/app/build/distributions/app-boot.tar /
+ADD ./app/build/distributions/app-boot.tar /
 
 ARG SPRING_PROFILES_ACTIVE
 ENV SPRING_PROFILES_ACTIVE $SPRING_PROFILES_ACTIVE
