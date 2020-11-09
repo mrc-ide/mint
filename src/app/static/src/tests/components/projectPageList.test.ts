@@ -362,9 +362,9 @@ describe("project page", () => {
 
         expect(deleteProjectMock.mock.calls.length).toBe(0);
         expect(wrapper.findAll(dropDown).length).toBe(1);
-        expect(wrapper.find("li").find("span").classes()).toContain("badge-delete")
+        expect(wrapper.find("li").find("button").classes()).toContain("btn-danger")
        
-        wrapper.find("li").find("span").trigger("click")
+        wrapper.find("li").find("button").trigger("click")
         await Vue.nextTick();
         
         expect(deleteProjectMock.mock.calls[0][1]).toBe(testProj);

@@ -49,10 +49,3 @@ a {
 .dropdown-item:active {
   background-color: $gray-200 !important;
 }
-
-.badge-delete{
-  float: right !important;
-  cursor: pointer;
-  @include button-variant($theme-mint, darken($theme-mint, 10%));
-  color: #FFFFFF;
-}

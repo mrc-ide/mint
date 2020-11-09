@@ -4,9 +4,9 @@
             <div class="col-lg-6 offset-lg-3 col-10 offset-1">
                 <h1 class="h3">{{ welcomeText }}</h1>
                 <div v-if="projects.length > 0">
-                    <ul class="list-group list-unstyled lead">
+                    <ul class="list-unstyled lead">
                         <li v-for="(project, index) in projects" :key="index"
-                        class="list-group-item d-flex justify-content-between align-items-center">
+                        class="my-1 d-flex justify-content-between">
                            <drop-down :text="project.name">
                                <a class="dropdown-item"
                                 v-for="(region, index) in project.regions" :key="index"
@@ -15,9 +15,9 @@
                                 {{ region.name }}
                                 </a>
                             </drop-down>
-                            <span class="badge badge-pill badge-delete" 
+                            <button class="btn btn-sm btn-danger" 
                             v-on:click="deleteProject(project)">x
-                            </span>
+                            </button>
                         </li>
                         <li><a href="#" @click="startNewProject">+ Start new project</a></li>
                     </ul>
