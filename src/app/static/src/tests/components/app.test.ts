@@ -8,6 +8,7 @@ import {RootAction} from "../../app/actions";
 import {BModal} from "bootstrap-vue";
 import {RootMutation} from "../../app/mutations";
 import VueRouter from "vue-router";
+import {switches} from "../../app/featureSwitches";
 
 describe("app", () => {
 
@@ -55,6 +56,11 @@ describe("app", () => {
         expect(firstNavLink.html())
             .toBe("<router-link-stub to=\"/projects/my-project/regions/region1\"" +
                 " tag=\"a\" event=\"click\" class=\"text-success\">region1</router-link-stub>");
+        if (switches.stratAcrossRegions) {
+            expect(wrapper.findAll("#stratAcrossRegions").length).toBe(1);
+            expect(wrapper.find("#stratAcrossRegions").text()).toBe("Strategize across regions");
+            expect(wrapper.find("#stratAcrossRegions").attributes("href")).toBe("#");
+        } else expect(wrapper.findAll("#stratAcrossRegions").length).toBe(0);
     });
 
     it("fetches config before mount", () => {

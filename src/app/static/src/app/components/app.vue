@@ -13,7 +13,9 @@
                         </div>
                     </drop-down>
                 </div>
-                <a href="#" class="px-2 full-height text-dark project-nav">Strategize across regions
+                <a href="#" class="px-2 full-height text-dark project-nav"
+                id="stratAcrossRegions"
+                v-if="stratAcrossRegionsIsEnabled">Strategize across regions
                     <b-icon-graph-up></b-icon-graph-up>
                 </a>
             </div>
@@ -52,6 +54,7 @@
     import {getSlug, Project, Region} from "../models/project";
     import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
     import {RootMutation} from "../mutations";
+    import {switches} from "../featureSwitches";
 
     interface Methods {
         fetchConfig: () => void
@@ -61,7 +64,8 @@
     }
 
     interface Data {
-        newRegionName: string
+        newRegionName: string;
+        stratAcrossRegionsIsEnabled: boolean;
     }
 
     interface Computed {
@@ -75,7 +79,8 @@
         store,
         data() {
             return {
-                newRegionName: ""
+                newRegionName: "",
+                stratAcrossRegionsIsEnabled: switches.stratAcrossRegions,
             }
         },
         components: {dropDown, BIconGraphUp, BModal},

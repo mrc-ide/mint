@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -ex
+HERE=$(realpath "$(dirname $0)")
+
+if [ "$BUILDKITE" = "true" ]; then
+    GIT_ID=${BUILDKITE_COMMIT:0:7}
+else
+    GIT_ID=$(git rev-parse --short=7 HEAD)
+fi
+
+if [ "$BUILDKITE" = "true" ]; then
+    GIT_BRANCH=$BUILDKITE_BRANCH
+else
+    GIT_BRANCH=$(git symbolic-ref --short HEAD)
+fi
+
+# Deal with dependabot tags which look like
+#
+#   dependabot/npm_and_yarn/app/lodash-4.17.19
+#
+# But docker does not like
+GIT_BRANCH=$(echo $GIT_BRANCH | sed 's;/;-;g')
+
+BUILDKITE_DOCKER_AUTH_PATH=/var/lib/buildkite-agent/.docker/config.json
+ORG=mrcide
+NAME=mint
+NETWORK=mint_nw
+
+TAG_SHA=$ORG/$NAME:$GIT_ID
+TAG_BRANCH=$ORG/$NAME:$GIT_BRANCH
+TAG_LATEST="$ORG/$NAME:latest"
+BUILD_ENV_TAG=$ORG/mint-shared-build-env:$GIT_ID

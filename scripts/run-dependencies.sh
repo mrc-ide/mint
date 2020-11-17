@@ -3,14 +3,14 @@ set -ex
 
 docker network prune -f
 
-HERE=$(readlink -f "$(dirname $0)")
+HERE=$(realpath "$(dirname $0)")
 
 NETWORK=mint_nw
 API=mintr
 MINTR_VERSION=$(<$HERE/../src/config/mintr_version)
 
-REGISTRY=mrcide
-MINTR_IMAGE=$REGISTRY/$API:$MINTR_VERSION
+ORG=mrcide
+MINTR_IMAGE=$ORG/$API:$MINTR_VERSION
 
 docker network create $NETWORK
 docker pull $MINTR_IMAGE

@@ -12,23 +12,19 @@
 </template>
 <script lang="ts">
     import Vue from "vue";
-
     interface Methods {
         toggle: () => void
         close: () => void
     }
-
     interface Data {
         id: string
         show: boolean
     }
-
     interface Props {
         text: string,
         parentClass: string
         toggleClass: string
     }
-
     export default Vue.extend<Data, Methods, {}, Props>({
         props: {text: String, parentClass: String, toggleClass: String},
         data(): Data {

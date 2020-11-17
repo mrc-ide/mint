@@ -1,6 +1,6 @@
 ## MINT - Malaria Indicators Tool
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-[![Build Status](https://travis-ci.com/mrc-ide/mint.svg?branch=master)](https://travis-ci.com/mrc-ide/mint)
+[![Build status](https://badge.buildkite.com/66f7223c769be9e00f87608c6c1485e222fa2f157284db3cfc.svg)](https://buildkite.com/mrc-ide/mint)
 [![codecov](https://codecov.io/gh/mrc-ide/mint/branch/master/graph/badge.svg)](https://codecov.io/gh/mrc-ide/mint)
 
 To make use of a built docker image:
@@ -14,6 +14,7 @@ Requirements:
 * Docker
 * npm
 * openjdk 8
+* coreutils or realpath (Mac users only)
 
 1. Clone this repo
 1. Run `npm install` from `src/app/static`
@@ -34,14 +35,8 @@ Ensure dependencies are running and execute tests on the command line or through
 2. To run integration tests, run `./scripts/run-dependencies` then `npm run integration-test`, both from `src/app/static`
 
 ### Distribution
-A docker image containing the app is created by running 
-
-```
-./scripts/build-app.sh
-```
- 
-This is run for each branch as part of the Travis build and the resulting image pushed to Dockerhub. 
-To run:
+A docker image containing the app is created as part of the BuildKite build and the resulting image pushed to Dockerhub. 
+To run a built image:
 
 ```
 docker run -p 8080:8080 mrcide/mint:branch_name
