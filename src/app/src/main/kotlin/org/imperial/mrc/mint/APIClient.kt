@@ -6,8 +6,10 @@ import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.core.Request
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
+import kotlin.jvm.Throws
 
 interface APIClient {
+    @Throws(Exception::class)
     fun getBaselineOptions(): ResponseEntity<String>
     fun getInterventionOptions(): ResponseEntity<String>
     fun getImpactGraphPrevalenceConfig(): ResponseEntity<String>
