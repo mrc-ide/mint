@@ -124,7 +124,7 @@ describe("impact", () => {
         const wrapper = shallowMount(impact, {propsData: {activeTab: "Table"}, store});
         expect(wrapper.findAll(dynamicTable).length).toBe(1);
         const table = wrapper.findAll(dynamicTable).at(0);
-        expect(table.props("columns")).toEqual({"col": "Column name"});
+        expect(table.props("config")).toEqual({"col": "Column name"});
         expect(table.props("data")).toEqual([{col: 1}]);
         expect(table.props("settings")).toEqual({"test": 1});
     });

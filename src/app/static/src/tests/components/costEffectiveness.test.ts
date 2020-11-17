@@ -29,7 +29,7 @@ describe("costEffectiveness", () => {
         const wrapper = shallowMount(costEffectiveness, {propsData: {activeTab: "Table"}, store});
 
         const table = wrapper.find(dynamicTable);
-        expect(table.props().columns).toBe(state.costTableConfig);
+        expect(table.props().config).toBe(state.costTableConfig);
         expect(table.props().data).toBe(state.currentProject.currentRegion.tableData);
         expect(table.props().settings).toEqual(state.currentProject.currentRegion.interventionSettings);
         expect(wrapper.findAll(plotlyGraph).length).toBe(0);

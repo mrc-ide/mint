@@ -1,14 +1,14 @@
 <template>
-    <table class="table table-responsive">
-        <thead class="thead-light">
+    <table>
+        <thead>
         <tr>
-            <th scope="col" v-for="key in Object.keys(columns)">{{columns[key]}}</th>
+            <th v-for="col in config">{{col.displayName}}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="row in filteredData">
-            <td v-for="key in Object.keys(columns)">
-                {{row[key]}}
+            <td v-for="col in config">
+                <span>{{evaluateCell(col, row)}}</span>
             </td>
         </tr>
         </tbody>
@@ -17,18 +17,42 @@
 <script lang="ts">
     import {defineComponent} from "@vue/composition-api";
     import {FilteringProps, useFiltering} from "./filteredData";
-    import {TableDefinition} from "../../generated";
+    import {useTransformation} from "./transformedData";
+    import {Dictionary} from "vue-router/types/router";
+    import numeral from "numeral";
+
+    // TODO should come from mintr generated types
+    interface ColumnDefinition {
+        displayName: string
+        valueCol: string
+        valueTransform?: Dictionary<string>
+        format?: string
+    }
 
     interface Props extends FilteringProps {
-        columns: TableDefinition
+        config: ColumnDefinition[]
     }
-    
+
     export default defineComponent({
-        props: {data: Array, columns: Object, settings: Object},
+        props: {data: Array, config: Array, settings: Object},
         setup(props: Props) {
-            const {filteredData} = useFiltering(props)
+            const {filteredData} = useFiltering(props);
+            const {evaluateFormula} = useTransformation(props);
+            const evaluateCell = (col: ColumnDefinition, row: any) => {
+                let value: string | number = "";
+                if (!col.valueTransform) {
+                    value = row[col.valueCol]
+                } else if (col.valueTransform[row[col.valueCol]]) {
+                    value = evaluateFormula(col.valueTransform[row[col.valueCol]])
+                }
+                if (col.format) {
+                    value = numeral(value).format(col.format)
+                }
+                return value;
+            };
             return {
-                filteredData
+                filteredData,
+                evaluateCell
             }
         }
     })
