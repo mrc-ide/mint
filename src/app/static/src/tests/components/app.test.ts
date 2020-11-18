@@ -36,19 +36,19 @@ describe("app", () => {
         });
     };
 
-    it("does not show second nav bar if currentProject is null", () => {
+    it("does not show nav bar if currentProject is null", () => {
         const wrapper = getWrapper();
-        expect(wrapper.findAll(".navbar").length).toBe(1);
+        expect(wrapper.findAll(".navbar").length).toBe(0);
     });
 
-    it("show second nav bar if currentProject is not null", () => {
+    it("show nav bar if currentProject is not null", () => {
         const state = {
             currentProject: new Project(
                 "my project", ["region1", "region2"], {controlSections: []}, {controlSections: []}
             )
         };
         const wrapper = getWrapper(state);
-        expect(wrapper.findAll(".navbar").length).toBe(2);
+        expect(wrapper.findAll(".navbar").length).toBe(1);
         expect(wrapper.find(".project-header span").text()).toBe("my project:");
         expect(wrapper.findAll(".dropdown-item").length).toBe(3);
 

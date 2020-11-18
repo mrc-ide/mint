@@ -1,10 +1,16 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const commonConfig = {
+const appConfig = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+    entry: './src/app/index.ts',
+    output: {
+        path: path.resolve(__dirname, './public'),
+        publicPath: '/public/',
+        filename: 'js/app.js'
+    },
     module: {
         rules: [
             {
@@ -47,7 +53,10 @@ const commonConfig = {
                 test: /\.ftl$/,
                 use: [
                     {
-                        loader: 'html-loader'
+                        loader: 'html-loader',
+                        options: {
+                            minimize: false
+                        }
                     }
                 ]
             }
@@ -69,34 +78,20 @@ const commonConfig = {
     devtool: '#eval-source-map',
     plugins: [
         // make sure to include the plugin for the magic
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new HtmlWebpackPlugin({
+            hash: true,
+            template: 'public/index.ftl',
+            filename: 'index.ftl'
+        })
     ]
 };
 
-const appConfig = {...commonConfig,
-    entry: './src/app/index.ts',
-    output: {
-        path: path.resolve(__dirname, './public'),
-        publicPath: '/public/',
-        filename: 'js/app.js'
-    },
-    plugins: [...commonConfig.plugins,
-    new HtmlWebpackPlugin({
-        hash: true,
-        template: 'public/index.ftl',
-        filename: 'index.ftl'
-    })
-]
-};
-
-module.exports = [appConfig];
-
 if (process.env.NODE_ENV === 'production') {
-    module.exports.forEach((moduleExport) =>
-    {
-        moduleExport.devtool = '#source-map';
+
+    appConfig.devtool = '#source-map';
     // http://vue-loader.vuejs.org/en/workflow/production.html
-    moduleExport.plugins = (moduleExport.plugins || []).concat([
+    appConfig.plugins = appConfig.plugins.concat([
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: '"production"'
@@ -106,5 +101,6 @@ if (process.env.NODE_ENV === 'production') {
             minimize: true
         })
     ])
-});
 }
+
+module.exports = [appConfig];
