@@ -13,9 +13,12 @@
                          text="Explore interventions"
                          :active="currentStep === 2"
                          :disabled="interventionsDisabled"
-                         @click="setCurrentStep(2)"></step-button>
+                         @click="next"></step-button>
         </div>
-        <baseline v-if="currentStep === 1" @submit="setCurrentStep(2)" @validate="baselineValidated"></baseline>
+        <baseline v-if="currentStep === 1"
+                  @submit="setCurrentStep(2)"
+                  @validate="baselineValidated"
+                  ref="baseline"></baseline>
         <interventions v-if="currentStep === 2"></interventions>
     </div>
 </template>
@@ -37,9 +40,10 @@
     }
 
     interface Methods {
-        setCurrentRegion: (params: {project: string, region: string}) => void,
+        setCurrentRegion: (params: { project: string, region: string }) => void,
         setCurrentStep: (step: number) => void,
         baselineValidated: (value: boolean) => void
+        next: () => void;
     }
 
     interface Computed {
@@ -65,6 +69,9 @@
             setCurrentStep: mapMutationByName(RootMutation.SetCurrentRegionStep),
             baselineValidated: function (valid: Boolean) {
                 this.interventionsDisabled = !valid;
+            },
+            next() {
+                ((this.$refs['baseline'] as Vue).$refs["form"] as any).submit();
             }
         },
         watch: {
