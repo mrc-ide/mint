@@ -1,8 +1,7 @@
 import dynamicTable from "../../../app/components/figures/dynamicTable.vue";
 
 import {shallowMount} from "@vue/test-utils";
-import {Data} from "../../../app/generated";
-import {Dictionary} from "vue-router/types/router";
+import {ColumnDefinition, Data} from "../../../app/generated";
 
 describe("dynamic table", () => {
 
@@ -31,14 +30,6 @@ describe("dynamic table", () => {
             "cases_averted": 3,
             "prev": 0.411
         }];
-
-    // TODO should come from mintr generated types
-    interface ColumnDefinition {
-        displayName: string
-        valueCol: string
-        valueTransform?: Dictionary<string>
-        format?: string
-    }
 
     const config: ColumnDefinition[] = [
         {

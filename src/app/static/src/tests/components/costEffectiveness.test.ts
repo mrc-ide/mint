@@ -16,7 +16,7 @@ describe("costEffectiveness", () => {
 
     it("renders as expected when activeTab is Table", () => {
         const state = {
-            costTableConfig: {"col": "Column name"},
+            costTableConfig: [{displayName: "Cost", valueCol: "cost"}],
             currentProject: {
                 currentRegion: {
                     tableData: [{cost: 1000, cases_averted: 100}],

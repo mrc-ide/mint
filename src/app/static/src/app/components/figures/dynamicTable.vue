@@ -1,5 +1,5 @@
 <template>
-    <table>
+    <table class="table-responsive">
         <thead>
         <tr>
             <th v-for="col in config">{{col.displayName}}</th>
@@ -18,16 +18,8 @@
     import {defineComponent} from "@vue/composition-api";
     import {FilteringProps, useFiltering} from "./filteredData";
     import {useTransformation} from "./transformedData";
-    import {Dictionary} from "vue-router/types/router";
     import numeral from "numeral";
-
-    // TODO should come from mintr generated types
-    interface ColumnDefinition {
-        displayName: string
-        valueCol: string
-        valueTransform?: Dictionary<string>
-        format?: string
-    }
+    import {ColumnDefinition} from "../../generated";
 
     interface Props extends FilteringProps {
         config: ColumnDefinition[]

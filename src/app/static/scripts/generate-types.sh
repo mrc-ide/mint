@@ -17,7 +17,7 @@ wget https://github.com/mrc-ide/mintr/archive/${branch}.zip
 unzip ${branch}
 rm ${branch}.zip
 
-wget https://github.com/reside-ic/pkgapi/archive/master.zip
+wget https://github.com/reside-ic/porcelain/archive/master.zip
 unzip master
 rm master.zip
 
@@ -25,7 +25,7 @@ rm ${target} -f
 mkdir types
 
 node generateTypes "mintr-${branch}/inst/schema"
-node generateTypes "pkgapi-master/inst/schema"
+node generateTypes "porcelain-master/inst/schema"
 
 echo "/**
   * This file was automatically generated.
@@ -37,4 +37,4 @@ echo "/**
 cat types/*.d.ts >> ${target}
 rm types -rf
 rm mintr-${branch} -r
-rm pkgapi-master -r
+rm porcelain-master -r
