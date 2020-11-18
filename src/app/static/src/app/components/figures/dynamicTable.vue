@@ -1,5 +1,5 @@
 <template>
-    <table class="table-responsive">
+    <table class="table table-responsive table-striped dataTable">
         <thead>
         <tr>
             <th v-for="col in config">{{col.displayName}}</th>
