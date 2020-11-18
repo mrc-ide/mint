@@ -17,13 +17,17 @@ describe("region page", () => {
     localVue.use(VueRouter);
     const router = new VueRouter({routes: [{path: '/projects/:project/regions/:region', component: regionPage}]});
 
-    const createStore = (setCurrentRegionMock = jest.fn(), setCurrentRegionStepMock = jest.fn(), project = mockProject()) => {
+    const createStore = (setCurrentRegionMock = jest.fn(),
+                         setCurrentRegionStepMock = jest.fn(),
+                         project = mockProject(),
+                         setBaselineSettingsMock = jest.fn()) => {
         return new Vuex.Store({
             state: mockRootState({
                 currentProject: project
             }),
             mutations: {
-                [RootMutation.SetCurrentRegionStep]: setCurrentRegionStepMock
+                [RootMutation.SetCurrentRegionStep]: setCurrentRegionStepMock,
+                [RootMutation.SetCurrentRegionBaselineSettings]: setBaselineSettingsMock
             },
             actions: {
                 [RootAction.SetCurrentRegion]: setCurrentRegionMock
@@ -75,7 +79,7 @@ describe("region page", () => {
         expect(setCurrentRegionMock.mock.calls[1][1]).toEqual({project: "new-project", region: "new-region"});
     });
 
-    it("sets current step when step is clicked", async () => {
+    it("sets current step to 1 when step 1 is clicked", async () => {
         const mockSetRegionStep = jest.fn();
         const store = createStore(jest.fn(), mockSetRegionStep);
         const wrapper = mount(regionPage, {localVue, store, router});
@@ -94,7 +98,22 @@ describe("region page", () => {
 
         expect(mockSetRegionStep.mock.calls.length).toBe(2);
         expect(mockSetRegionStep.mock.calls[1][1]).toBe(1);
+    });
 
+    it("saves baseline settings and sets current step to 2 when step 2 is clicked", async () => {
+        const mockSetRegionStep = jest.fn();
+        const mockSetBaselineSettings = jest.fn();
+        const store = createStore(jest.fn(), mockSetRegionStep, mockProject(), mockSetBaselineSettings);
+        const wrapper = mount(regionPage, {localVue, store, router});
+
+        const buttons = wrapper.findAll("button");
+        buttons.at(1).trigger("click");
+
+        await Vue.nextTick();
+
+        expect(mockSetBaselineSettings.mock.calls.length).toBe(1);
+        expect(mockSetRegionStep.mock.calls.length).toBe(1);
+        expect(mockSetRegionStep.mock.calls[0][1]).toBe(2);
     });
 
     it("sets current step to 2 when baseline is submitted", async () => {

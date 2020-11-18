@@ -1,10 +1,11 @@
 <template>
     <div class="baseline">
         <dynamic-form v-model="options"
+                      ref="form"
                       :include-submit-button="true"
                       submit-text="Next"
                       @submit="submit"
-                      @validate="$emit('validate', $event)" ></dynamic-form>
+                      @validate="$emit('validate', $event)"></dynamic-form>
     </div>
 </template>
 <script lang="ts">
