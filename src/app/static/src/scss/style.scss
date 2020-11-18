@@ -7,6 +7,7 @@
 @import "partials/interventions.scss";
 @import "partials/graph.scss";
 @import '../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
+@import "../../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css";
 
 html {
   overflow-y: scroll;
@@ -48,4 +49,10 @@ a {
 
 .dropdown-item:active {
   background-color: $gray-200 !important;
+}
+
+table {
+  th {
+    border-top: 0 !important;
+  }
 }

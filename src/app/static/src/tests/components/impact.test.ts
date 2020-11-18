@@ -113,7 +113,7 @@ describe("impact", () => {
 
     it("shows table under table tab if table config exists", () => {
         const store = createStore({
-            impactTableConfig: {"col": "Column name"},
+            impactTableConfig: [{displayName: "Column name", valueCol: "col"}],
             currentProject: {
                 currentRegion: {
                     tableData: [{col: 1}],
@@ -124,13 +124,13 @@ describe("impact", () => {
         const wrapper = shallowMount(impact, {propsData: {activeTab: "Table"}, store});
         expect(wrapper.findAll(dynamicTable).length).toBe(1);
         const table = wrapper.findAll(dynamicTable).at(0);
-        expect(table.props("columns")).toEqual({"col": "Column name"});
+        expect(table.props("config")).toEqual([{displayName: "Column name", valueCol: "col"}]);
         expect(table.props("data")).toEqual([{col: 1}]);
         expect(table.props("settings")).toEqual({"test": 1});
     });
 
     it("does not show table under graph tab", () => {
-        const store = createStore({impactTableConfig: {"col": "Column name"}});
+        const store = createStore({impactTableConfig: [{displayName: "Column name", valueCol: "col"}]});
         const wrapper = shallowMount(impact, {propsData: {activeTab: "Graphs"}, store});
         expect(wrapper.findAll(dynamicTable).length).toBe(0);
     });
@@ -152,7 +152,7 @@ describe("impact", () => {
     });
 
     it("table data is empty if no current project", () => {
-        const store = createStore({impactTableConfig: {"col": "Column name"}});
+        const store = createStore({impactTableConfig: [{displayName: "Column name", valueCol: "col"}]});
         const wrapper = shallowMount(impact, {propsData: {activeTab: "Table"}, store});
         const table = wrapper.find(dynamicTable);
         expect(table.props("data")).toEqual([]);
