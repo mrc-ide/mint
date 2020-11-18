@@ -99,6 +99,13 @@ export interface ResponseSuccess {
   data: any;
   errors: null;
 }
-export interface TableDefinition {
-  [k: string]: any;
+export type TableDefinition = ColumnDefinition[];
+
+export interface ColumnDefinition {
+  valueCol: string;
+  displayName: string;
+  valueTransform?: {
+    [k: string]: any;
+  };
+  format?: string;
 }

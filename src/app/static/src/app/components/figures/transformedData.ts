@@ -12,7 +12,7 @@ export function useTransformation(props: TransformationProps) {
             interpolatedFormula = formula.replace(/\{([^}]+)\}/g,
                 (match) => props.settings!![match.replace(/\{|\}/g, "")] as string);
         }
-        return Math.round(evaluate(interpolatedFormula));
+        return evaluate(interpolatedFormula);
     };
     return {evaluateFormula}
 }

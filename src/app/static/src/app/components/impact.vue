@@ -16,7 +16,7 @@
 
         <dynamic-table v-if="activeTab === 'Table' && tableConfig"
                        :data="tableData"
-                       :columns="tableConfig"
+                       :config="tableConfig"
                        :settings="settings"></dynamic-table>
     </div>
 </template>
