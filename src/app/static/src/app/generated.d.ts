@@ -108,4 +108,5 @@ export interface ColumnDefinition {
     [k: string]: any;
   };
   format?: string;
+  precision?: number;
 }

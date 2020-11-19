@@ -6,12 +6,19 @@ export interface TransformationProps {
 }
 
 export function useTransformation(props: TransformationProps) {
-    const evaluateFormula = (formula: string) => {
-        let interpolatedFormula = formula;
-        if (props.settings) {
-            interpolatedFormula = formula.replace(/\{([^}]+)\}/g,
-                (match) => props.settings!![match.replace(/\{|\}/g, "")] as string);
-        }
+    const evaluateFormula = (formula: string, row: any | null = null) => {
+        const interpolatedFormula = formula.replace(/\{([^}]+)\}/g,
+            (match) => {
+                const id = match.replace(/\{|\}/g, "");
+                let val = "";
+                if (props.settings) {
+                    val = props.settings[id] as string;
+                }
+                if (!val && row) {
+                    val = row[id]
+                }
+                return val
+            });
         return evaluate(interpolatedFormula);
     };
     return {evaluateFormula}
