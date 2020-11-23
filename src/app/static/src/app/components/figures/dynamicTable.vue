@@ -2,13 +2,13 @@
     <table class="table table-responsive table-striped dataTable">
         <thead>
         <tr>
-            <th v-for="col in config">{{col.displayName}}</th>
+            <th v-for="col in config">{{ col.displayName }}</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="row in filteredData">
             <td v-for="col in config">
-                <span>{{evaluateCell(col, row)}}</span>
+                <span>{{ evaluateCell(col, row) }}</span>
             </td>
         </tr>
         </tbody>
@@ -35,7 +35,16 @@
                 if (!col.valueTransform) {
                     value = row[col.valueCol]
                 } else if (col.valueTransform[row[col.valueCol]]) {
-                    value = evaluateFormula(col.valueTransform[row[col.valueCol]])
+                    value = evaluateFormula(col.valueTransform[row[col.valueCol]], row)
+                }
+                if (value == Infinity) {
+                    return "n/a";
+                }
+                if (typeof value == "string") {
+                    return value;
+                }
+                if (col.precision) {
+                    value = value.toPrecision(col.precision)
                 }
                 if (col.format) {
                     value = numeral(value).format(col.format)
