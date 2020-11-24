@@ -273,4 +273,16 @@ describe("mutations", () => {
         mutations[RootMutation.SetCurrentRegionBaselineSettings](state, newSettings);
         expect(state.currentProject).toBeNull();
     });
+
+    it("updates impact docs", () => {
+        const state = mockRootState();
+        mutations[RootMutation.UpdateImpactDocs](state, "impact docs");
+        expect(state.impactDocs).toBe("impact docs");
+    });
+
+    it("updates cost docs", () => {
+        const state = mockRootState();
+        mutations[RootMutation.UpdateCostDocs](state, "cost docs");
+        expect(state.impactDocs).toBe("cost docs");
+    });
 });

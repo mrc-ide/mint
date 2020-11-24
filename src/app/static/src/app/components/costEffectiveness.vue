@@ -17,6 +17,7 @@
                        :data="tableData"
                        :config="tableConfig"
                        :settings="settings"></dynamic-table>
+        <collapsible-docs :docs="docs"></collapsible-docs>
     </div>
 </template>
 <script lang="ts">
@@ -28,6 +29,7 @@
     import {RootState} from "../store";
     import {DynamicFormData} from "@reside-ic/vue-dynamic-form";
     import dynamicTable from "./figures/dynamicTable.vue";
+    import collapsibleDocs from "./collapsibleDocs.vue";
 
     interface Computed {
         settings: DynamicFormData | null,
@@ -36,10 +38,11 @@
         casesAvertedGraphConfig: Graph,
         tableData: Data,
         tableConfig: TableDefinition | null
+        docs: string
     }
 
     export default Vue.extend<{}, {}, Computed, {}>({
-        components: {plotlyGraph, dynamicTable},
+        components: {plotlyGraph, dynamicTable, collapsibleDocs},
         props: ["activeTab"],
         computed: {
             settings: mapStateProp<RootState, DynamicFormData | null>
@@ -51,6 +54,7 @@
             efficacyGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costEfficacyGraphConfig),
             casesAvertedGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costCasesGraphConfig),
             tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.costTableConfig),
+            docs: mapStateProp<RootState, string>(state => state.costDocs),
             tableData() {
                 return this.currentProject ? this.currentProject.currentRegion.tableData : [];
             }

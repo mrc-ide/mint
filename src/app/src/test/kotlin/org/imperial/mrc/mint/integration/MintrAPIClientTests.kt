@@ -96,4 +96,20 @@ class MintrAPIClientTests {
         assertThat(result.statusCodeValue).isEqualTo(200)
         JSONValidator().validateSuccess(result.body!!, "Data")
     }
+
+    @Test
+    fun `can get impact docs`() {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getImpactDocs()
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "Docs")
+    }
+
+    @Test
+    fun `can get cost docs`() {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getCostDocs()
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "Docs")
+    }
 }

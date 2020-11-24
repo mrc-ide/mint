@@ -313,4 +313,23 @@ describe("actions", () => {
         expect(dispatch.mock.calls.length).toBe(0);
     });
 
+    it("can fetch docs", async () => {
+        const commit = jest.fn();
+        const state = mockRootState();
+
+        mockAxios.onGet("/impact/docs")
+            .reply(200, mockSuccess("impact docs"));
+
+        mockAxios.onGet("/cost/docs")
+            .reply(200, mockSuccess("cost docs"));
+
+        await (actions[RootAction.FetchDocs] as any)({commit, state} as any);
+
+        expect(commit.mock.calls.length).toBe(2);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.UpdateImpactDocs);
+        expect(commit.mock.calls[0][0]).toBe("impact docs");
+        expect(commit.mock.calls[1][0]).toBe(RootMutation.UpdateCostDocs);
+        expect(commit.mock.calls[1][1]).toBe("cost docs");
+    });
+
 });
