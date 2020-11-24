@@ -5,6 +5,7 @@ import {RootState} from "../../app/store";
 import {mockGraph, mockRootState} from "../mocks";
 import plotlyGraph from "../../app/components/figures/graphs/plotlyGraph.vue";
 import dynamicTable from "../../app/components/figures/dynamicTable.vue";
+import collapsibleDocs from "../../app/components/collapsibleDocs.vue";
 
 describe("costEffectiveness", () => {
 
@@ -100,5 +101,12 @@ describe("costEffectiveness", () => {
         const store = createStore();
         const wrapper = shallowMount(costEffectiveness, {propsData: {activeTab: "Table"}, store});
         expect(wrapper.findAll(dynamicTable).length).toBe(0);
+    });
+
+    it("renders collapsible docs", () => {
+        const store = createStore({costDocs: "cost docs"});
+        const wrapper = shallowMount(costEffectiveness, {propsData: {activeTab: "Table"}, store});
+        const table = wrapper.find(collapsibleDocs);
+        expect(table.props("docs")).toEqual("cost docs");
     });
 });

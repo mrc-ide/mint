@@ -17,10 +17,10 @@ describe("collapsible docs", () => {
 
         expect(wrapper.findAll(InfoIcon).length).toBe(1);
         expect(wrapper.find("a").text()).toBe("how to interpret these figures");
+        expect(wrapper.find("span").html()).toBe("<span>test text</span>");
         expect(wrapper.findAll(ChevronDownIcon).length).toBe(1);
         expect(wrapper.findAll(ChevronUpIcon).length).toBe(0);
         expect(wrapper.find(BCollapse).props("visible")).toBe(false);
-        expect(wrapper.find("span").isVisible()).toBe(false);
     });
 
     it("can toggle documentation", async () => {
@@ -39,7 +39,6 @@ describe("collapsible docs", () => {
         expect(wrapper.findAll(ChevronDownIcon).length).toBe(0);
         expect(wrapper.findAll(ChevronUpIcon).length).toBe(1);
         expect(wrapper.find(BCollapse).props("visible")).toBe(true);
-        expect(wrapper.find("span").isVisible()).toBe(true);
 
         wrapper.find("a").trigger("click");
 
@@ -48,7 +47,6 @@ describe("collapsible docs", () => {
         expect(wrapper.findAll(ChevronDownIcon).length).toBe(1);
         expect(wrapper.findAll(ChevronUpIcon).length).toBe(0);
         expect(wrapper.find(BCollapse).props("visible")).toBe(false);
-        expect(wrapper.find("span").isVisible()).toBe(false);
     });
 
 

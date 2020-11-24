@@ -283,6 +283,6 @@ describe("mutations", () => {
     it("updates cost docs", () => {
         const state = mockRootState();
         mutations[RootMutation.UpdateCostDocs](state, "cost docs");
-        expect(state.impactDocs).toBe("cost docs");
+        expect(state.costDocs).toBe("cost docs");
     });
 });

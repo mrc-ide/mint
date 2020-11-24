@@ -327,7 +327,7 @@ describe("actions", () => {
 
         expect(commit.mock.calls.length).toBe(2);
         expect(commit.mock.calls[0][0]).toBe(RootMutation.UpdateImpactDocs);
-        expect(commit.mock.calls[0][0]).toBe("impact docs");
+        expect(commit.mock.calls[0][1]).toBe("impact docs");
         expect(commit.mock.calls[1][0]).toBe(RootMutation.UpdateCostDocs);
         expect(commit.mock.calls[1][1]).toBe("cost docs");
     });
