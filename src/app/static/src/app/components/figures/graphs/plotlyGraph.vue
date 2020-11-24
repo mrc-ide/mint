@@ -4,7 +4,7 @@
     </div>
 </template>
 <script lang="ts">
-    import Plotly from "./Plotly.vue"
+    import Plotly from "./plotly/Plotly.vue"
     import {computed, defineComponent, ref} from "@vue/composition-api";
     import {FilteringProps} from "../filteredData";
     import {useLongFormatData} from "./longFormatDataSeries";
