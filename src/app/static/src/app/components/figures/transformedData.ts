@@ -1,3 +1,4 @@
+// https://mathjs.org/docs/custom_bundling.html#numbers-only
 import {evaluate} from "mathjs/number";
 import {Dictionary} from "vue-router/types/router";
 
