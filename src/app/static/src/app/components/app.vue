@@ -57,7 +57,6 @@
     import {switches} from "../featureSwitches";
 
     interface Methods {
-        fetchConfig: () => void
         addRegion: (region: Region) => void,
         createNewRegion: () => void
         cancel: () => void
@@ -114,11 +113,7 @@
             },
             cancel() {
                 this.newRegionName = "";
-            },
-            fetchConfig: mapActionByName(RootAction.FetchConfig)
-        },
-        beforeMount: function () {
-           // this.fetchConfig();
+            }
         }
     })
 </script>

@@ -1,6 +1,6 @@
 const Plotly = require('plotly.js/lib/core');
 
-// Load in the trace types for scatter and bar
+// here we register only those plots that we need, to minimize bundle size
 Plotly.register([
     require('plotly.js/lib/scatter'),
     require('plotly.js/lib/bar')

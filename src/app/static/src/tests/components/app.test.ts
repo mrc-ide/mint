@@ -17,13 +17,9 @@ describe("app", () => {
     const router = new VueRouter({routes: [{path: '/projects/:project/regions/:region'}]});
 
     const getWrapper = (state = {},
-                        fetchConfigMock = jest.fn(),
                         addRegionMock = jest.fn()) => {
         const store = new Vuex.Store({
             state: mockRootState(state),
-            actions: {
-                [RootAction.FetchConfig]: fetchConfigMock
-            },
             mutations: {
                 [RootMutation.AddRegion]: addRegionMock
             }
@@ -63,12 +59,6 @@ describe("app", () => {
         } else expect(wrapper.findAll("#stratAcrossRegions").length).toBe(0);
     });
 
-    it("fetches config before mount", () => {
-        const fetchConfigMock = jest.fn();
-        getWrapper({}, fetchConfigMock);
-        expect(fetchConfigMock.mock.calls.length).toBe(1);
-    });
-
     it("adds new region and navigates to it", async () => {
         const state = {
             currentProject: mockProject("my project"),
@@ -76,7 +66,7 @@ describe("app", () => {
             interventionOptions: {controlSections: []}
         };
         const addRegionMock = jest.fn();
-        const rendered = getWrapper(state, jest.fn(), addRegionMock);
+        const rendered = getWrapper(state, addRegionMock);
         rendered.findAll(".dropdown-item").at(1).find("a").trigger("click");
         await Vue.nextTick();
 

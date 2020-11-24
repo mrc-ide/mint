@@ -86,6 +86,7 @@ const appConfig = {
             template: 'public/index.ftl',
             filename: 'index.ftl'
         }),
+        // uncomment to see analysis of bundle size
         //new BundleAnalyzerPlugin({analyzerPort: 4000})
     ],
     optimization: {

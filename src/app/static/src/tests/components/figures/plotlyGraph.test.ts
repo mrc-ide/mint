@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {Plotly} from "vue-plotly";
+import Plotly from "../../../app/components/figures/graphs/plotly/Plotly.vue";
 import {mount, shallowMount, Wrapper} from "@vue/test-utils";
 import plotlyGraph from "../../../app/components/figures/graphs/plotlyGraph.vue";
 

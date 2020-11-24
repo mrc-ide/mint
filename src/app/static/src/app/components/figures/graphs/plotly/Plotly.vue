@@ -2,6 +2,10 @@
     <div :id="id" v-resize:debounce.100="onResize" />
 </template>
 <script>
+    // this code taken directly from https://github.com/David-Desmaisons/vue-plotly
+    // with the only change being the import of Plotly from our "customPlotly" module
+    // which contains a stripped down version of Plotly with only scatter and bar graphs
+    // included, to reduce bundle size
     import Plotly from "../../../../customPlotly";
     import events from "./events";
     import methods from "./methods";
