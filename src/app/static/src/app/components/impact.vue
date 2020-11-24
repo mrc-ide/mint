@@ -45,7 +45,7 @@
         props: ["activeTab"],
         computed: {
             settings: mapStateProp<RootState, DynamicFormData | null>
-                (state => state.currentProject && state.currentProject.currentRegion.interventionSettings),
+            (state => state.currentProject && state.currentProject.currentRegion.interventionSettings),
             prevalenceGraphConfig: mapStateProp<RootState, Graph | null>(state => state.prevalenceGraphConfig),
             casesGraphConfig: mapStateProp<RootState, Graph | null>(state => state.casesGraphConfig),
             tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.impactTableConfig),

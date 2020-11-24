@@ -3,6 +3,8 @@ const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const appConfig = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     entry: './src/app/index.ts',
@@ -83,8 +85,14 @@ const appConfig = {
             hash: true,
             template: 'public/index.ftl',
             filename: 'index.ftl'
-        })
-    ]
+        }),
+        //new BundleAnalyzerPlugin({analyzerPort: 4000})
+    ],
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        }
+    }
 };
 
 if (process.env.NODE_ENV === 'production') {

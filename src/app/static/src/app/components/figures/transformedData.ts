@@ -1,4 +1,4 @@
-import {evaluate} from "mathjs";
+import {evaluate} from "mathjs/number";
 import {Dictionary} from "vue-router/types/router";
 
 export interface TransformationProps {

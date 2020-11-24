@@ -118,7 +118,7 @@
             fetchConfig: mapActionByName(RootAction.FetchConfig)
         },
         beforeMount: function () {
-            this.fetchConfig();
+           // this.fetchConfig();
         }
     })
 </script>
