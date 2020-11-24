@@ -48,7 +48,7 @@ class CostControllerTests {
     fun `gets docs from the api`()
     {
         val mockAPI = mock<APIClient>{
-            on{ getImpactDocs() } doReturn mockResponse
+            on{ getCostDocs() } doReturn mockResponse
         }
 
         val sut = CostController(mockAPI)
