@@ -1,12 +1,12 @@
 <template>
     <div class="row">
-        <div class="col-4 interventions">
+        <div class="col-sm-4 col-md-3 interventions">
             <dynamic-form ref="settings"
                           v-model="options"
                           @submit="updateInterventionSettings"
                           :include-submit-button="false"></dynamic-form>
         </div>
-        <div class="col-8">
+        <div class="col-sm-8 col-md-9">
             <ul class="nav nav-tabs" style="margin-left: 26px;margin-bottom: -1px;">
                 <li class="nav-item">
                     <a class="text-success nav-link"

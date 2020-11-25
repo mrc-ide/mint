@@ -3,7 +3,7 @@ import {RootState} from "./store";
 import {api} from "./apiService";
 import {Data, Graph} from "./generated";
 import {RootMutation} from "./mutations";
-import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {router} from "./router";
 
 export enum RootAction {
@@ -20,7 +20,8 @@ export enum RootAction {
     EnsureCostEffectivenessData = "FetchCostEffectivenessData",
     FetchTableData = "FetchTableData",
     FetchConfig = "FetchConfig",
-    SetCurrentRegion = "SetCurrentRegion"
+    SetCurrentRegion = "SetCurrentRegion",
+    SetCurrentRegionBaselineSettings = "SetCurrentRegionBaselineSettings"
 }
 
 const currentRegionBaseline = (state: RootState) => {
@@ -29,7 +30,17 @@ const currentRegionBaseline = (state: RootState) => {
 
 export const actions: ActionTree<RootState, RootState> = {
 
-    async [RootAction.SetCurrentRegion](context, payload: {project: string, region: string}) {
+
+    async [RootAction.SetCurrentRegionBaselineSettings](context, payload: DynamicFormData) {
+        const {dispatch, commit} = context;
+        commit(RootMutation.SetCurrentRegionBaselineSettings, payload);
+        await Promise.all([
+            dispatch(RootAction.FetchPrevalenceGraphData),
+            dispatch(RootAction.FetchTableData)
+        ]);
+    },
+
+    async [RootAction.SetCurrentRegion](context, payload: { project: string, region: string }) {
         const {state, commit} = context;
         const proj = state.projects.find(p => p.slug == payload.project);
         const region = proj && proj.regions.find(r => r.slug == payload.region);

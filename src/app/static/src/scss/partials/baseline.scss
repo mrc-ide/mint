@@ -1,10 +1,16 @@
 .baseline {
   .dynamic-form {
+    @extend .bg-light;
     @extend .row;
 
+    svg {
+      height: 18px;
+    }
+
     > div {
-      @extend .card;
+    //  @extend .card;
       @extend .mt-2;
+      @extend .pt-2;
       padding: 0;
       margin-left: 1%;
       margin-right: 1%;
@@ -13,30 +19,54 @@
       width: 100%;
 
       h3 {
-        @extend .card-header;
-        @extend .bg-light;
+      //  @extend .card-header;
+       // @extend .bg-light;
         @extend .h5;
+        text-align: center;
+      }
+
+      //.col-md-6 {
+      //  @extend .my-2;
+      //  flex: 0 0 90% !important;
+      //  max-width: 90% !important;
+      //  margin-left: 5%;
+      //  margin-right: 5%;
+      //
+      //  span.small {
+      //    display: none;
+      //  }
+      //}
+
+      .row {
+        margin: 0
       }
 
       .col-md-6 {
-        @extend .my-2;
-        flex: 0 0 90% !important;
-        max-width: 90% !important;
-        margin-left: 5%;
-        margin-right: 5%;
+        display: flex;
+        max-width: 100%;
+        flex: 0 0 100%;
 
         span.small {
           display: none;
         }
       }
+
+      label {
+        @extend .col-7;
+        @extend .col-form-label;
+        @extend .text-right;
+        padding-left: 0;
+      }
+
+      input:not(button), select {
+        display: flex;
+        @extend .col-5;
+        @extend .mt-2;
+      }
     }
 
-    .btn {
-      @extend .btn-lg;
-      @extend .btn-primary;
-      @extend .my-3;
-      margin-left: auto;
-      margin-right: 1%;
+    .documentation {
+      text-align: center;
     }
   }
 }

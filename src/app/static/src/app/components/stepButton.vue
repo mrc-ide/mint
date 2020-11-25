@@ -1,11 +1,12 @@
 <template>
-    <div class="step text-right" :class="{active: active}" @click="$emit('click')">
+    <div class="step" :class="{active: active}" @click="$emit('click')">
         <button class="d-inline btn rounded-circle border" :disabled="disabled">
             {{number}}
         </button>
         <span class="text-center pl-3" :class="{'text-muted': disabled}">
             {{text}}
         </span>
+        <slot></slot>
     </div>
 </template>
 

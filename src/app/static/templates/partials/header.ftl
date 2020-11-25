@@ -8,8 +8,3 @@
     <!-- endinject -->
 </head>
 <body>
-<div class="navbar navbar-primary navbar-default">
-    <div class="container-fluid">
-        <div class="bg-secondary text-light font-weight-bold navbar-header">${title}</div>
-    </div>
-</div>
