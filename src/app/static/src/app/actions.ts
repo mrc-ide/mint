@@ -152,8 +152,6 @@ export const actions: ActionTree<RootState, RootState> = {
 
     async [RootAction.FetchConfig](context) {
         await Promise.all([
-            context.dispatch(RootAction.FetchBaselineOptions),
-            context.dispatch(RootAction.FetchInterventionOptions),
             context.dispatch(RootAction.FetchPrevalenceGraphConfig),
             context.dispatch(RootAction.FetchCasesGraphConfig),
             context.dispatch(RootAction.FetchImpactTableConfig),

@@ -58,6 +58,8 @@
 
     interface Methods {
         fetchDocs: () => void
+        fetchBaselineOptions: () => void
+        fetchInterventionOptions: () => void
         addRegion: (region: Region) => void,
         createNewRegion: () => void
         cancel: () => void
@@ -115,10 +117,14 @@
             cancel() {
                 this.newRegionName = "";
             },
-            fetchDocs: mapActionByName(RootAction.FetchDocs)
+            fetchDocs: mapActionByName(RootAction.FetchDocs),
+            fetchBaselineOptions: mapActionByName(RootAction.FetchBaselineOptions),
+            fetchInterventionOptions: mapActionByName(RootAction.FetchInterventionOptions)
         },
         beforeMount: function () {
             this.fetchDocs();
+            this.fetchBaselineOptions();
+            this.fetchInterventionOptions();
         }
     })
 </script>

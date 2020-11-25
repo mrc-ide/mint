@@ -18,11 +18,15 @@ describe("app", () => {
 
     const getWrapper = (state = {},
                         addRegionMock = jest.fn(),
-                        fetchDocsMock = jest.fn()) => {
+                        fetchDocsMock = jest.fn(),
+                        fetchBaselineMock = jest.fn(),
+                        fetchInterventionsMock = jest.fn()) => {
         const store = new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.FetchDocs]: fetchDocsMock
+                [RootAction.FetchDocs]: fetchDocsMock,
+                [RootAction.FetchBaselineOptions]: fetchBaselineMock,
+                [RootAction.FetchInterventionOptions]: fetchInterventionsMock
             },
             mutations: {
                 [RootMutation.AddRegion]: addRegionMock
@@ -63,10 +67,14 @@ describe("app", () => {
         } else expect(wrapper.findAll("#stratAcrossRegions").length).toBe(0);
     });
 
-    it("fetches docs before mount", () => {
+    it("fetches docs and options before mount", () => {
         const fetchDocsMock = jest.fn();
-        getWrapper({}, jest.fn(), fetchDocsMock);
+        const fetchBaselineMock = jest.fn();
+        const fetchInterventionsMock = jest.fn();
+        getWrapper({}, jest.fn(), fetchDocsMock, fetchBaselineMock, fetchInterventionsMock);
         expect(fetchDocsMock.mock.calls.length).toBe(1);
+        expect(fetchBaselineMock.mock.calls.length).toBe(1);
+        expect(fetchInterventionsMock.mock.calls.length).toBe(1);
     });
 
     it("adds new region and navigates to it", async () => {
