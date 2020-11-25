@@ -8,7 +8,6 @@
     }
 
     > div {
-    //  @extend .card;
       @extend .mt-2;
       @extend .pt-2;
       padding: 0;
@@ -19,23 +18,9 @@
       width: 100%;
 
       h3 {
-      //  @extend .card-header;
-       // @extend .bg-light;
         @extend .h5;
         text-align: center;
       }
-
-      //.col-md-6 {
-      //  @extend .my-2;
-      //  flex: 0 0 90% !important;
-      //  max-width: 90% !important;
-      //  margin-left: 5%;
-      //  margin-right: 5%;
-      //
-      //  span.small {
-      //    display: none;
-      //  }
-      //}
 
       .row {
         margin: 0
