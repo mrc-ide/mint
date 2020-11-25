@@ -26,7 +26,9 @@ export enum RootMutation {
     AddTableData = "AddTableData",
     AddCostTableConfig = "AddCostTableConfig",
     AddCostEfficacyGraphConfig = "AddCostEfficacyGraphConfig",
-    DeleteProject = "DeleteProject"
+    DeleteProject = "DeleteProject",
+    UpdateImpactDocs = "UpdateImpactDocs",
+    UpdateCostDocs = "UpdateCostDocs"
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -36,7 +38,7 @@ export const mutations: MutationTree<RootState> = {
         state.currentProject = payload
     },
 
-    [RootMutation.DeleteProject](state: RootState, project: Project ) {
+    [RootMutation.DeleteProject](state: RootState, project: Project) {
         state.projects = state.projects.filter(proj => proj != project)
     },
 
@@ -135,5 +137,14 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.AddCostEfficacyGraphConfig](state: RootState, payload: Graph) {
         state.costEfficacyGraphConfig = payload;
+    },
+
+    [RootMutation.UpdateImpactDocs](state: RootState, payload: string) {
+        state.impactDocs = payload;
+    },
+
+    [RootMutation.UpdateCostDocs](state: RootState, payload: string) {
+        state.costDocs = payload;
     }
+
 };

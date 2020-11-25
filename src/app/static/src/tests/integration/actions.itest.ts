@@ -96,7 +96,7 @@ describe("actions", () => {
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddInterventionOptions);
         const options = commit.mock.calls[0][1] as DynamicFormMeta;
         expect(options.controlSections.length).toBe(3);
-        expect(options.controlSections[0].label).toBe("Procurement and distribution");
+        expect(options.controlSections[0].label).toBe("Intervention coverage potential");
     });
 
     it("can get table data", async () => {
@@ -130,19 +130,8 @@ describe("actions", () => {
         await (actions[RootAction.FetchImpactTableConfig] as any)({commit} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddImpactTableConfig);
-        expect(Object.keys(commit.mock.calls[0][1]).sort())
-            .toEqual([
-                "casesAverted",
-                "casesAvertedPer1000",
-                "intervention",
-                "irsUse",
-                "meanCases",
-                "netUse",
-                "prevYear1",
-                "prevYear2",
-                "prevYear3",
-                "reductionInCases",
-                "reductionInPrevalence"]);
+        expect(commit.mock.calls[0][1][0].valueCol)
+            .toBe("intervention");
     });
 
     it("can get cost table config", async () => {
@@ -150,12 +139,19 @@ describe("actions", () => {
         await (actions[RootAction.FetchCostTableConfig] as any)({commit} as any);
 
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableConfig);
-        expect(Object.keys(commit.mock.calls[0][1]).sort())
-            .toEqual([
-                "casesAvertedPer1000",
-                "intervention",
-                "irsUse",
-                "netUse"]);
+        expect(commit.mock.calls[0][1][0].valueCol)
+            .toBe("intervention");
+    });
+
+    it("can get docs", async () => {
+        const commit = jest.fn();
+        await (actions[RootAction.FetchDocs] as any)({commit} as any);
+
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.UpdateImpactDocs);
+        expect(commit.mock.calls[1][0]).toBe(RootMutation.UpdateCostDocs);
+        expect(commit.mock.calls[0][1]).toContain("<ul>");
+        expect(commit.mock.calls[1][1]).toContain("<ul>");
+
     });
 
 });

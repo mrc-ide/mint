@@ -22,6 +22,8 @@ export interface RootState {
     costCasesGraphConfig: Graph | null
     costTableConfig: TableDefinition | null
     costEfficacyGraphConfig: Graph | null
+    impactDocs: string
+    costDocs: string
 }
 
 const logger = (store: Store<RootState>) => {
@@ -46,6 +48,8 @@ const storeOptions: StoreOptions<RootState> = {
         costCasesGraphConfig: null,
         costTableConfig: null,
         costEfficacyGraphConfig: null,
+        impactDocs: "",
+        costDocs: "",
         ...existingState
     },
     actions,

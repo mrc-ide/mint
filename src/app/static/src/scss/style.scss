@@ -13,6 +13,10 @@ html {
   overflow-y: scroll;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 a {
   @extend .text-success;
   @extend a.text-success;

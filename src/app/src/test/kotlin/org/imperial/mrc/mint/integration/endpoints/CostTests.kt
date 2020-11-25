@@ -23,4 +23,10 @@ class CostTests: EndpointTests() {
         val responseEntity = testRestTemplate.getForEntity<String>("/cost/table/config")
         assertSuccess(responseEntity, "TableDefinition")
     }
+
+    @Test
+    fun `can get cost docs`() {
+        val responseEntity = testRestTemplate.getForEntity<String>("/cost/docs")
+        assertSuccess(responseEntity, "Docs")
+    }
 }

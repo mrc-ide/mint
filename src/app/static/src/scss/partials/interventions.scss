@@ -3,10 +3,12 @@
     @extend .list-group;
 
     > div {
+      border-top-width: 1px !important;
+      border-top-left-radius: .25rem;
+      border-top-right-radius: .25rem;
       @extend .list-group-item;
-      padding-left: 0;
-      padding-right: 0;
-      padding-top: 0;
+      padding: 0;
+      margin-bottom: 1rem;
 
       h3 {
         @extend .bg-light;
@@ -16,6 +18,12 @@
         @extend .border-right-0;
         @extend .border-top-0;
         font-size: inherit !important;
+        margin-bottom: 0;
+
+        svg {
+          float: right;
+          vertical-align: middle !important;
+        }
       }
 
       .row {

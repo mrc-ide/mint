@@ -2,7 +2,6 @@ package org.imperial.mrc.mint.unit.controllers
 
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.imperial.mrc.mint.APIClient
 import org.imperial.mrc.mint.controllers.CostController
@@ -43,5 +42,16 @@ class CostControllerTests {
 
         val sut = CostController(mockAPI)
         assertThat(sut.tableConfig()).isSameAs(mockResponse)
+    }
+
+    @Test
+    fun `gets docs from the api`()
+    {
+        val mockAPI = mock<APIClient>{
+            on{ getCostDocs() } doReturn mockResponse
+        }
+
+        val sut = CostController(mockAPI)
+        assertThat(sut.docs()).isSameAs(mockResponse)
     }
 }

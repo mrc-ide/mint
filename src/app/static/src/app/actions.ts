@@ -20,7 +20,8 @@ export enum RootAction {
     EnsureCostEffectivenessData = "FetchCostEffectivenessData",
     FetchTableData = "FetchTableData",
     FetchConfig = "FetchConfig",
-    SetCurrentRegion = "SetCurrentRegion"
+    SetCurrentRegion = "SetCurrentRegion",
+    FetchDocs = "FetchDocs"
 }
 
 const currentRegionBaseline = (state: RootState) => {
@@ -29,7 +30,7 @@ const currentRegionBaseline = (state: RootState) => {
 
 export const actions: ActionTree<RootState, RootState> = {
 
-    async [RootAction.SetCurrentRegion](context, payload: {project: string, region: string}) {
+    async [RootAction.SetCurrentRegion](context, payload: { project: string, region: string }) {
         const {state, commit} = context;
         const proj = state.projects.find(p => p.slug == payload.project);
         const region = proj && proj.regions.find(r => r.slug == payload.region);
@@ -134,6 +135,19 @@ export const actions: ActionTree<RootState, RootState> = {
                 context.dispatch(RootAction.FetchTableData)
             ]);
         }
+    },
+
+    async [RootAction.FetchDocs](context) {
+        await Promise.all([
+            api(context)
+                .withSuccess(RootMutation.UpdateImpactDocs)
+                .withError(RootMutation.AddError)
+                .get<string>("/impact/docs"),
+            api(context)
+                .withSuccess(RootMutation.UpdateCostDocs)
+                .withError(RootMutation.AddError)
+                .get<string>("/cost/docs")
+        ])
     },
 
     async [RootAction.FetchConfig](context) {
