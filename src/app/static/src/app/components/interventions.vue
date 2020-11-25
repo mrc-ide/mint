@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row 4">
         <div class="col-sm-4 col-md-3 interventions">
             <dynamic-form ref="settings"
                           v-model="options"

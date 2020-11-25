@@ -2,32 +2,21 @@
     <div class="container-fluid my-4">
         <div class="d-flex flex-column justify-content-center align-items-center mb-4"
              @click="toggleBaseline"
-             :class="{'cursor-pointer': currentStep == 2}">
-            <step-button number="1"
-                         text="Setup baseline"
-                         :active="currentStep === 1"
-                         :disabled="false">
+             :class="{'cursor-pointer': currentStep === 2}">
+            <h4>
+                Setup baseline
                 <component :is="caretIconComponent"
                            v-if="currentStep === 2"></component>
-            </step-button>
+            </h4>
         </div>
         <b-collapse v-model="showBaseline">
             <baseline @validate="baselineValidated"
                       ref="baseline"></baseline>
         </b-collapse>
-        <div class="d-flex flex-column justify-content-center align-items-center my-4">
-            <button v-if="currentStep === 1"
-                    class="btn btn-primary btn-lg"
+        <div v-if="currentStep === 1" class="d-flex flex-column justify-content-center align-items-center my-4">
+            <button class="btn btn-primary btn-lg"
                     @click="next">Next
             </button>
-        </div>
-        <div class="d-flex flex-column justify-content-center align-items-center mb-4">
-            <div class="step"></div>
-            <step-button number="2"
-                         text="Explore interventions"
-                         :active="currentStep === 2"
-                         :disabled="interventionsDisabled"
-                         @click="next"></step-button>
         </div>
         <b-collapse :visible="currentStep === 2">
             <interventions v-if="currentStep === 2"></interventions>
