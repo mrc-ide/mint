@@ -17,9 +17,13 @@ describe("app", () => {
     const router = new VueRouter({routes: [{path: '/projects/:project/regions/:region'}]});
 
     const getWrapper = (state = {},
-                        addRegionMock = jest.fn()) => {
+                        addRegionMock = jest.fn(),
+                        fetchDocsMock = jest.fn()) => {
         const store = new Vuex.Store({
             state: mockRootState(state),
+            actions: {
+                [RootAction.FetchDocs]: fetchDocsMock
+            },
             mutations: {
                 [RootMutation.AddRegion]: addRegionMock
             }
@@ -57,6 +61,12 @@ describe("app", () => {
             expect(wrapper.find("#stratAcrossRegions").text()).toBe("Strategize across regions");
             expect(wrapper.find("#stratAcrossRegions").attributes("href")).toBe("#");
         } else expect(wrapper.findAll("#stratAcrossRegions").length).toBe(0);
+    });
+
+    it("fetches docs before mount", () => {
+        const fetchDocsMock = jest.fn();
+        getWrapper({}, fetchDocsMock, jest.fn(), fetchDocsMock);
+        expect(fetchDocsMock.mock.calls.length).toBe(1);
     });
 
     it("adds new region and navigates to it", async () => {

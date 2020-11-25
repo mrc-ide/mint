@@ -18,6 +18,8 @@
                        :data="tableData"
                        :config="tableConfig"
                        :settings="settings"></dynamic-table>
+
+        <collapsible-docs :docs="docs"></collapsible-docs>
     </div>
 </template>
 <script lang="ts">
@@ -29,6 +31,7 @@
     import dynamicTable from "./figures/dynamicTable.vue";
     import {DynamicFormData} from "@reside-ic/vue-dynamic-form";
     import {Project} from "../models/project";
+    import collapsibleDocs from "./collapsibleDocs.vue";
 
     interface Computed {
         prevalenceGraphConfig: Graph | null,
@@ -38,10 +41,15 @@
         prevalenceGraphData: Data,
         tableData: Data,
         settings: DynamicFormData | null
+        docs: string,
     }
 
     export default Vue.extend<{}, {}, Computed, {}>({
-        components: {plotlyGraph, dynamicTable},
+        components: {
+            plotlyGraph,
+            dynamicTable,
+            collapsibleDocs
+        },
         props: ["activeTab"],
         computed: {
             settings: mapStateProp<RootState, DynamicFormData | null>
@@ -50,6 +58,7 @@
             casesGraphConfig: mapStateProp<RootState, Graph | null>(state => state.casesGraphConfig),
             tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.impactTableConfig),
             currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
+            docs: mapStateProp<RootState, string>(state => state.impactDocs),
             prevalenceGraphData() {
                 return this.currentProject ? this.currentProject.currentRegion.prevalenceGraphData : [];
             },

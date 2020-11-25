@@ -57,6 +57,7 @@
     import {switches} from "../featureSwitches";
 
     interface Methods {
+        fetchDocs: () => void
         addRegion: (region: Region) => void,
         createNewRegion: () => void
         cancel: () => void
@@ -114,6 +115,10 @@
             cancel() {
                 this.newRegionName = "";
             }
+            fetchDocs: mapActionByName(RootAction.FetchDocs)
+        },
+        beforeMount: function () {
+            this.fetchDocs();
         }
     })
 </script>
