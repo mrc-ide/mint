@@ -65,7 +65,7 @@ describe("app", () => {
 
     it("fetches docs before mount", () => {
         const fetchDocsMock = jest.fn();
-        getWrapper({}, fetchDocsMock, jest.fn(), fetchDocsMock);
+        getWrapper({}, jest.fn(), fetchDocsMock);
         expect(fetchDocsMock.mock.calls.length).toBe(1);
     });
 
