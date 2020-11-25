@@ -7,7 +7,7 @@
                           :include-submit-button="false"></dynamic-form>
         </div>
         <div class="col-sm-8 col-md-9">
-            <ul class="nav nav-tabs" style="margin-left: 26px;margin-bottom: -1px;">
+            <ul class="nav nav-tabs" style="margin-left: 22px;margin-bottom: -1px;">
                 <li class="nav-item">
                     <a class="text-success nav-link"
                        :class="{active: activeHorizontalTab === 'Impact'}"

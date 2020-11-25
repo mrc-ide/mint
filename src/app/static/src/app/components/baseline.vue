@@ -1,5 +1,5 @@
 <template>
-    <div class="baseline">
+    <div class="baseline" v-if="currentProject">
         <dynamic-form v-model="options"
                       ref="form"
                       :include-submit-button="false"
@@ -46,9 +46,10 @@
                 set(value: DynamicFormMeta) {
                     this.update(value);
                     if (this.currentProject.currentRegion.step == 2) {
-                        // we are now viewing the figures, so need to
-                        // update data in real time
-                        (this.$refs["form"] as any).submit();
+                        // this means we are viewing the figures, so need to
+                        // update data in real time - but wait for next
+                        // tick so that values have been updated in the store
+                        Vue.nextTick().then(() => (this.$refs["form"] as any).submit())
                     }
                 }
             }
