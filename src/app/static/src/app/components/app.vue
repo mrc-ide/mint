@@ -14,8 +14,8 @@
                     </drop-down>
                 </div>
                 <a href="#" class="px-2 full-height text-dark project-nav"
-                id="stratAcrossRegions"
-                v-if="stratAcrossRegionsIsEnabled">Strategize across regions
+                   id="stratAcrossRegions"
+                   v-if="stratAcrossRegionsIsEnabled">Strategize across regions
                     <b-icon-graph-up></b-icon-graph-up>
                 </a>
             </div>
@@ -114,7 +114,7 @@
             },
             cancel() {
                 this.newRegionName = "";
-            }
+            },
             fetchDocs: mapActionByName(RootAction.FetchDocs)
         },
         beforeMount: function () {

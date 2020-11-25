@@ -220,7 +220,7 @@ describe("plotly graph", () => {
             <g class='hoverlayer'>
                 <g id='test-path-add' class='hovertext'></g>
             </g>`);
-        $("#test-path-add").append("<rect x='60' y='0' width='200' height='40'/><path d='some default path'/>");
+        $("#test-path-add").append("<rect x='60' y='0' width='200' height='40'></rect><path d='some default path'></path>");
 
         setTimeout(() => {
             expect(wrapper!!.find("#test-path-add path").attributes().d).toBe("M4,-20v40H60v-40h-40l-6,-6l-6,6Z");
@@ -241,8 +241,8 @@ describe("plotly graph", () => {
         $(".hoverbelow").append(`
             <g class='hoverlayer'>
                 <g id='test-path-mutate' class='hovertext'>
-                    <rect x='90' y='0' width='200' height='40'/><path d='some default path'/>
-                </g>
+                    <rect x='90' y='0' width='200' height='40'></rect>
+                    <path d='some default path'></path>
             </g>`);
         $("#test-path-mutate rect").attr("x", "60");
         $("#test-path-mutate path").attr("d", "some new path");
@@ -267,7 +267,7 @@ describe("plotly graph", () => {
             <g class='hoverlayer'>
                 <g id='test-path-add' class='hovertext'></g>
             </g>`);
-        $("#test-path-add").append("<rect x='-260' y='0' width='200' height='40'/><path d='some default path'/>");
+        $("#test-path-add").append("<rect x='-260' y='0' width='200' height='40'/></rect><path d='some default path'></path>");
 
         setTimeout(() => {
             expect(wrapper!!.find("#test-path-add path").attributes().d).toBe("M-4,-20v40H-60v-40h40l6,-6l6,6Z");
