@@ -18,7 +18,7 @@
     "@babel/preset-env": "^7.6.3",
     "@babel/register": "^7.6.2",
     "@johmun/vue-tags-input": "^2.1.0",
-    "@reside-ic/vue-dynamic-form": "0.1.2",
+    "@reside-ic/vue-dynamic-form": "0.2.0",
     "@riophae/vue-treeselect": "^0.3.0",
     "@types/jest": "^24.0.21",
     "@types/jquery": "^3.3.38",

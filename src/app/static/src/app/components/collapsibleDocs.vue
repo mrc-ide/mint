@@ -2,7 +2,7 @@
     <div>
         <a href="#" @click="toggle" class="mt-2">
             <info-icon></info-icon>
-            how to interpret these figures
+            How to interpret these figures
             <component style="vertical-align: top"
                        :is="chevronComponent"></component>
         </a>

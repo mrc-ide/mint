@@ -16,7 +16,7 @@ describe("collapsible docs", () => {
         await Vue.nextTick();
 
         expect(wrapper.findAll(InfoIcon).length).toBe(1);
-        expect(wrapper.find("a").text()).toBe("how to interpret these figures");
+        expect(wrapper.find("a").text()).toBe("How to interpret these figures");
         expect(wrapper.find("span").html()).toBe("<span>test text</span>");
         expect(wrapper.findAll(ChevronDownIcon).length).toBe(1);
         expect(wrapper.findAll(ChevronUpIcon).length).toBe(0);
