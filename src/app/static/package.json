@@ -17,6 +17,8 @@
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.3",
     "@babel/register": "^7.6.2",
+    "@johmun/vue-tags-input": "^2.1.0",
+    "@reside-ic/vue-dynamic-form": "0.2.0",
     "@riophae/vue-treeselect": "^0.3.0",
     "@types/jest": "^24.0.21",
     "@types/jquery": "^3.3.38",
@@ -64,9 +66,5 @@
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-node-externals": "^1.7.2"
-  },
-  "dependencies": {
-    "@johmun/vue-tags-input": "^2.1.0",
-    "@reside-ic/vue-dynamic-form": "0.0.9"
   }
 }

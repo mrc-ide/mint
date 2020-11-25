@@ -1,7 +1,8 @@
 <template>
     <div class="container-fluid my-4">
         <div class="d-flex flex-column justify-content-center align-items-center mb-4"
-             @click="toggleBaseline">
+             @click="toggleBaseline"
+             :class="{'cursor-pointer': currentStep == 2}">
             <step-button number="1"
                          text="Setup baseline"
                          :active="currentStep === 1"

@@ -21,7 +21,8 @@ export enum RootAction {
     FetchTableData = "FetchTableData",
     FetchConfig = "FetchConfig",
     SetCurrentRegion = "SetCurrentRegion",
-    SetCurrentRegionBaselineSettings = "SetCurrentRegionBaselineSettings"
+    SetCurrentRegionBaselineSettings = "SetCurrentRegionBaselineSettings",
+    FetchDocs = "FetchDocs"
 }
 
 const currentRegionBaseline = (state: RootState) => {
@@ -29,7 +30,6 @@ const currentRegionBaseline = (state: RootState) => {
 };
 
 export const actions: ActionTree<RootState, RootState> = {
-
 
     async [RootAction.SetCurrentRegionBaselineSettings](context, payload: DynamicFormData) {
         const {dispatch, commit} = context;
@@ -145,6 +145,19 @@ export const actions: ActionTree<RootState, RootState> = {
                 context.dispatch(RootAction.FetchTableData)
             ]);
         }
+    },
+
+    async [RootAction.FetchDocs](context) {
+        await Promise.all([
+            api(context)
+                .withSuccess(RootMutation.UpdateImpactDocs)
+                .withError(RootMutation.AddError)
+                .get<string>("/impact/docs"),
+            api(context)
+                .withSuccess(RootMutation.UpdateCostDocs)
+                .withError(RootMutation.AddError)
+                .get<string>("/cost/docs")
+        ])
     },
 
     async [RootAction.FetchConfig](context) {

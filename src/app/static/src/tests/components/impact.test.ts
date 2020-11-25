@@ -5,6 +5,7 @@ import {mockGraph, mockProject, mockRootState} from "../mocks";
 import plotlyGraph from "../../app/components/figures/graphs/plotlyGraph.vue";
 import {RootState} from "../../app/store";
 import dynamicTable from "../../app/components/figures/dynamicTable.vue";
+import collapsibleDocs from "../../app/components/collapsibleDocs.vue";
 
 describe("impact", () => {
 
@@ -156,6 +157,13 @@ describe("impact", () => {
         const wrapper = shallowMount(impact, {propsData: {activeTab: "Table"}, store});
         const table = wrapper.find(dynamicTable);
         expect(table.props("data")).toEqual([]);
+    });
+
+    it("renders collapsible docs", () => {
+        const store = createStore({impactDocs: "impact docs"});
+        const wrapper = shallowMount(impact, {propsData: {activeTab: "Table"}, store});
+        const table = wrapper.find(collapsibleDocs);
+        expect(table.props("docs")).toEqual("impact docs");
     });
 
 });

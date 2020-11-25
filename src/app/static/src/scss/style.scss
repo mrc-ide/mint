@@ -14,6 +14,14 @@ html {
   font-size: 14px;
 }
 
+.feather.feather-info {
+  height: 18px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 a {
   @extend .text-success;
   @extend a.text-success;

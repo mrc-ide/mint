@@ -1,22 +1,38 @@
 <template>
-     <div class="container mt-5">
+    <div class="container mt-5">
         <div class="row">
             <div class="col-lg-6 offset-lg-3 col-10 offset-1">
+                <p>
+                    This tool is designed to help National Malaria Control Programs explore the most cost effective
+                    option of deploying current World Health Organisation (WHO) recommended ITN and IRS products for
+                    malaria control.
+                </p>
+                <p>
+                    In this tool, a <strong>project</strong> is a collection of regions and a <strong>region</strong> is
+                    defined as a management unit - this could be an administration unit, province or village. For each
+                    region defined in the tool, there is a set of outputs summarising the impact and cost effectiveness
+                    of intervention packages.
+                </p>
+                <p>
+                    IRS is very focal and usually completed in a smaller region of a larger province or district. The
+                    model assumes that IRS is applied at random to the population so it is more appropriate to create
+                    separate IRS regions and non-IRS regions for this assessment and adjust population size accordingly.
+                </p>
                 <h1 class="h3">{{ welcomeText }}</h1>
                 <div v-if="projects.length > 0">
                     <ul class="list-unstyled lead">
                         <li v-for="(project, index) in projects" :key="index"
-                        class="my-1 d-flex justify-content-between">
-                           <drop-down :text="project.name">
-                               <a class="dropdown-item"
-                                v-for="(region, index) in project.regions" :key="index"
-                                href="#"
-                                @click="(event) => navigate(event, project, region)">
-                                {{ region.name }}
+                            class="my-1 d-flex justify-content-between">
+                            <drop-down :text="project.name">
+                                <a class="dropdown-item"
+                                   v-for="(region, index) in project.regions" :key="index"
+                                   href="#"
+                                   @click="(event) => navigate(event, project, region)">
+                                    {{ region.name }}
                                 </a>
                             </drop-down>
-                            <button class="btn btn-sm btn-danger" 
-                            v-on:click="deleteProject(project)">x
+                            <button class="btn btn-sm btn-danger"
+                                    v-on:click="deleteProject(project)">x
                             </button>
                         </li>
                         <li><a href="#" @click="startNewProject">+ Start new project</a></li>
@@ -35,7 +51,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label text-right">Regions</label> 
+                            <label class="col-sm-3 col-form-label text-right">Regions</label>
                             <div class="col-sm-9">
                                 <vue-tags-input
                                     :tags="regions"
@@ -156,8 +172,7 @@
                     const valid = !regionNames.find(t => getSlug(t) == getSlug(newRegion));
                     if (valid) {
                         regionNames.push(newRegion);
-                    }
-                    else {
+                    } else {
                         this.invalidTag = true
                     }
                 }
@@ -191,8 +206,8 @@
                 this.$router.push({
                     path: region.url
                 })
-            }, 
-            deleteProject : mapMutationByName(RootMutation.DeleteProject)
+            },
+            deleteProject: mapMutationByName(RootMutation.DeleteProject)
         },
         mounted() {
             this.setCurrentProject(null);

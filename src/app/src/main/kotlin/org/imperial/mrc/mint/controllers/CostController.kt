@@ -25,4 +25,10 @@ class CostController(private val apiClient: APIClient) {
         return apiClient.getCostTableConfig()
     }
 
+    @GetMapping("/docs")
+    @ResponseBody
+    fun docs(): ResponseEntity<String> {
+        return apiClient.getCostDocs()
+    }
+
 }

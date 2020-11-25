@@ -56,4 +56,15 @@ class ImpactControllerTests {
         val sut = ImpactController(mockAPI)
         assertThat(sut.tableConfig()).isSameAs(mockResponse)
     }
+
+    @Test
+    fun `gets docs from the api`()
+    {
+        val mockAPI = mock<APIClient>{
+            on{ getImpactDocs() } doReturn mockResponse
+        }
+
+        val sut = ImpactController(mockAPI)
+        assertThat(sut.docs()).isSameAs(mockResponse)
+    }
 }

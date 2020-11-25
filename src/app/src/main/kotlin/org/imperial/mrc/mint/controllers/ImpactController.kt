@@ -31,4 +31,10 @@ class ImpactController(private val apiClient: APIClient){
     fun tableConfig(): ResponseEntity<String> {
         return apiClient.getImpactTableConfig()
     }
+
+    @GetMapping("/docs")
+    @ResponseBody
+    fun docs(): ResponseEntity<String> {
+        return apiClient.getImpactDocs()
+    }
 }
