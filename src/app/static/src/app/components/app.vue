@@ -60,8 +60,9 @@
     import {switches} from "../featureSwitches";
 
     interface Methods {
-        fetchConfig: () => void
         fetchDocs: () => void
+        fetchBaselineOptions: () => void
+        fetchInterventionOptions: () => void
         addRegion: (region: Region) => void,
         createNewRegion: () => void
         cancel: () => void
@@ -119,12 +120,14 @@
             cancel() {
                 this.newRegionName = "";
             },
-            fetchConfig: mapActionByName(RootAction.FetchConfig),
-            fetchDocs: mapActionByName(RootAction.FetchDocs)
+            fetchDocs: mapActionByName(RootAction.FetchDocs),
+            fetchBaselineOptions: mapActionByName(RootAction.FetchBaselineOptions),
+            fetchInterventionOptions: mapActionByName(RootAction.FetchInterventionOptions)
         },
         beforeMount: function () {
-            this.fetchConfig();
             this.fetchDocs();
+            this.fetchBaselineOptions();
+            this.fetchInterventionOptions();
         }
     })
 </script>

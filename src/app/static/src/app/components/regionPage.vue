@@ -22,6 +22,10 @@
         <b-collapse :visible="currentStep === 2">
             <interventions v-if="currentStep === 2"></interventions>
         </b-collapse>
+        <div v-if="loading" class="text-center">
+            <loading-spinner size="lg"></loading-spinner>
+            <h2>Loading data</h2>
+        </div>
     </div>
 </template>
 
@@ -34,12 +38,12 @@
     import {Project} from "../models/project";
     import {RootAction} from "../actions";
     import {BCollapse, BIconCaretDownFill, BIconCaretUpFill} from "bootstrap-vue";
-    // @ts-ignore Dynamic imports not supported error
-    const interventions = async () => import("./interventions.vue");
+    import loadingSpinner from "./loadingSpinner.vue";
 
     interface Data {
         interventionsDisabled: boolean
         showBaseline: boolean
+        loading: boolean
     }
 
     interface Methods {
@@ -56,12 +60,27 @@
         caretIconComponent: string
     }
 
+    let vm: any = null;
+
     export default Vue.extend<Data, Methods, Computed, {}>({
-        components: {baseline, interventions, BCollapse, BIconCaretDownFill, BIconCaretUpFill},
+        components: {
+            baseline,
+            interventions: () => {
+                vm.loading = true;
+                // @ts-ignore Dynamic imports not supported error
+                return import('./interventions.vue').then((component) => {
+                    vm.loading = false;
+                    return component
+                })
+            },
+            loadingSpinner,
+            BCollapse, BIconCaretDownFill, BIconCaretUpFill
+        },
         data() {
             return {
                 interventionsDisabled: false,
-                showBaseline: false
+                showBaseline: false,
+                loading: false
             }
         },
         computed: {
@@ -110,8 +129,9 @@
             if (this.currentProject?.currentRegion?.step == 1) {
                 this.showBaseline = true
             }
+        },
+        created() {
+            vm = this;
         }
     });
-
-    interventions().then(); //async load js from server
 </script>

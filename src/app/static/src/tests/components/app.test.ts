@@ -17,14 +17,16 @@ describe("app", () => {
     const router = new VueRouter({routes: [{path: '/projects/:project/regions/:region'}]});
 
     const getWrapper = (state = {},
-                        fetchConfigMock = jest.fn(),
                         addRegionMock = jest.fn(),
-                        fetchDocsMock = jest.fn()) => {
+                        fetchDocsMock = jest.fn(),
+                        fetchBaselineMock = jest.fn(),
+                        fetchInterventionsMock = jest.fn()) => {
         const store = new Vuex.Store({
             state: mockRootState(state),
             actions: {
-                [RootAction.FetchConfig]: fetchConfigMock,
-                [RootAction.FetchDocs]: fetchDocsMock
+                [RootAction.FetchDocs]: fetchDocsMock,
+                [RootAction.FetchBaselineOptions]: fetchBaselineMock,
+                [RootAction.FetchInterventionOptions]: fetchInterventionsMock
             },
             mutations: {
                 [RootMutation.AddRegion]: addRegionMock
@@ -65,12 +67,14 @@ describe("app", () => {
         } else expect(wrapper.findAll("#stratAcrossRegions").length).toBe(0);
     });
 
-    it("fetches config and docs before mount", () => {
-        const fetchConfigMock = jest.fn();
+    it("fetches docs and options before mount", () => {
         const fetchDocsMock = jest.fn();
-        getWrapper({}, fetchConfigMock, jest.fn(), fetchDocsMock);
-        expect(fetchConfigMock.mock.calls.length).toBe(1);
+        const fetchBaselineMock = jest.fn();
+        const fetchInterventionsMock = jest.fn();
+        getWrapper({}, jest.fn(), fetchDocsMock, fetchBaselineMock, fetchInterventionsMock);
         expect(fetchDocsMock.mock.calls.length).toBe(1);
+        expect(fetchBaselineMock.mock.calls.length).toBe(1);
+        expect(fetchInterventionsMock.mock.calls.length).toBe(1);
     });
 
     it("adds new region and navigates to it", async () => {
@@ -80,7 +84,7 @@ describe("app", () => {
             interventionOptions: {controlSections: []}
         };
         const addRegionMock = jest.fn();
-        const rendered = getWrapper(state, jest.fn(), addRegionMock);
+        const rendered = getWrapper(state, addRegionMock);
         rendered.findAll(".dropdown-item").at(1).find("a").trigger("click");
         await Vue.nextTick();
 

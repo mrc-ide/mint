@@ -201,18 +201,16 @@ describe("actions", () => {
         expectAddsErrorOn500(actions[RootAction.FetchCostTableConfig], url);
     });
 
-    it("FetchConfig fetches options and figures config", async () => {
+    it("FetchConfig fetches figures config", async () => {
         const dispatch = jest.fn();
         await (actions[RootAction.FetchConfig] as any)({dispatch} as any);
 
-        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchBaselineOptions);
-        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchInterventionOptions);
-        expect(dispatch.mock.calls[2][0]).toBe(RootAction.FetchPrevalenceGraphConfig);
-        expect(dispatch.mock.calls[3][0]).toBe(RootAction.FetchCasesGraphConfig);
-        expect(dispatch.mock.calls[4][0]).toBe(RootAction.FetchImpactTableConfig);
-        expect(dispatch.mock.calls[5][0]).toBe(RootAction.FetchCostCasesGraphConfig);
-        expect(dispatch.mock.calls[6][0]).toBe(RootAction.FetchCostEfficacyGraphConfig);
-        expect(dispatch.mock.calls[7][0]).toBe(RootAction.FetchCostTableConfig);
+        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphConfig);
+        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchCasesGraphConfig);
+        expect(dispatch.mock.calls[2][0]).toBe(RootAction.FetchImpactTableConfig);
+        expect(dispatch.mock.calls[3][0]).toBe(RootAction.FetchCostCasesGraphConfig);
+        expect(dispatch.mock.calls[4][0]).toBe(RootAction.FetchCostEfficacyGraphConfig);
+        expect(dispatch.mock.calls[5][0]).toBe(RootAction.FetchCostTableConfig);
     });
 
     it("fetches cost cases averted config", async () => {

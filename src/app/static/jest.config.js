@@ -20,13 +20,17 @@ module.exports = {
         ".*\\.(vue)$": "vue-jest",
         "^.+\\.ts?$": "ts-jest",
         "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
-    },
+     },
+    "transformIgnorePatterns": [
+        "/node_modules/(?!mathjs).+\\.js"
+    ],
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
         "/node_modules/",
         "./tests/mocks.ts",
         "./tests/testHelpers.ts",
-        "./tests/.*/helpers.ts"
+        "./tests/.*/helpers.ts",
+        "./app/components/figures/graphs/plotly/.*"
     ]
 };
