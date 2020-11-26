@@ -45,7 +45,7 @@ describe("app", () => {
         expect(wrapper.findAll(".navbar-nav").length).toBe(0);
     });
 
-    it("show nav bar if currentProject is not null", () => {
+    it("show project menu if currentProject is not null", () => {
         const state = {
             currentProject: new Project(
                 "my project", ["region1", "region2"], {controlSections: []}, {controlSections: []}
