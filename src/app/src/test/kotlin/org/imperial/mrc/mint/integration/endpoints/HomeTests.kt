@@ -13,7 +13,6 @@ class HomeTests : EndpointTests() {
         val responseEntity = testRestTemplate.postForEntity<String>("/table/data",
                 Settings.Baseline)
         assertSuccess(responseEntity, "Data")
-
     }
 
     @Test
