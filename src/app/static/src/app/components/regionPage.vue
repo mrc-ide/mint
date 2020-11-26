@@ -20,6 +20,11 @@
                   @validate="baselineValidated"
                   ref="baseline"></baseline>
         <interventions v-if="currentStep === 2"></interventions>
+
+        <div v-if="loading" class="text-center">
+            <loading-spinner size="lg"></loading-spinner>
+            <h2>Loading data</h2>
+        </div>
     </div>
 </template>
 
@@ -32,11 +37,11 @@
     import {mapState} from "vuex";
     import {Project} from "../models/project";
     import {RootAction} from "../actions";
-    // @ts-ignore Dynamic imports not supported error
-    const interventions = async () => import("./interventions.vue");
+    import loadingSpinner from "./loadingSpinner.vue";
 
     interface Data {
         interventionsDisabled: boolean
+        loading: boolean
     }
 
     interface Methods {
@@ -51,11 +56,25 @@
         currentStep: number
     }
 
+    let vm: any = null;
+
     export default Vue.extend<Data, Methods, Computed, {}>({
-        components: {stepButton, baseline, interventions},
+        components: {
+            stepButton, baseline,
+            interventions: () => {
+                vm.loading = true;
+                // @ts-ignore Dynamic imports not supported error
+                return import('./interventions.vue').then((component) => {
+                    vm.loading = false;
+                    return component
+                })
+            },
+            loadingSpinner
+        },
         data() {
             return {
-                interventionsDisabled: false
+                interventionsDisabled: false,
+                loading: false
             }
         },
         computed: {
@@ -86,8 +105,9 @@
             // directly entering a url
             const params = this.$router.currentRoute.params;
             this.setCurrentRegion({project: params["project"], region: params["region"]});
+        },
+        created() {
+            vm = this;
         }
     });
-
-    interventions().then(); //async load js from server
 </script>

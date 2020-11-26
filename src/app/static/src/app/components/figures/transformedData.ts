@@ -1,4 +1,5 @@
-import {evaluate} from "mathjs";
+// https://mathjs.org/docs/custom_bundling.html#numbers-only
+import {evaluate} from "mathjs/number";
 import {Dictionary} from "vue-router/types/router";
 
 export interface TransformationProps {

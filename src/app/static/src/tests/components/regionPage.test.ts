@@ -10,6 +10,7 @@ import interventions from "../../app/components/interventions.vue";
 import baseline from "../../app/components/baseline.vue";
 import {Project} from "../../app/models/project";
 import {RootAction} from "../../app/actions";
+import loadingSpinner from "../../app/components/loadingSpinner.vue";
 
 describe("region page", () => {
 
@@ -27,10 +28,14 @@ describe("region page", () => {
             }),
             mutations: {
                 [RootMutation.SetCurrentRegionStep]: setCurrentRegionStepMock,
-                [RootMutation.SetCurrentRegionBaselineSettings]: setBaselineSettingsMock
+                [RootMutation.SetCurrentRegionBaselineSettings]: setBaselineSettingsMock,
+                [RootMutation.SetCurrentRegionInterventionSettings]: jest.fn(),
             },
             actions: {
-                [RootAction.SetCurrentRegion]: setCurrentRegionMock
+                [RootAction.SetCurrentRegion]: setCurrentRegionMock,
+                [RootAction.FetchConfig]: jest.fn(),
+                [RootAction.EnsureImpactData]: jest.fn(),
+                [RootAction.EnsureCostEffectivenessData]: jest.fn()
             }
         });
     };
@@ -44,6 +49,17 @@ describe("region page", () => {
         expect(steps.at(1).props("active")).toBe(false);
         expect(wrapper.findAll(interventions).length).toBe(0);
         expect(wrapper.findAll(baseline).length).toBe(1);
+    });
+
+    it("shows loading spinner while interventions component is loading", () => {
+        const project = new Project("project 1", ["region 1"],
+            {controlSections: []}, {controlSections: []});
+        project.currentRegion.step = 2;
+
+        const store = createStore(jest.fn(), jest.fn(), project);
+        const wrapper = shallowMount(regionPage, {store, localVue, router});
+
+        expect(wrapper.findAll(loadingSpinner).length).toBe(1);
     });
 
     it("shows interventions if current region's step is 2", () => {

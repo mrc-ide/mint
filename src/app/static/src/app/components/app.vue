@@ -14,8 +14,8 @@
                     </drop-down>
                 </div>
                 <a href="#" class="px-2 full-height text-dark project-nav"
-                id="stratAcrossRegions"
-                v-if="stratAcrossRegionsIsEnabled">Strategize across regions
+                   id="stratAcrossRegions"
+                   v-if="stratAcrossRegionsIsEnabled">Strategize across regions
                     <b-icon-graph-up></b-icon-graph-up>
                 </a>
             </div>
@@ -57,8 +57,9 @@
     import {switches} from "../featureSwitches";
 
     interface Methods {
-        fetchConfig: () => void
         fetchDocs: () => void
+        fetchBaselineOptions: () => void
+        fetchInterventionOptions: () => void
         addRegion: (region: Region) => void,
         createNewRegion: () => void
         cancel: () => void
@@ -116,12 +117,14 @@
             cancel() {
                 this.newRegionName = "";
             },
-            fetchConfig: mapActionByName(RootAction.FetchConfig),
-            fetchDocs: mapActionByName(RootAction.FetchDocs)
+            fetchDocs: mapActionByName(RootAction.FetchDocs),
+            fetchBaselineOptions: mapActionByName(RootAction.FetchBaselineOptions),
+            fetchInterventionOptions: mapActionByName(RootAction.FetchInterventionOptions)
         },
         beforeMount: function () {
-            this.fetchConfig();
             this.fetchDocs();
+            this.fetchBaselineOptions();
+            this.fetchInterventionOptions();
         }
     })
 </script>
