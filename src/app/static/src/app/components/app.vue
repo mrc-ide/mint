@@ -1,8 +1,9 @@
 <template>
     <div>
-        <div class="navbar navbar-secondary" v-if="currentProject">
-            <div class="container-fluid">
-                <div class="navbar-header project-header">
+        <div class="navbar navbar-secondary navbar-expand">
+            <a class="navbar-brand bg-secondary text-light font-weight-bold full-height" href="/">MINT</a>
+            <ul class="navbar-nav mr-auto" v-if="currentProject">
+                <li class="project-header full-height">
                     <span>{{ currentProject.name }}:</span>
                     <drop-down :text="currentProject.currentRegion.name" parent-class="px-2" toggle-class="text-dark">
                         <div class="dropdown-item" v-for="region in currentProject.regions">
@@ -12,13 +13,15 @@
                             <a v-b-modal.add-region>+ Add region</a>
                         </div>
                     </drop-down>
-                </div>
-                <a href="#" class="px-2 full-height text-dark project-nav"
-                   id="stratAcrossRegions"
-                   v-if="stratAcrossRegionsIsEnabled">Strategize across regions
-                    <b-icon-graph-up></b-icon-graph-up>
-                </a>
-            </div>
+                </li>
+                <li class="full-height">
+                    <a href="#" class="px-2 text-dark project-nav"
+                       id="stratAcrossRegions"
+                       v-if="stratAcrossRegionsIsEnabled">Strategize across regions
+                        <b-icon-graph-up></b-icon-graph-up>
+                    </a>
+                </li>
+            </ul>
         </div>
         <router-view></router-view>
         <b-modal id="add-region"

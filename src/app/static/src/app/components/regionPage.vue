@@ -1,26 +1,27 @@
 <template>
-    <div class="container-fluid my-5">
-        <div class="stepper mb-5">
-            <step-button number="1"
-                         text="Setup baseline"
-                         :active="currentStep === 1"
-                         :disabled="false"
-                         @click="setCurrentStep(1)"></step-button>
-            <div class="col step-connector">
-                <hr/>
-            </div>
-            <step-button number="2"
-                         text="Explore interventions"
-                         :active="currentStep === 2"
-                         :disabled="interventionsDisabled"
-                         @click="next"></step-button>
+    <div class="container-fluid my-4">
+        <div class="d-flex flex-column justify-content-center align-items-center mb-4"
+             @click="toggleBaseline"
+             :class="{'cursor-pointer': currentStep === 2}">
+            <h4>
+                Setup baseline
+                <component :is="caretIconComponent"
+                           v-if="currentStep === 2"></component>
+            </h4>
         </div>
-        <baseline v-if="currentStep === 1"
-                  @submit="setCurrentStep(2)"
-                  @validate="baselineValidated"
-                  ref="baseline"></baseline>
-        <interventions v-if="currentStep === 2"></interventions>
-
+        <b-collapse v-model="showBaseline">
+            <baseline @validate="baselineValidated"
+                      ref="baseline"></baseline>
+        </b-collapse>
+        <div v-if="currentStep === 1" class="d-flex flex-column justify-content-center align-items-center my-4">
+            <button class="btn btn-primary btn-lg"
+                    :disabled="interventionsDisabled"
+                    @click="next">Next
+            </button>
+        </div>
+        <b-collapse :visible="currentStep === 2">
+            <interventions v-if="currentStep === 2"></interventions>
+        </b-collapse>
         <div v-if="loading" class="text-center">
             <loading-spinner size="lg"></loading-spinner>
             <h2>Loading data</h2>
@@ -32,15 +33,16 @@
     import Vue from "vue";
     import {RootMutation} from "../mutations";
     import {mapActionByName, mapMutationByName} from "../utils";
-    import stepButton from "./stepButton.vue";
     import baseline from "./baseline.vue";
     import {mapState} from "vuex";
     import {Project} from "../models/project";
     import {RootAction} from "../actions";
+    import {BCollapse, BIconCaretDownFill, BIconCaretUpFill} from "bootstrap-vue";
     import loadingSpinner from "./loadingSpinner.vue";
 
     interface Data {
         interventionsDisabled: boolean
+        showBaseline: boolean
         loading: boolean
     }
 
@@ -49,18 +51,20 @@
         setCurrentStep: (step: number) => void,
         baselineValidated: (value: boolean) => void
         next: () => void;
+        toggleBaseline: () => void;
     }
 
     interface Computed {
         currentProject: Project | null,
         currentStep: number
+        caretIconComponent: string
     }
 
     let vm: any = null;
 
     export default Vue.extend<Data, Methods, Computed, {}>({
         components: {
-            stepButton, baseline,
+            baseline,
             interventions: () => {
                 vm.loading = true;
                 // @ts-ignore Dynamic imports not supported error
@@ -69,11 +73,13 @@
                     return component
                 })
             },
-            loadingSpinner
+            loadingSpinner,
+            BCollapse, BIconCaretDownFill, BIconCaretUpFill
         },
         data() {
             return {
                 interventionsDisabled: false,
+                showBaseline: false,
                 loading: false
             }
         },
@@ -81,6 +87,9 @@
             ...mapState(["currentProject"]),
             currentStep: function () {
                 return this.currentProject ? this.currentProject.currentRegion.step : 0
+            },
+            caretIconComponent() {
+                return this.showBaseline ? "b-icon-caret-up-fill" : "b-icon-caret-down-fill"
             }
         },
         methods: {
@@ -91,6 +100,13 @@
             },
             next() {
                 ((this.$refs['baseline'] as Vue).$refs["form"] as any).submit();
+                this.setCurrentStep(2);
+                this.showBaseline = false;
+            },
+            toggleBaseline() {
+                if (this.currentStep === 2) {
+                    this.showBaseline = !this.showBaseline;
+                }
             }
         },
         watch: {
@@ -98,6 +114,11 @@
                 // navigation has occurred within the app, i.e. by clicking an internal link
                 const params = to.params;
                 this.setCurrentRegion({project: params["project"], region: params["region"]});
+            },
+            currentStep(step: number) {
+                if (step == 1) {
+                    this.showBaseline = true
+                }
             }
         },
         mounted() {
@@ -105,6 +126,9 @@
             // directly entering a url
             const params = this.$router.currentRoute.params;
             this.setCurrentRegion({project: params["project"], region: params["region"]});
+            if (this.currentProject?.currentRegion?.step == 1) {
+                this.showBaseline = true
+            }
         },
         created() {
             vm = this;

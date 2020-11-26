@@ -1,9 +1,8 @@
 <template>
-    <div class="baseline">
+    <div class="baseline" v-if="currentProject">
         <dynamic-form v-model="options"
                       ref="form"
-                      :include-submit-button="true"
-                      submit-text="Next"
+                      :include-submit-button="false"
                       @submit="submit"
                       @validate="$emit('validate', $event)"></dynamic-form>
     </div>
@@ -13,8 +12,9 @@
     import {DynamicForm, DynamicFormMeta, DynamicFormData} from "@reside-ic/vue-dynamic-form";
     import {Project} from "../models/project";
     import {mapState} from "vuex";
-    import {mapMutationByName} from "../utils";
+    import {mapActionByName, mapMutationByName} from "../utils";
     import {RootMutation} from "../mutations";
+    import {RootAction} from "../actions";
 
     interface Computed {
         currentProject: Project
@@ -30,23 +30,29 @@
     export default Vue.extend<{}, Methods, Computed, {}>({
         components: {DynamicForm},
         methods: {
-            submit: function(settings: DynamicFormData) {
+            submit: function (settings: DynamicFormData) {
                 this.updateBaselineSettings(settings);
                 this.$emit('submit');
             },
             update: mapMutationByName(RootMutation.SetCurrentRegionBaselineOptions),
-            updateBaselineSettings: mapMutationByName(RootMutation.SetCurrentRegionBaselineSettings)
+            updateBaselineSettings: mapActionByName(RootAction.SetCurrentRegionBaselineSettings)
         },
         computed: {
             ...mapState(["currentProject"]),
-            options:  {
+            options: {
                 get() {
                     return this.currentProject.currentRegion.baselineOptions
                 },
                 set(value: DynamicFormMeta) {
-                      this.update(value);
+                    this.update(value);
+                    if (this.currentProject.currentRegion.step == 2) {
+                        // this means we are viewing the figures, so need to
+                        // update data in real time - but wait for next
+                        // tick so that values have been updated in the store
+                        Vue.nextTick().then(() => (this.$refs["form"] as any).submit())
+                    }
                 }
-             }
+            }
         }
     });
 </script>

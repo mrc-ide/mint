@@ -56,14 +56,14 @@
                     "position": "absolute",
                     "top": "0",
                     "left": "0",
-                    "padding-left": "42px"
+                    "padding-left": "38px"
                 }
             },
             navStyle() {
                 return {
                     "z-index": "999",
-                    "height": "42px",
-                    "transform-origin": "0 0",
+                    "height": "37px",
+                    "transform-origin": "0 -1px",
                     "transform": `translate(0, ${this.width}px) rotate(-90deg)`
                 }
             }

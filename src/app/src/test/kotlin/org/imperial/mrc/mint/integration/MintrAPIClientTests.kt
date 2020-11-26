@@ -92,7 +92,7 @@ class MintrAPIClientTests {
     @Test
     fun `can get table data`() {
         val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
-        val result = sut.getTableData(mapOf())
+        val result = sut.getTableData(Settings.Baseline)
         assertThat(result.statusCodeValue).isEqualTo(200)
         JSONValidator().validateSuccess(result.body!!, "Data")
     }

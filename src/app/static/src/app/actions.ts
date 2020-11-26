@@ -3,7 +3,7 @@ import {RootState} from "./store";
 import {api} from "./apiService";
 import {Data, Graph} from "./generated";
 import {RootMutation} from "./mutations";
-import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {router} from "./router";
 
 export enum RootAction {
@@ -21,6 +21,7 @@ export enum RootAction {
     FetchTableData = "FetchTableData",
     FetchConfig = "FetchConfig",
     SetCurrentRegion = "SetCurrentRegion",
+    SetCurrentRegionBaselineSettings = "SetCurrentRegionBaselineSettings",
     FetchDocs = "FetchDocs"
 }
 
@@ -29,6 +30,15 @@ const currentRegionBaseline = (state: RootState) => {
 };
 
 export const actions: ActionTree<RootState, RootState> = {
+
+    async [RootAction.SetCurrentRegionBaselineSettings](context, payload: DynamicFormData) {
+        const {dispatch, commit} = context;
+        commit(RootMutation.SetCurrentRegionBaselineSettings, payload);
+        await Promise.all([
+            dispatch(RootAction.FetchPrevalenceGraphData),
+            dispatch(RootAction.FetchTableData)
+        ]);
+    },
 
     async [RootAction.SetCurrentRegion](context, payload: { project: string, region: string }) {
         const {state, commit} = context;

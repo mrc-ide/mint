@@ -1,7 +1,6 @@
 @import "partials/variables.scss";
 @import "../../node_modules/bootstrap/scss/bootstrap";
 @import "partials/header.scss";
-@import "partials/stepper.scss";
 @import "partials/tooltips.scss";
 @import "partials/baseline.scss";
 @import "partials/interventions.scss";
@@ -11,6 +10,11 @@
 
 html {
   overflow-y: scroll;
+  font-size: 14px;
+}
+
+.feather.feather-info {
+  height: 18px;
 }
 
 .cursor-pointer {

@@ -2,6 +2,10 @@
   .dynamic-form {
     @extend .list-group;
 
+    svg {
+      height: 18px;
+    }
+
     > div {
       border-top-width: 1px !important;
       border-top-left-radius: .25rem;

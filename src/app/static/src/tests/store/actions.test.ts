@@ -330,4 +330,19 @@ describe("actions", () => {
         expect(commit.mock.calls[1][1]).toBe("cost docs");
     });
 
+    it("SetCurrentRegionBaselineSettings commits settings and fetches data", async () => {
+        const commit = jest.fn();
+        const dispatch = jest.fn();
+        const state = mockRootState();
+
+        await (actions[RootAction.SetCurrentRegionBaselineSettings] as any)({commit, state, dispatch} as any);
+
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.SetCurrentRegionBaselineSettings);
+
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
+        expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchTableData);
+    });
+
 });
