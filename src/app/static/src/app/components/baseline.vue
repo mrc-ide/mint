@@ -49,7 +49,6 @@
                         // this means we are viewing the figures, so need to
                         // update data in real time - but wait for next
                         // tick so that values have been updated in the store
-                        console.log("YO")
                         Vue.nextTick().then(() => (this.$refs["form"] as any).submit())
                     }
                 }
