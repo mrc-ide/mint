@@ -15,6 +15,7 @@
         </b-collapse>
         <div v-if="currentStep === 1" class="d-flex flex-column justify-content-center align-items-center my-4">
             <button class="btn btn-primary btn-lg"
+                    :disabled="interventionsDisabled"
                     @click="next">Next
             </button>
         </div>
@@ -28,7 +29,6 @@
     import Vue from "vue";
     import {RootMutation} from "../mutations";
     import {mapActionByName, mapMutationByName} from "../utils";
-    import stepButton from "./stepButton.vue";
     import baseline from "./baseline.vue";
     import {mapState} from "vuex";
     import {Project} from "../models/project";
@@ -57,7 +57,7 @@
     }
 
     export default Vue.extend<Data, Methods, Computed, {}>({
-        components: {stepButton, baseline, interventions, BCollapse, BIconCaretDownFill, BIconCaretUpFill},
+        components: {baseline, interventions, BCollapse, BIconCaretDownFill, BIconCaretUpFill},
         data() {
             return {
                 interventionsDisabled: false,

@@ -17,7 +17,7 @@
                 <li class="full-height">
                     <a href="#" class="px-2 text-dark project-nav"
                        id="stratAcrossRegions"
-                       v-if="true">Strategize across regions
+                       v-if="stratAcrossRegionsIsEnabled">Strategize across regions
                         <b-icon-graph-up></b-icon-graph-up>
                     </a>
                 </li>

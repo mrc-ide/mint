@@ -38,9 +38,9 @@ describe("app", () => {
         });
     };
 
-    it("does not show nav bar if currentProject is null", () => {
+    it("does not show project menu if currentProject is null", () => {
         const wrapper = getWrapper();
-        expect(wrapper.findAll(".navbar").length).toBe(0);
+        expect(wrapper.findAll(".navbar-nav").length).toBe(0);
     });
 
     it("show nav bar if currentProject is not null", () => {
@@ -50,7 +50,7 @@ describe("app", () => {
             )
         };
         const wrapper = getWrapper(state);
-        expect(wrapper.findAll(".navbar").length).toBe(1);
+        expect(wrapper.findAll(".navbar-nav").length).toBe(1);
         expect(wrapper.find(".project-header span").text()).toBe("my project:");
         expect(wrapper.findAll(".dropdown-item").length).toBe(3);
 

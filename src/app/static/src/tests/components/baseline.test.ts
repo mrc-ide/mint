@@ -1,30 +1,34 @@
-import {shallowMount} from "@vue/test-utils";
+import {mount, shallowMount} from "@vue/test-utils";
 import {DynamicForm} from "@reside-ic/vue-dynamic-form";
 import Baseline from "../../app/components/baseline.vue";
 import Vuex from "vuex";
-import {mockRootState} from "../mocks";
+import {mockProject, mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
 import {RootMutation} from "../../app/mutations";
 import Vue from "vue";
+import {RootAction} from "../../app/actions";
 
 describe("baseline", () => {
 
     const baselineOptions = {
         controlSections: [
-            { label: "section1", controlGroups: [] },
-            { label: "section2", controlGroups: [] },
-            { label: "section3", controlGroups: [] }
+            {label: "section1", controlGroups: []},
+            {label: "section2", controlGroups: []},
+            {label: "section3", controlGroups: []}
         ]
     };
-    const getWrapper = (setBaselineMock = jest.fn(), setBaselineSettingsMock = jest.fn()) => {
-        const currentProject = new Project("project 1", ["region 1"], baselineOptions, {controlSections: []});
-        const store =  new Vuex.Store({
+    const getWrapper = (setBaselineMock = jest.fn(),
+                        setBaselineSettingsMock = jest.fn(),
+                        currentProject = new Project("project 1", ["region 1"], baselineOptions, {controlSections: []})) => {
+        const store = new Vuex.Store({
             state: mockRootState({
                 currentProject
             }),
             mutations: {
-                [RootMutation.SetCurrentRegionBaselineOptions]: setBaselineMock,
-                [RootMutation.SetCurrentRegionBaselineSettings]: setBaselineSettingsMock
+                [RootMutation.SetCurrentRegionBaselineOptions]: setBaselineMock
+            },
+            actions: {
+                [RootAction.SetCurrentRegionBaselineSettings]: setBaselineSettingsMock
             }
         });
 
@@ -35,29 +39,73 @@ describe("baseline", () => {
         const wrapper = getWrapper();
         expect(wrapper.find(DynamicForm).exists()).toBe(true);
         expect(wrapper.find(DynamicForm).props("formMeta").controlSections.length).toBe(3);
-        expect(wrapper.find(DynamicForm).props("submitText")).toBe("Next");
+        expect(wrapper.find(DynamicForm).props("includeSubmitButton")).toBe(false);
     });
 
-    it("commits mutation when form data changes", async () => {
+    it("if on step 1, just commits mutation when form data changes", async () => {
         const mockMutation = jest.fn();
+        const mockAction = jest.fn();
+        const project = mockProject();
+        const store = new Vuex.Store({
+            state: mockRootState({
+                currentProject: project
+            }),
+            mutations: {
+                [RootMutation.SetCurrentRegionBaselineOptions]: mockMutation
+            },
+            actions: {
+                [RootAction.SetCurrentRegionBaselineSettings]: mockAction
+            }
+        });
 
-        const wrapper = getWrapper(mockMutation);
+        const wrapper = mount(Baseline, {store});
         const newBaseline = {controlSections: "NEW FORM DATA"};
         wrapper.find(DynamicForm).vm.$emit("change", [newBaseline]);
 
         await Vue.nextTick();
         expect(mockMutation.mock.calls.length).toBe(1);
         expect(mockMutation.mock.calls[0][1][0]).toBe(newBaseline);
+
+        await Vue.nextTick();
+        expect(wrapper.find(DynamicForm)!!.emitted("submit")).toBeUndefined();
     });
 
-    it("commits update baseline settings and emits submit event when form is submitted", async () => {
+    it("if on step 2, submits form when form data changes", async () => {
+        const mockMutation = jest.fn();
+        const mockAction = jest.fn();
+        const project = mockProject();
+        project.currentRegion.step = 2;
+        const store = new Vuex.Store({
+            state: mockRootState({
+                currentProject: project
+            }),
+            mutations: {
+                [RootMutation.SetCurrentRegionBaselineOptions]: mockMutation
+            },
+            actions: {
+                [RootAction.SetCurrentRegionBaselineSettings]: mockAction
+            }
+        });
+
+        const wrapper = mount(Baseline, {store});
+        const newBaseline = {controlSections: "NEW FORM DATA"};
+        wrapper.find(DynamicForm).vm.$emit("change", [newBaseline]);
+
+        await Vue.nextTick();
+        expect(mockMutation.mock.calls.length).toBe(1);
+        expect(mockMutation.mock.calls[0][1][0]).toBe(newBaseline);
+
+        await Vue.nextTick();
+        expect(wrapper.find(DynamicForm)!!.emitted("submit")!!.length).toBe(1);
+    });
+
+    it("dispatches update baseline settings when form is submitted", async () => {
         const mockSetBaselineSettings = jest.fn();
         const wrapper = getWrapper(jest.fn(), mockSetBaselineSettings);
         const mockSettings = {population: 1000};
         wrapper.find(DynamicForm).vm.$emit("submit", mockSettings);
 
         await Vue.nextTick();
-        expect(wrapper.emitted("submit")!!.length).toBe(1);
         expect(mockSetBaselineSettings.mock.calls.length).toBe(1);
         expect(mockSetBaselineSettings.mock.calls[0][1]).toBe(mockSettings);
     });

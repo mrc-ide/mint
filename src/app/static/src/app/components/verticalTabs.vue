@@ -62,8 +62,8 @@
             navStyle() {
                 return {
                     "z-index": "999",
-                    "height": "38px",
-                    "transform-origin": "0 0",
+                    "height": "37px",
+                    "transform-origin": "0 -1px",
                     "transform": `translate(0, ${this.width}px) rotate(-90deg)`
                 }
             }

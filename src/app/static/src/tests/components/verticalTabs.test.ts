@@ -44,7 +44,7 @@ describe("vertical tabs", () => {
     it("adds col styling", () => {
         const wrapper = getWrapper();
         expect(wrapper.find(".col").attributes().style)
-            .toBe("position: absolute; top: 0px; left: 0px; padding-left: 42px;");
+            .toBe("position: absolute; top: 0px; left: 0px; padding-left: 38px;");
     });
 
     it("calculates tab translation", async () => {
@@ -52,7 +52,7 @@ describe("vertical tabs", () => {
 
         await Vue.nextTick();
         expect(wrapper.find(".nav-tabs").attributes().style)
-            .toBe("z-index: 999; height: 42px; transform-origin: 0 0; transform: translate(0, 100px) rotate(-90deg);");
+            .toBe("z-index: 999; height: 37px; transform-origin: 0 -1px; transform: translate(0, 100px) rotate(-90deg);");
 
     });
 
@@ -61,7 +61,7 @@ describe("vertical tabs", () => {
 
         await Vue.nextTick();
         expect(wrapper.find(".nav-tabs").attributes().style)
-            .toBe("z-index: 999; height: 42px; transform-origin: 0 0; transform: translate(0, 100px) rotate(-90deg);");
+            .toBe("z-index: 999; height: 37px; transform-origin: 0 -1px; transform: translate(0, 100px) rotate(-90deg);");
 
         Object.defineProperty(HTMLElement.prototype, 'clientWidth', {configurable: true, value: 50});
 
@@ -71,7 +71,7 @@ describe("vertical tabs", () => {
         await Vue.nextTick(); // wait 2 ticks because that's what the watcher does internally
 
         expect(wrapper.find(".nav-tabs").attributes().style)
-            .toBe("z-index: 999; height: 42px; transform-origin: 0 0; transform: translate(0, 50px) rotate(-90deg);");
+            .toBe("z-index: 999; height: 37px; transform-origin: 0 -1px; transform: translate(0, 50px) rotate(-90deg);");
 
     });
 
