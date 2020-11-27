@@ -30,7 +30,7 @@
         setup(props: Props) {
             const {filteredData} = useFiltering(props);
             const {evaluateFormula} = useTransformation(props);
-            const evaluateCell = (col: ColumnDefinition, row: any) => {
+            const evaluateCell = (col: ColumnDefinition, row: any): number | string => {
                 let value: string | number = "";
                 if (!col.valueTransform) {
                     value = row[col.valueCol]
@@ -41,7 +41,10 @@
                     return "n/a";
                 }
                 if (typeof value == "string") {
-                    return value;
+                    if (isNaN(parseFloat(value))) {
+                        return value;
+                    }
+                    value = parseFloat(value);
                 }
                 if (col.precision) {
                     value = value.toPrecision(col.precision)
