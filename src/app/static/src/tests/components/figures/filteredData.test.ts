@@ -35,6 +35,29 @@ describe("use filtering", () => {
 
     });
 
+    it("includes values where a setting is n/a", () => {
+
+        const props: FilteringProps = {
+            settings: {
+                "netUse": 0
+            },
+            data: [
+                {"month": 1, "intervention": "none", "netUse": "n/a", "value": 0.1},
+                {"month": 1, "intervention": "none", "netUse": "n/a", "value": 0.2},
+                {"month": 2, "intervention": "none", "netUse": "n/a", "value": 0.3},
+                {"month": 2, "intervention": "none", "netUse": "n/a", "value": 0.4},
+                {"month": 1, "intervention": "ITN", "netUse": 0, "value": 0.5},
+                {"month": 1, "intervention": "ITN", "netUse": 0.1, "value": 0.6},
+                {"month": 2, "intervention": "ITN", "netUse": 0, "value": 0.7},
+                {"month": 2, "intervention": "ITN", "netUse": 0.1, "value": 0.8}
+            ]
+        }
+
+        const result = useFiltering(props);
+        expect(result.filteredData.value.length).toBe(6);
+    });
+
+
     it("ignores settings that don't exist in the data", () => {
 
         const props = {
