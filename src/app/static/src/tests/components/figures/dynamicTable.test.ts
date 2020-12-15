@@ -8,25 +8,25 @@ describe("dynamic table", () => {
     const data: Data = [
         {
             "intervention": "none",
-            "net_use": 0.2,
+            "net_use": "n/a",
             "cases_averted": 0,
             "prev": 0.111
         },
         {
             "intervention": "none",
-            "net_use": 0.4,
+            "net_use": "0.4",
             "cases_averted": 0,
             "prev": 0.222
         },
         {
             "intervention": "ITN",
-            "net_use": 0.2,
+            "net_use": "0.2",
             "cases_averted": 3,
             "prev": 0.311
         },
         {
             "intervention": "ITN",
-            "net_use": 0.4,
+            "net_use": "0.4",
             "cases_averted": 3,
             "prev": 0.411
         }];
@@ -100,7 +100,7 @@ describe("dynamic table", () => {
         const rows = wrapper.findAll("tbody tr");
         expect(rows.length).toBe(2);
         expect(rows.at(0).find("td").text()).toBe("display name for none");
-        expect(rows.at(0).findAll("td").at(1).text()).toBe("0.2");
+        expect(rows.at(0).findAll("td").at(1).text()).toBe("n/a");
         expect(rows.at(1).find("td").text()).toBe("display name for ITN");
         expect(rows.at(1).findAll("td").at(1).text()).toBe("0.2");
     });
@@ -111,7 +111,7 @@ describe("dynamic table", () => {
         });
         const rows = wrapper.findAll("tbody tr");
         expect(rows.at(0).find("td").text()).toBe("display name for none");
-        expect(rows.at(0).findAll("td").at(1).text()).toBe("0.2"); // net use
+        expect(rows.at(0).findAll("td").at(1).text()).toBe("n/a"); // net use
         expect(rows.at(0).findAll("td").at(2).text()).toBe("0"); // cases averted
         expect(rows.at(0).findAll("td").at(3).text()).toBe("0.11"); // prev
         expect(rows.at(0).findAll("td").at(4).text()).toBe("5k"); // total costs

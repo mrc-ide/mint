@@ -10,11 +10,7 @@ export interface FilteringProps {
 
 export function useFiltering(props: FilteringProps) {
 
-    const filterBySettings = (row: any) => {
-        if (!props.settings) {
-            return true;
-        }
-
+    const settings = computed<Dictionary<string | number> | null>(() => {
         let settings = props.settings;
         if (props.metadata && props.metadata.settings) {
             // filter to those settings specified in the metadata
@@ -24,16 +20,27 @@ export function useFiltering(props: FilteringProps) {
                     return acc
                 }, {} as Dictionary<string | number>)
         }
+        return settings;
+    })
 
-        for (let key of Object.keys(settings)) {
-            if (row[key] != undefined && (settings[key] === "" || row[key] != settings[key])) {
+    const filterBySettings = (row: any) => {
+
+        const settingsVal = settings.value;
+        if (!settingsVal) {
+            return true;
+        }
+
+        for (let key of Object.keys(settingsVal)) {
+            if (row[key] != undefined &&
+                (settingsVal[key] === "" || (row[key] != settingsVal[key] && row[key] != "n/a"))) {
                 return false;
             }
         }
+
         return true;
     };
 
-    const filteredData = computed<any[]>(() => props.data.filter((row: any) => filterBySettings(row)))
+    const filteredData = computed<any[]>(() => props.data.filter((row: any) => filterBySettings(row)));
 
     return {filteredData}
 }
