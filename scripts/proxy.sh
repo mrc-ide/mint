@@ -21,5 +21,3 @@ docker run -d \
 
 docker cp ssl/certificate.pem mint-proxy:/run/proxy/certificate.pem
 docker cp ssl/key.pem mint-proxy:/run/proxy/key.pem
-
-vault write /secret/mint/ssl certificate=@certificate.pem key=@key.pem
