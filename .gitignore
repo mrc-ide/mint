@@ -4,3 +4,4 @@ app/static/coverage/**
 .gradle
 app/static/public/js/**
 app/static/public/css/**
+ssl
