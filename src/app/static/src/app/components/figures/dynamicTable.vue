@@ -47,7 +47,10 @@
                     value = parseFloat(value);
                 }
                 if (col.precision) {
-                    value = value.toPrecision(col.precision)
+                    const precision = col.precision >= 0 ? col.precision : col.precision + value.toString().length
+                    if (precision) {
+                        value = value.toPrecision(precision)
+                    }
                 }
                 if (col.format) {
                     value = numeral(value).format(col.format)
