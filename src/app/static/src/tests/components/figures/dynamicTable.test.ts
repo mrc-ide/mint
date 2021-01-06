@@ -1,6 +1,6 @@
 import dynamicTable from "../../../app/components/figures/dynamicTable.vue";
 
-import {shallowMount} from "@vue/test-utils";
+import {mount} from "@vue/test-utils";
 import {ColumnDefinition, Data} from "../../../app/generated";
 
 describe("dynamic table", () => {
@@ -80,21 +80,21 @@ describe("dynamic table", () => {
     }
 
     it("adds headers from definitions", () => {
-        const wrapper = shallowMount(dynamicTable, {
+        const wrapper = mount(dynamicTable, {
             propsData: {data, config, settings}
         });
         const headers = wrapper.findAll("th");
         expect(headers.length).toBe(6);
-        expect(headers.at(0).text()).toBe("Intervention");
-        expect(headers.at(1).text()).toBe("Net use");
-        expect(headers.at(2).text()).toBe("Cases averted");
-        expect(headers.at(3).text()).toBe("Prevalence");
-        expect(headers.at(4).text()).toBe("Total costs");
-        expect(headers.at(5).text()).toBe("Cost per case averted");
+        expect(headers.at(0).text()).toContain("Intervention");
+        expect(headers.at(1).text()).toContain("Net use");
+        expect(headers.at(2).text()).toContain("Cases averted");
+        expect(headers.at(3).text()).toContain("Prevalence");
+        expect(headers.at(4).text()).toContain("Total costs");
+        expect(headers.at(5).text()).toContain("Cost per case averted");
     });
 
     it("filters rows by settings", () => {
-        const wrapper = shallowMount(dynamicTable, {
+        const wrapper = mount(dynamicTable, {
             propsData: {data, config, settings}
         });
         const rows = wrapper.findAll("tbody tr");
@@ -106,7 +106,7 @@ describe("dynamic table", () => {
     });
 
     it("formats cells", () => {
-        const wrapper = shallowMount(dynamicTable, {
+        const wrapper = mount(dynamicTable, {
             propsData: {data, config, settings}
         });
         const rows = wrapper.findAll("tbody tr");
