@@ -21,7 +21,7 @@ export interface RootState {
     impactTableConfig: TableDefinition | null
     costCasesGraphConfig: Graph | null
     costTableConfig: TableDefinition | null
-    costEfficacyGraphConfig: Graph | null
+    costPerCaseGraphConfig: Graph | null
     impactDocs: string
     costDocs: string
 }
@@ -47,7 +47,7 @@ const storeOptions: StoreOptions<RootState> = {
         impactTableConfig: null,
         costCasesGraphConfig: null,
         costTableConfig: null,
-        costEfficacyGraphConfig: null,
+        costPerCaseGraphConfig: null,
         impactDocs: "",
         costDocs: "",
         ...existingState

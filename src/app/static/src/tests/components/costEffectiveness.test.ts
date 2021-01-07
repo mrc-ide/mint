@@ -7,7 +7,7 @@ import plotlyGraph from "../../app/components/figures/graphs/plotlyGraph.vue";
 import dynamicTable from "../../app/components/figures/dynamicTable.vue";
 import collapsibleDocs from "../../app/components/collapsibleDocs.vue";
 
-describe("costEffectiveness", () => {
+describe("costPerCase", () => {
 
     const createStore = (state: Partial<RootState> = {}) => {
         return new Vuex.Store({
@@ -38,7 +38,7 @@ describe("costEffectiveness", () => {
 
     it("renders as expected when activeTab is Graphs", function () {
         const state = {
-            costEfficacyGraphConfig:  mockGraph({
+            costPerCaseGraphConfig:  mockGraph({
                 layout: {
                     whatever: 1
                 },
@@ -48,7 +48,7 @@ describe("costEffectiveness", () => {
                 metadata: {
                     format: "long",
                     id_col: "intervention",
-                    x_col: "efficacy",
+                    x_col: "intervention",
                     y_col: "cost"
                 }
             }),
@@ -76,13 +76,13 @@ describe("costEffectiveness", () => {
 
         const wrapper = shallowMount(costEffectiveness, {propsData: {activeTab: "Graphs"}, store});
 
-        const efficacyGraph = wrapper.findAll(plotlyGraph).at(0);
-        expect(efficacyGraph.props().layout).toBe(state.costEfficacyGraphConfig.layout);
-        expect(efficacyGraph.props().metadata).toBe(state.costEfficacyGraphConfig.metadata);
-        expect(efficacyGraph.props().series).toBe(state.costEfficacyGraphConfig.series);
-        expect(efficacyGraph.props().data).toBe(state.currentProject.currentRegion.tableData);
+        const costPerCaseGraph = wrapper.findAll(plotlyGraph).at(1);
+        expect(costPerCaseGraph.props().layout).toBe(state.costPerCaseGraphConfig.layout);
+        expect(costPerCaseGraph.props().metadata).toBe(state.costPerCaseGraphConfig.metadata);
+        expect(costPerCaseGraph.props().series).toBe(state.costPerCaseGraphConfig.series);
+        expect(costPerCaseGraph.props().data).toBe(state.currentProject.currentRegion.tableData);
 
-        const casesGraph = wrapper.findAll(plotlyGraph).at(1);
+        const casesGraph = wrapper.findAll(plotlyGraph).at(0);
         expect(casesGraph.props().layout).toBe(state.costCasesGraphConfig.layout);
         expect(casesGraph.props().metadata).toBe(state.costCasesGraphConfig.metadata);
         expect(casesGraph.props().series).toBe(state.costCasesGraphConfig.series);

@@ -1,6 +1,7 @@
 import {computed} from "@vue/composition-api";
 import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
 import {FilteringProps, useFiltering} from "../filteredData";
+import {useTransformation} from "../transformedData";
 
 interface Props extends FilteringProps {
     series: SeriesDefinition[]
@@ -9,6 +10,7 @@ interface Props extends FilteringProps {
 
 export function useWideFormatData(props: Props) {
     const {filteredData} = useFiltering(props);
+    const {evaluateFormula} = useTransformation(props);
 
     const getRow = (id: string) => {
         return filteredData.value.find((row: any) => row[props.metadata.id_col] == id);
@@ -39,7 +41,9 @@ export function useWideFormatData(props: Props) {
                 const error_y = d.error_y && getErrorBar(row, d.error_y)
                 const def: SeriesDefinition = {
                     ...d,
-                    y: meta.cols.map((c: string) => row[c])
+                    y: d.y_formula
+                        ? d.y_formula.map(formula => evaluateFormula(formula, row))
+                        : meta.cols && meta.cols.map((c: string) => row[c])
                 }
                 if (error_y) {
                     def.error_y = error_y

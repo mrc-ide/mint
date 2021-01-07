@@ -17,7 +17,7 @@ interface APIClient {
     fun getImpactGraphPrevalenceData(dataOptions: Map<String, Any>): ResponseEntity<String>
     fun getImpactTableConfig(): ResponseEntity<String>
     fun getCostCasesAvertedGraphConfig(): ResponseEntity<String>
-    fun getCostEfficacyGraphConfig(): ResponseEntity<String>
+    fun getCostPerCaseGraphConfig(): ResponseEntity<String>
     fun getCostTableConfig(): ResponseEntity<String>
     fun getTableData(dataOptions: Map<String, Any>): ResponseEntity<String>
     fun getImpactDocs(): ResponseEntity<String>
@@ -68,8 +68,8 @@ class MintrAPIClient(
         return get("graph/cost/cases-averted/config")
     }
 
-    override fun getCostEfficacyGraphConfig(): ResponseEntity<String> {
-        return get("graph/cost/efficacy/config")
+    override fun getCostPerCaseGraphConfig(): ResponseEntity<String> {
+        return get("graph/cost/per-case/config")
     }
 
     override fun getCostTableConfig(): ResponseEntity<String> {

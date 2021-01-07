@@ -1,15 +1,15 @@
 <template>
     <div>
-        <plotly-graph v-if="activeTab === 'Graphs' && efficacyGraphConfig"
-                      :layout="efficacyGraphConfig.layout"
-                      :metadata="efficacyGraphConfig.metadata"
-                      :series="efficacyGraphConfig.series"
-                      :data="tableData"
-                      :settings="settings"></plotly-graph>
         <plotly-graph v-if="activeTab === 'Graphs' && casesAvertedGraphConfig"
                       :layout="casesAvertedGraphConfig.layout"
                       :metadata="casesAvertedGraphConfig.metadata"
                       :series="casesAvertedGraphConfig.series"
+                      :data="tableData"
+                      :settings="settings"></plotly-graph>
+        <plotly-graph v-if="activeTab === 'Graphs' && perCaseGraphConfig"
+                      :layout="perCaseGraphConfig.layout"
+                      :metadata="perCaseGraphConfig.metadata"
+                      :series="perCaseGraphConfig.series"
                       :data="tableData"
                       :settings="settings"></plotly-graph>
 
@@ -34,7 +34,7 @@
     interface Computed {
         settings: DynamicFormData | null,
         currentProject: Project | null,
-        efficacyGraphConfig: Graph,
+        perCaseGraphConfig: Graph,
         casesAvertedGraphConfig: Graph,
         tableData: Data,
         tableConfig: TableDefinition | null
@@ -51,7 +51,7 @@
                 ...state.currentProject.currentRegion.baselineSettings
             }),
             currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
-            efficacyGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costEfficacyGraphConfig),
+            perCaseGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costPerCaseGraphConfig),
             casesAvertedGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costCasesGraphConfig),
             tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.costTableConfig),
             docs: mapStateProp<RootState, string>(state => state.costDocs),

@@ -10,6 +10,7 @@ export type Data = {
 export interface DataOptions {
   [k: string]: any;
 }
+export type Docs = string;
 export interface DynamicFormOptions {
   controlSections: ControlSection[];
 }
@@ -17,6 +18,8 @@ export interface ControlSection {
   label: string;
   description?: string;
   controlGroups: ControlGroup[];
+  documentation?: string;
+  collapsible?: boolean;
 }
 export interface ControlGroup {
   label?: string;
@@ -36,6 +39,7 @@ export interface SelectControl {
       [k: string]: any;
     }[];
   }[];
+  excludeNullOption?: boolean;
 }
 export interface NumberControl {
   name: string;
@@ -70,7 +74,7 @@ export interface LongFormatMetadata {
   settings?: string[];
 }
 export interface WideFormatMetadata {
-  cols: string[];
+  cols?: string[];
   id_col: string;
   format: "wide";
   settings?: string[];

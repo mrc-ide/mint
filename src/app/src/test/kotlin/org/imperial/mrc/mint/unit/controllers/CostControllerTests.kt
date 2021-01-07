@@ -23,14 +23,14 @@ class CostControllerTests {
     }
 
     @Test
-    fun `gets graph efficacy config from the api`()
+    fun `gets graph per case config from the api`()
     {
         val mockAPI = mock<APIClient>{
-            on{ getCostEfficacyGraphConfig() } doReturn mockResponse
+            on{ getCostPerCaseGraphConfig() } doReturn mockResponse
         }
 
         val sut = CostController(mockAPI)
-        assertThat(sut.graphEfficacyConfig()).isSameAs(mockResponse)
+        assertThat(sut.graphCostPerCaseConfig()).isSameAs(mockResponse)
     }
 
     @Test

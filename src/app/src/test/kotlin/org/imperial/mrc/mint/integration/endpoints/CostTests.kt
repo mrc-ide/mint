@@ -13,8 +13,8 @@ class CostTests: EndpointTests() {
     }
 
     @Test
-    fun `can get cost graph efficacy config`() {
-        val responseEntity = testRestTemplate.getForEntity<String>("/cost/graph/efficacy/config")
+    fun `can get cost graph per case config`() {
+        val responseEntity = testRestTemplate.getForEntity<String>("/cost/graph/per-case/config")
         assertSuccess(responseEntity, "Graph")
     }
 
