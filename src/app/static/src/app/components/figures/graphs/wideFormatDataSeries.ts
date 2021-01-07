@@ -19,8 +19,8 @@ export function useWideFormatData(props: Props) {
     const getErrorBar = (row: any, error: any) => {
         return {
             ...error,
-            array: error.cols.map((c: string) => row[c]),
-            arrayminus: error.colsminus.map((c: string) => row[c])
+            array: error.cols.map((c: string) => c.match(/\{\w+\}/) ? evaluateFormula(c, row) : row[c]),
+            arrayminus: error.colsminus.map((c: string) => c.match(/\{\w+\}/) ? evaluateFormula(c, row) : row[c])
         }
     }
     const dataSeries = computed(() => {

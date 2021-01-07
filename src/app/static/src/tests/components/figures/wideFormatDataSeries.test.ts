@@ -176,4 +176,30 @@ describe("wide format data series", () => {
             y_formula: ["{cases_averted_high} - {cases_averted}"]
         });
     });
+
+    it("uses error formulae if provided", () => {
+        const localProps = {
+            ...props,
+            series: [{
+                id: "ITN", x: ["ITN"], error_y: {
+                    cols: ["{cases_averted_high} * 2"],
+                    colsminus: ["{cases_averted_low} / 2"]
+                }
+            }]
+        }
+        const dataSeries = useWideFormatData(localProps).dataSeries.value;
+        expect(dataSeries.length).toBe(1);
+
+        expect(dataSeries[0]).toEqual({
+            id: "ITN",
+            x: ["ITN"],
+            y: [100],
+            error_y: {
+                cols: ["{cases_averted_high} * 2"],
+                colsminus: ["{cases_averted_low} / 2"],
+                array: [220],
+                arrayminus: [45]
+            }
+        });
+    });
 });
