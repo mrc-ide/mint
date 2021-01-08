@@ -2,6 +2,7 @@ import dynamicTable from "../../../app/components/figures/dynamicTable.vue";
 
 import {mount} from "@vue/test-utils";
 import {ColumnDefinition, Data} from "../../../app/generated";
+import Vue from "vue";
 
 describe("dynamic table", () => {
 
@@ -103,6 +104,17 @@ describe("dynamic table", () => {
         expect(rows.at(0).findAll("td").at(1).text()).toBe("n/a");
         expect(rows.at(1).find("td").text()).toBe("display name for ITN");
         expect(rows.at(1).findAll("td").at(1).text()).toBe("0.2");
+    });
+
+    it.skip("re-filters rows when settings change", async () => {
+        const wrapper = mount(dynamicTable, {
+            propsData: {data, config, settings}
+        });
+        const rows = wrapper.findAll("tbody tr");
+        expect(rows.length).toBe(2);
+        wrapper.setProps({settings: {...settings, net_use: 0.4}});
+        await Vue.nextTick();
+        expect(rows.length).toBe(3);
     });
 
     it("formats cells", () => {

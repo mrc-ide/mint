@@ -2,7 +2,7 @@
     <b-table striped :items="items" :fields="fields"></b-table>
 </template>
 <script lang="ts">
-    import {defineComponent} from "@vue/composition-api";
+    import {computed, defineComponent} from "@vue/composition-api";
     import {FilteringProps, useFiltering} from "./filteredData";
     import {useTransformation} from "./transformedData";
     import numeral from "numeral";
@@ -43,23 +43,25 @@
                 }
                 return value;
             };
-            return {
-                fields: props.config.map((col, i) => (
+            const fields = props.config.map((col, i) => (
+                {
+                    key: `${col.valueCol}${i}`,
+                    label: col.displayName,
+                    sortable: true,
+                    thClass: "align-middle"
+                }
+            ));
+            const items = computed(() => filteredData.value.map((row) =>
+                props.config.reduce((item, col, i) => (
                     {
-                        key: `${col.valueCol}${i}`,
-                        label: col.displayName,
-                        sortable: true,
-                        thClass: "align-middle"
+                        ...item,
+                        [`${col.valueCol}${i}`]: evaluateCell(col, row)
                     }
-                )),
-                items:  filteredData.value.map((row) =>
-                    props.config.reduce((item, col, i) => (
-                        {
-                            ...item,
-                            [`${col.valueCol}${i}`]: evaluateCell(col, row)
-                        }
-                    ), {})
-                )
+                ), {})
+            ));
+            return {
+                fields,
+                items
             }
         }
     })
