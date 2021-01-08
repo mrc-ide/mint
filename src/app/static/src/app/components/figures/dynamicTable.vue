@@ -19,6 +19,7 @@
     import {FilteringProps, useFiltering} from "./filteredData";
     import {useTransformation} from "./transformedData";
     import numeral from "numeral";
+    import {evaluate} from "mathjs/number";
     import {ColumnDefinition} from "../../generated";
 
     interface Props extends FilteringProps {
@@ -46,8 +47,11 @@
                     }
                     value = parseFloat(value);
                 }
+                if (col.transform) {
+                    value = evaluate(col.transform.replace(/{}/g, value.toString()));
+                }
                 if (col.precision) {
-                    value = value.toPrecision(col.precision)
+                    value = (<number>value).toPrecision(col.precision)
                 }
                 if (col.format) {
                     value = numeral(value).format(col.format)
