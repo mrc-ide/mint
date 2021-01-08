@@ -12,3 +12,6 @@ steps:
 
   - label: ":mag: Test front-end"
     command: buildkite/test-front-end.sh
+
+  - label: ":mag: Test integration"
+    command: buildkite/test-integration.sh
