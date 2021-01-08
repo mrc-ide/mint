@@ -119,6 +119,36 @@ describe("plotly graph", () => {
         });
     });
 
+    it("uses transformed layout", () => {
+        const layout = {
+            shapes: [
+                {type: "line", y_formula: "{net_use}", x0: 0, x1: 1}
+            ]
+        };
+        wrapper = mount(plotlyGraph, {
+            propsData: {
+                series: [],
+                metadata: {
+                    x_col: "month",
+                    y_col: "value",
+                    id_col: "intervention",
+                    format: "long"
+                },
+                layout,
+                data: [],
+                settings: {
+                    net_use: 0.5
+                }
+            }
+        });
+
+        expect(wrapper.find(Plotly).props("layout").shapes).toStrictEqual([{
+            ...layout.shapes[0],
+            y0: 0.5,
+            y1: 0.5
+        }]);
+    });
+
     const hoverbelowPropsData = {
         series: [
             {x: ["ITN"], id: "ITN", name: "Pyrethoid ITN"},
