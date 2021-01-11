@@ -1,7 +1,8 @@
 import dynamicTable from "../../../app/components/figures/dynamicTable.vue";
 
-import {shallowMount} from "@vue/test-utils";
+import {mount} from "@vue/test-utils";
 import {ColumnDefinition, Data} from "../../../app/generated";
+import Vue from "vue";
 
 describe("dynamic table", () => {
 
@@ -94,7 +95,7 @@ describe("dynamic table", () => {
     }
 
     it("adds headers from definitions", () => {
-        const wrapper = shallowMount(dynamicTable, {
+        const wrapper = mount(dynamicTable, {
             propsData: {data, config, settings}
         });
         const headers = wrapper.findAll("th");
@@ -109,7 +110,7 @@ describe("dynamic table", () => {
     });
 
     it("filters rows by settings", () => {
-        const wrapper = shallowMount(dynamicTable, {
+        const wrapper = mount(dynamicTable, {
             propsData: {data, config, settings}
         });
         const rows = wrapper.findAll("tbody tr");
@@ -120,8 +121,17 @@ describe("dynamic table", () => {
         expect(rows.at(1).findAll("td").at(1).text()).toBe("0.2");
     });
 
+    it("re-filters rows when settings change", async () => {
+        const wrapper = mount(dynamicTable, {
+            propsData: {data, config, settings}
+        });
+        expect(wrapper.findAll("tbody tr").length).toBe(2);
+        await wrapper.setProps({settings: {...settings, net_use: 0.4}});
+        expect(wrapper.findAll("tbody tr").length).toBe(3);
+    });
+
     it("formats cells", () => {
-        const wrapper = shallowMount(dynamicTable, {
+        const wrapper = mount(dynamicTable, {
             propsData: {data, config, settings}
         });
         const rows = wrapper.findAll("tbody tr");
