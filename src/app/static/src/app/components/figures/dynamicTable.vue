@@ -1,25 +1,13 @@
 <template>
-    <table class="table table-responsive table-striped dataTable">
-        <thead>
-        <tr>
-            <th v-for="col in config">{{ col.displayName }}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="row in filteredData">
-            <td v-for="col in config">
-                <span>{{ evaluateCell(col, row) }}</span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <b-table striped :items="items" :fields="fields"></b-table>
 </template>
 <script lang="ts">
-    import {defineComponent} from "@vue/composition-api";
+    import {computed, defineComponent} from "@vue/composition-api";
     import {FilteringProps, useFiltering} from "./filteredData";
     import {useTransformation} from "./transformedData";
     import numeral from "numeral";
     import {ColumnDefinition} from "../../generated";
+    import {BTable} from "bootstrap-vue";
 
     interface Props extends FilteringProps {
         config: ColumnDefinition[]
@@ -27,6 +15,7 @@
 
     export default defineComponent({
         props: {data: Array, config: Array, settings: Object},
+        components: {BTable},
         setup(props: Props) {
             const {filteredData} = useFiltering(props);
             const {evaluateFormula} = useTransformation(props);
@@ -54,9 +43,25 @@
                 }
                 return value;
             };
+            const fields = props.config.map((col, i) => (
+                {
+                    key: `${col.valueCol}${i}`,
+                    label: col.displayName,
+                    sortable: true,
+                    thClass: "align-middle"
+                }
+            ));
+            const items = computed(() => filteredData.value.map((row) =>
+                props.config.reduce((item, col, i) => (
+                    {
+                        ...item,
+                        [`${col.valueCol}${i}`]: evaluateCell(col, row)
+                    }
+                ), {})
+            ));
             return {
-                filteredData,
-                evaluateCell
+                fields,
+                items
             }
         }
     })
