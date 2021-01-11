@@ -1,24 +1,57 @@
 import {TransformationProps, useTransformation} from "../transformedData";
-import {Dictionary} from "vue-router/types/router";
 import {deepCopy} from "../../../utils";
+import {Axis, Layout, SeriesDefinition} from "../../../generated";
 
 interface Props extends TransformationProps {
-    layout: Dictionary<any>
+    layout: Layout
 }
 
-export function useLayout(props: Props) {
+export function useLayout(props: Props, dataSeries: readonly SeriesDefinition[]) {
     const layout = deepCopy(props.layout);
-    const {evaluateFormula} = useTransformation(props);
 
+    evaluateShapes(layout, props);
+    evaluateRanges(layout, dataSeries);
+
+    return layout;
+}
+
+function evaluateShapes(layout: Layout, props: Props) {
+    const {evaluateFormula} = useTransformation(props);
     // Currently supports transformation to horizontal line only
     if (layout.shapes) {
         layout.shapes.map((shape: any) => {
             if (shape.type == "line" && shape.y_formula) {
-                const y = evaluateFormula(shape.y_formula);
+                const y = evaluateFormula(shape.y_formula) || 0;
                 shape.y0 = y;
                 shape.y1 = y;
             }
         });
     }
-    return layout;
+}
+
+function evaluateRanges(layout: Layout, dataSeries: readonly SeriesDefinition[]) {
+    //Support custom rangemode 'series' which maps to a fixed range from 0 (or less if in data)
+    //to max series value (exclude shapes)
+
+    const evaluateRangeForAxis = function(axis: Axis | undefined, dataKey: string) {
+        if (axis && axis.rangemode == "series") {
+            axis.autorange = false;
+
+            const data: number[] = [];
+            dataSeries.map((series: SeriesDefinition) => {
+                if (series[dataKey]) {
+                    data.push(...series[dataKey]);
+                }
+            });
+
+            const min = Math.min(0, ...data);
+            let max = Math.max(...data);
+            max += (max-min) / 50; // pad 2% so markers can be seen
+
+            axis.range = [min, max];
+        }
+    };
+
+    evaluateRangeForAxis(layout.xaxis, "x");
+    evaluateRangeForAxis(layout.yaxis, "y");
 }

@@ -5,19 +5,18 @@
 </template>
 <script lang="ts">
     import Plotly from "./plotly/Plotly.vue"
-    import {computed, defineComponent, ref} from "@vue/composition-api";
+    import {computed, defineComponent, Ref, ref} from "@vue/composition-api";
     import {FilteringProps} from "../filteredData";
     import {useLongFormatData} from "./longFormatDataSeries";
     import {useWideFormatData} from "./wideFormatDataSeries";
     import {setupHoverBelowObserver} from "./hoverBelow";
-    import {Dictionary} from "vue-router/types/router";
-    import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
+    import {Layout, LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
     import {useLayout} from "./layout";
 
     interface Props extends FilteringProps {
         series: SeriesDefinition[]
         metadata: WideFormatMetadata | LongFormatMetadata
-        layout: Dictionary<any>
+        layout: Layout
     }
 
     export default defineComponent({
@@ -33,22 +32,22 @@
                 setupHoverBelowObserver(observer, "hoverbelow");
             }
 
-            let dataSeries = null;
+            let dataSeries: Ref<readonly SeriesDefinition[]>;
             if (props.metadata.format == "long") {
-                dataSeries = useLongFormatData(props).dataSeries
+                dataSeries = useLongFormatData(props).dataSeries;
             } else {
-                dataSeries = useWideFormatData(props).dataSeries
+                dataSeries = useWideFormatData(props).dataSeries;
             }
 
-            const transformedLayout = computed<any>(() => ({
-                ...useLayout(props),
+            const transformedLayout = computed(() => ({
+                ...useLayout(props, dataSeries.value),
                 font: {
                     // use the same font settings as Bootstrap, which the rest of the app uses
                     family: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
                     size: '1rem',
                     color: '#212529'
                 }
-            }))
+            }));
 
             return {
                 transformedLayout,

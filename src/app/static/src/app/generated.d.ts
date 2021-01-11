@@ -10,6 +10,7 @@ export type Data = {
 export interface DataOptions {
   [k: string]: any;
 }
+export type Docs = string;
 export interface DynamicFormOptions {
   controlSections: ControlSection[];
 }
@@ -17,6 +18,8 @@ export interface ControlSection {
   label: string;
   description?: string;
   controlGroups: ControlGroup[];
+  documentation?: string;
+  collapsible?: boolean;
 }
 export interface ControlGroup {
   label?: string;
@@ -36,6 +39,7 @@ export interface SelectControl {
       [k: string]: any;
     }[];
   }[];
+  excludeNullOption?: boolean;
 }
 export interface NumberControl {
   name: string;
@@ -55,9 +59,7 @@ export interface ErrorDetail {
 export interface Graph {
   metadata: LongFormatMetadata | WideFormatMetadata;
   series: SeriesDefinition[];
-  layout: {
-    [k: string]: any;
-  };
+  layout: Layout;
   config?: {
     [k: string]: any;
   };
@@ -82,6 +84,26 @@ export interface SeriesDefinition {
   id?: string;
   name?: string;
   type?: string;
+  [k: string]: any;
+}
+export interface Layout {
+  xaxis?: Axis;
+  yaxis?: Axis;
+  shapes?: {
+    type?: string;
+    y_formula?: string;
+    x0?: number;
+    x1?: number;
+    y0?: number;
+    y1?: number;
+    [k: string]: any;
+  }[];
+  [k: string]: any;
+}
+export interface Axis {
+  autorange?: boolean;
+  rangemode?: string;
+  range?: number[];
   [k: string]: any;
 }
 export interface ResponseFailure {
