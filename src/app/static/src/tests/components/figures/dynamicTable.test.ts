@@ -106,15 +106,13 @@ describe("dynamic table", () => {
         expect(rows.at(1).findAll("td").at(1).text()).toBe("0.2");
     });
 
-    it.skip("re-filters rows when settings change", async () => {
+    it("re-filters rows when settings change", async () => {
         const wrapper = mount(dynamicTable, {
             propsData: {data, config, settings}
         });
-        const rows = wrapper.findAll("tbody tr");
-        expect(rows.length).toBe(2);
-        wrapper.setProps({settings: {...settings, net_use: 0.4}});
-        await Vue.nextTick();
-        expect(rows.length).toBe(3);
+        expect(wrapper.findAll("tbody tr").length).toBe(2);
+        await wrapper.setProps({settings: {...settings, net_use: 0.4}});
+        expect(wrapper.findAll("tbody tr").length).toBe(3);
     });
 
     it("formats cells", () => {
