@@ -152,4 +152,102 @@ describe("dynamic table", () => {
         expect(rows.at(1).findAll("td").at(6).text()).toBe("310"); // costs per 1000 cases averted
     });
 
+    it("adds tooltips for cells with error values", () => {
+        const data: Data = [
+            {
+                "intervention": "none",
+                "net_use": "n/a",
+                "cases_averted": 0,
+                "cases_averted_error_minus": 0,
+                "cases_averted_error_plus": 0,
+                "prev": 0.111,
+                "cases_averted_per_1000": 0
+            },
+            {
+                "intervention": "none",
+                "net_use": "0.4",
+                "cases_averted": 0,
+                "cases_averted_error_minus": 0,
+                "cases_averted_error_plus": 0,
+                "prev": 0.222,
+                "cases_averted_per_1000": 0
+            },
+            {
+                "intervention": "ITN",
+                "net_use": "0.2",
+                "cases_averted": 3,
+                "cases_averted_error_minus": 1,
+                "cases_averted_error_plus": 4,
+                "prev": 0.311,
+                "cases_averted_per_1000": 32
+            },
+            {
+                "intervention": "ITN",
+                "net_use": "0.4",
+                "cases_averted": 3,
+                "cases_averted_error_minus": 2,
+                "cases_averted_error_plus": 5,
+                "prev": 0.411,
+                "cases_averted_per_1000": 37
+            }
+        ];
+        const config: ColumnDefinition[] = [
+            {
+                displayName: "Intervention",
+                valueCol: "intervention",
+                valueTransform: {
+                    "none": "'display name for none'",
+                    "ITN": "'display name for ITN'"
+                }
+            },
+            {
+                displayName: "Cases averted",
+                valueCol: "cases_averted",
+                error: {
+                    minus: {
+                        valueCol: "cases_averted_error_minus"
+                    },
+                    plus: {
+                        valueCol: "cases_averted_error_plus"
+                    }
+                },
+            },
+            {
+                displayName: "Cost per case averted",
+                valueCol: "intervention",
+                valueTransform: {
+                    "none": "{population} * {procure_people_per_net} / {cases_averted}",
+                    "ITN": "{population} * {procure_people_per_net} * 2 / {cases_averted}"
+                },
+                error: {
+                    minus: {
+                        valueTransform: {
+                            "none": "{population} * {procure_people_per_net} / {cases_averted_error_plus}",
+                            "ITN": "{population} * {procure_people_per_net} * 2 / {cases_averted_error_plus}"
+                        }
+                    },
+                    plus: {
+                        valueTransform: {
+                            "none": "{population} * {procure_people_per_net} / {cases_averted_error_minus}",
+                            "ITN": "{population} * {procure_people_per_net} * 2 / {cases_averted_error_minus}"
+                        }
+                    }
+                },
+                format: "0.0a"
+            }
+        ];
+        const wrapper = mount(dynamicTable, {
+            propsData: {data, config, settings}
+        });
+        const rows = wrapper.findAll("tbody tr");
+        expect(rows.at(0).find("td").text()).toBe("display name for none");
+        expect(rows.at(0).findAll("td").at(1).text()).toBe("0"); // cases averted
+        expect(rows.at(0).findAll("td").at(2).text()).toBe("n/a"); // costs per case averted
+
+        expect(rows.at(1).find("td").text()).toBe("display name for ITN");
+        expect(rows.at(1).findAll("td").at(1).find("abbr").text()).toBe("3"); // cases averted
+        expect(rows.at(1).findAll("td").at(1).find("abbr").attributes().title).toBe("3 +4 / -1");
+        expect(rows.at(1).findAll("td").at(2).find("abbr").text()).toBe("3.3k"); // costs per case averted
+        expect(rows.at(1).findAll("td").at(2).find("abbr").attributes().title).toBe("3.3k +10.0k / -2.5k");
+    });
 });

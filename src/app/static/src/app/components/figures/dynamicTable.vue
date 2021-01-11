@@ -1,5 +1,10 @@
 <template>
-    <b-table striped :items="items" :fields="fields"></b-table>
+    <b-table striped :items="items" :fields="fields">
+        <template #cell()="data">
+            <abbr v-if="data.value.tooltip" :title="data.value.tooltip">{{ data.value.text }}</abbr>
+            <template v-else>{{ data.value.text }}</template>
+        </template>
+    </b-table>
 </template>
 <script lang="ts">
     import {computed, defineComponent} from "@vue/composition-api";
@@ -59,7 +64,10 @@
                 props.config.reduce((item, col, i) => (
                     {
                         ...item,
-                        [`${col.valueCol}${i}`]: evaluateCell(col, row)
+                        [`${col.valueCol}${i}`]: {
+                            text: evaluateCell(col, row),
+                            tooltip: col.error && `${evaluateCell(col, row)} +${evaluateCell({...col, ...col.error.plus}, row)} / -${evaluateCell({...col, ...col.error.minus}, row)}`
+                        }
                     }
                 ), {})
             ));

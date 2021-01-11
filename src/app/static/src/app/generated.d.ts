@@ -127,6 +127,14 @@ export type TableDefinition = ColumnDefinition[];
 export interface ColumnDefinition {
   valueCol: string;
   displayName: string;
+  error?: {
+    minus: {
+      [k: string]: any;
+    };
+    plus: {
+      [k: string]: any;
+    };
+  };
   valueTransform?: {
     [k: string]: any;
   };
