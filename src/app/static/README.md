@@ -25,3 +25,19 @@ directory
 - js is bundled using webpack - this task can be triggered by running `npm run js`
 
 Or to compile both at once, `npm run build`
+
+### Plotly Configuration
+
+MINT supports definition of graph layouts using [plotly.js](https://plotly.com/javascript/), and adds several possible customisations. 
+The configurations themselves are provided from the [inst/json](https://github.com/mrc-ide/mintr/tree/master/inst/json) folder in mintr.  
+
+Supported customisations are :
+
+#### rangemode: "series"
+
+This custom rangemode may be applied to the layout's `xaxis` or `yaxis`. It behaves similarly to plotly's autorange behaviour
+but does not include shape values in the calculated default range, so that the shape line drawn for zonal budget will only 
+be visible in the default range if it is not greater than any of the series values. The max of the calculated range is
+the max series value plus 2% padding. The min is the lower of 0 and the min series value.  
+
+
