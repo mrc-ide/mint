@@ -21,7 +21,7 @@ describe("layout", () => {
                         x1: 2
                     }
                 ]
-            };
+            } as any;
 
             const transformedLayout = useLayout({layout, settings}, []);
             expect(transformedLayout.shapes).toStrictEqual([
@@ -30,9 +30,15 @@ describe("layout", () => {
             ]);
         });
 
-        it("sets y values to 0 when evaluation is undefined", () => {
+        it("removes shapes when evaluation is undefined", () => {
             const layout = {
                 shapes: [
+                    {
+                        type: "line",
+                        y_formula: "{not_a_setting}",
+                        x0: 0,
+                        x1: 1
+                    },
                     {
                         type: "line",
                         y_formula: "{zonal_budget}",
@@ -40,11 +46,11 @@ describe("layout", () => {
                         x1: 1
                     }
                 ]
-            };
+            } as any;
 
-            const transformedLayout = useLayout({layout, settings: {}}, []);
+            const transformedLayout = useLayout({layout, settings}, []);
             expect(transformedLayout.shapes).toStrictEqual([
-                {...layout.shapes[0], y0: 0, y1: 0}
+                {...layout.shapes[1], y0: 1000, y1: 1000}
             ]);
         });
 
@@ -60,7 +66,7 @@ describe("layout", () => {
                         y_formula: "{zonal_budget} * 2"
                     }
                 ]
-            };
+            } as any;
 
             const transformedLayout = useLayout({layout, settings}, []);
             expect(transformedLayout.shapes).toStrictEqual([
@@ -80,7 +86,7 @@ describe("layout", () => {
                         y1: 200
                     }
                 ]
-            };
+            } as any;
 
             const transformedLayout = useLayout({layout, settings}, []);
             expect(transformedLayout).toStrictEqual(layout);
@@ -95,7 +101,7 @@ describe("layout", () => {
                     rangemode: "series",
                     autorange: true,
                 }
-            };
+            } as any;
             const series = [
                 {y: [10,100,50]},
                 {y: [1,2,3]}
@@ -111,7 +117,7 @@ describe("layout", () => {
                     rangemode: "series",
                     autorange: true,
                 }
-            };
+            } as any;
             const series = [
                 {x: [0,1,2]},
                 {x: [10,200,50]}
@@ -127,7 +133,7 @@ describe("layout", () => {
                     rangemode: "series",
                     autorange: true,
                 }
-            };
+            } as any;
             const series = [
                 {y: [10,90,-5]},
                 {y: [1,2,3,-10]}
@@ -146,7 +152,7 @@ describe("layout", () => {
                 xaxis: {
                     autorange: true
                 }
-            };
+            } as any;
             const series = [
                 {x: [0], y: [1]}
             ];

@@ -23,7 +23,7 @@ function evaluateShapes(layout: Layout, props: Props) {
         layout.shapes.map((shape: any, index: number) => {
             if (shape.type == "line" && shape.y_formula) {
                 const y = evaluateFormula(shape.y_formula);
-                if (y === "undefined") {
+                if (typeof y === "undefined") {
                     toRemove.push(index)
                 } else {
                     shape.y0 = y;
