@@ -25,7 +25,7 @@ export enum RootMutation {
     AddCostCasesGraphConfig = "AddCostCasesGraphConfig",
     AddTableData = "AddTableData",
     AddCostTableConfig = "AddCostTableConfig",
-    AddCostEfficacyGraphConfig = "AddCostEfficacyGraphConfig",
+    AddCostPerCaseGraphConfig = "AddCostPerCaseGraphConfig",
     DeleteProject = "DeleteProject",
     UpdateImpactDocs = "UpdateImpactDocs",
     UpdateCostDocs = "UpdateCostDocs"
@@ -135,8 +135,8 @@ export const mutations: MutationTree<RootState> = {
         state.costTableConfig = payload
     },
 
-    [RootMutation.AddCostEfficacyGraphConfig](state: RootState, payload: Graph) {
-        state.costEfficacyGraphConfig = payload;
+    [RootMutation.AddCostPerCaseGraphConfig](state: RootState, payload: Graph) {
+        state.costPerCaseGraphConfig = payload;
     },
 
     [RootMutation.UpdateImpactDocs](state: RootState, payload: string) {

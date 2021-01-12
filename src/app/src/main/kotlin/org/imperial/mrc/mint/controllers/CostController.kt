@@ -13,10 +13,10 @@ class CostController(private val apiClient: APIClient) {
         return apiClient.getCostCasesAvertedGraphConfig()
     }
 
-    @GetMapping("/graph/efficacy/config")
+    @GetMapping("/graph/per-case/config")
     @ResponseBody
-    fun graphEfficacyConfig(): ResponseEntity<String> {
-        return apiClient.getCostEfficacyGraphConfig()
+    fun graphCostPerCaseConfig(): ResponseEntity<String> {
+        return apiClient.getCostPerCaseGraphConfig()
     }
 
     @GetMapping("/table/config")

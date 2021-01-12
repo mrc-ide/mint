@@ -12,7 +12,7 @@ export enum RootAction {
     FetchCasesGraphConfig = "FetchCasesGraphConfig",
     FetchImpactTableConfig = "FetchImpactTableConfig",
     FetchCostCasesGraphConfig = "FetchCostCasesGraphConfig",
-    FetchCostEfficacyGraphConfig = "FetchCostEfficacyGraphConfig",
+    FetchCostPerCaseGraphConfig = "FetchCostPerCaseGraphConfig",
     FetchCostTableConfig = "FetchCostTableConfig",
     FetchBaselineOptions = "FetchBaselineOptions",
     FetchInterventionOptions = "FetchInterventionOptions",
@@ -97,11 +97,11 @@ export const actions: ActionTree<RootState, RootState> = {
             .get<Graph>("/cost/graph/cases-averted/config");
     },
 
-    async [RootAction.FetchCostEfficacyGraphConfig](context) {
+    async [RootAction.FetchCostPerCaseGraphConfig](context) {
         await api(context)
-            .withSuccess(RootMutation.AddCostEfficacyGraphConfig)
+            .withSuccess(RootMutation.AddCostPerCaseGraphConfig)
             .withError(RootMutation.AddError)
-            .get<Graph>("/cost/graph/efficacy/config");
+            .get<Graph>("/cost/graph/per-case/config");
     },
 
     async [RootAction.FetchTableData](context) {
@@ -166,7 +166,7 @@ export const actions: ActionTree<RootState, RootState> = {
             context.dispatch(RootAction.FetchCasesGraphConfig),
             context.dispatch(RootAction.FetchImpactTableConfig),
             context.dispatch(RootAction.FetchCostCasesGraphConfig),
-            context.dispatch(RootAction.FetchCostEfficacyGraphConfig),
+            context.dispatch(RootAction.FetchCostPerCaseGraphConfig),
             context.dispatch(RootAction.FetchCostTableConfig)
         ]);
     }

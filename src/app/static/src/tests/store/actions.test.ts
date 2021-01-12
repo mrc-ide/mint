@@ -209,7 +209,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchCasesGraphConfig);
         expect(dispatch.mock.calls[2][0]).toBe(RootAction.FetchImpactTableConfig);
         expect(dispatch.mock.calls[3][0]).toBe(RootAction.FetchCostCasesGraphConfig);
-        expect(dispatch.mock.calls[4][0]).toBe(RootAction.FetchCostEfficacyGraphConfig);
+        expect(dispatch.mock.calls[4][0]).toBe(RootAction.FetchCostPerCaseGraphConfig);
         expect(dispatch.mock.calls[5][0]).toBe(RootAction.FetchCostTableConfig);
     });
 
@@ -230,21 +230,21 @@ describe("actions", () => {
         expectAddsErrorOn500(actions[RootAction.FetchCostCasesGraphConfig], url);
     });
 
-    it("fetches cost efficacy config", async () => {
-        const url = "/cost/graph/efficacy/config";
+    it("fetches cost per case config", async () => {
+        const url = "/cost/graph/per-case/config";
         const testConfig = {data: {test: 1}, layout: {test_layout: "TEST"}};
         mockAxios.onGet(url)
             .reply(200, mockSuccess(testConfig));
 
         const commit = jest.fn();
-        await (actions[RootAction.FetchCostEfficacyGraphConfig] as any)({commit} as any);
+        await (actions[RootAction.FetchCostPerCaseGraphConfig] as any)({commit} as any);
 
         expect(mockAxios.history.get[0].url).toBe(url);
 
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostEfficacyGraphConfig);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostPerCaseGraphConfig);
         expect(commit.mock.calls[0][1]).toStrictEqual(testConfig);
 
-        expectAddsErrorOn500(actions[RootAction.FetchCostEfficacyGraphConfig], url);
+        expectAddsErrorOn500(actions[RootAction.FetchCostPerCaseGraphConfig], url);
     });
 
     it("EnsureImpactData fetches all impact figure data if none already present", async () => {
