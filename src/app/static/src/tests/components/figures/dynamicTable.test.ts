@@ -11,25 +11,29 @@ describe("dynamic table", () => {
             "intervention": "none",
             "net_use": "n/a",
             "cases_averted": 0,
-            "prev": 0.111
+            "prev": 0.111,
+            "cases_averted_per_1000": 0
         },
         {
             "intervention": "none",
             "net_use": "0.4",
             "cases_averted": 0,
-            "prev": 0.222
+            "prev": 0.222,
+            "cases_averted_per_1000": 0
         },
         {
             "intervention": "ITN",
             "net_use": "0.2",
             "cases_averted": 3,
-            "prev": 0.311
+            "prev": 0.311,
+            "cases_averted_per_1000": 32
         },
         {
             "intervention": "ITN",
             "net_use": "0.4",
             "cases_averted": 3,
-            "prev": 0.411
+            "prev": 0.411,
+            "cases_averted_per_1000": 37
         }];
 
     const config: ColumnDefinition[] = [
@@ -71,6 +75,16 @@ describe("dynamic table", () => {
                 "ITN": "({population} * {procure_people_per_net} * 2)/{cases_averted}",
             },
             format: "0.0a"
+        },
+        {
+            displayName: "Cost per 1000 cases averted",
+            valueCol: "intervention",
+            valueTransform: {
+                "none": "({population} * {procure_people_per_net}) / {cases_averted_per_1000}",
+                "ITN": "({population} * {procure_people_per_net} * 2) / {cases_averted_per_1000}",
+            },
+            transform: "round({} / 10) * 10",
+            format: "0"
         }
     ];
 
@@ -85,13 +99,14 @@ describe("dynamic table", () => {
             propsData: {data, config, settings}
         });
         const headers = wrapper.findAll("th");
-        expect(headers.length).toBe(6);
+        expect(headers.length).toBe(7);
         expect(headers.at(0).text()).toContain("Intervention");
         expect(headers.at(1).text()).toContain("Net use");
         expect(headers.at(2).text()).toContain("Cases averted");
         expect(headers.at(3).text()).toContain("Prevalence");
         expect(headers.at(4).text()).toContain("Total costs");
         expect(headers.at(5).text()).toContain("Cost per case averted");
+        expect(headers.at(6).text()).toContain("Cost per 1000 cases averted");
     });
 
     it("filters rows by settings", () => {
@@ -126,6 +141,7 @@ describe("dynamic table", () => {
         expect(rows.at(0).findAll("td").at(3).text()).toBe("0.11"); // prev
         expect(rows.at(0).findAll("td").at(4).text()).toBe("5k"); // total costs
         expect(rows.at(0).findAll("td").at(5).text()).toBe("n/a"); // costs per case averted
+        expect(rows.at(0).findAll("td").at(6).text()).toBe("n/a"); // costs per 1000 cases averted
 
         expect(rows.at(1).find("td").text()).toBe("display name for ITN");
         expect(rows.at(1).findAll("td").at(1).text()).toBe("0.2"); // net use
@@ -133,6 +149,7 @@ describe("dynamic table", () => {
         expect(rows.at(1).findAll("td").at(3).text()).toBe("0.31"); // prev
         expect(rows.at(1).findAll("td").at(4).text()).toBe("10k"); // total costs
         expect(rows.at(1).findAll("td").at(5).text()).toBe("3.3k"); // costs per case averted
+        expect(rows.at(1).findAll("td").at(6).text()).toBe("310"); // costs per 1000 cases averted
     });
 
 });
