@@ -27,7 +27,10 @@ export function mockRootState(state: Partial<RootState> = {}): RootState {
 export function mockGraph(props: Partial<Graph> = {}): Graph {
     return {
         series: [],
-        layout: {},
+        layout: {
+            xaxis: {title: "x"},
+            yaxis: {title: "y"}
+        },
         metadata: {
             format: "wide",
             id_col: "intervention",

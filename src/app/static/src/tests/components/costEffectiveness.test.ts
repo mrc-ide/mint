@@ -40,7 +40,8 @@ describe("costPerCase", () => {
         const state = {
             costPerCaseGraphConfig:  mockGraph({
                 layout: {
-                    whatever: 1
+                    xaxis: {title: "x1"},
+                    yaxis: {title: "y1"}
                 },
                 series: [{
                     id: "none"
@@ -54,7 +55,8 @@ describe("costPerCase", () => {
             }),
             costCasesGraphConfig:  mockGraph({
                 layout: {
-                    whatever: 2
+                    xaxis: {title: "x2"},
+                    yaxis: {title: "y2"}
                 },
                 series: [{
                     id: "none"
