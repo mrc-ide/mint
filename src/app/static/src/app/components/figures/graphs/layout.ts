@@ -19,13 +19,20 @@ function evaluateShapes(layout: Layout, props: Props) {
     const {evaluateFormula} = useTransformation(props);
     // Currently supports transformation to horizontal line only
     if (layout.shapes) {
-        layout.shapes.map((shape: any) => {
+        const toRemove: number[] = [];
+        layout.shapes.map((shape: any, index: number) => {
             if (shape.type == "line" && shape.y_formula) {
-                const y = evaluateFormula(shape.y_formula) || 0;
-                shape.y0 = y;
-                shape.y1 = y;
+                const y = evaluateFormula(shape.y_formula);
+                if (y === "undefined") {
+                    toRemove.push(index)
+                } else {
+                    shape.y0 = y;
+                    shape.y1 = y;
+                }
             }
         });
+
+        toRemove.reverse().map((i: number) => {layout.shapes!!.splice(i, 1);});
     }
 }
 
@@ -34,7 +41,7 @@ function evaluateRanges(layout: Layout, dataSeries: readonly SeriesDefinition[])
     //to max series value (exclude shapes)
 
     const evaluateRangeForAxis = function(axis: Axis | undefined, dataKey: string) {
-        if (axis && axis.rangemode == "series") {
+        if (axis && axis.rangemode === "series") {
             axis.autorange = false;
 
             const data: number[] = [];

@@ -72,7 +72,7 @@ export interface LongFormatMetadata {
   settings?: string[];
 }
 export interface WideFormatMetadata {
-  cols: string[];
+  cols?: string[];
   id_col: string;
   format: "wide";
   settings?: string[];
@@ -87,8 +87,8 @@ export interface SeriesDefinition {
   [k: string]: any;
 }
 export interface Layout {
-  xaxis?: Axis;
-  yaxis?: Axis;
+  xaxis: Axis;
+  yaxis: Axis;
   shapes?: {
     type?: string;
     y_formula?: string;
@@ -101,6 +101,7 @@ export interface Layout {
   [k: string]: any;
 }
 export interface Axis {
+  title?: string;
   autorange?: boolean;
   rangemode?: string;
   range?: number[];
@@ -129,6 +130,7 @@ export interface ColumnDefinition {
   valueTransform?: {
     [k: string]: any;
   };
+  transform?: string;
   format?: string;
   precision?: number;
 }
