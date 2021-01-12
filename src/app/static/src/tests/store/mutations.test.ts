@@ -210,11 +210,11 @@ describe("mutations", () => {
         expect(state.costCasesGraphConfig).toStrictEqual(["config data"]);
     });
 
-    it("adds cost efficacy graph config", () => {
+    it("adds cost per case graph config", () => {
         const state = mockRootState();
-        mutations[RootMutation.AddCostEfficacyGraphConfig](state, ["config data"]);
+        mutations[RootMutation.AddCostPerCaseGraphConfig](state, ["config data"]);
 
-        expect(state.costEfficacyGraphConfig).toStrictEqual(["config data"]);
+        expect(state.costPerCaseGraphConfig).toStrictEqual(["config data"]);
     });
 
     it("updates the current region's intervention options", () => {

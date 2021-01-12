@@ -74,7 +74,7 @@ export interface LongFormatMetadata {
   settings?: string[];
 }
 export interface WideFormatMetadata {
-  cols: string[];
+  cols?: string[];
   id_col: string;
   format: "wide";
   settings?: string[];

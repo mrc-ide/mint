@@ -145,5 +145,35 @@ describe("wide format data series", () => {
         });
     });
 
+    it("uses formulae if provided", () => {
+        const localProps = {
+            ...props,
+            series: [
+                {
+                    x: ["Pyrethoid ITN"],
+                    id: "ITN",
+                    y_formula: ["{cases_averted} - {cases_averted_low}"]
+                },
+                {
+                    x: ["Switch to Pyrethoid-PBO ITN"],
+                    id: "PBO",
+                    y_formula: ["{cases_averted_high} - {cases_averted}"]
+                }
+            ]
+        }
+        const dataSeries = useWideFormatData(localProps).dataSeries.value;
+        expect(dataSeries.length).toBe(2);
+        expect(dataSeries[0]).toEqual({
+            id: "ITN",
+            x: ["Pyrethoid ITN"],
+            y: [10],
+            y_formula: ["{cases_averted} - {cases_averted_low}"]
+        });
+        expect(dataSeries[1]).toEqual({
+            id: "PBO",
+            x: ["Switch to Pyrethoid-PBO ITN"],
+            y: [50],
+            y_formula: ["{cases_averted_high} - {cases_averted}"]
+        });
+    });
 });
-
