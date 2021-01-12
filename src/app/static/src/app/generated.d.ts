@@ -59,9 +59,7 @@ export interface ErrorDetail {
 export interface Graph {
   metadata: LongFormatMetadata | WideFormatMetadata;
   series: SeriesDefinition[];
-  layout: {
-    [k: string]: any;
-  };
+  layout: Layout;
   config?: {
     [k: string]: any;
   };
@@ -86,6 +84,27 @@ export interface SeriesDefinition {
   id?: string;
   name?: string;
   type?: string;
+  [k: string]: any;
+}
+export interface Layout {
+  xaxis: Axis;
+  yaxis: Axis;
+  shapes?: {
+    type?: string;
+    y_formula?: string;
+    x0?: number;
+    x1?: number;
+    y0?: number;
+    y1?: number;
+    [k: string]: any;
+  }[];
+  [k: string]: any;
+}
+export interface Axis {
+  title?: string;
+  autorange?: boolean;
+  rangemode?: string;
+  range?: number[];
   [k: string]: any;
 }
 export interface ResponseFailure {

@@ -51,7 +51,7 @@ export function useLongFormatData(props: Props) {
     };
 
     const dataSeries = computed(() => {
-        const result: any[] = []
+        const result: SeriesDefinition[] = []
         props.series.map((d: SeriesDefinition) => {
             if (d.x && d.y) {
                 // all values are given explicitly

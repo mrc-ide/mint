@@ -22,8 +22,9 @@ describe("impact", () => {
             currentProject: project,
             prevalenceGraphConfig: mockGraph({
                 layout: {
-                    whatever: 1
-                },
+                    xaxis: {title: "x"},
+                    yaxis: {title: "y"}
+                } ,
                 series: [{
                     x: [1, 2],
                     y: [100, 200]
@@ -38,7 +39,10 @@ describe("impact", () => {
         const wrapper = shallowMount(impact, {propsData: {activeTab: "Graphs"}, store});
         expect(wrapper.findAll(plotlyGraph).length).toBe(1);
         const graph = wrapper.findAll(plotlyGraph).at(0);
-        expect(graph.props("layout")).toEqual({whatever: 1});
+        expect(graph.props("layout")).toEqual({
+            xaxis: {title: "x"},
+            yaxis: {title: "y"}
+        });
         expect(graph.props("metadata")).toEqual({
             format: "wide",
             id_col: "intervention",
@@ -60,7 +64,8 @@ describe("impact", () => {
             currentProject: project,
             casesGraphConfig: mockGraph({
                 layout: {
-                    whatever: 1
+                    xaxis: {title: "x"},
+                    yaxis: {title: "y"}
                 },
                 series: [{
                     x: [1, 2],
@@ -76,7 +81,10 @@ describe("impact", () => {
         const wrapper = shallowMount(impact, {propsData: {activeTab: "Graphs"}, store});
         expect(wrapper.findAll(plotlyGraph).length).toBe(1);
         const graph = wrapper.findAll(plotlyGraph).at(0);
-        expect(graph.props("layout")).toEqual({whatever: 1});
+        expect(graph.props("layout")).toEqual({
+            xaxis: {title: "x"},
+            yaxis: {title: "y"}
+        });
         expect(graph.props("metadata")).toEqual({
             format: "wide",
             id_col: "intervention",
