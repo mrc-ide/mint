@@ -100,13 +100,13 @@ describe("dynamic table", () => {
         });
         const headers = wrapper.findAll("th");
         expect(headers.length).toBe(7);
-        expect(headers.at(0).text()).toBe("Intervention");
-        expect(headers.at(1).text()).toBe("Net use");
-        expect(headers.at(2).text()).toBe("Cases averted");
-        expect(headers.at(3).text()).toBe("Prevalence");
-        expect(headers.at(4).text()).toBe("Total costs");
-        expect(headers.at(5).text()).toBe("Cost per case averted");
-        expect(headers.at(6).text()).toBe("Cost per 1000 cases averted");
+        expect(headers.at(0).text()).toContain("Intervention");
+        expect(headers.at(1).text()).toContain("Net use");
+        expect(headers.at(2).text()).toContain("Cases averted");
+        expect(headers.at(3).text()).toContain("Prevalence");
+        expect(headers.at(4).text()).toContain("Total costs");
+        expect(headers.at(5).text()).toContain("Cost per case averted");
+        expect(headers.at(6).text()).toContain("Cost per 1000 cases averted");
     });
 
     it("filters rows by settings", () => {
