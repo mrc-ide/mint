@@ -37,7 +37,6 @@ describe("actions", () => {
                 "intervention",
                 "irsUse",
                 "month",
-                "netType",
                 "netUse",
                 "value"]);
     });
