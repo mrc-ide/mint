@@ -242,7 +242,9 @@ describe("dynamic table", () => {
         const rows = wrapper.findAll("tbody tr");
         expect(rows.at(0).find("td").text()).toBe("display name for none");
         expect(rows.at(0).findAll("td").at(1).text()).toBe("0"); // cases averted
+        expect(rows.at(0).findAll("td").at(1).find("abbr").attributes().title).toBe("0 +0 / -0");
         expect(rows.at(0).findAll("td").at(2).text()).toBe("n/a"); // costs per case averted
+        expect(rows.at(0).findAll("td").at(2).contains("abbr")).toBe(false);
 
         expect(rows.at(1).find("td").text()).toBe("display name for ITN");
         expect(rows.at(1).findAll("td").at(1).find("abbr").text()).toBe("3"); // cases averted

@@ -47,11 +47,10 @@
                 if (col.precision) {
                     value = (<number>value).toPrecision(col.precision)
                 }
-                if (col.format) {
-                    value = numeral(value).format(col.format)
-                }
                 return value;
             };
+            const formatCell = (col: ColumnDefinition, value: number): string =>
+                col.format ? numeral(value).format(col.format) : value.toString();
             const fields = props.config.map((col, i) => (
                 {
                     key: `${col.valueCol}${i}`,
@@ -61,15 +60,17 @@
                 }
             ));
             const items = computed(() => filteredData.value.map((row) =>
-                props.config.reduce((item, col, i) => (
-                    {
-                        ...item,
-                        [`${col.valueCol}${i}`]: {
-                            text: evaluateCell(col, row),
-                            tooltip: col.error && `${evaluateCell(col, row)} +${evaluateCell({...col, ...col.error.plus}, row)} / -${evaluateCell({...col, ...col.error.minus}, row)}`
-                        }
+                props.config.reduce((items, col, i) => {
+                    const value = evaluateCell(col, row);
+                    const item: Record<string, string> = {};
+                    item.text = typeof value === "number" ? formatCell(col, value) : value;
+                    if (typeof value === "number" && col.error) {
+                        const valuePlus = <number>evaluateCell({...col, ...col.error.plus}, row);
+                        const valueMinus = <number>evaluateCell({...col, ...col.error.minus}, row);
+                        item.tooltip = `${item.text} +${formatCell(col, valuePlus)} / -${formatCell(col, valueMinus)}`
                     }
-                ), {})
+                    return {...items, [`${col.valueCol}${i}`]: item};
+                }, {})
             ));
             return {
                 fields,
