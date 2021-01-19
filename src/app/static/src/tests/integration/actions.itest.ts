@@ -159,8 +159,7 @@ describe("actions", () => {
         const commit = jest.fn();
         await (actions[RootAction.FetchDocs] as any)({commit} as any);
 
-        expect(commit.mock.calls[0][0]).toBe(RootMutation.UpdateImpactDocs);
-        expect(commit.mock.calls[1][0]).toBe(RootMutation.UpdateCostDocs);
+        expect(new Set(commit.mock.calls.map(call => call[0]))).toEqual(new Set([RootMutation.UpdateImpactDocs, RootMutation.UpdateCostDocs]));
         expect(commit.mock.calls[0][1]).toContain("<ul>");
         expect(commit.mock.calls[1][1]).toContain("<ul>");
 
