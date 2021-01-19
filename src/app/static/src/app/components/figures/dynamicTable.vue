@@ -44,13 +44,18 @@
                 if (col.transform) {
                     value = evaluate(col.transform.replace(/{}/g, value.toString()));
                 }
-                if (col.precision) {
-                    value = (<number>value).toPrecision(col.precision)
-                }
                 return value;
             };
-            const formatCell = (col: ColumnDefinition, value: number): string =>
-                col.format ? numeral(value).format(col.format) : value.toString();
+            const formatCell = (col: ColumnDefinition, value: number): string => {
+                let formattedValue = value.toString();
+                if (col.precision) {
+                    formattedValue = value.toPrecision(col.precision);
+                }
+                if (col.format) {
+                    formattedValue = numeral(formattedValue).format(col.format);
+                }
+                return formattedValue;
+            };
             const fields = props.config.map((col, i) => (
                 {
                     key: `${col.valueCol}${i}`,
