@@ -189,7 +189,16 @@ describe("dynamic table", () => {
                 "cases_averted_error_plus": 5,
                 "prev": 0.411,
                 "cases_averted_per_1000": 37
-            }
+            },
+            {
+                "intervention": "IRS",
+                "net_use": "0.2",
+                "cases_averted": 5,
+                "cases_averted_error_minus": 6,
+                "cases_averted_error_plus": 8,
+                "prev": 0.411,
+                "cases_averted_per_1000": 37
+            },
         ];
         const config: ColumnDefinition[] = [
             {
@@ -197,7 +206,8 @@ describe("dynamic table", () => {
                 valueCol: "intervention",
                 valueTransform: {
                     "none": "'display name for none'",
-                    "ITN": "'display name for ITN'"
+                    "ITN": "'display name for ITN'",
+                    "IRS": "'display name for IRS'"
                 }
             },
             {
@@ -217,19 +227,22 @@ describe("dynamic table", () => {
                 valueCol: "intervention",
                 valueTransform: {
                     "none": "{population} * {procure_people_per_net} / {cases_averted}",
-                    "ITN": "{population} * {procure_people_per_net} * 2 / {cases_averted}"
+                    "ITN": "{population} * {procure_people_per_net} * 2 / {cases_averted}",
+                    "IRS": "{population} * {procure_people_per_net} * 2 / {cases_averted}"
                 },
                 error: {
                     minus: {
                         valueTransform: {
                             "none": "{population} * {procure_people_per_net} / {cases_averted_error_plus}",
-                            "ITN": "{population} * {procure_people_per_net} * 2 / {cases_averted_error_plus}"
+                            "ITN": "{population} * {procure_people_per_net} * 2 / {cases_averted_error_plus}",
+                            "IRS": "{population} * {procure_people_per_net} * 2 / {cases_averted_error_plus}"
                         }
                     },
                     plus: {
                         valueTransform: {
                             "none": "{population} * {procure_people_per_net} / {cases_averted_error_minus}",
-                            "ITN": "{population} * {procure_people_per_net} * 2 / {cases_averted_error_minus}"
+                            "ITN": "{population} * {procure_people_per_net} * 2 / {cases_averted_error_minus}",
+                            "IRS": "{population} * {procure_people_per_net} * 2 / {cases_averted_error_minus}"
                         }
                     }
                 },
@@ -240,6 +253,7 @@ describe("dynamic table", () => {
             propsData: {data, config, settings}
         });
         const rows = wrapper.findAll("tbody tr");
+
         expect(rows.at(0).find("td").text()).toBe("display name for none");
         expect(rows.at(0).findAll("td").at(1).text()).toBe("0"); // cases averted
         expect(rows.at(0).findAll("td").at(1).find("abbr").attributes().title).toBe("0 +0 / -0");
@@ -248,8 +262,15 @@ describe("dynamic table", () => {
 
         expect(rows.at(1).find("td").text()).toBe("display name for ITN");
         expect(rows.at(1).findAll("td").at(1).find("abbr").text()).toBe("3"); // cases averted
-        expect(rows.at(1).findAll("td").at(1).find("abbr").attributes().title).toBe("3 +4 / -1");
+        expect(rows.at(1).findAll("td").at(1).find("abbr").attributes().title).toBe("3 +1 / -2");
         expect(rows.at(1).findAll("td").at(2).find("abbr").text()).toBe("3.3k"); // costs per case averted
-        expect(rows.at(1).findAll("td").at(2).find("abbr").attributes().title).toBe("3.3k +10.0k / -2.5k");
+        expect(rows.at(1).findAll("td").at(2).find("abbr").attributes().title).toBe("3.3k +6.7k / -833.3");
+
+        expect(rows.at(2).find("td").text()).toBe("display name for IRS");
+        expect(rows.at(2).findAll("td").at(1).find("abbr").text()).toBe("5"); // cases averted
+        expect(rows.at(2).findAll("td").at(1).find("abbr").attributes().title).toBe("5 +3 / -0");
+        expect(rows.at(2).findAll("td").at(2).find("abbr").text()).toBe("2.0k"); // costs per case averted
+        expect(rows.at(2).findAll("td").at(2).find("abbr").attributes().title).toBe("2.0k +0.0 / -750.0");
+
     });
 });

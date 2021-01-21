@@ -72,7 +72,9 @@
                     if (typeof value === "number" && col.error) {
                         const valuePlus = <number>evaluateCell({...col, ...col.error.plus}, row);
                         const valueMinus = <number>evaluateCell({...col, ...col.error.minus}, row);
-                        item.tooltip = `${item.text} +${formatCell(col, valuePlus)} / -${formatCell(col, valueMinus)}`
+                        const plus = Math.max(valuePlus, valueMinus, value) - value;
+                        const minus = value - Math.min(valuePlus, valueMinus, value);
+                        item.tooltip = `${item.text} +${formatCell(col, plus)} / -${formatCell(col, minus)}`
                     }
                     return {...items, [`${col.valueCol}${i}`]: item};
                 }, {})
