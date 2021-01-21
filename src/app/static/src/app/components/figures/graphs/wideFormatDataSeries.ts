@@ -16,13 +16,11 @@ export function useWideFormatData(props: Props) {
         return filteredData.value.find((row: any) => row[props.metadata.id_col] == id);
     }
 
-    const getErrorBar = (row: any, error: any) => {
-        return {
-            ...error,
-            array: error.cols.map((c: string) => c.match(/\{\w+\}/) ? evaluateFormula(c, row) : row[c]),
-            arrayminus: error.colsminus.map((c: string) => c.match(/\{\w+\}/) ? evaluateFormula(c, row) : row[c])
-        }
-    }
+    const getErrorBar = (row: any, error: any) => ({
+        ...error,
+        array: error.cols.map((c: string) => c.match(/\{\w+\}/) ? evaluateFormula(c, row) : row[c]),
+        arrayminus: error.colsminus.map((c: string) => c.match(/\{\w+\}/) ? evaluateFormula(c, row) : row[c])
+    });
     const dataSeries = computed(() => {
         const meta = props.metadata as WideFormatMetadata;
         const result: any[] = [];

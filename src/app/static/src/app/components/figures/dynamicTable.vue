@@ -1,5 +1,10 @@
 <template>
-    <b-table striped :items="items" :fields="fields"></b-table>
+    <b-table striped :items="items" :fields="fields">
+        <template #cell()="data">
+            <abbr v-if="data.value.tooltip" :title="data.value.tooltip">{{ data.value.text }}</abbr>
+            <template v-else>{{ data.value.text }}</template>
+        </template>
+    </b-table>
 </template>
 <script lang="ts">
     import {computed, defineComponent} from "@vue/composition-api";
@@ -39,13 +44,17 @@
                 if (col.transform) {
                     value = evaluate(col.transform.replace(/{}/g, value.toString()));
                 }
+                return value;
+            };
+            const formatCell = (col: ColumnDefinition, value: number): string => {
+                let formattedValue = value.toString();
                 if (col.precision) {
-                    value = (<number>value).toPrecision(col.precision)
+                    formattedValue = value.toPrecision(col.precision);
                 }
                 if (col.format) {
-                    value = numeral(value).format(col.format)
+                    formattedValue = numeral(formattedValue).format(col.format);
                 }
-                return value;
+                return formattedValue;
             };
             const fields = props.config.map((col, i) => (
                 {
@@ -56,12 +65,17 @@
                 }
             ));
             const items = computed(() => filteredData.value.map((row) =>
-                props.config.reduce((item, col, i) => (
-                    {
-                        ...item,
-                        [`${col.valueCol}${i}`]: evaluateCell(col, row)
+                props.config.reduce((items, col, i) => {
+                    const value = evaluateCell(col, row);
+                    const item: Record<string, string> = {};
+                    item.text = typeof value === "number" ? formatCell(col, value) : value;
+                    if (typeof value === "number" && col.error) {
+                        const valuePlus = <number>evaluateCell({...col, ...col.error.plus}, row);
+                        const valueMinus = <number>evaluateCell({...col, ...col.error.minus}, row);
+                        item.tooltip = `${item.text} +${formatCell(col, valuePlus)} / -${formatCell(col, valueMinus)}`
                     }
-                ), {})
+                    return {...items, [`${col.valueCol}${i}`]: item};
+                }, {})
             ));
             return {
                 fields,

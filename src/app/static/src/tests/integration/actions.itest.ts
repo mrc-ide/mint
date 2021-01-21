@@ -116,14 +116,25 @@ describe("actions", () => {
                 "intervention",
                 "irsUse",
                 "meanCases",
+                "meanCasesErrorMinus",
+                "meanCasesErrorPlus",
                 "netUse",
                 "prevYear1",
+                "prevYear1ErrorMinus",
+                "prevYear1ErrorPlus",
                 "prevYear2",
+                "prevYear2ErrorMinus",
+                "prevYear2ErrorPlus",
                 "prevYear3",
+                "prevYear3ErrorMinus",
+                "prevYear3ErrorPlus",
                 "reductionInCases",
                 "reductionInCasesErrorMinus",
                 "reductionInCasesErrorPlus",
-                "reductionInPrevalence"]);
+                "reductionInPrevalence",
+                "reductionInPrevalenceErrorMinus",
+                "reductionInPrevalenceErrorPlus",
+            ]);
     });
 
     it("can get impact table config", async () => {
