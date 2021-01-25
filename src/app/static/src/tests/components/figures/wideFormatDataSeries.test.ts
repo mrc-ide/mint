@@ -123,7 +123,9 @@ describe("wide format data series", () => {
         const localProps = {
             ...props,
             series: [{
-                id: "ITN", x: ["ITN"], error_y: {
+                id: "ITN",
+                x: ["ITN"],
+                error_y: {
                     cols: ["cases_averted_high"],
                     colsminus: ["cases_averted_low"]
                 }
@@ -131,7 +133,6 @@ describe("wide format data series", () => {
         }
         const dataSeries = useWideFormatData(localProps).dataSeries.value;
         expect(dataSeries.length).toBe(1);
-
         expect(dataSeries[0]).toEqual({
             id: "ITN",
             x: ["ITN"],
@@ -139,10 +140,31 @@ describe("wide format data series", () => {
             error_y: {
                 cols: ["cases_averted_high"],
                 colsminus: ["cases_averted_low"],
-                array: [110],
-                arrayminus: [90]
+                array: [10],
+                arrayminus: [10]
             }
         });
+    });
+
+    it("extends error bars as necessary", () => {
+        const localProps = {
+            ...props,
+            series: [{
+                id: "ITN",
+                x: ["ITN"],
+                error_y: {
+                    cols: ["cases_averted_high"],
+                    colsminus: ["cases_averted_low"]
+                }
+            }],
+            data: [
+                {"int": "ITN", "net_use": 0, "cases_averted": 80, "cases_averted_low": 90, "cases_averted_high": 110},
+            ],
+        }
+        const dataSeries = useWideFormatData(localProps).dataSeries.value;
+        expect(dataSeries.length).toBe(1);
+        expect(dataSeries[0].error_y.array).toEqual([30]);
+        expect(dataSeries[0].error_y.arrayminus).toEqual([0]);
     });
 
     it("uses formulae if provided", () => {
@@ -181,7 +203,9 @@ describe("wide format data series", () => {
         const localProps = {
             ...props,
             series: [{
-                id: "ITN", x: ["ITN"], error_y: {
+                id: "ITN",
+                x: ["ITN"],
+                error_y: {
                     cols: ["{cases_averted_high} * 2"],
                     colsminus: ["{cases_averted_low} / 2"]
                 }
@@ -197,8 +221,8 @@ describe("wide format data series", () => {
             error_y: {
                 cols: ["{cases_averted_high} * 2"],
                 colsminus: ["{cases_averted_low} / 2"],
-                array: [220],
-                arrayminus: [45]
+                array: [120],
+                arrayminus: [55]
             }
         });
     });

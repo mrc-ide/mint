@@ -2,6 +2,7 @@ import {computed} from "@vue/composition-api";
 import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
 import {FilteringProps, useFiltering} from "../filteredData";
 import {useTransformation} from "../transformedData";
+import {getErrorInterval} from "../errorInterval";
 
 interface Props extends FilteringProps {
     series: SeriesDefinition[]
@@ -16,15 +17,19 @@ export function useWideFormatData(props: Props) {
         return filteredData.value.find((row: any) => row[props.metadata.id_col] == id);
     }
 
-    const getErrorBar = (row: any, error: any) => ({
-        ...error,
-        array: error.cols.map((c: string) => c.match(/\{\w+\}/) ? evaluateFormula(c, row) : row[c]),
-        arrayminus: error.colsminus.map((c: string) => c.match(/\{\w+\}/) ? evaluateFormula(c, row) : row[c])
-    });
-    const dataSeries = computed(() => {
+    const getErrorBar = (row: any, error: any, y: any[]) => {
+        const evaluate = (c: string) => c.match(/\{\w+\}/) ? evaluateFormula(c, row) : row[c];
+        const errorIntervals = y.map((e: number, i: number) => getErrorInterval(evaluate(error.colsminus[i]), e, evaluate(error.cols[i])));
+        return {
+            ...error,
+            array: errorIntervals.map(e => e.plus),
+            arrayminus: errorIntervals.map(e => e.minus)
+        };
+    };
+    const dataSeries: any = computed(() => {
         const meta = props.metadata as WideFormatMetadata;
         const result: any[] = [];
-        props.series.map((d: SeriesDefinition) => {
+        props.series.forEach((d: SeriesDefinition) => {
             if (d.x && d.y) {
                 // all values are given explicitly
                 result.push(d);
@@ -36,23 +41,19 @@ export function useWideFormatData(props: Props) {
                     console.warn(`The data series with id ${d.id} did not match any rows in the provided data`)
                     return;
                 }
-                const error_y = d.error_y && getErrorBar(row, d.error_y)
-                const def: SeriesDefinition = {
-                    ...d,
-                    y: d.y_formula
-                        ? d.y_formula.map(formula => evaluateFormula(formula, row))
-                        : meta.cols && meta.cols.map((c: string) => row[c])
-                }
-                if (error_y) {
-                    def.error_y = error_y
+                const y = d.y_formula
+                    ? d.y_formula.map(formula => evaluateFormula(formula, row))
+                    : meta.cols!!.map((c: string) => row[c]);
+                const def: SeriesDefinition = {...d, y};
+                if (d.error_y) {
+                    def.error_y = getErrorBar(row, d.error_y, y);
                 }
                 result.push(def);
                 return;
             }
-            return;
         });
         return result;
     });
 
-    return {dataSeries}
+    return {dataSeries};
 }

@@ -2,6 +2,7 @@ import {computed} from "@vue/composition-api";
 import {FilteringProps, useFiltering} from "../filteredData";
 import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
 import {useTransformation} from "../transformedData";
+import {getErrorInterval} from "../errorInterval";
 
 interface Props extends FilteringProps {
     series: SeriesDefinition[]
@@ -19,8 +20,7 @@ export function useLongFormatData(props: Props) {
         const error_col = definition.error_x ? definition.error_x.col : null;
         const error_col_minus = definition.error_x ? definition.error_x.colminus : null;
 
-        const error_array = [] as any;
-        const error_array_minus = [] as any;
+        const error_array = [] as any[];
 
         filteredData.value.map((row: any) => {
             if (row[meta.id_col] == definition.id) {
@@ -31,8 +31,7 @@ export function useLongFormatData(props: Props) {
                 }
 
                 if (error_col && error_col_minus) {
-                    error_array.push(row[error_col]);
-                    error_array_minus.push(row[error_col_minus]);
+                    error_array.push(getErrorInterval(row[error_col_minus], row[meta.x_col], row[error_col]));
                 }
             }
         });
@@ -43,8 +42,8 @@ export function useLongFormatData(props: Props) {
 
         const result = [x, y];
         if (error_array.length) {
-            result.push(error_array);
-            result.push(error_array_minus);
+            result.push(error_array.map(e => e.plus));
+            result.push(error_array.map(e => e.minus));
         }
 
         return result;

@@ -204,8 +204,8 @@ describe("long format data series", () => {
             data: [
                 {"month": 1, "intervention": "none", "value": 0.1},
                 {"month": 2, "intervention": "none", "value": 0.3},
-                {"month": 1, "intervention": "ITN",  "value": 0.5, "error_plus": 0.05, "error_minus": 0.06},
-                {"month": 2, "intervention": "ITN", "value": 0.7, "error_plus": 0.07, "error_minus": 0.08},
+                {"month": 1, "intervention": "ITN",  "value": 0.5, "error_plus": 1.25, "error_minus": 0.5},
+                {"month": 2, "intervention": "ITN", "value": 0.7, "error_plus": 3, "error_minus": 3},
             ],
             settings: null
         };
@@ -227,8 +227,8 @@ describe("long format data series", () => {
                 type: "data",
                 col: "error_plus",
                 colminus: "error_minus",
-                array: [0.05, 0.07],
-                arrayminus: [0.06, 0.08]
+                array: [0.25, 1],
+                arrayminus: [0.5, 0]
             }
         });
     });
