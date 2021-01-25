@@ -14,6 +14,7 @@
     import {evaluate} from "mathjs/number";
     import {ColumnDefinition} from "../../generated";
     import {BTable} from "bootstrap-vue";
+    import {getErrorInterval} from "./errorInterval";
 
     interface Props extends FilteringProps {
         config: ColumnDefinition[]
@@ -72,9 +73,8 @@
                     if (typeof value === "number" && col.error) {
                         const valuePlus = <number>evaluateCell({...col, ...col.error.plus}, row);
                         const valueMinus = <number>evaluateCell({...col, ...col.error.minus}, row);
-                        const plus = Math.max(valuePlus, valueMinus, value) - value;
-                        const minus = value - Math.min(valuePlus, valueMinus, value);
-                        item.tooltip = `${item.text} +${formatCell(col, plus)} / -${formatCell(col, minus)}`
+                        const errorInterval = getErrorInterval(valueMinus, value, valuePlus);
+                        item.tooltip = `${item.text} +${formatCell(col, errorInterval.plus)} / -${formatCell(col, errorInterval.minus)}`
                     }
                     return {...items, [`${col.valueCol}${i}`]: item};
                 }, {})

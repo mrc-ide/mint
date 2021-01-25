@@ -2,6 +2,7 @@ import {computed} from "@vue/composition-api";
 import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
 import {FilteringProps, useFiltering} from "../filteredData";
 import {useTransformation} from "../transformedData";
+import {getErrorInterval} from "../errorInterval";
 
 interface Props extends FilteringProps {
     series: SeriesDefinition[]
@@ -18,12 +19,11 @@ export function useWideFormatData(props: Props) {
 
     const getErrorBar = (row: any, error: any, y: any[]) => {
         const evaluate = (c: string) => c.match(/\{\w+\}/) ? evaluateFormula(c, row) : row[c];
-        const plus = error.cols.map(evaluate);
-        const minus = error.colsminus.map(evaluate);
+        const errorIntervals = y.map((e: number, i: number) => getErrorInterval(evaluate(error.colsminus[i]), e, evaluate(error.cols[i])));
         return {
             ...error,
-            array: y.map((e: number, i: number) => Math.max(plus[i], minus[i], e) - e),
-            arrayminus: y.map((e: number, i: number) => e - Math.min(plus[i], minus[i] , e))
+            array: errorIntervals.map(e => e.plus),
+            arrayminus: errorIntervals.map(e => e.minus)
         };
     };
     const dataSeries: any = computed(() => {

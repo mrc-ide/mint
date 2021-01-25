@@ -2,6 +2,7 @@ import {computed} from "@vue/composition-api";
 import {FilteringProps, useFiltering} from "../filteredData";
 import {LongFormatMetadata, SeriesDefinition, WideFormatMetadata} from "../../../generated";
 import {useTransformation} from "../transformedData";
+import {getErrorInterval} from "../errorInterval";
 
 interface Props extends FilteringProps {
     series: SeriesDefinition[]
@@ -30,10 +31,7 @@ export function useLongFormatData(props: Props) {
                 }
 
                 if (error_col && error_col_minus) {
-                    error_array.push({
-                        plus: Math.max(row[error_col], row[meta.x_col], row[error_col_minus]) - row[meta.x_col],
-                        minus: row[meta.x_col] - Math.min(row[error_col], row[meta.x_col], row[error_col_minus])
-                    });
+                    error_array.push(getErrorInterval(row[error_col_minus], row[meta.x_col], row[error_col]));
                 }
             }
         });
