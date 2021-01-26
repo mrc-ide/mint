@@ -4,8 +4,8 @@
             <div class="col-lg-6 offset-lg-3 col-10 offset-1">
                 <p>
                     This tool is designed to help National Malaria Control Programs explore the most cost effective
-                    option of deploying current World Health Organisation (WHO) recommended ITN and IRS products for
-                    malaria control.
+                    option of deploying current World Health Organisation (WHO) recommended mosquito net and IRS
+                    products for malaria control.
                 </p>
                 <p>
                     In this tool, a <strong>project</strong> is a collection of regions and a <strong>region</strong> is
