@@ -196,8 +196,8 @@ describe("long format data series", () => {
                     id: "ITN",
                     error_x: {
                         type: "data",
-                        col: "error_plus",
-                        colminus: "error_minus"
+                        col: "{error_plus}",
+                        colminus: "{error_minus}"
                     }
                 }
             ],
@@ -225,8 +225,8 @@ describe("long format data series", () => {
             y: [0.5, 0.7],
             error_x: {
                 type: "data",
-                col: "error_plus",
-                colminus: "error_minus",
+                col: "{error_plus}",
+                colminus: "{error_minus}",
                 array: [0.25, 1],
                 arrayminus: [0.5, 0]
             }

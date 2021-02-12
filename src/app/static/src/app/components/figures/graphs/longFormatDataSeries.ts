@@ -31,7 +31,11 @@ export function useLongFormatData(props: Props) {
                 }
 
                 if (error_col && error_col_minus) {
-                    error_array.push(getErrorInterval(row[error_col_minus], row[meta.x_col], row[error_col]));
+                    error_array.push(getErrorInterval(
+                        evaluateFormula(error_col_minus, row),
+                        row[meta.x_col],
+                        evaluateFormula(error_col, row)
+                    ));
                 }
             }
         });
