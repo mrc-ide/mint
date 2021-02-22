@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="navbar navbar-secondary navbar-expand">
-            <a class="navbar-brand bg-secondary text-light font-weight-bold full-height" href="/">MINT</a>
+            <a class="navbar-brand bg-secondary text-white font-weight-bold full-height" href="/">MINT</a>
             <ul class="navbar-nav mr-auto" v-if="currentProject">
                 <li class="project-header full-height">
                     <span>{{ currentProject.name }}:</span>

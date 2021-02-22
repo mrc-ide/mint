@@ -23,6 +23,7 @@ html {
 a {
   @extend .text-success;
   @extend a.text-success;
+  color: darken($success, 10%) !important;
 }
 
 .nav-link {
