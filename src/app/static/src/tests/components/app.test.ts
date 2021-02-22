@@ -42,7 +42,7 @@ describe("app", () => {
 
     it("does not show project menu if currentProject is null", () => {
         const wrapper = getWrapper();
-        expect(wrapper.findAll(".navbar-nav").length).toBe(0);
+        expect(wrapper.findAll(".navbar-nav.mr-auto").length).toBe(0);
     });
 
     it("show project menu if currentProject is not null", () => {

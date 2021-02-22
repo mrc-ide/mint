@@ -22,6 +22,11 @@
                     </a>
                 </li>
             </ul>
+            <ul class="navbar-nav ml-auto mr-3" v-else>
+                <li class="nav-item">
+                    <router-link to="/accessibility" class="text-dark">Accessibility</router-link>
+                </li>
+            </ul>
         </div>
         <router-view></router-view>
         <b-modal id="add-region"
@@ -58,6 +63,7 @@
     import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
     import {RootMutation} from "../mutations";
     import {switches} from "../featureSwitches";
+    import accessibilityPage from "./accessibilityPage.vue";
 
     interface Methods {
         fetchDocs: () => void
