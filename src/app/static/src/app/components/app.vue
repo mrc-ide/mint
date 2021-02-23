@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="navbar navbar-secondary navbar-expand">
-            <a class="navbar-brand bg-secondary text-light font-weight-bold full-height" href="/">MINT</a>
+            <a class="navbar-brand bg-secondary text-white font-weight-bold full-height" href="/">MINT</a>
             <ul class="navbar-nav mr-auto" v-if="currentProject">
                 <li class="project-header full-height">
                     <span>{{ currentProject.name }}:</span>
@@ -20,6 +20,11 @@
                        v-if="stratAcrossRegionsIsEnabled">Strategize across regions
                         <b-icon-graph-up></b-icon-graph-up>
                     </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto mr-3" v-else>
+                <li class="nav-item">
+                    <router-link to="/accessibility" class="text-dark">Accessibility</router-link>
                 </li>
             </ul>
         </div>
@@ -58,6 +63,7 @@
     import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
     import {RootMutation} from "../mutations";
     import {switches} from "../featureSwitches";
+    import accessibilityPage from "./accessibilityPage.vue";
 
     interface Methods {
         fetchDocs: () => void
