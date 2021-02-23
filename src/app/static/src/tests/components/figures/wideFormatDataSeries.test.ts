@@ -158,7 +158,7 @@ describe("wide format data series", () => {
                 }
             }],
             data: [
-                {"int": "ITN", "net_use": 0, "cases_averted": 80, "cases_averted_low": 90, "cases_averted_high": 110},
+                {"int": "ITN", "net_use": 0, "cases_averted": 90, "cases_averted_low": 90, "cases_averted_high": 120},
             ],
         }
         const dataSeries = useWideFormatData(localProps).dataSeries.value;
