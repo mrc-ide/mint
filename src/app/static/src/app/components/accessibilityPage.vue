@@ -33,7 +33,8 @@
                 <h2>Reporting accessibility issues</h2>
                 <p>If you need information on this website in a different format like accessible PDF, large print, easy
                     read, audio recording or braille or if you find any accessibility issues not listed on this page
-                    then please contact accessibility@imperial.ac.uk.</p>
+                    then please contact <a href="mailto:reside@imperial.ac.uk">reside@imperial.ac.uk</a>.
+                </p>
                 <p>We’ll consider your request and get back to you in 7 days.</p>
                 <h2>Enforcement procedure</h2>
                 <p>The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies
