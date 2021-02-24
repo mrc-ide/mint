@@ -194,7 +194,7 @@ describe("dynamic table", () => {
                 "intervention": "IRS",
                 "net_use": "0.2",
                 "cases_averted": 5,
-                "cases_averted_error_minus": 6,
+                "cases_averted_error_minus": 5,
                 "cases_averted_error_plus": 8,
                 "prev": 0.411,
                 "cases_averted_per_1000": 37

@@ -205,7 +205,7 @@ describe("long format data series", () => {
                 {"month": 1, "intervention": "none", "value": 0.1},
                 {"month": 2, "intervention": "none", "value": 0.3},
                 {"month": 1, "intervention": "ITN",  "value": 0.5, "error_plus": 1.25, "error_minus": 0.5},
-                {"month": 2, "intervention": "ITN", "value": 0.7, "error_plus": 3, "error_minus": 3},
+                {"month": 2, "intervention": "ITN", "value": 0.7, "error_plus": 3, "error_minus": 2},
             ],
             settings: null
         };
@@ -220,9 +220,9 @@ describe("long format data series", () => {
         });
 
         expect(dataSeries[1]).toStrictEqual({
-            id: "ITN",
-            x: [1, 2],
-            y: [0.5, 0.7],
+            id: "ITN", // intervention
+            x: [1, 2], // month
+            y: [0.5, 0.7], // value
             error_x: {
                 type: "data",
                 col: "error_plus",
