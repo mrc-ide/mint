@@ -22,9 +22,14 @@
                     </a>
                 </li>
             </ul>
-            <ul class="navbar-nav ml-auto mr-3" v-else>
-                <li class="nav-item">
-                    <router-link to="/accessibility" class="text-dark">Accessibility</router-link>
+            <ul class="navbar-nav ml-auto mr-3">
+                <li v-if="currentProject" class="nav-item">
+                    User Guide: <a href="/public/resources/Supplementary%20File%20User-Guide-v1.pdf"
+                                   target="_blank">en</a> <a
+                    href="/public/resources/Supplementary%20File%20User-Guide-v1-fr-2.pdf" target="_blank">fr</a>
+                </li>
+                <li v-else class="nav-item">
+                    <router-link class="text-dark" to="/accessibility">Accessibility</router-link>
                 </li>
             </ul>
         </div>
