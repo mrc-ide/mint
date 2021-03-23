@@ -18,7 +18,12 @@
                     model assumes that IRS is applied at random to the population so it is more appropriate to create
                     separate IRS regions and non-IRS regions for this assessment and adjust population size accordingly.
                 </p>
-                <h1 class="h3">{{ welcomeText }}</h1>
+                <p>
+                    <b>For further guidance please see the User Guide <a
+                        href="/public/resources/Supplementary%20File%20User-Guide-v1.pdf">in English</a> or <a
+                        href="/public/resources/Supplementary%20File%20User-Guide-v1-fr-2.pdf">en français</a>.</b>
+                </p>
+                <h1 class="h3 mt-5">{{ welcomeText }}</h1>
                 <div v-if="projects.length > 0">
                     <ul class="list-unstyled lead">
                         <li v-for="(project, index) in projects" :key="index"

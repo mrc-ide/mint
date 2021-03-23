@@ -1,7 +1,9 @@
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
 app/static/node_modules
-app/static/public
+app/static/public/*
+!app/static/public/favicon.ico
+!app/static/public/resources/
 build
 app/build
 app/uploads
