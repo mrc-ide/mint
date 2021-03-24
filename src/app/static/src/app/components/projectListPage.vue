@@ -18,7 +18,10 @@
                     model assumes that IRS is applied at random to the population so it is more appropriate to create
                     separate IRS regions and non-IRS regions for this assessment and adjust population size accordingly.
                 </p>
-                <h1 class="h3">{{ welcomeText }}</h1>
+                <p>
+                    <user-guide-links/>
+                </p>
+                <h1 class="h3 mt-5">{{ welcomeText }}</h1>
                 <div v-if="projects.length > 0">
                     <ul class="list-unstyled lead">
                         <li v-for="(project, index) in projects" :key="index"
@@ -94,6 +97,7 @@
     import {mapState} from "vuex";
     import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
     import dropDown from "./dropDown.vue";
+    import userGuideLinks from "./userGuideLinks.vue";
 
     interface Data {
         newProject: string
@@ -130,7 +134,7 @@
     }
 
     export default Vue.extend<Data, Methods, Computed, {}>({
-        components: {VueTagsInput, dropDown},
+        components: {userGuideLinks, VueTagsInput, dropDown},
         data() {
             return {
                 newProject: "",
