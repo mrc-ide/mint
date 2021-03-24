@@ -19,10 +19,7 @@
                     separate IRS regions and non-IRS regions for this assessment and adjust population size accordingly.
                 </p>
                 <p>
-                    <b>For further guidance please see the User Guide <a
-                        href="/public/resources/Supplementary%20File%20User-Guide-v1.pdf" target="_blank">in English</a>
-                        or <a href="/public/resources/Supplementary%20File%20User-Guide-v1-fr-2.pdf" target="_blank">en
-                            français</a>.</b>
+                    <user-guide-links/>
                 </p>
                 <h1 class="h3 mt-5">{{ welcomeText }}</h1>
                 <div v-if="projects.length > 0">
@@ -100,6 +97,7 @@ import {getSlug, Project, Region} from "../models/project";
 import {mapState} from "vuex";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import dropDown from "./dropDown.vue";
+import userGuideLinks from "./userGuideLinks.vue";
 
 interface Data {
     newProject: string
@@ -136,7 +134,7 @@ interface Tag {
 }
 
 export default Vue.extend<Data, Methods, Computed, {}>({
-    components: {VueTagsInput, dropDown},
+    components: {userGuideLinks, VueTagsInput, dropDown},
     data() {
         return {
             newProject: "",

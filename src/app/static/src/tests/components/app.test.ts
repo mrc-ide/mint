@@ -52,7 +52,7 @@ describe("app", () => {
             )
         };
         const wrapper = getWrapper(state);
-        expect(wrapper.findAll(".navbar-nav").length).toBe(1);
+        expect(wrapper.findAll(".navbar-nav").length).toBe(2);
         expect(wrapper.find(".project-header span").text()).toBe("my project:");
         expect(wrapper.findAll(".dropdown-item").length).toBe(3);
 

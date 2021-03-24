@@ -24,9 +24,7 @@
             </ul>
             <ul class="navbar-nav ml-auto mr-3">
                 <li v-if="currentProject" class="nav-item">
-                    User Guide: <a href="/public/resources/Supplementary%20File%20User-Guide-v1.pdf"
-                                   target="_blank">en</a> <a
-                    href="/public/resources/Supplementary%20File%20User-Guide-v1-fr-2.pdf" target="_blank">fr</a>
+                    <user-guide-links :short="true"/>
                 </li>
                 <li v-else class="nav-item">
                     <router-link class="text-dark" to="/accessibility">Accessibility</router-link>
@@ -68,7 +66,7 @@
     import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
     import {RootMutation} from "../mutations";
     import {switches} from "../featureSwitches";
-    import accessibilityPage from "./accessibilityPage.vue";
+    import userGuideLinks from "./userGuideLinks.vue";
 
     interface Methods {
         fetchDocs: () => void
@@ -99,7 +97,7 @@
                 stratAcrossRegionsIsEnabled: switches.stratAcrossRegions,
             }
         },
-        components: {dropDown, BIconGraphUp, BModal},
+        components: {dropDown, BIconGraphUp, BModal, userGuideLinks},
         directives: {"BModal": VBModal},
         computed: {
             ...mapState(["currentProject", "baselineOptions", "interventionOptions"]),
