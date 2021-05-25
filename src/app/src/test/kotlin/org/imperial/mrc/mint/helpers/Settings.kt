@@ -5,7 +5,7 @@ class Settings {
         val Baseline = mapOf(
                 "levelOfResistance" to "0%",
                 "seasonalityOfTransmission" to "seasonal",
-                "currentPrevalence" to "low",
+                "currentPrevalence" to "5%",
                 "bitingIndoors" to "high",
                 "bitingPeople" to "low",
                 "itnUsage" to "0%",
