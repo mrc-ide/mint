@@ -2,7 +2,7 @@ import {RootState} from "./store";
 import {Project, Region} from "./models/project";
 
 // in case the stored data format changes in subsequent versions
-const appStateKey = "MINTv0.0.1";
+const appStateKey = "MINTv0.0.2";
 
 // we don't want to save large data arrays to local storage,
 // just region metadata
