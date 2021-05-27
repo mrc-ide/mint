@@ -9,6 +9,7 @@ import {APIError} from "./apiService";
 import {Graph, TableDefinition} from "./generated";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {localStorageManager} from "./localStorageManager";
+import {migrateSettings} from "./migrations";
 
 export interface RootState {
     projects: Project[]
@@ -34,6 +35,10 @@ const logger = (store: Store<RootState>) => {
 };
 
 const existingState = localStorageManager.getState();
+
+if (existingState) {
+    migrateSettings(existingState);
+}
 
 const storeOptions: StoreOptions<RootState> = {
     state: {
