@@ -14,7 +14,8 @@ const stripDataFromProject = (project: Project): Project => {
     return {
         ...project,
         currentRegion: stripDataFromRegion(project.currentRegion),
-        regions: project.regions.map(stripDataFromRegion)
+        regions: project.regions.map(stripDataFromRegion),
+        strategies: []
     }
 }
 

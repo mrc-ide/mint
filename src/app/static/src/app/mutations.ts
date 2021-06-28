@@ -1,6 +1,6 @@
 import {MutationTree} from "vuex";
 import {RootState} from "./store";
-import {Project, Region} from "./models/project";
+import {Project, Region, StrategyWithThreshold} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
@@ -16,6 +16,7 @@ export enum RootMutation {
     SetCurrentRegionInterventionSettings = "SetCurrentRegionInterventionSettings",
     SetCurrentRegionStep = "SetCurrentRegionStep",
     AddError = "AddError",
+    DismissErrors = "DismissErrors",
     AddBaselineOptions = "AddBaselineOptions",
     AddInterventionOptions = "AddInterventionOptions",
     AddPrevalenceGraphData = "AddPrevalenceGraphData",
@@ -28,7 +29,8 @@ export enum RootMutation {
     AddCostPerCaseGraphConfig = "AddCostPerCaseGraphConfig",
     DeleteProject = "DeleteProject",
     UpdateImpactDocs = "UpdateImpactDocs",
-    UpdateCostDocs = "UpdateCostDocs"
+    UpdateCostDocs = "UpdateCostDocs",
+    UpdateStrategies = "UpdateStrategies"
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -81,7 +83,10 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.SetCurrentRegionInterventionSettings](state: RootState, payload: DynamicFormData) {
         if (state.currentProject) {
-            state.currentProject.currentRegion.interventionSettings = payload;
+            state.currentProject.currentRegion.interventionSettings = {
+                budgetAllZones: state.currentProject.budget,
+                ...payload
+            };
         }
     },
 
@@ -93,6 +98,10 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.AddError](state: RootState, payload: APIError) {
         state.errors.push(payload)
+    },
+
+    [RootMutation.DismissErrors](state: RootState) {
+        state.errors = [];
     },
 
     [RootMutation.AddBaselineOptions](state: RootState, payload: DynamicFormMeta) {
@@ -145,6 +154,12 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.UpdateCostDocs](state: RootState, payload: string) {
         state.costDocs = payload;
+    },
+
+    [RootMutation.UpdateStrategies](state: RootState, payload: StrategyWithThreshold[]) {
+        if (state.currentProject) {
+            state.currentProject.strategies = payload;
+        }
     }
 
 };

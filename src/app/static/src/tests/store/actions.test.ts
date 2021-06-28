@@ -1,4 +1,4 @@
-import {mockAxios, mockError, mockFailure, mockProject, mockRootState, mockSuccess} from "../mocks";
+import {mockAxios, mockError, mockFailure, mockRootState, mockSuccess} from "../mocks";
 import {expectAllDefined, expectEqualsFrozen} from "../testHelpers";
 import {actions, RootAction} from "../../app/actions";
 import {RootMutation} from "../../app/mutations";
@@ -27,15 +27,19 @@ describe("actions", () => {
         net_use: 0.7
     };
 
+    const region = {
+        baselineSettings,
+        interventionSettings,
+        tableData: []
+    };
+
     const state = {
         currentProject: {
-            currentRegion: {
-                baselineOptions: [],
-                baselineSettings,
-                interventionSettings,
-                prevalenceGraphData: [],
-                tableData: []
-            }
+            currentRegion: region,
+            regions: [
+                region
+            ],
+            budget: 10_000
         }
     };
 
@@ -198,7 +202,7 @@ describe("actions", () => {
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostTableConfig);
         expectEqualsFrozen(commit.mock.calls[0][1], testConfig);
 
-        expectAddsErrorOn500(actions[RootAction.FetchCostTableConfig], url);
+        await expectAddsErrorOn500(actions[RootAction.FetchCostTableConfig], url);
     });
 
     it("FetchConfig fetches figures config", async () => {
@@ -227,7 +231,7 @@ describe("actions", () => {
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostCasesGraphConfig);
         expect(commit.mock.calls[0][1]).toStrictEqual(testConfig);
 
-        expectAddsErrorOn500(actions[RootAction.FetchCostCasesGraphConfig], url);
+        await expectAddsErrorOn500(actions[RootAction.FetchCostCasesGraphConfig], url);
     });
 
     it("fetches cost per case config", async () => {
@@ -244,7 +248,7 @@ describe("actions", () => {
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddCostPerCaseGraphConfig);
         expect(commit.mock.calls[0][1]).toStrictEqual(testConfig);
 
-        expectAddsErrorOn500(actions[RootAction.FetchCostPerCaseGraphConfig], url);
+        await expectAddsErrorOn500(actions[RootAction.FetchCostPerCaseGraphConfig], url);
     });
 
     it("EnsureImpactData fetches all impact figure data if none already present", async () => {
@@ -343,6 +347,48 @@ describe("actions", () => {
         expect(dispatch.mock.calls.length).toBe(2);
         expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
         expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchTableData);
+    });
+
+    it("fetches strategies", async () => {
+        const url = "/strategise";
+        const options = {budget: 10_000, zones: [{baselineSettings, interventionSettings}]};
+        const strategies = [{costThreshold: 1}];
+        mockAxios.onPost(url, options)
+            .reply(200, mockSuccess(strategies));
+        const commit = jest.fn();
+
+        await (actions[RootAction.Strategise] as any)({commit, state} as any);
+
+        expect(mockAxios.history.post[0].url).toBe(url);
+        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(options));
+        expect(commit.mock.calls.length).toBe(2);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.UpdateStrategies);
+        expect(commit.mock.calls[0][1]).toEqual([]);
+        expect(commit.mock.calls[1][0]).toBe(RootMutation.UpdateStrategies);
+        expect(commit.mock.calls[1][1]).toEqual(strategies);
+    });
+
+    it("adds error if fails to fetch strategies", async () => {
+        const url = "/strategise";
+        const failure = mockFailure("TEST ERROR");
+        mockAxios.onPost(url).reply(500, failure);
+        const commit = jest.fn();
+
+        await (actions[RootAction.Strategise] as any)({commit, state} as any);
+
+        expect(commit.mock.calls[1][0]).toBe(RootMutation.AddError);
+        expect(commit.mock.calls[1][1]).toStrictEqual(mockError("TEST ERROR"));
+    });
+
+    it("dismisses errors", () => {
+        const commit = jest.fn();
+        (actions[RootAction.DismissErrors] as any)({
+            commit,
+            state: {...state, errors: [mockError("TEST ERROR")]}
+        });
+
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.DismissErrors);
     });
 
 });

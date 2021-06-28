@@ -5,6 +5,7 @@ import {Data, Graph} from "./generated";
 import {RootMutation} from "./mutations";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {router} from "./router";
+import {StrategyWithThreshold} from "./models/project";
 
 export enum RootAction {
     FetchPrevalenceGraphData = "FetchPrevalenceGraphData",
@@ -22,7 +23,9 @@ export enum RootAction {
     FetchConfig = "FetchConfig",
     SetCurrentRegion = "SetCurrentRegion",
     SetCurrentRegionBaselineSettings = "SetCurrentRegionBaselineSettings",
-    FetchDocs = "FetchDocs"
+    FetchDocs = "FetchDocs",
+    DismissErrors = "DismissErrors",
+    Strategise = "Strategise"
 }
 
 const currentRegionBaseline = (state: RootState) => {
@@ -169,6 +172,27 @@ export const actions: ActionTree<RootState, RootState> = {
             context.dispatch(RootAction.FetchCostPerCaseGraphConfig),
             context.dispatch(RootAction.FetchCostTableConfig)
         ]);
+    },
+
+    [RootAction.DismissErrors](context) {
+        const {commit} = context;
+        commit(RootMutation.DismissErrors);
+    },
+
+    async [RootAction.Strategise](context) {
+        const {commit} = context;
+        commit(RootMutation.UpdateStrategies, []);
+        const project = context.state.currentProject!;
+        const options = {
+            budget: project.budget,
+            zones: project.regions.map(({name, baselineSettings, interventionSettings}) =>
+                ({name, baselineSettings, interventionSettings}))
+        };
+        await api(context)
+            .freezeResponse()
+            .withSuccess(RootMutation.UpdateStrategies)
+            .withError(RootMutation.AddError)
+            .postAndReturn<StrategyWithThreshold[]>("/strategise", options)
     }
 
 };
