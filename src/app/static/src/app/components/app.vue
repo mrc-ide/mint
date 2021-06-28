@@ -9,7 +9,7 @@
                         <div class="dropdown-item" v-for="region in currentProject.regions">
                             <router-link :to="region.url" class="text-success">{{ region.name }}</router-link>
                         </div>
-                        <div class="dropdown-item">
+                        <div v-if="currentProject.regions.length < maxRegions" class="dropdown-item">
                             <a v-b-modal.add-region>+ Add region</a>
                         </div>
                     </drop-down>
@@ -67,6 +67,7 @@
     import {RootMutation} from "../mutations";
     import {switches} from "../featureSwitches";
     import userGuideLinks from "./userGuideLinks.vue";
+    import {MAX_REGIONS} from "../index";
 
     interface Methods {
         fetchDocs: () => void
@@ -95,6 +96,7 @@
             return {
                 newRegionName: "",
                 stratAcrossRegionsIsEnabled: switches.stratAcrossRegions,
+                maxRegions: MAX_REGIONS
             }
         },
         components: {dropDown, BIconGraphUp, BModal, userGuideLinks},

@@ -83,6 +83,13 @@ export const mutations: MutationTree<RootState> = {
         if (state.currentProject) {
             state.currentProject.currentRegion.interventionSettings = payload;
         }
+        state.projects.forEach(project =>
+            project.regions.forEach(region =>
+                region.interventionOptions.controlSections
+                    .find(e => e.label === "Price of interventions")!.controlGroups
+                    .find(e => e.controls[0].name === "budgetAllZones")!.controls[0].value = payload["budgetAllZones"]
+            )
+        );
     },
 
     [RootMutation.SetCurrentRegionStep](state: RootState, payload: number) {
