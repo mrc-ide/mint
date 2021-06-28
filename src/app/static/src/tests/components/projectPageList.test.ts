@@ -128,7 +128,8 @@ describe("project page", () => {
                 prevalenceGraphData: [],
                 tableData: [],
                 step: 1
-            }
+            },
+            strategies: []
         });
 
         // options should equal options from store, but be fresh deep copy
@@ -182,7 +183,8 @@ describe("project page", () => {
                 prevalenceGraphData: [],
                 tableData: [],
                 step: 1
-            }
+            },
+            strategies: []
         });
 
         expect(mockRouter[0].path).toBe("/projects/new-project/regions/south");

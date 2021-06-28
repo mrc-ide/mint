@@ -1,4 +1,4 @@
-import {mockAxios, mockError, mockFailure, mockProject, mockRootState, mockSuccess} from "../mocks";
+import {mockAxios, mockError, mockFailure, mockRootState, mockSuccess} from "../mocks";
 import {expectAllDefined, expectEqualsFrozen} from "../testHelpers";
 import {actions, RootAction} from "../../app/actions";
 import {RootMutation} from "../../app/mutations";
@@ -24,18 +24,22 @@ describe("actions", () => {
 
     const interventionSettings: DynamicFormData = {
         irs_use: 0.6,
-        net_use: 0.7
+        net_use: 0.7,
+        budgetAllZones: 10_000
+    };
+
+    const region = {
+        baselineSettings,
+        interventionSettings,
+        tableData: []
     };
 
     const state = {
         currentProject: {
-            currentRegion: {
-                baselineOptions: [],
-                baselineSettings,
-                interventionSettings,
-                prevalenceGraphData: [],
-                tableData: []
-            }
+            currentRegion: region,
+            regions: [
+                region
+            ]
         }
     };
 
@@ -343,6 +347,37 @@ describe("actions", () => {
         expect(dispatch.mock.calls.length).toBe(2);
         expect(dispatch.mock.calls[0][0]).toBe(RootAction.FetchPrevalenceGraphData);
         expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchTableData);
+    });
+
+    it("fetches strategies", async () => {
+        const url = "/strategise";
+        const options = {budget: 10_000, zones: [{baselineSettings, interventionSettings}]};
+        const strategies = [{costThreshold: 1}];
+        mockAxios.onPost(url, options)
+            .reply(200, mockSuccess(strategies));
+        const commit = jest.fn();
+
+        await (actions[RootAction.Strategise] as any)({commit, state} as any);
+
+        expect(mockAxios.history.post[0].url).toBe(url);
+        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(options));
+        expect(commit.mock.calls.length).toBe(2);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.UpdateStrategies);
+        expect(commit.mock.calls[0][1]).toEqual([]);
+        expect(commit.mock.calls[1][0]).toBe(RootMutation.UpdateStrategies);
+        expect(commit.mock.calls[1][1]).toEqual(strategies);
+    });
+
+    it("adds error if fails to fetch strategies", async () => {
+        const url = "/strategise";
+        const failure = mockFailure("TEST ERROR");
+        mockAxios.onPost(url).reply(500, failure);
+        const commit = jest.fn();
+
+        await (actions[RootAction.Strategise] as any)({commit, state} as any);
+
+        expect(commit.mock.calls[1][0]).toBe(RootMutation.AddError);
+        expect(commit.mock.calls[1][1]).toStrictEqual(mockError("TEST ERROR"));
     });
 
 });

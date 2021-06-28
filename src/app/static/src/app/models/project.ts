@@ -48,6 +48,7 @@ export interface Project {
     slug: string;
     regions: Region[];
     currentRegion: Region;
+    strategies: StrategyWithThreshold[];
 }
 
 export class Project {
@@ -56,10 +57,17 @@ export class Project {
                 regionsName: string[],
                 baselineOptions: DynamicFormMeta,
                 interventionOptions: DynamicFormMeta,
-                currentRegion: Region | null = null) {
+                currentRegion: Region | null = null,
+                strategies: StrategyWithThreshold[] = []) {
         this.name = name;
         this.slug = getSlug(name);
         this.regions = regionsName.map(n => new Region(n, this, baselineOptions, interventionOptions));
-        this.currentRegion = currentRegion || this.regions[0]
+        this.currentRegion = currentRegion || this.regions[0];
+        this.strategies = strategies;
     }
+}
+
+export interface StrategyWithThreshold {
+    costThreshold: number
+    strategy: object
 }
