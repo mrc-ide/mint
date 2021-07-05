@@ -1,5 +1,6 @@
 package org.imperial.mrc.mint.integration.endpoints
 
+import org.imperial.mrc.mint.helpers.Settings
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.client.postForEntity
 
@@ -14,17 +15,7 @@ class StrategiseTests : EndpointTests() {
                         "zones" to listOf(
                                 mapOf(
                                         "name" to "Region A",
-                                        "baselineSettings" to mapOf(
-                                                "population" to 1000,
-                                                "seasonalityOfTransmission" to "seasonal",
-                                                "currentPrevalence" to "30%",
-                                                "bitingIndoors" to "high",
-                                                "bitingPeople" to "low",
-                                                "levelOfResistance" to "0%",
-                                                "metabolic" to "yes",
-                                                "itnUsage" to "0%",
-                                                "sprayInput" to "0%"
-                                        ),
+                                        "baselineSettings" to Settings.Baseline,
                                         "interventionSettings" to mapOf(
                                                 "procurePeoplePerNet" to 1.8,
                                                 "procureBuffer" to 7,
