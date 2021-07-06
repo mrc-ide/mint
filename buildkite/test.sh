@@ -16,6 +16,14 @@ docker build --tag=mint-test \
 
 $HERE/../scripts/run-dependencies.sh
 
+# Ensure that mintr is available
+for attempt in $(seq 30); do
+    if [[ "$(curl --silent http://localhost:8888)" == *"Welcome to mintr"* ]]; then
+        break
+    fi
+    sleep 6
+done
+
 # Run the build env image to run gradle tests
 docker run --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
