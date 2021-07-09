@@ -1,6 +1,6 @@
 import {MutationTree} from "vuex";
 import {RootState} from "./store";
-import {Project, Region} from "./models/project";
+import {Project, Region, StrategyWithThreshold} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
@@ -28,7 +28,8 @@ export enum RootMutation {
     AddCostPerCaseGraphConfig = "AddCostPerCaseGraphConfig",
     DeleteProject = "DeleteProject",
     UpdateImpactDocs = "UpdateImpactDocs",
-    UpdateCostDocs = "UpdateCostDocs"
+    UpdateCostDocs = "UpdateCostDocs",
+    UpdateStrategies = "UpdateStrategies"
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -82,6 +83,14 @@ export const mutations: MutationTree<RootState> = {
     [RootMutation.SetCurrentRegionInterventionSettings](state: RootState, payload: DynamicFormData) {
         if (state.currentProject) {
             state.currentProject.currentRegion.interventionSettings = payload;
+            state.currentProject.regions
+                .filter(region => region.interventionOptions.controlSections.length)
+                .forEach(region =>
+                    region.interventionOptions
+                        .controlSections.find(e => e.label === "Price of interventions")!
+                        .controlGroups.find(e => e.controls[0].name === "budgetAllZones")!
+                        .controls[0].value = payload["budgetAllZones"]
+                );
         }
     },
 
@@ -145,6 +154,12 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.UpdateCostDocs](state: RootState, payload: string) {
         state.costDocs = payload;
+    },
+
+    [RootMutation.UpdateStrategies](state: RootState, payload: StrategyWithThreshold[]) {
+        if (state.currentProject) {
+            state.currentProject.strategies = payload;
+        }
     }
 
 };

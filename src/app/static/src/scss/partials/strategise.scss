@@ -1,0 +1,31 @@
+.strategise {
+  h1 .tooltip-inner {
+    min-width: 300px !important;
+  }
+  .summary {
+    tr td:first-child {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .table-success {
+      background-color: #bbf0fb;
+    }
+    .table-secondary {
+      background-color: #e0fae0;
+    }
+    .table-primary {
+      background-color: #dbb8db;
+    }
+    .table-warning {
+      background-color: #f5c6cb;
+    }
+    .table-danger {
+      background-color: #ffe6b8;
+    }
+    .lds-spin {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}

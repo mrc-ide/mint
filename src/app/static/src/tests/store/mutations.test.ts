@@ -2,7 +2,7 @@ import {mutations, RootMutation} from "../../app/mutations";
 import {mockError, mockProject, mockRegion, mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
 import {expectAllDefined} from "../testHelpers";
-import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {DynamicControlType, DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 describe("mutations", () => {
 
@@ -255,6 +255,43 @@ describe("mutations", () => {
         expect(state.currentProject).toBeNull();
     });
 
+    it("synchronises the global budget across regions", () => {
+        const state = mockRootState({
+            currentProject: new Project("my project", ["North region", "South region"],
+                {controlSections: []}, {
+                    controlSections: [
+                        {
+                            label: "Price of interventions",
+                            controlGroups: [
+                                {
+                                    controls: [
+                                        {
+                                            name: "budgetAllZones",
+                                            value: 33,
+                                            type: "number" as DynamicControlType,
+                                            required: true
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            )
+        });
+
+        const newSettings: DynamicFormData = {budgetAllZones: 42};
+        mutations[RootMutation.SetCurrentRegionInterventionSettings](state, newSettings);
+        state.currentProject!.regions.forEach(region =>
+            expect(
+                region.interventionOptions!
+                    .controlSections.find(e => e.label === "Price of interventions")!
+                    .controlGroups.find(e => e.controls[0].name === "budgetAllZones")!
+                    .controls[0].value
+            ).toBe(42)
+        );
+    });
+
     it("updates the current region's baseline settings", () => {
         const state = mockRootState({
             currentProject: new Project("my project", ["North region", "South region"],
@@ -284,5 +321,15 @@ describe("mutations", () => {
         const state = mockRootState();
         mutations[RootMutation.UpdateCostDocs](state, "cost docs");
         expect(state.costDocs).toBe("cost docs");
+    });
+
+    it("updates strategies", () => {
+        const project = mockProject();
+        const state = mockRootState({
+            currentProject: project
+        });
+        mutations[RootMutation.UpdateStrategies](state, ["some strategies"]);
+
+        expect(state.currentProject!!.strategies).toStrictEqual(["some strategies"]);
     });
 });

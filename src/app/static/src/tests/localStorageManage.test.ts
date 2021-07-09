@@ -1,6 +1,6 @@
 import {mockProject, mockRootState} from "./mocks";
 import {localStorageManager, serialiseState} from "../app/localStorageManager";
-import {Project} from "../app/models/project";
+import {Project, StrategyWithThreshold} from "../app/models/project";
 
 describe("local storage manager", () => {
 
@@ -8,8 +8,8 @@ describe("local storage manager", () => {
        localStorage.clear();
     });
 
-    const mockProjectWithData = (name: string, regions: string[]): Project => {
-        const project = mockProject(name, regions)
+    const mockProjectWithData = (name: string, regions: string[], strategies: StrategyWithThreshold[] = []): Project => {
+        const project = mockProject(name, regions, strategies)
         const region = project.regions[0]
 
         // settings should all be preserved
@@ -28,7 +28,7 @@ describe("local storage manager", () => {
 
     it("can strip data from projects", () => {
 
-        const project1 = mockProjectWithData("p1", ["r1"])
+        const project1 = mockProjectWithData("p1", ["r1"], [{costThreshold: 1, strategy: {}}])
         const project2 = mockProjectWithData("p2", ["r2"])
 
         const state = mockRootState({
@@ -70,6 +70,7 @@ describe("local storage manager", () => {
         expect(result.currentProject!!.slug).toBe("p1");
         expect(result.currentProject!!.regions[0]).toEqual(expectedFirstRegion);
         expect(result.currentProject!!.currentRegion).toEqual(expectedFirstRegion);
+        expect(result.currentProject!!.strategies).toEqual([]);
 
         expect(Object.keys(result)).toEqual([
             "projects",
