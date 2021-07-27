@@ -16,6 +16,7 @@ const names: Record<string, string> = {
   "none": "No intervention"
 };
 
+// BTable uses Bootstrap colour variants for styling: https://bootstrap-vue.org/docs/components/table#items-record-data
 const colours: Record<string, string> = {
   "irs": "primary",
   "llin-pbo": "secondary",
