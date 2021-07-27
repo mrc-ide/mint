@@ -11,14 +11,19 @@ import Vue from "vue";
 
 describe("strategise page", () => {
 
-    const createStore = (mockStrategiseAction = jest.fn(), errors: APIError[] = []) => {
+    const createStore = (
+        mockSetBudgetAction = jest.fn(),
+        mockStrategiseAction = jest.fn(),
+        errors: APIError[] = []
+    ) => {
         return new Vuex.Store({
             state: mockRootState({
                 currentProject: mockProject(),
                 errors
             }),
             actions: {
-                [RootAction.Strategise]: mockStrategiseAction
+                [RootAction.SetBudget]: mockSetBudgetAction,
+                [RootAction.Strategise]: mockStrategiseAction,
             }
         });
     };
@@ -30,17 +35,19 @@ describe("strategise page", () => {
         expect(input.value).toBe("10000");
     });
 
-    it("propagates budget change to project settings", () => {
-        const store = createStore();
+    it("propagates budget change to project settings", async () => {
+        const mockSetBudgetAction = jest.fn();
+        const store = createStore(mockSetBudgetAction);
         const wrapper = mount(StrategisePage, {store});
         expect(store.state.currentProject!.budget).toBe(10000);
         wrapper.find("input").setValue("20000");
-        expect(store.state.currentProject!.budget).toBe(20000);
+        expect(mockSetBudgetAction.mock.calls.length).toBe(1);
+        expect(mockSetBudgetAction.mock.calls[0][1]).toEqual({budget: 20000});
     });
 
     it("triggers action and sets strategising flag when form submitted", () => {
         const mockStrategiseAction = jest.fn();
-        const store = createStore(mockStrategiseAction);
+        const store = createStore(jest.fn(), mockStrategiseAction);
         const wrapper = mount(StrategisePage, {store});
         wrapper.find("form").trigger("submit");
         expect(wrapper.vm.$data.strategising).toBe(true);
@@ -84,7 +91,7 @@ describe("strategise page", () => {
     });
 
     it("displays errors", () => {
-        const store = createStore(jest.fn(), [mockError("DETAIL")]);
+        const store = createStore(jest.fn(), jest.fn(), [mockError("DETAIL")]);
         const wrapper = mount(StrategisePage, {store});
         const alert = wrapper.find(BAlert);
         expect(alert.exists()).toBe(true);

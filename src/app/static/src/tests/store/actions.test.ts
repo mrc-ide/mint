@@ -349,6 +349,15 @@ describe("actions", () => {
         expect(dispatch.mock.calls[1][0]).toBe(RootAction.FetchTableData);
     });
 
+    it("sets budget", () => {
+        const commit = jest.fn();
+        (actions[RootAction.SetBudget] as any)({commit} as any, {budget: 42});
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.SetBudget);
+        expect(commit.mock.calls[0][1]).toBe(42);
+
+    });
+
     it("fetches strategies", async () => {
         const url = "/strategise";
         const options = {budget: 10_000, zones: [{baselineSettings, interventionSettings}]};

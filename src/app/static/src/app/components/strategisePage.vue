@@ -28,7 +28,7 @@
           <help-circle-icon></help-circle-icon>
         </span>
         <b-input-group prepend="$USD" class="mb-2 mr-sm-3 mb-sm-0">
-          <b-form-input id="inline-form-input-budget" v-model="currentProject.budget" type="number" min="0"
+          <b-form-input id="inline-form-input-budget" :value="budget" @update="update" type="number" min="0"
                         :number="true" :required="true"></b-form-input>
         </b-input-group>
         <b-button type="submit" variant="primary">Strategize</b-button>
@@ -63,10 +63,13 @@ import {APIError} from "../apiService";
 interface Data {
   strategising: boolean
   showDocumentation: boolean
+  budget: number
 }
 
 interface Methods {
+  setBudget: (payload: { budget: number }) => void
   strategise: () => void
+  update: (budget: number) => void
   submit: () => void
   dismissErrors: () => void
 }
@@ -99,7 +102,8 @@ export default Vue.extend<Data, Methods, Computed>({
   data() {
     return {
       strategising: false,
-      showDocumentation: false
+      showDocumentation: false,
+      budget: this.$store.state.currentProject.budget
     }
   },
   computed: {
@@ -113,9 +117,13 @@ export default Vue.extend<Data, Methods, Computed>({
   },
   methods: {
     ...mapActions({
+      setBudget: RootAction.SetBudget,
       strategise: RootAction.Strategise,
       dismissErrors: RootAction.DismissErrors
     }),
+    update: function (budget: number) {
+      this.setBudget({ budget });
+    },
     submit: async function () {
       this.strategising = true;
       await this.strategise();

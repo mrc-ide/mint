@@ -30,6 +30,7 @@ export enum RootMutation {
     DeleteProject = "DeleteProject",
     UpdateImpactDocs = "UpdateImpactDocs",
     UpdateCostDocs = "UpdateCostDocs",
+    SetBudget = "SetBudget",
     UpdateStrategies = "UpdateStrategies"
 }
 
@@ -154,6 +155,10 @@ export const mutations: MutationTree<RootState> = {
 
     [RootMutation.UpdateCostDocs](state: RootState, payload: string) {
         state.costDocs = payload;
+    },
+
+    [RootMutation.SetBudget](state: RootState, payload: number) {
+        state.currentProject!!.budget = payload;
     },
 
     [RootMutation.UpdateStrategies](state: RootState, payload: StrategyWithThreshold[]) {

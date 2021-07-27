@@ -286,6 +286,15 @@ describe("mutations", () => {
         expect(state.costDocs).toBe("cost docs");
     });
 
+    it("sets budget", () => {
+        const state = mockRootState({
+            currentProject: mockProject()
+        });
+        mutations[RootMutation.SetBudget](state, 42);
+
+        expect(state.currentProject!!.budget).toBe(42);
+    });
+
     it("updates strategies", () => {
         const project = mockProject();
         const state = mockRootState({
