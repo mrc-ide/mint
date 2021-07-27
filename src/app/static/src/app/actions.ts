@@ -191,7 +191,10 @@ export const actions: ActionTree<RootState, RootState> = {
         const project = context.state.currentProject!;
         const options = {
             budget: project.budget,
-            zones: project.regions.map(({name, baselineSettings, interventionSettings}) =>
+            zones: project.regions
+                // Exclude regions that aren't fully initialised
+                .filter(region => region.interventionSettings.budgetAllZones)
+                .map(({name, baselineSettings, interventionSettings}) =>
                 ({name, baselineSettings, interventionSettings}))
         };
         await api(context)

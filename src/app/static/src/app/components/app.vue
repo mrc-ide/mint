@@ -15,9 +15,9 @@
                     </drop-down>
                 </li>
                 <li class="full-height">
-                    <router-link to="/strategise" class="px-2 text-dark project-nav"
-                       id="stratAcrossRegions"
-                       v-if="stratAcrossRegionsIsEnabled && currentProject.regions.length > 1">Strategize across regions
+                    <router-link to="/strategise" class="px-2 text-dark project-nav" id="stratAcrossRegions"
+                                 v-if="stratAcrossRegionsIsEnabled">
+                        Strategize across regions
                         <b-icon-graph-up></b-icon-graph-up>
                     </router-link>
                 </li>
@@ -73,17 +73,17 @@
         fetchDocs: () => void
         fetchBaselineOptions: () => void
         fetchInterventionOptions: () => void
-        addRegion: (region: Region) => void,
+        addRegion: (region: Region) => void
         createNewRegion: () => void
         cancel: () => void
     }
 
     interface Data {
-        newRegionName: string;
-        stratAcrossRegionsIsEnabled: boolean;
+        newRegionName: string
     }
 
     interface Computed {
+        stratAcrossRegionsIsEnabled: boolean
         currentProject: Project
         baselineOptions: DynamicFormMeta
         interventionOptions: DynamicFormMeta
@@ -95,7 +95,6 @@
         data() {
             return {
                 newRegionName: "",
-                stratAcrossRegionsIsEnabled: switches.stratAcrossRegions,
                 maxRegions: MAX_REGIONS
             }
         },
@@ -112,6 +111,11 @@
                 // also represent a naming clash, so compare slugs rather than names
                 const newRegionSlug = getSlug(this.newRegionName);
                 return !this.currentProject.regions.find(r => r.slug == newRegionSlug);
+            },
+            stratAcrossRegionsIsEnabled() {
+              return switches.stratAcrossRegions &&
+                  // Exclude regions that aren't fully initialised
+                  this.currentProject.regions.filter(region => region.interventionSettings.budgetAllZones).length > 1;
             }
         },
         methods: {

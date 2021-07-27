@@ -81,24 +81,26 @@ describe("app", () => {
 
     it("shows strategise link if feature enabled", () => {
         switches.stratAcrossRegions = true;
-        const state = {
-            currentProject: new Project(
-                "my project", ["region1", "region2"], {controlSections: []}, {controlSections: []}
-            )
-        };
+        const project = new Project(
+            "my project", ["region1", "region2"], {controlSections: []}, {controlSections: []}
+        );
+        project.regions.forEach(region => {
+            region.interventionSettings.budgetAllZones = 42;
+        });
+        const state = { currentProject: project };
         const wrapper = getWrapper(state);
         expect(wrapper.findAll("#stratAcrossRegions").length).toBe(1);
         expect(wrapper.find("#stratAcrossRegions").text()).toBe("Strategize across regions");
         expect(wrapper.find("#stratAcrossRegions").attributes("to")).toBe("/strategise");
     });
 
-    it("does not show strategise link if fewer than two regions exist", () => {
+    it("does not show strategise link if fewer than two fully initialised regions exist", () => {
         switches.stratAcrossRegions = true;
-        const state = {
-            currentProject: new Project(
-                "my project", ["region1"], {controlSections: []}, {controlSections: []}
-            )
-        };
+        const project = new Project(
+            "my project", ["region1", "region2"], {controlSections: []}, {controlSections: []}
+        );
+        project.regions[0].interventionSettings.budgetAllZones = 42;
+        const state = { currentProject: project };
         const wrapper = getWrapper(state);
         expect(wrapper.findAll("#stratAcrossRegions").length).toBe(0);
     });

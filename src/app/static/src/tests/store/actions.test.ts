@@ -360,16 +360,32 @@ describe("actions", () => {
 
     it("fetches strategies", async () => {
         const url = "/strategise";
-        const options = {budget: 10_000, zones: [{baselineSettings, interventionSettings}]};
         const strategies = [{costThreshold: 1}];
-        mockAxios.onPost(url, options)
+        mockAxios.onPost(url)
             .reply(200, mockSuccess(strategies));
         const commit = jest.fn();
+        const mockRegion = {interventionSettings: {budgetAllZones: 42}};
+        const mockState = {
+            currentProject: {
+                currentRegion: mockRegion,
+                regions: [
+                    mockRegion,
+                    mockRegion
+                ],
+                budget: 10_000
+            }
+        };
 
-        await (actions[RootAction.Strategise] as any)({commit, state} as any);
+        await (actions[RootAction.Strategise] as any)({commit, state: mockState} as any);
 
         expect(mockAxios.history.post[0].url).toBe(url);
-        expect(mockAxios.history.post[0].data).toBe(JSON.stringify(options));
+        expect(mockAxios.history.post[0].data).toBe(JSON.stringify({
+            budget: 10000,
+            zones: [
+                {interventionSettings: {budgetAllZones: 42}},
+                {interventionSettings: {budgetAllZones: 42}},
+            ]
+        }));
         expect(commit.mock.calls.length).toBe(2);
         expect(commit.mock.calls[0][0]).toBe(RootMutation.UpdateStrategies);
         expect(commit.mock.calls[0][1]).toEqual([]);

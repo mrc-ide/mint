@@ -36,7 +36,10 @@ describe("actions", () => {
         const state = await getStateWithBaselineSettings();
         const settings = await getSettingsFromOptions(RootAction.FetchInterventionOptions);
         Object.assign(state.currentProject.currentRegion, {
-            interventionSettings: settings
+            interventionSettings: {
+                ...settings,
+                budgetAllZones: 10_000
+            }
         });
         return state;
     };
