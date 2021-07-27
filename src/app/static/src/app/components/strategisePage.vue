@@ -10,14 +10,16 @@
         <component style="vertical-align: top" :is="documentationChevronComponent"></component>
       </a>
       <b-collapse :visible="showDocumentation">
-        <div class="my-1" v-html="'<p>This tool can investigate how different interventions could be ' +
+        <div class="my-2" v-html="'<p>This tool can investigate how different interventions could be ' +
         'distributed cross wider regions to minimise the overall number of malaria cases whilst achieving local ' +
         'goals.</p>' +
         '<p>In some circumstances the next best option might be substantially lower cost. To investigate this the ' +
         'tool outputs not only the best option but shows which combination of interventions give slightly reduced ' +
         'budgets. The tool presents 5 potential strategies, allowing the user to determine and explore potential ' +
         'strategies for vector control across regions.</p>' +
-        '<p>Please see the user manual for more information.</p>'"></div>
+        '<p>Please see the user manual for more information.</p>' +
+        '<p><i>*IRS refers to a long-lasting non-pyrethroid IRS product (impact reflects recent Actellic 300CS and ' +
+        'SumiShield products).</i></p>'"></div>
       </b-collapse>
     </div>
     <div class="form mt-5">

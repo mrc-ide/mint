@@ -8,7 +8,7 @@ import Vue from "vue";
 import {StrategyWithThreshold} from "../../../models/project";
 
 const names: Record<string, string> = {
-  "irs": "IRS only",
+  "irs": "IRS* only",
   "llin-pbo": "Pyrethroid-PBO ITN only",
   "irs-llin-pbo": "Pyrethroid-PBO ITN with IRS*",
   "llin": "Pyrethroid LLIN only",
