@@ -12,13 +12,19 @@ re-generate types run
 from this directory
 
 ### Testing
-Tests are run with jest. Files with the suffix `.test.ts` are treated as unit tests, files 
-with the suffix `.itest.ts` treated as integration tests. Config for each can be found in 
-`jest.config.js` and `jest.integration.config.js`, respectively.
-- run unit tests with `npm test` 
-- run integration tests with `npm run integration-test` having first started the app and 
-all dependencies by running `./scripts/run-dev-dependencies-for-integration-tests.sh` from this
-directory
+
+There are three kinds of tests:
+
+- Unit tests. These have suffix `.test.ts` and are run with [Jest](https://jestjs.io/) via `npm test` with configuration
+  in `jest.config.js`.
+- Integration tests. These have suffix `.itest.ts` and are run with Jest via `npm run integration-test` with
+  configuration in `jest.integration.config.js`.
+- End-to-end (in-browser) tests. These have suffix `.etest.ts` and are run with [Playwright](https://playwright.dev/) via
+  `npm run e2e-test` with configuration in `playwright.config.ts`. Run `npx playwright install chromium` to perform a
+  one-time installation of the Playwright Chromium binary.
+
+Note that integration and end-to-end tests require the app and all dependencies to already be running, via
+`./scripts/run-dev-dependencies-for-integration-tests.sh`.
 
 ### Compiling
 - sass is compiled using gulp - this task can be triggered by running `npm run sass` 

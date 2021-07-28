@@ -15,3 +15,6 @@ steps:
 
   - label: ":mag: Test integration"
     command: buildkite/test-integration.sh
+
+  - label: ":mag: Test in browser"
+    command: buildkite/test-e2e.sh
