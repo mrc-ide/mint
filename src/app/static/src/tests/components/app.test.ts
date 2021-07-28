@@ -9,8 +9,13 @@ import {BModal} from "bootstrap-vue";
 import {RootMutation} from "../../app/mutations";
 import VueRouter from "vue-router";
 import {switches} from "../../app/featureSwitches";
+import {MAX_REGIONS} from "../../app";
 
 describe("app", () => {
+    const oldStratAcrossRegions = switches.stratAcrossRegions;
+    afterEach(() => {
+        switches.stratAcrossRegions = oldStratAcrossRegions;
+    });
 
     const localVue = createLocalVue();
     localVue.use(VueRouter);
@@ -46,6 +51,7 @@ describe("app", () => {
     });
 
     it("show project menu if currentProject is not null", () => {
+        switches.stratAcrossRegions = false;
         const state = {
             currentProject: new Project(
                 "my project", ["region1", "region2"], {controlSections: []}, {controlSections: []}
@@ -60,11 +66,43 @@ describe("app", () => {
         expect(firstNavLink.html())
             .toBe("<router-link-stub to=\"/projects/my-project/regions/region1\"" +
                 " tag=\"a\" event=\"click\" class=\"text-success\">region1</router-link-stub>");
-        if (switches.stratAcrossRegions) {
-            expect(wrapper.findAll("#stratAcrossRegions").length).toBe(1);
-            expect(wrapper.find("#stratAcrossRegions").text()).toBe("Strategize across regions");
-            expect(wrapper.find("#stratAcrossRegions").attributes("href")).toBe("#");
-        } else expect(wrapper.findAll("#stratAcrossRegions").length).toBe(0);
+        expect(wrapper.findAll("#stratAcrossRegions").length).toBe(0);
+    });
+
+    it("hides add region link if maximum region count has been reached", () => {
+        const state = {
+            currentProject: new Project(
+                "my project", Array(MAX_REGIONS).fill(""), {controlSections: []}, {controlSections: []}
+            )
+        };
+        const wrapper = getWrapper(state);
+        expect(wrapper.findAll(".dropdown-item").length).toBe(MAX_REGIONS);
+    });
+
+    it("shows strategise link if feature enabled", () => {
+        switches.stratAcrossRegions = true;
+        const project = new Project(
+            "my project", ["region1", "region2"], {controlSections: []}, {controlSections: []}
+        );
+        project.regions.forEach(region => {
+            region.interventionSettings.budgetAllZones = 42;
+        });
+        const state = { currentProject: project };
+        const wrapper = getWrapper(state);
+        expect(wrapper.findAll("#stratAcrossRegions").length).toBe(1);
+        expect(wrapper.find("#stratAcrossRegions").text()).toBe("Strategize across regions");
+        expect(wrapper.find("#stratAcrossRegions").attributes("to")).toBe("/strategise");
+    });
+
+    it("does not show strategise link if fewer than two fully initialised regions exist", () => {
+        switches.stratAcrossRegions = true;
+        const project = new Project(
+            "my project", ["region1", "region2"], {controlSections: []}, {controlSections: []}
+        );
+        project.regions[0].interventionSettings.budgetAllZones = 42;
+        const state = { currentProject: project };
+        const wrapper = getWrapper(state);
+        expect(wrapper.findAll("#stratAcrossRegions").length).toBe(0);
     });
 
     it("fetches docs and options before mount", () => {

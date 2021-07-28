@@ -48,18 +48,29 @@ export interface Project {
     slug: string;
     regions: Region[];
     currentRegion: Region;
+    strategies: StrategyWithThreshold[];
+    budget: number;
 }
 
 export class Project {
-
     constructor(name: string,
                 regionsName: string[],
                 baselineOptions: DynamicFormMeta,
                 interventionOptions: DynamicFormMeta,
-                currentRegion: Region | null = null) {
+                currentRegion: Region | null = null,
+                strategies: StrategyWithThreshold[] = [],
+                budget: number = 2_000_000
+    ) {
         this.name = name;
         this.slug = getSlug(name);
         this.regions = regionsName.map(n => new Region(n, this, baselineOptions, interventionOptions));
-        this.currentRegion = currentRegion || this.regions[0]
+        this.currentRegion = currentRegion || this.regions[0];
+        this.strategies = strategies;
+        this.budget = budget;
     }
+}
+
+export interface StrategyWithThreshold {
+    costThreshold: number
+    strategy: object
 }

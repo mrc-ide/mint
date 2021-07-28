@@ -4,9 +4,9 @@ import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 describe("actions", () => {
 
-    const getStateWithBaselineSettings = async () => {
+    const getSettingsFromOptions = async (action: RootAction) => {
         const commit = jest.fn();
-        await (actions[RootAction.FetchBaselineOptions] as any)({commit} as any);
+        await (actions[action] as any)({commit} as any);
         const options = commit.mock.calls[0][1] as DynamicFormMeta;
         const settings = {} as any;
         options.controlSections.forEach((section) => {
@@ -16,13 +16,32 @@ describe("actions", () => {
                 });
             });
         });
+        return settings;
+    };
+
+    const getStateWithBaselineSettings = async () => {
+        const settings = await getSettingsFromOptions(RootAction.FetchBaselineOptions);
         return {
             currentProject: {
                 currentRegion: {
+                    name: "Region A",
                     baselineSettings: settings
-                }
+                },
+                budget: 10_000
             }
         };
+    };
+
+    const getStateWithBaselineAndInterventionSettings = async () => {
+        const state = await getStateWithBaselineSettings();
+        const settings = await getSettingsFromOptions(RootAction.FetchInterventionOptions);
+        Object.assign(state.currentProject.currentRegion, {
+            interventionSettings: {
+                ...settings,
+                budgetAllZones: 10_000
+            }
+        });
+        return state;
     };
 
     it("can get prevalence graph data", async () => {
@@ -162,7 +181,20 @@ describe("actions", () => {
         expect(new Set(commit.mock.calls.map(call => call[0]))).toEqual(new Set([RootMutation.UpdateImpactDocs, RootMutation.UpdateCostDocs]));
         expect(commit.mock.calls[0][1]).toContain("<ul>");
         expect(commit.mock.calls[1][1]).toContain("<ul>");
+    });
 
+    it("can get strategies", async () => {
+        const commit = jest.fn();
+        const state = await getStateWithBaselineAndInterventionSettings();
+
+        (state.currentProject as any).regions = [state.currentProject.currentRegion];
+
+        await (actions[RootAction.Strategise] as any)({commit, state} as any);
+
+        expect(commit.mock.calls.length).toBe(2);
+        expect(commit.mock.calls[1][0]).toBe(RootMutation.UpdateStrategies);
+        expect(commit.mock.calls[1][1].length).toBe(5);
+        expect(Object.keys(commit.mock.calls[1][1][0]).sort()).toEqual(["costThreshold", "strategy"]);
     });
 
 });

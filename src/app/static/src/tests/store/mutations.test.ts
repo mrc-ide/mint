@@ -2,7 +2,7 @@ import {mutations, RootMutation} from "../../app/mutations";
 import {mockError, mockProject, mockRegion, mockRootState} from "../mocks";
 import {Project} from "../../app/models/project";
 import {expectAllDefined} from "../testHelpers";
-import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {DynamicControlType, DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 describe("mutations", () => {
 
@@ -245,7 +245,7 @@ describe("mutations", () => {
         const newSettings: DynamicFormData = {"c1": 3};
         mutations[RootMutation.SetCurrentRegionInterventionSettings](state, newSettings);
         expect(state.currentProject!!.currentRegion.interventionSettings)
-            .toEqual(newSettings);
+            .toEqual({budgetAllZones:2000000, ...newSettings});
     });
 
     it("updating the current region's intervention settings does nothing if not current project", () => {
@@ -284,5 +284,33 @@ describe("mutations", () => {
         const state = mockRootState();
         mutations[RootMutation.UpdateCostDocs](state, "cost docs");
         expect(state.costDocs).toBe("cost docs");
+    });
+
+    it("sets budget", () => {
+        const state = mockRootState({
+            currentProject: mockProject()
+        });
+        mutations[RootMutation.SetBudget](state, 42);
+
+        expect(state.currentProject!!.budget).toBe(42);
+    });
+
+    it("updates strategies", () => {
+        const project = mockProject();
+        const state = mockRootState({
+            currentProject: project
+        });
+        mutations[RootMutation.UpdateStrategies](state, ["some strategies"]);
+
+        expect(state.currentProject!!.strategies).toStrictEqual(["some strategies"]);
+    });
+
+    it("dismisses errors", () => {
+        const state = mockRootState({
+            errors: [mockError("TEST ERROR")]
+        });
+       mutations[RootMutation.DismissErrors](state);
+
+       expect(state.errors).toStrictEqual([]);
     });
 });
