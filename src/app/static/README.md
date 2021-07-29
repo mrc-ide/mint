@@ -22,6 +22,8 @@ There are three kinds of tests:
 - End-to-end (in-browser) tests. These have suffix `.etest.ts` and are run with [Playwright](https://playwright.dev/) via
   `npm run e2e-test` with configuration in `playwright.config.ts`. Run `npx playwright install chromium` to perform a
   one-time installation of the Playwright Chromium binary.
+  - Playwright provides [various tools](https://playwright.dev/docs/debug) for authoring and debugging tests. But if
+    you've written a failing test then simply running `npm run e2e-test -- --headed` may help identify the issue.
 
 Note that integration and end-to-end tests require the app and all dependencies to already be running, via
 `./scripts/run-dev-dependencies-for-integration-tests.sh`.
