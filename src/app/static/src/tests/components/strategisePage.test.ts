@@ -76,14 +76,10 @@ describe("strategise page", () => {
         store.state.currentProject!.strategies = [
             {
                 costThreshold: 1,
-                strategy: {
-                    casesAverted: 100,
-                    cost: 1000,
-                    interventions: [
-                        {zone: "Region A", intervention: "irs-llin-pbo"},
-                        {zone: "Region B", intervention: "irs-llin"}
-                    ]
-                }
+                interventions: [
+                    {zone: "Region A", intervention: "irs-llin-pbo", casesAverted: 60, cost: 600},
+                    {zone: "Region B", intervention: "irs-llin", casesAverted: 40, cost: 400}
+                ]
             }
         ];
         await Vue.nextTick();

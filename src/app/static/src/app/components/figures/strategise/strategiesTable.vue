@@ -57,10 +57,10 @@ export default Vue.extend<void, void, Computed, Props>({
       return this.strategies.map((e: any, i: number) => ({
         " ": `Strategy ${i + 1}`,
         "maximum_cost_vs_budget": `${e.costThreshold * 100}%`,
-        ...e.strategy.interventions.reduce((a: any, f: any) => ({...a, [f.zone]: names[f.intervention]}), {}),
-        "total_cases_averted": casesFormatter.format(e.strategy.casesAverted),
-        "total_cost": costFormatter.format(e.strategy.cost),
-        "_cellVariants": e.strategy.interventions.reduce((a: any, f: any) => ({
+        ...e.interventions.reduce((a: any, f: any) => ({...a, [f.zone]: names[f.intervention]}), {}),
+        "total_cases_averted": casesFormatter.format(e.interventions.reduce((a: Number, g: any) => a + g.casesAverted, 0)),
+        "total_cost": costFormatter.format(e.interventions.reduce((a: Number, g: any) => a + g.cost, 0)),
+        "_cellVariants": e.interventions.reduce((a: any, f: any) => ({
           ...a,
           [f.zone]: colours[f.intervention]
         }), {})
