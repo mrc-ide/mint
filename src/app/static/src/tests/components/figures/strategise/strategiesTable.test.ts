@@ -10,25 +10,17 @@ describe("strategies table", () => {
                 strategies: [
                     {
                         costThreshold: 1,
-                        strategy: {
-                            casesAverted: 100,
-                            cost: 1000,
-                            interventions: [
-                                {zone: "Region A", intervention: "irs-llin-pbo"},
-                                {zone: "Region B", intervention: "irs-llin"}
-                            ]
-                        }
+                        interventions: [
+                            {zone: "Region A", intervention: "irs-llin-pbo", casesAverted: 60, cost: 600},
+                            {zone: "Region B", intervention: "irs-llin", casesAverted: 40, cost: 400}
+                        ]
                     },
                     {
                         costThreshold: 0.95,
-                        strategy: {
-                            casesAverted: 50,
-                            cost: 500,
-                            interventions: [
-                                {zone: "Region A", intervention: "pbo-llin"},
-                                {zone: "Region B", intervention: "llin"}
-                            ]
-                        }
+                        interventions: [
+                            {zone: "Region A", intervention: "pbo-llin", casesAverted: 35, cost: 300},
+                            {zone: "Region B", intervention: "llin", casesAverted: 15, cost: 200}
+                        ]
                     }
                 ]
             }

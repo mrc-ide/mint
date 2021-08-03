@@ -28,7 +28,7 @@ describe("local storage manager", () => {
 
     it("can strip data from projects", () => {
 
-        const project1 = mockProjectWithData("p1", ["r1"], [{costThreshold: 1, strategy: {}}])
+        const project1 = mockProjectWithData("p1", ["r1"], [{costThreshold: 1, interventions: []}])
         const project2 = mockProjectWithData("p2", ["r2"])
 
         const state = mockRootState({

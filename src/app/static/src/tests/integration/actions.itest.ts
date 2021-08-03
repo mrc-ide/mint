@@ -194,7 +194,7 @@ describe("actions", () => {
         expect(commit.mock.calls.length).toBe(2);
         expect(commit.mock.calls[1][0]).toBe(RootMutation.UpdateStrategies);
         expect(commit.mock.calls[1][1].length).toBe(5);
-        expect(Object.keys(commit.mock.calls[1][1][0]).sort()).toEqual(["costThreshold", "strategy"]);
+        expect(Object.keys(commit.mock.calls[1][1][0]).sort()).toEqual(["costThreshold", "interventions"]);
     });
 
 });
