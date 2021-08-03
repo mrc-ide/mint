@@ -11,7 +11,7 @@
       </a>
       <b-collapse :visible="showDocumentation">
         <div class="my-2" v-html="'<p>This tool can investigate how different interventions could be ' +
-        'distributed cross wider regions to minimise the overall number of malaria cases whilst achieving local ' +
+        'distributed across wider regions to minimise the overall number of malaria cases whilst achieving local ' +
         'goals.</p>' +
         '<p>In some circumstances the next best option might be substantially lower cost. To investigate this the ' +
         'tool outputs not only the best option but shows which combination of interventions give slightly reduced ' +
