@@ -72,5 +72,5 @@ export class Project {
 
 export interface StrategyWithThreshold {
     costThreshold: number
-    strategy: object
+    interventions: object[]
 }
