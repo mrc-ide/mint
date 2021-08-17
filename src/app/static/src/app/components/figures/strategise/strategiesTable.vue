@@ -1,41 +1,16 @@
 <template>
-  <b-table :items="items"></b-table>
+  <b-table :items="items" hover selectable select-mode="single" @row-selected="onRowSelected"></b-table>
 </template>
 
 <script lang="ts">
 import {BTable} from "bootstrap-vue";
 import Vue from "vue";
 import {StrategyWithThreshold} from "../../../models/project";
+import {formatCases, formatCost, getInterventionColour, getInterventionName} from "./util";
 
-const names: Record<string, string> = {
-  "irs": "IRS* only",
-  "llin-pbo": "Pyrethroid-PBO ITN only",
-  "irs-llin-pbo": "Pyrethroid-PBO ITN with IRS*",
-  "llin": "Pyrethroid LLIN only",
-  "irs-llin": "Pyrethroid LLIN with IRS*",
-  "none": "No intervention"
-};
-
-// BTable uses Bootstrap colour variants for styling: https://bootstrap-vue.org/docs/components/table#items-record-data
-const colours: Record<string, string> = {
-  "irs": "primary",
-  "llin-pbo": "secondary",
-  "irs-llin-pbo": "danger",
-  "llin": "success",
-  "irs-llin": "warning",
-  "none": ""
-};
-
-const costFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0
-});
-
-const casesFormatter = new Intl.NumberFormat('en-US', {
-  maximumFractionDigits: 0
-});
+interface Methods {
+  onRowSelected: (rows: Record<string, any>[]) => void
+}
 
 interface Computed {
   items: Record<string, any>[]
@@ -45,7 +20,12 @@ interface Props {
   strategies: StrategyWithThreshold[]
 }
 
-export default Vue.extend<void, void, Computed, Props>({
+export default Vue.extend<void, Methods, Computed, Props>({
+  methods: {
+    onRowSelected([item]) {
+      this.$emit("strategy-selected", this.strategies[this.items.indexOf(item)]);
+    }
+  },
   components: {
     BTable
   },
@@ -54,15 +34,18 @@ export default Vue.extend<void, void, Computed, Props>({
   },
   computed: {
     items() {
-      return this.strategies.map((e: any, i: number) => ({
+      return this.strategies.map((strategy, i) => ({
         " ": `Strategy ${i + 1}`,
-        "maximum_cost_vs_budget": `${e.costThreshold * 100}%`,
-        ...e.interventions.reduce((a: any, f: any) => ({...a, [f.zone]: names[f.intervention]}), {}),
-        "total_cases_averted": casesFormatter.format(e.interventions.reduce((a: Number, g: any) => a + g.casesAverted, 0)),
-        "total_cost": costFormatter.format(e.interventions.reduce((a: Number, g: any) => a + g.cost, 0)),
-        "_cellVariants": e.interventions.reduce((a: any, f: any) => ({
+        maximum_cost_vs_budget: `${strategy.costThreshold * 100}%`,
+        ...strategy.interventions.reduce((a, intervention) => ({
           ...a,
-          [f.zone]: colours[f.intervention]
+          [intervention.zone]: getInterventionName(intervention.intervention)
+        }), {}),
+        total_cases_averted: formatCases(strategy.interventions.reduce((a, intervention) => a + intervention.casesAverted, 0)),
+        total_cost: formatCost(strategy.interventions.reduce((a, intervention) => a + intervention.cost, 0)),
+        _cellVariants: strategy.interventions.reduce((a, intervention) => ({
+          ...a,
+          [intervention.zone]: getInterventionColour(intervention.intervention)
         }), {})
       }));
     }

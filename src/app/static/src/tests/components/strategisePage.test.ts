@@ -1,4 +1,4 @@
-import {mount} from "@vue/test-utils";
+import {mount, shallowMount} from "@vue/test-utils";
 import StrategisePage from "../../app/components/strategisePage.vue";
 import Vuex from "vuex";
 import {RootAction} from "../../app/actions";
@@ -94,6 +94,21 @@ describe("strategise page", () => {
         expect(alert.findAll("dl").length).toBe(1);
         expect(alert.find("dl dt").text()).toBe("OTHER_ERROR");
         expect(alert.find("dl dd").text()).toBe("DETAIL");
+    });
+
+    it("handles strategy selection", () => {
+        const strategy = {
+            costThreshold: 1,
+            interventions: [
+                {zone: "Region A", intervention: "irs-llin-pbo", casesAverted: 60, cost: 600},
+                {zone: "Region B", intervention: "irs-llin", casesAverted: 40, cost: 400}
+            ]
+        };
+        const store = createStore();
+        store.state.currentProject!.strategies = [strategy];
+        const wrapper = shallowMount(StrategisePage, {store});
+        wrapper.find(strategiesTable).vm.$emit("strategy-selected", strategy);
+        expect(wrapper.vm.$data.selectedStrategy).toBe(strategy);
     });
 
 });

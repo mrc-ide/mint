@@ -36,9 +36,10 @@
         <b-button type="submit" variant="primary">Strategize</b-button>
       </b-form>
     </div>
-    <div class="summary mt-5">
+    <div class="results mt-5">
       <loading-spinner v-if="strategising" size="lg" class="mx-auto"></loading-spinner>
-      <strategies-table v-if="strategies.length" :strategies="strategies"></strategies-table>
+      <strategies-table v-if="strategies.length" :strategies="strategies"
+                        @strategy-selected="onStrategySelected" class="summaryTable"></strategies-table>
       <b-alert :show="errors.length > 0" variant="danger" dismissible @dismissed="dismissErrors">
         <h5 class="alert-heading">Errors occurred when strategizing</h5>
         <dl v-for="(error, index) in errors" :key="index">
@@ -46,6 +47,10 @@
           <dd v-if="error.detail">{{ error.detail }}</dd>
         </dl>
       </b-alert>
+      <div class="mt-5 detailsTable" v-if="strategies.length">
+        <strategy-table v-if="selectedStrategy" :strategy="selectedStrategy"></strategy-table>
+        <h2 v-else class="h4 text-center">Select a row in the table above to see details of the selected strategy</h2>
+      </div>
     </div>
   </div>
 </template>
@@ -59,6 +64,7 @@ import {VTooltip} from "v-tooltip";
 import {ChevronDownIcon, ChevronUpIcon, HelpCircleIcon, InfoIcon} from "vue-feather-icons";
 import loadingSpinner from "./loadingSpinner.vue";
 import strategiesTable from "./figures/strategise/strategiesTable.vue";
+import strategyTable from "./figures/strategise/strategyTable.vue";
 import {BAlert, BButton, BCollapse, BForm, BFormInput, BInputGroup} from "bootstrap-vue";
 import {APIError} from "../apiService";
 
@@ -66,6 +72,7 @@ interface Data {
   strategising: boolean
   showDocumentation: boolean
   budget: number
+  selectedStrategy: StrategyWithThreshold | null
 }
 
 interface Methods {
@@ -74,6 +81,7 @@ interface Methods {
   update: (budget: number) => void
   submit: () => void
   dismissErrors: () => void
+  onStrategySelected: (strategy: StrategyWithThreshold) => void
 }
 
 interface Computed {
@@ -86,6 +94,7 @@ interface Computed {
 export default Vue.extend<Data, Methods, Computed>({
   components: {
     strategiesTable,
+    strategyTable,
     HelpCircleIcon,
     loadingSpinner,
     BForm,
@@ -105,7 +114,8 @@ export default Vue.extend<Data, Methods, Computed>({
     return {
       strategising: false,
       showDocumentation: false,
-      budget: this.$store.state.currentProject.budget
+      budget: this.$store.state.currentProject.budget,
+      selectedStrategy: null
     }
   },
   computed: {
@@ -124,12 +134,15 @@ export default Vue.extend<Data, Methods, Computed>({
       dismissErrors: RootAction.DismissErrors
     }),
     update: function (budget: number) {
-      this.setBudget({ budget });
+      this.setBudget({budget});
     },
     submit: async function () {
       this.strategising = true;
       await this.strategise();
       this.strategising = false;
+    },
+    onStrategySelected(strategy) {
+      this.selectedStrategy = strategy;
     }
   }
 });
