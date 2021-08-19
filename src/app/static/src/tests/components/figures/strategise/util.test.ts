@@ -1,7 +1,7 @@
 import {
     formatCases,
     formatCost,
-    formatPercentage, getInterventionColour,
+    formatPercentage, getInterventionColourName,
     getInterventionName
 } from "../../../../app/components/figures/strategise/util";
 
@@ -31,8 +31,8 @@ describe("strategise utilities", () => {
     });
 
     it("gets intervention colour", () => {
-        expect(getInterventionColour("irs-llin")).toBe("warning");
-        expect(getInterventionColour("none")).toBe("");
+        expect(getInterventionColourName("irs-llin")).toBe("warning");
+        expect(getInterventionColourName("none")).toBe("");
     });
 
 })

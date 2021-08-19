@@ -8,6 +8,8 @@ import {mockError, mockProject, mockRootState} from "../mocks";
 import {APIError} from "../../app/apiService";
 import strategiesTable from "../../app/components/figures/strategise/strategiesTable.vue";
 import Vue from "vue";
+import strategyCharts from "../../app/components/figures/strategise/strategyCharts.vue";
+import strategyTable from "../../app/components/figures/strategise/strategyTable.vue";
 
 describe("strategise page", () => {
 
@@ -69,6 +71,23 @@ describe("strategise page", () => {
         expect(wrapper.find(loadingSpinner).exists()).toBe(false);
     });
 
+    it("resets selected strategy when re-strategising", () => {
+        const mockStrategiseAction = jest.fn();
+        const store = createStore(jest.fn(), mockStrategiseAction);
+        const wrapper = mount(StrategisePage, {
+            store,
+            data() {
+                return {
+                    selectedStrategy: {}
+                };
+            }
+        });
+        wrapper.find("form").trigger("submit");
+        expect(wrapper.vm.$data.strategising).toBe(true);
+        expect(mockStrategiseAction.mock.calls.length).toBe(1);
+        expect(wrapper.vm.$data.selectedStrategy).toBeNull();
+    });
+
     it("displays table", async () => {
         const store = createStore();
         const wrapper = mount(StrategisePage, {store});
@@ -96,7 +115,7 @@ describe("strategise page", () => {
         expect(alert.find("dl dd").text()).toBe("DETAIL");
     });
 
-    it("handles strategy selection", () => {
+    it("handles strategy selection", async () => {
         const strategy = {
             costThreshold: 1,
             interventions: [
@@ -109,6 +128,18 @@ describe("strategise page", () => {
         const wrapper = shallowMount(StrategisePage, {store});
         wrapper.find(strategiesTable).vm.$emit("strategy-selected", strategy);
         expect(wrapper.vm.$data.selectedStrategy).toBe(strategy);
+
+        await Vue.nextTick();
+
+        expect(wrapper.findAll(".nav-tabs a.active").length).toBe(1);
+
+        expect(wrapper.find(strategyCharts).isVisible()).toBe(true);
+        expect(wrapper.find(strategyTable).exists()).toBe(false);
+
+        await wrapper.findAll(".nav-tabs a").at(1).trigger("click");
+
+        expect(wrapper.find(strategyCharts).exists()).toBe(false);
+        expect(wrapper.find(strategyTable).isVisible()).toBe(true);
     });
 
 });
