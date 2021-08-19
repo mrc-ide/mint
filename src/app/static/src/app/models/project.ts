@@ -28,7 +28,7 @@ export class Region {
         this.baselineOptions = deepCopy(baselineOptions);
         this.baselineSettings = {};
         this.interventionOptions = deepCopy(interventionOptions);
-        this.interventionSettings =  {};
+        this.interventionSettings = {};
         this.interventionOptions.controlSections.map(s => {
             s.controlGroups.map(g => {
                 g.controls.map(c => {
@@ -72,5 +72,10 @@ export class Project {
 
 export interface StrategyWithThreshold {
     costThreshold: number
-    interventions: object[]
+    interventions: {
+        zone: string,
+        intervention: string,
+        cost: number,
+        casesAverted: number
+    }[]
 }

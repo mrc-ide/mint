@@ -1,21 +1,20 @@
 import {expect, test} from "@playwright/test";
 
 test.describe("basic tests", () => {
+
     test("renders homepage", async ({page}) => {
         await page.goto("/");
-        const name = await page.innerText("a.navbar-brand");
-        expect(name).toBe("MINT");
+
+        expect(await page.innerText("a.navbar-brand")).toBe("MINT");
     });
 
     test("creates a project with two regions", async ({page}) => {
         await page.goto("/");
 
-        expect(await page.innerText("h1")).toBe("Create a project to get started");
         await page.fill("#name", "Project 1");
+
         await page.fill(".ti-new-tag-input", "Region A");
         await page.click(".btn-primary");
-
-        expect(await page.innerText("h4")).toBe("Setup baseline");
         await page.click("text=Next");
 
         expect(await page.innerText(":nth-match(a.active, 1)")).toBe("Impact");
@@ -53,6 +52,13 @@ test.describe("basic tests", () => {
         await page.click("#stratAcrossRegions");
         await page.click(".btn-primary");
 
-        expect(await page.innerText(".table")).toContain("Pyrethroid-PBO ITN only");
+        expect(await page.innerText(".summaryTable")).toContain("Pyrethroid-PBO ITN only");
+
+        // Select row in summary table in order to see details for a specific strategy
+        await page.click("text='Strategy 3'");
+
+        // Check for the total population across the two regions, displayed in summary row
+        expect(await page.innerText(".detailsTable")).toContain("2000");
     });
+
 });

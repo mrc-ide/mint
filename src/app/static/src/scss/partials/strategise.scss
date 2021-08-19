@@ -1,33 +1,52 @@
 .strategise {
-  .summary {
-    tr td:first-child {
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    .table-success {
-      background-color: #bbf0fb;
-    }
-    .table-secondary {
-      background-color: #e0fae0;
-    }
-    .table-primary {
-      background-color: #dbb8db;
-    }
-    .table-warning {
-      background-color: #f5c6cb;
-    }
-    .table-danger {
-      background-color: #ffe6b8;
-    }
-    .lds-spin {
-      display: block;
-    }
-  }
   .form {
     .icon-small svg {
       height: 20px;
       width: 20px;
       vertical-align: sub;
+    }
+  }
+
+  .results {
+    .lds-spin {
+      display: block;
+    }
+
+    .table-success {
+      background-color: #bbf0fb;
+    }
+
+    .table-secondary {
+      background-color: #e0fae0;
+    }
+
+    .table-primary {
+      background-color: #dbb8db;
+    }
+
+    .table-warning {
+      background-color: #f5c6cb;
+    }
+
+    .table-danger {
+      background-color: #ffe6b8;
+    }
+
+    .summaryTable {
+      tr td:first-child {
+        font-weight: 700;
+        white-space: nowrap;
+      }
+    }
+
+    .detailsTable {
+      tr td:nth-child(2) {
+        white-space: nowrap;
+      }
+
+      tr:last-child {
+        font-weight: bold;
+      }
     }
   }
 }
