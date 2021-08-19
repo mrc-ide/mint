@@ -84,7 +84,8 @@ const appConfig = {
         new HtmlWebpackPlugin({
             hash: true,
             template: 'public/index.ftl',
-            filename: 'index.ftl'
+            filename: 'index.ftl',
+            minify: false
         }),
         // uncomment to see analysis of bundle size
         //new BundleAnalyzerPlugin({analyzerPort: 4000})

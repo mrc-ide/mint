@@ -3,7 +3,7 @@ module.exports = {
     "development": {
       "presets": [
         [
-          "@babel/env",
+          "@babel/present-env",
           {
             "modules": false
           }
@@ -13,7 +13,7 @@ module.exports = {
     "test": {
       "presets": [
         [
-          "@babel/env",
+          "@babel/preset-env",
           {
             "targets": {
               "node": "current"

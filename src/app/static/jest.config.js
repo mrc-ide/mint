@@ -1,15 +1,15 @@
 module.exports = {
+    "testEnvironment": "jsdom",
     "setupFiles": ["./src/tests/setup.ts", "jest-canvas-mock"],
     "testURL": "http://localhost:8080",
     "globals": {
         "ts-jest": {
-            tsConfig: 'tsconfig.json',
+            tsconfig: 'tsconfig.json',
             "diagnostics": {
                 "warnOnly": false
             }
         }
     },
-    "testResultsProcessor": "jest-teamcity-reporter",
     "moduleFileExtensions": [
         "js",
         "json",
