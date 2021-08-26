@@ -44,7 +44,7 @@ describe("strategy charts", () => {
             store
         });
 
-        const chart = wrapper.find(Plotly);
+        const chart = wrapper.findComponent(Plotly);
         expect(chart.isVisible()).toBe(true);
         expect(chart.props().data).toStrictEqual(
             [
