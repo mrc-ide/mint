@@ -193,7 +193,7 @@ describe("plotly graph", () => {
         expect((wrapper.vm as any).observer).not.toBeNull();
     });
 
-    it("hoverbelow sets y value of new hover text elements to 0", async (done) => {
+    it("hoverbelow sets y value of new hover text elements to 0", (done) => {
         wrapper = shallowMount(plotlyGraph, {
             attachToDocument: true,
             propsData: {
@@ -214,7 +214,7 @@ describe("plotly graph", () => {
         });
     });
 
-    it("hoverbelow sets y value of mutated hover text elements to 0", async (done) => {
+    it("hoverbelow sets y value of mutated hover text elements to 0", (done) => {
         wrapper = shallowMount(plotlyGraph, {
             attachToDocument: true,
             propsData: {
@@ -238,7 +238,7 @@ describe("plotly graph", () => {
         });
     });
 
-    it("hoverbelow sets expected path and classes of new hover elements", async (done) => {
+    it("hoverbelow sets expected path and classes of new hover elements", (done) => {
         wrapper = shallowMount(plotlyGraph, {
             attachToDocument: true,
             propsData: {
@@ -260,7 +260,7 @@ describe("plotly graph", () => {
         });
     });
 
-    it("hoverbelow sets expected path and classes of mutated hover elements", async (done) => {
+    it("hoverbelow sets expected path and classes of mutated hover elements", (done) => {
         wrapper = shallowMount(plotlyGraph, {
             attachToDocument: true,
             propsData: {
@@ -285,7 +285,7 @@ describe("plotly graph", () => {
         });
     });
 
-    it("hoverbelow sets expected path and classes of new hover elements when label is to left", async (done) => {
+    it("hoverbelow sets expected path and classes of new hover elements when label is to left", (done) => {
         wrapper = shallowMount(plotlyGraph, {
             attachToDocument: true,
             propsData: {

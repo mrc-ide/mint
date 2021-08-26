@@ -4,16 +4,6 @@ import verticalTabs from "../../app/components/verticalTabs.vue";
 
 describe("vertical tabs", () => {
 
-    beforeAll(() => {
-        // JSDOM doesn't implement layout so this is always zero by default
-        // https://github.com/testing-library/react-testing-library/issues/353
-        Object.defineProperty(HTMLElement.prototype, 'clientWidth', {configurable: true, value: 100})
-    })
-
-    afterAll(() => {
-        Object.defineProperty(HTMLElement.prototype, 'clientWidth', 0)
-    });
-
     const getWrapper = () => {
        return shallowMount(verticalTabs, {
             propsData: {
@@ -48,6 +38,10 @@ describe("vertical tabs", () => {
     });
 
     it("calculates tab translation", async () => {
+        // JSDOM doesn't implement layout so this is always zero by default
+        // https://github.com/testing-library/react-testing-library/issues/353
+        Object.defineProperty(HTMLElement.prototype, 'clientWidth', {configurable: true, value: 100});
+
         const wrapper = getWrapper();
 
         await Vue.nextTick();
@@ -57,6 +51,8 @@ describe("vertical tabs", () => {
     });
 
     it("re-calculates tab translation if tabs change", async () => {
+        Object.defineProperty(HTMLElement.prototype, 'clientWidth', {configurable: true, value: 100});
+
         const wrapper = getWrapper();
 
         await Vue.nextTick();

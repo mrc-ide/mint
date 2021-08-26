@@ -64,8 +64,8 @@ describe("app", () => {
 
         const firstNavLink = wrapper.findAll(".dropdown-item").at(0).find("router-link-stub")
         expect(firstNavLink.html())
-            .toBe("<router-link-stub to=\"/projects/my-project/regions/region1\"" +
-                " tag=\"a\" event=\"click\" class=\"text-success\">region1</router-link-stub>");
+            .toBe("<router-link-stub to=\"/projects/my-project/regions/region1\" tag=\"a\"" +
+                " ariacurrentvalue=\"page\" event=\"click\" class=\"text-success\">region1</router-link-stub>");
         expect(wrapper.findAll("#stratAcrossRegions").length).toBe(0);
     });
 
@@ -178,7 +178,7 @@ describe("app", () => {
 
     it("cannot add new region with the same name as an existing one", async () => {
         const state = {
-            currentProject: new Project(name, ["region 1"], {controlSections: []}, {controlSections: []})
+            currentProject: new Project("project", ["region 1"], {controlSections: []}, {controlSections: []})
         };
         const rendered = getWrapper(state);
         rendered.findAll(".dropdown-item").at(1).find("a").trigger("click");
@@ -201,7 +201,7 @@ describe("app", () => {
 
     it("cannot add new region with a name that will result in duplicate urls", async () => {
         const state = {
-            currentProject: new Project(name, ["region 1"], {controlSections: []}, {controlSections: []})
+            currentProject: new Project("project", ["region 1"], {controlSections: []}, {controlSections: []})
         };
         const rendered = getWrapper(state);
         rendered.findAll(".dropdown-item").at(1).find("a").trigger("click");
