@@ -55,7 +55,7 @@ describe("strategise utilities", () => {
                     } as DynamicFormData
                 }
             ]
-        } as Project)).toBe({
+        } as Project)).toStrictEqual({
             Africa: 1000,
             Antarctica: 500
         });
