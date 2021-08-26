@@ -41,7 +41,7 @@ export default Vue.extend<unknown, unknown, Computed, Props>({
         interventionsSeen.push(intervention);
         return true;
       }
-      return this.strategy.interventions.flatMap(intervention => [
+      return ([] as Record<string, any>).concat(...this.strategy.interventions.map(intervention => [
         {
           marker: {
             color: getInterventionColourValue(intervention.intervention)
@@ -66,7 +66,7 @@ export default Vue.extend<unknown, unknown, Computed, Props>({
           y: [formatCases(intervention.casesAverted / this.populations[intervention.zone], 1)],
           yaxis: "y2"
         }
-      ]);
+      ]));
     },
     layout() {
       return {
