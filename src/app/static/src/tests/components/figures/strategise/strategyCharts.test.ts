@@ -6,7 +6,7 @@ import Plotly from "../../../../app/components/figures/graphs/plotly/Plotly.vue"
 
 describe("strategy charts", () => {
 
-    it("renders charts", async () => {
+    it("renders charts", () => {
         const store = new Vuex.Store({
             state: mockRootState({
                 currentProject: mockProject("My Project", ["Avalon", "Atlantis", "Asgard"])
@@ -46,7 +46,21 @@ describe("strategy charts", () => {
 
         const chart = wrapper.findComponent(Plotly);
         expect(chart.isVisible()).toBe(true);
-        expect(chart.props().data).toStrictEqual(
+        expect(chart.props("layout")).toStrictEqual(
+            {
+                "grid": {
+                    "columns": 2, "pattern": "independent", "rows": 1
+                },
+                "title": "Cases averted per region",
+                "yaxis": {
+                    "title": "Total cases averted"
+                },
+                "yaxis2": {
+                    "title": "Cases averted per person"
+                }
+            }
+        );
+        expect(chart.props("data")).toStrictEqual(
             [
                 {
                     marker: {color: "dbb8db"},
