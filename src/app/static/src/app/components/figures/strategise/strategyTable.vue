@@ -4,9 +4,16 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {Region, StrategyWithThreshold} from "../../../models/project";
+import {StrategyWithThreshold} from "../../../models/project";
 import {BTable} from "bootstrap-vue";
-import {formatCases, formatCost, formatPercentage, getInterventionColour, getInterventionName,} from "./util";
+import {
+  formatCases,
+  formatCost,
+  formatPercentage,
+  getInterventionColourName,
+  getInterventionName,
+  getRegionPopulations,
+} from "./util";
 
 interface Computed {
   populations: Record<string, number>
@@ -26,7 +33,7 @@ export default Vue.extend<unknown, unknown, Computed, Props>({
   },
   computed: {
     populations() {
-      return this.$store.state.currentProject!.regions.reduce((a: Record<string, number>, region: Region) => ({[region.name]: region.baselineSettings["population"] as number, ...a}), {});
+      return getRegionPopulations(this.$store.state.currentProject!);
     },
     items() {
       const totalCasesAverted = this.strategy.interventions.reduce((a, intervention) => a + intervention.casesAverted, 0);
@@ -45,7 +52,7 @@ export default Vue.extend<unknown, unknown, Computed, Props>({
           cost_per_person: formatCost(intervention.cost / population, 2),
           cases_averted_per_person: formatCases(intervention.casesAverted / population, 1),
           _cellVariants: {
-            intervention: getInterventionColour(intervention.intervention)
+            intervention: getInterventionColourName(intervention.intervention)
           }
         };
       }).concat({

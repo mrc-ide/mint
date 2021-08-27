@@ -1,9 +1,13 @@
 import {
     formatCases,
     formatCost,
-    formatPercentage, getInterventionColour,
-    getInterventionName
+    formatPercentage,
+    getInterventionColourName,
+    getInterventionName,
+    getRegionPopulations
 } from "../../../../app/components/figures/strategise/util";
+import {Project} from "../../../../app/models/project";
+import {DynamicFormData} from "@reside-ic/vue-dynamic-form";
 
 describe("strategise utilities", () => {
 
@@ -31,8 +35,30 @@ describe("strategise utilities", () => {
     });
 
     it("gets intervention colour", () => {
-        expect(getInterventionColour("irs-llin")).toBe("warning");
-        expect(getInterventionColour("none")).toBe("");
+        expect(getInterventionColourName("irs-llin")).toBe("warning");
+        expect(getInterventionColourName("none")).toBe("");
+    });
+
+    it("gets populations", () => {
+        expect(getRegionPopulations({
+            regions: [
+                {
+                    name: "Africa",
+                    baselineSettings: {
+                        population: 1000
+                    } as DynamicFormData
+                },
+                {
+                    name: "Antarctica",
+                    baselineSettings: {
+                        population: 500
+                    } as DynamicFormData
+                }
+            ]
+        } as Project)).toStrictEqual({
+            Africa: 1000,
+            Antarctica: 500
+        });
     });
 
 })

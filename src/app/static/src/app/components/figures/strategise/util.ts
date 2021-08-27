@@ -1,3 +1,11 @@
+import {Project, Region} from "../../../models/project";
+
+export const getRegionPopulations = (project: Project) => project.regions.reduce(
+    (a: Record<string, number>, region: Region) =>
+        ({[region.name]: region.baselineSettings["population"] as number, ...a}),
+    {}
+);
+
 export const formatCost = (cost: number, maximumFractionDigits = 0) => isNaN(cost) ? "NA" : new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -25,7 +33,7 @@ const interventionNames: Record<string, string> = {
 export const getInterventionName = (intervention: string) => interventionNames[intervention];
 
 // BTable uses Bootstrap colour variants for styling: https://bootstrap-vue.org/docs/components/table#items-record-data
-const interventionColours: Record<string, string> = {
+const interventionColourNames: Record<string, string> = {
     "irs": "primary",
     "llin-pbo": "secondary",
     "irs-llin-pbo": "danger",
@@ -33,4 +41,14 @@ const interventionColours: Record<string, string> = {
     "irs-llin": "warning",
     "none": ""
 };
-export const getInterventionColour = (intervention: string) => interventionColours[intervention];
+export const getInterventionColourName = (intervention: string) => interventionColourNames[intervention];
+
+const interventionColourValues: Record<string, string> = {
+    "irs": "dbb8db",
+    "llin-pbo": "e0fae0",
+    "irs-llin-pbo": "ffe6b8",
+    "llin": "bbf0fb",
+    "irs-llin": "bbf0fb",
+    "none": ""
+};
+export const getInterventionColourValue = (intervention: string) => interventionColourValues[intervention];

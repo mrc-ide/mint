@@ -52,13 +52,20 @@ test.describe("basic tests", () => {
         await page.click("#stratAcrossRegions");
         await page.click(".btn-primary");
 
+        // Summary table should be displayed, with llin-pbo as at least one of the strategies
         expect(await page.innerText(".summaryTable")).toContain("Pyrethroid-PBO ITN only");
 
         // Select row in summary table in order to see details for a specific strategy
         await page.click("text='Strategy 3'");
 
-        // Check for the total population across the two regions, displayed in summary row
-        expect(await page.innerText(".detailsTable")).toContain("2000");
+        // Verify default "Charts" tab is displayed by checking for title displayed above charts
+        expect(await page.innerText(".tab-content")).toContain("Cases averted per region");
+
+        // Switch to "Table" tab
+        await page.click("text='Table'");
+
+        // Check that total population across the two regions is displayed in footer (summary) row of table
+        expect(await page.innerText(".tab-content")).toContain("2000");
     });
 
 });

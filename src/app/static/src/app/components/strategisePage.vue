@@ -47,8 +47,22 @@
           <dd v-if="error.detail">{{ error.detail }}</dd>
         </dl>
       </b-alert>
-      <div class="mt-5 detailsTable" v-if="strategies.length">
-        <strategy-table v-if="selectedStrategy" :strategy="selectedStrategy"></strategy-table>
+      <div class="mt-5" v-if="strategies.length">
+        <div v-if="selectedStrategy">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="text-success nav-link" :class="{active: activeTab === 'charts'}" @click="activeTab = 'charts'">Charts</a>
+            </li>
+            <li class="nav-item">
+              <a class="text-success nav-link" :class="{active: activeTab === 'table'}" @click="activeTab = 'table'">Table</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <strategy-charts v-if="activeTab === 'charts'" :strategy="selectedStrategy"></strategy-charts>
+            <strategy-table v-if="activeTab === 'table'" :strategy="selectedStrategy"
+                            class="detailsTable"></strategy-table>
+          </div>
+        </div>
         <h2 v-else class="h4 text-center">Select a row in the table above to see details of the selected strategy</h2>
       </div>
     </div>
@@ -67,12 +81,14 @@ import strategiesTable from "./figures/strategise/strategiesTable.vue";
 import strategyTable from "./figures/strategise/strategyTable.vue";
 import {BAlert, BButton, BCollapse, BForm, BFormInput, BInputGroup} from "bootstrap-vue";
 import {APIError} from "../apiService";
+import strategyCharts from "./figures/strategise/strategyCharts.vue";
 
 interface Data {
   strategising: boolean
   showDocumentation: boolean
   budget: number
   selectedStrategy: StrategyWithThreshold | null
+  activeTab: "charts" | "table"
 }
 
 interface Methods {
@@ -93,6 +109,7 @@ interface Computed {
 
 export default Vue.extend<Data, Methods, Computed>({
   components: {
+    strategyCharts,
     strategiesTable,
     strategyTable,
     HelpCircleIcon,
@@ -115,7 +132,8 @@ export default Vue.extend<Data, Methods, Computed>({
       strategising: false,
       showDocumentation: false,
       budget: this.$store.state.currentProject.budget,
-      selectedStrategy: null
+      selectedStrategy: null,
+      activeTab: "charts"
     }
   },
   computed: {
@@ -137,6 +155,7 @@ export default Vue.extend<Data, Methods, Computed>({
       this.setBudget({budget});
     },
     submit: async function () {
+      this.selectedStrategy = null;
       this.strategising = true;
       await this.strategise();
       this.strategising = false;
