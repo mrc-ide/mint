@@ -74,7 +74,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {mapActions, mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 import {Project, StrategyWithThreshold} from "../models/project";
 import {RootAction} from "../actions";
 import {VTooltip} from "v-tooltip";
@@ -85,6 +85,7 @@ import strategyTable from "./figures/strategise/strategyTable.vue";
 import {BAlert, BButton, BCollapse, BForm, BFormInput, BInputGroup} from "bootstrap-vue";
 import {APIError} from "../apiService";
 import strategyCharts from "./figures/strategise/strategyCharts.vue";
+import {RootMutation} from "../mutations";
 
 interface Data {
   strategising: boolean
@@ -95,7 +96,7 @@ interface Data {
 }
 
 interface Methods {
-  setBudget: (payload: { budget: number }) => void
+  setBudget: (budget: number) => void
   strategise: () => void
   update: (budget: number) => void
   submit: () => void
@@ -150,12 +151,14 @@ export default Vue.extend<Data, Methods, Computed>({
   },
   methods: {
     ...mapActions({
-      setBudget: RootAction.SetBudget,
       strategise: RootAction.Strategise,
       dismissErrors: RootAction.DismissErrors
     }),
+    ...mapMutations({
+      setBudget: RootMutation.SetBudget
+    }),
     update: function (budget: number) {
-      this.setBudget({budget});
+      this.setBudget(budget);
     },
     submit: async function () {
       this.selectedStrategy = null;
