@@ -36,19 +36,14 @@
         <b-button type="submit" variant="primary">Strategize</b-button>
       </b-form>
     </div>
-    <div class="results mt-5">
-      <loading-spinner v-if="strategising" size="lg" class="mx-auto"></loading-spinner>
-      <strategies-table v-if="strategies.length" :strategies="strategies"
-                        @strategy-selected="onStrategySelected" class="summaryTable"></strategies-table>
-      <b-alert :show="errors.length > 0" variant="danger" dismissible @dismissed="dismissErrors">
-        <h5 class="alert-heading">Errors occurred when strategizing</h5>
-        <dl v-for="(error, index) in errors" :key="index">
-          <dt>{{ error.error }}</dt>
-          <dd v-if="error.detail">{{ error.detail }}</dd>
-        </dl>
-      </b-alert>
-      <div class="mt-5" v-if="strategies.length">
+    <div class="results">
+      <loading-spinner v-if="strategising" size="lg" class="mx-auto mt-4"></loading-spinner>
+      <div v-if="strategies.length">
+        <h2 class="h4 text-center mt-5">All strategies</h2>
+        <strategies-table :strategies="strategies"
+                          @strategy-selected="onStrategySelected" class="summaryTable"></strategies-table>
         <div v-if="selectedStrategy">
+          <h2 class="h4 text-center mt-5">Details for Strategy {{ strategies.indexOf(selectedStrategy) + 1 }}</h2>
           <ul class="nav nav-tabs">
             <li class="nav-item">
               <a class="text-success nav-link" :class="{active: activeTab === 'charts'}" @click="activeTab = 'charts'">Charts</a>
@@ -63,8 +58,16 @@
                             class="detailsTable"></strategy-table>
           </div>
         </div>
-        <h2 v-else class="h4 text-center">Select a row in the table above to see details of the selected strategy</h2>
+        <h2 v-else class="h4 text-center mt-5">Select a row in the table above to see details of the selected
+          strategy</h2>
       </div>
+      <b-alert :show="errors.length > 0" variant="danger" dismissible @dismissed="dismissErrors">
+        <h5 class="alert-heading">Errors occurred when strategizing</h5>
+        <dl v-for="(error, index) in errors" :key="index">
+          <dt>{{ error.error }}</dt>
+          <dd v-if="error.detail">{{ error.detail }}</dd>
+        </dl>
+      </b-alert>
     </div>
   </div>
 </template>
