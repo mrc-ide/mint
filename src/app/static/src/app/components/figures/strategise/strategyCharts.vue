@@ -6,7 +6,7 @@
 import Vue from "vue";
 import {StrategyWithThreshold} from "../../../models/project";
 import Plotly from "../graphs/plotly/Plotly.vue";
-import {formatCases, getInterventionColourValue, getInterventionName, getRegionPopulations} from "./util";
+import {formatNumber, getInterventionColourValue, getInterventionName, getRegionPopulations} from "./util";
 
 interface Data {
   layout: Record<string, any>
@@ -74,7 +74,7 @@ export default Vue.extend<Data, unknown, Computed, Props>({
               type: "bar",
               x: [intervention.zone],
               xaxis: "x",
-              y: [formatCases(intervention.casesAverted)],
+              y: [formatNumber(intervention.casesAverted)],
               yaxis: "y"
             },
             {
@@ -86,7 +86,7 @@ export default Vue.extend<Data, unknown, Computed, Props>({
               type: "bar",
               x: [intervention.zone],
               xaxis: "x2",
-              y: [formatCases(intervention.casesAverted / this.populations[intervention.zone], 1)],
+              y: [formatNumber(intervention.casesAverted / this.populations[intervention.zone], 1)],
               yaxis: "y2"
             }
           ]

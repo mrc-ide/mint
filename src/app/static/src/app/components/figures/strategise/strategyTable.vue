@@ -7,8 +7,8 @@ import Vue from "vue";
 import {StrategyWithThreshold} from "../../../models/project";
 import {BTable} from "bootstrap-vue";
 import {
-  formatCases,
-  formatCost,
+  formatCurrency,
+  formatNumber,
   formatPercentage,
   getInterventionColourName,
   getInterventionName,
@@ -44,13 +44,13 @@ export default Vue.extend<unknown, unknown, Computed, Props>({
           region: intervention.zone,
           intervention: getInterventionName(intervention.intervention),
           population: String(population),
-          total_cases_averted: formatCases(intervention.casesAverted),
+          total_cases_averted: formatNumber(intervention.casesAverted),
           percentage_of_total_cases_averted: formatPercentage(intervention.casesAverted / totalCasesAverted),
-          total_costs: formatCost(intervention.cost),
+          total_costs: formatCurrency(intervention.cost),
           percentage_of_total_costs: formatPercentage(intervention.cost / totalCost),
-          cost_per_case_averted: formatCost(intervention.cost / intervention.casesAverted),
-          cost_per_person: formatCost(intervention.cost / population, 2),
-          cases_averted_per_person: formatCases(intervention.casesAverted / population, 1),
+          cost_per_case_averted: formatCurrency(intervention.cost / intervention.casesAverted),
+          cost_per_person: formatCurrency(intervention.cost / population, 2),
+          cases_averted_per_person: formatNumber(intervention.casesAverted / population, 1),
           _cellVariants: {
             intervention: getInterventionColourName(intervention.intervention)
           }
@@ -59,9 +59,9 @@ export default Vue.extend<unknown, unknown, Computed, Props>({
         region: "Total",
         intervention: "",
         population: String(Object.values(this.populations).reduce((a, population) => a + population, 0)),
-        total_cases_averted: formatCases(totalCasesAverted),
+        total_cases_averted: formatNumber(totalCasesAverted),
         percentage_of_total_cases_averted: "100%",
-        total_costs: formatCost(totalCost),
+        total_costs: formatCurrency(totalCost),
         percentage_of_total_costs: "100%",
         cost_per_case_averted: "",
         cost_per_person: "",

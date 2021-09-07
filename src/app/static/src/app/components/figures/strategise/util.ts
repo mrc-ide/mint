@@ -6,21 +6,23 @@ export const getRegionPopulations = (project: Project) => project.regions.reduce
     {}
 );
 
-export const formatCost = (cost: number, maximumFractionDigits = 0) => isNaN(cost) ? "NA" : new Intl.NumberFormat('en-US', {
+export const formatCurrency = (cost: number, maximumFractionDigits = 0) => isNaN(cost) ? "NA" : new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 0,
     maximumFractionDigits
 }).format(cost);
 
-export const formatCases = (cases: number, maximumFractionDigits = 0) => new Intl.NumberFormat('en-US', {
+export const formatNumber = (value: number, maximumFractionDigits = 0) => new Intl.NumberFormat('en-US', {
     maximumFractionDigits
-}).format(cases);
+}).format(value);
 
 export const formatPercentage = (percentage: number) => new Intl.NumberFormat('en-US', {
     style: 'percent',
     maximumFractionDigits: 1
 }).format(percentage);
+
+export const roundNumberToNearest = (value: number, nearest: number) => Math.round(value / nearest) * nearest;
 
 const interventionNames: Record<string, string> = {
     "irs": "IRS* only",

@@ -8,8 +8,8 @@ describe("strategies table", () => {
         {
             costThreshold: 1,
             interventions: [
-                {zone: "Region A", intervention: "irs-llin-pbo", casesAverted: 60, cost: 600},
-                {zone: "Region B", intervention: "irs-llin", casesAverted: 40, cost: 400}
+                {zone: "Region A", intervention: "irs-llin-pbo", casesAverted: 60, cost: 615},
+                {zone: "Region B", intervention: "irs-llin", casesAverted: 45, cost: 400}
             ]
         },
         {
@@ -33,8 +33,8 @@ describe("strategies table", () => {
         expect(row1.at(2).classes()).toContain("table-danger");
         expect(row1.at(3).text()).toBe("Pyrethroid LLIN with IRS*");
         expect(row1.at(3).classes()).toContain("table-warning");
-        expect(row1.at(4).text()).toBe("100");
-        expect(row1.at(5).text()).toBe("$1,000");
+        expect(row1.at(4).text()).toBe("100"); // 60 + 45 = 105, rounded to nearest 50
+        expect(row1.at(5).text()).toBe("$1,000"); // 615 + 400 = 1015, similarly rounded
     });
 
     it("emits strategy-selected event", () => {
@@ -57,7 +57,7 @@ describe("strategies table", () => {
             }
         });
         wrapper.find(BTable).vm.$emit("row-selected", [items[1]]);
-        expect(wrapper.emitted("strategy-selected")).toStrictEqual([[strategies[1]]])
+        expect(wrapper.emitted("strategy-selected")).toStrictEqual([[strategies[1]]]);
     });
 
 });

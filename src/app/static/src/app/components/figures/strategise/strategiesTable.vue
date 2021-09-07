@@ -7,7 +7,13 @@
 import {BTable} from "bootstrap-vue";
 import Vue from "vue";
 import {StrategyWithThreshold} from "../../../models/project";
-import {formatCases, formatCost, getInterventionColourName, getInterventionName} from "./util";
+import {
+  roundNumberToNearest,
+  formatCurrency,
+  formatNumber,
+  getInterventionColourName,
+  getInterventionName
+} from "./util";
 
 interface Methods {
   onRowSelected: (rows: Record<string, any>[]) => void
@@ -42,8 +48,8 @@ export default Vue.extend<void, Methods, Computed, Props>({
           ...a,
           [intervention.zone]: getInterventionName(intervention.intervention)
         }), {}),
-        total_cases_averted: formatCases(strategy.interventions.reduce((a, intervention) => a + intervention.casesAverted, 0)),
-        total_cost: formatCost(strategy.interventions.reduce((a, intervention) => a + intervention.cost, 0)),
+        total_cases_averted: formatNumber(roundNumberToNearest(strategy.interventions.reduce((a, intervention) => a + intervention.casesAverted, 0), 50)),
+        total_cost: formatCurrency(roundNumberToNearest(strategy.interventions.reduce((a, intervention) => a + intervention.cost, 0), 50)),
         _cellVariants: strategy.interventions.reduce((a, intervention) => ({
           ...a,
           [intervention.zone]: getInterventionColourName(intervention.intervention)

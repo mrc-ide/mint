@@ -1,6 +1,6 @@
 import {
-    formatCases,
-    formatCost,
+    roundNumberToNearest,
+    formatCurrency, formatNumber,
     formatPercentage,
     getInterventionColourName,
     getInterventionName,
@@ -12,21 +12,29 @@ import {DynamicFormData} from "@reside-ic/vue-dynamic-form";
 describe("strategise utilities", () => {
 
     it("formats invalid costs as NA", () => {
-        expect(formatCost(NaN)).toBe("NA");
+        expect(formatCurrency(NaN)).toBe("NA");
     });
 
     it("formats valid costs as expected", () => {
-        expect(formatCost(12.345)).toBe("$12");
-        expect(formatCost(12.345, 2)).toBe("$12.35");
+        expect(formatCurrency(12.345)).toBe("$12");
+        expect(formatCurrency(12.345, 2)).toBe("$12.35");
     });
 
-    it("formats cases as expected", () => {
-        expect(formatCases(12.345)).toBe("12");
-        expect(formatCases(12.345, 1)).toBe("12.3");
+    it("formats numbers as expected", () => {
+        expect(formatNumber(12.345)).toBe("12");
+        expect(formatNumber(12.345, 1)).toBe("12.3");
     });
 
     it("formats percentages as expected", () => {
         expect(formatPercentage(0.123)).toBe("12.3%");
+    });
+
+    it("rounds numbers as expected", () => {
+        expect(roundNumberToNearest(5, 50)).toBe(0);
+        expect(roundNumberToNearest(25, 50)).toBe(50);
+        expect(roundNumberToNearest(45, 50)).toBe(50);
+        expect(roundNumberToNearest(55, 50)).toBe(50);
+        expect(roundNumberToNearest(100, 50)).toBe(100);
     });
 
     it("gets intervention name", () => {
