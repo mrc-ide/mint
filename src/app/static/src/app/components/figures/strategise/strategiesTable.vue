@@ -1,5 +1,6 @@
 <template>
-  <b-table :items="items" hover selectable select-mode="single" @row-selected="onRowSelected"></b-table>
+  <b-table :items="items" hover selectable select-mode="single" @row-selected="onRowSelected"
+           selected-variant=""></b-table>
 </template>
 
 <script lang="ts">

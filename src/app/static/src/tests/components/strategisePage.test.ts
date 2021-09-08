@@ -88,7 +88,7 @@ describe("strategise page", () => {
         expect(wrapper.vm.$data.selectedStrategy).toBeNull();
     });
 
-    it("displays table", async () => {
+    it("displays table with heading", async () => {
         const store = createStore();
         const wrapper = mount(StrategisePage, {store});
         expect(wrapper.find(strategiesTable).exists()).toBe(false);
@@ -102,6 +102,7 @@ describe("strategise page", () => {
             }
         ];
         await Vue.nextTick();
+        expect(wrapper.find("h2").text()).toBe("All strategies");
         expect(wrapper.find(strategiesTable).exists()).toBe(true);
     });
 
@@ -126,15 +127,21 @@ describe("strategise page", () => {
         const store = createStore();
         store.state.currentProject!.strategies = [strategy];
         const wrapper = shallowMount(StrategisePage, {store});
+
+        await Vue.nextTick();
+
+        expect(wrapper.findAll("h2").at(1).text()).toContain("Select a row");
+
         wrapper.find(strategiesTable).vm.$emit("strategy-selected", strategy);
         expect(wrapper.vm.$data.selectedStrategy).toBe(strategy);
 
         await Vue.nextTick();
 
-        expect(wrapper.findAll(".nav-tabs a.active").length).toBe(1);
-
+        expect(wrapper.findAll("h2").at(1).text()).toBe("Details for Strategy 1");
         expect(wrapper.find(strategyCharts).isVisible()).toBe(true);
         expect(wrapper.find(strategyTable).exists()).toBe(false);
+
+        expect(wrapper.findAll(".nav-tabs a.active").length).toBe(1);
 
         await wrapper.findAll(".nav-tabs a").at(1).trigger("click");
 

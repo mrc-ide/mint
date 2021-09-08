@@ -55,8 +55,19 @@ test.describe("basic tests", () => {
         // Summary table should be displayed, with llin-pbo as at least one of the strategies
         expect(await page.innerText(".summaryTable")).toContain("Pyrethroid-PBO ITN only");
 
+        // Ensure that heading prompts strategy selection
+        expect(await page.innerText("h2 >> nth=1")).toContain("Select a row");
+
         // Select row in summary table in order to see details for a specific strategy
         await page.click("text='Strategy 3'");
+
+        // Ensure that heading reflects strategy selection
+        expect(await page.innerText("h2 >> nth=1")).toBe("Details for Strategy 3");
+
+        // Check that (only) the selected table row has a border
+        const border = async (selector) => page.$eval(selector, el => window.getComputedStyle(el).border);
+        expect(await border("tr:nth-child(3)")).toContain("solid");
+        expect(await border("tr:nth-child(2)")).toContain("none");
 
         // Verify default "Charts" tab is displayed by checking for title displayed above charts
         expect(await page.innerText(".tab-content")).toContain("Cases averted per region");

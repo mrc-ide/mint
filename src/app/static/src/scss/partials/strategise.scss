@@ -37,6 +37,10 @@
         font-weight: 700;
         white-space: nowrap;
       }
+
+      .b-table-row-selected {
+        border: solid gray;
+      }
     }
 
     .detailsTable {
