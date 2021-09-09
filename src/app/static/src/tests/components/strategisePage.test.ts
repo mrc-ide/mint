@@ -10,11 +10,12 @@ import strategiesTable from "../../app/components/figures/strategise/strategiesT
 import Vue from "vue";
 import strategyCharts from "../../app/components/figures/strategise/strategyCharts.vue";
 import strategyTable from "../../app/components/figures/strategise/strategyTable.vue";
+import {RootMutation} from "../../app/mutations";
 
 describe("strategise page", () => {
 
     const createStore = (
-        mockSetBudgetAction = jest.fn(),
+        mockSetBudgetMutation = jest.fn(),
         mockStrategiseAction = jest.fn(),
         errors: APIError[] = []
     ) => {
@@ -24,8 +25,10 @@ describe("strategise page", () => {
                 errors
             }),
             actions: {
-                [RootAction.SetBudget]: mockSetBudgetAction,
-                [RootAction.Strategise]: mockStrategiseAction,
+                [RootAction.Strategise]: mockStrategiseAction
+            },
+            mutations: {
+                [RootMutation.SetBudget]: mockSetBudgetMutation
             }
         });
     };
@@ -38,13 +41,13 @@ describe("strategise page", () => {
     });
 
     it("propagates budget change to project settings", async () => {
-        const mockSetBudgetAction = jest.fn();
-        const store = createStore(mockSetBudgetAction);
+        const mockSetBudgetMutation = jest.fn();
+        const store = createStore(mockSetBudgetMutation);
         const wrapper = mount(StrategisePage, {store});
         expect(store.state.currentProject!.budget).toBe(10000);
         wrapper.find("input").setValue("20000");
-        expect(mockSetBudgetAction.mock.calls.length).toBe(1);
-        expect(mockSetBudgetAction.mock.calls[0][1]).toEqual({budget: 20000});
+        expect(mockSetBudgetMutation.mock.calls.length).toBe(1);
+        expect(mockSetBudgetMutation.mock.calls[0][1]).toEqual(20000);
     });
 
     it("triggers action and sets strategising flag when form submitted", () => {

@@ -25,7 +25,6 @@ export enum RootAction {
     SetCurrentRegionBaselineSettings = "SetCurrentRegionBaselineSettings",
     FetchDocs = "FetchDocs",
     DismissErrors = "DismissErrors",
-    SetBudget = "SetBudget",
     Strategise = "Strategise"
 }
 
@@ -178,11 +177,6 @@ export const actions: ActionTree<RootState, RootState> = {
     [RootAction.DismissErrors](context) {
         const {commit} = context;
         commit(RootMutation.DismissErrors);
-    },
-
-    [RootAction.SetBudget](context, payload: { budget: number }) {
-        const {commit} = context;
-        commit(RootMutation.SetBudget, payload.budget);
     },
 
     async [RootAction.Strategise](context) {
