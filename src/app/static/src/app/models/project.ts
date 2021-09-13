@@ -76,6 +76,8 @@ export interface StrategyWithThreshold {
         zone: string,
         intervention: string,
         cost: number,
-        casesAverted: number
+        casesAverted: number,
+        casesAvertedErrorMinus: number,
+        casesAvertedErrorPlus: number
     }[]
 }

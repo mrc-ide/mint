@@ -24,19 +24,25 @@ describe("strategy charts", () => {
                             zone: "Avalon",
                             intervention: "irs",
                             cost: 500,
-                            casesAverted: 300
+                            casesAverted: 300,
+                            casesAvertedErrorMinus: 290,
+                            casesAvertedErrorPlus: 320
                         },
                         {
                             zone: "Atlantis",
                             intervention: "none",
                             cost: 0,
-                            casesAverted: 0
+                            casesAverted: 0,
+                            casesAvertedErrorMinus: 0,
+                            casesAvertedErrorPlus: 0
                         },
                         {
                             zone: "Asgard",
                             intervention: "llin",
                             cost: 750,
-                            casesAverted: 600
+                            casesAverted: 600,
+                            casesAvertedErrorMinus: 580,
+                            casesAvertedErrorPlus: 610
                         }
                     ]
                 }
@@ -63,6 +69,10 @@ describe("strategy charts", () => {
         expect(chart.props("data")).toStrictEqual(
             [
                 {
+                    "error_y": {
+                        "array": ["20"],
+                        "arrayminus": ["10"]
+                    },
                     marker: {color: "dbb8db"},
                     name: "IRS* only",
                     showlegend: true,
@@ -73,6 +83,10 @@ describe("strategy charts", () => {
                     yaxis: "y"
                 },
                 {
+                    "error_y": {
+                        "array": ["0.0"],
+                        "arrayminus": ["0.0"]
+                    },
                     marker: {color: "dbb8db"},
                     name: "IRS* only",
                     showlegend: false,
@@ -83,6 +97,10 @@ describe("strategy charts", () => {
                     yaxis: "y2"
                 },
                 {
+                    "error_y": {
+                        "array": ["0"],
+                        "arrayminus": ["0"]
+                    },
                     marker: {color: ""},
                     name: "No intervention",
                     showlegend: false,
@@ -93,16 +111,24 @@ describe("strategy charts", () => {
                     yaxis: "y"
                 },
                 {
+                    "error_y": {
+                        "array": ["0.0"],
+                        "arrayminus": ["0.0"]
+                    },
                     marker: {color: ""},
                     name: "No intervention",
                     showlegend: false,
                     type: "bar",
                     x: ["Atlantis"],
                     xaxis: "x2",
-                    y: ["0"],
+                    y: ["0.0"],
                     yaxis: "y2"
                 },
                 {
+                    "error_y": {
+                        "array": ["10"],
+                        "arrayminus": ["20"]
+                    },
                     marker: {color: "bbf0fb"},
                     name: "Pyrethroid LLIN only",
                     showlegend: true,
@@ -113,6 +139,10 @@ describe("strategy charts", () => {
                     yaxis: "y"
                 },
                 {
+                    "error_y": {
+                        "array": ["0.0"],
+                        "arrayminus": ["0.0"]
+                    },
                     marker: {color: "bbf0fb"},
                     name: "Pyrethroid LLIN only",
                     showlegend: false,

@@ -66,6 +66,10 @@ export default Vue.extend<Data, unknown, Computed, Props>({
       return ([] as Record<string, any>[]).concat(...this.strategy.interventions.map(intervention =>
           [
             {
+              error_y: {
+                array: [(intervention.casesAvertedErrorPlus - intervention.casesAverted).toFixed(0)],
+                arrayminus: [(intervention.casesAverted - intervention.casesAvertedErrorMinus).toFixed(0)]
+              },
               marker: {
                 color: getInterventionColourValue(intervention.intervention)
               },
@@ -74,10 +78,14 @@ export default Vue.extend<Data, unknown, Computed, Props>({
               type: "bar",
               x: [intervention.zone],
               xaxis: "x",
-              y: [formatCases(intervention.casesAverted)],
+              y: [intervention.casesAverted.toFixed(0)],
               yaxis: "y"
             },
             {
+              error_y: {
+                array: [((intervention.casesAvertedErrorPlus - intervention.casesAverted) / this.populations[intervention.zone]).toFixed(1)],
+                arrayminus: [((intervention.casesAverted - intervention.casesAvertedErrorMinus) / this.populations[intervention.zone]).toFixed(1)]
+              },
               marker: {
                 color: getInterventionColourValue(intervention.intervention)
               },
@@ -86,7 +94,7 @@ export default Vue.extend<Data, unknown, Computed, Props>({
               type: "bar",
               x: [intervention.zone],
               xaxis: "x2",
-              y: [formatCases(intervention.casesAverted / this.populations[intervention.zone], 1)],
+              y: [(intervention.casesAverted / this.populations[intervention.zone]).toFixed(1)],
               yaxis: "y2"
             }
           ]

@@ -100,8 +100,22 @@ describe("strategise page", () => {
             {
                 costThreshold: 1,
                 interventions: [
-                    {zone: "Region A", intervention: "irs-llin-pbo", casesAverted: 60, cost: 600},
-                    {zone: "Region B", intervention: "irs-llin", casesAverted: 40, cost: 400}
+                    {
+                        zone: "Region A",
+                        intervention: "irs-llin-pbo",
+                        casesAverted: 60,
+                        casesAvertedErrorMinus: 55,
+                        casesAvertedErrorPlus: 70,
+                        cost: 600
+                    },
+                    {
+                        zone: "Region B",
+                        intervention: "irs-llin",
+                        casesAverted: 40,
+                        casesAvertedErrorMinus: 30,
+                        casesAvertedErrorPlus: 45,
+                        cost: 400
+                    }
                 ]
             }
         ];
@@ -124,8 +138,22 @@ describe("strategise page", () => {
         const strategy = {
             costThreshold: 1,
             interventions: [
-                {zone: "Region A", intervention: "irs-llin-pbo", casesAverted: 60, cost: 600},
-                {zone: "Region B", intervention: "irs-llin", casesAverted: 40, cost: 400}
+                {
+                    zone: "Region A",
+                    intervention: "irs-llin-pbo",
+                    casesAverted: 60,
+                    casesAvertedErrorMinus: 55,
+                    casesAvertedErrorPlus: 70,
+                    cost: 600
+                },
+                {
+                    zone: "Region B",
+                    intervention: "irs-llin",
+                    casesAverted: 40,
+                    casesAvertedErrorMinus: 30,
+                    casesAvertedErrorPlus: 45,
+                    cost: 400
+                }
             ]
         };
         const store = createStore();

@@ -1,4 +1,4 @@
-import {mount, shallowMount} from "@vue/test-utils";
+import {mount} from "@vue/test-utils";
 import StrategiesTable from "../../../../app/components/figures/strategise/strategiesTable.vue";
 import {BTable} from "bootstrap-vue";
 
@@ -8,15 +8,43 @@ describe("strategies table", () => {
         {
             costThreshold: 1,
             interventions: [
-                {zone: "Region A", intervention: "irs-llin-pbo", casesAverted: 60, cost: 600},
-                {zone: "Region B", intervention: "irs-llin", casesAverted: 40, cost: 400}
+                {
+                    zone: "Region A",
+                    intervention: "irs-llin-pbo",
+                    casesAverted: 60,
+                    casesAvertedErrorMinus: 55,
+                    casesAvertedErrorPlus: 75,
+                    cost: 600
+                },
+                {
+                    zone: "Region B",
+                    intervention: "irs-llin",
+                    casesAverted: 40,
+                    casesAvertedErrorMinus: 30,
+                    casesAvertedErrorPlus: 45,
+                    cost: 400
+                }
             ]
         },
         {
             costThreshold: 0.95,
             interventions: [
-                {zone: "Region A", intervention: "pbo-llin", casesAverted: 35, cost: 300},
-                {zone: "Region B", intervention: "llin", casesAverted: 15, cost: 200}
+                {
+                    zone: "Region A",
+                    intervention: "irs-llin-pbo",
+                    casesAverted: 35,
+                    casesAvertedErrorMinus: 30,
+                    casesAvertedErrorPlus: 45,
+                    cost: 300
+                },
+                {
+                    zone: "Region B",
+                    intervention: "irs-llin",
+                    casesAverted: 15,
+                    casesAvertedErrorMinus: 5,
+                    casesAvertedErrorPlus: 20,
+                    cost: 200
+                }
             ]
         }
     ];
@@ -34,19 +62,16 @@ describe("strategies table", () => {
         expect(row1.at(3).text()).toBe("Pyrethroid LLIN with IRS*");
         expect(row1.at(3).classes()).toContain("table-warning");
         expect(row1.at(4).text()).toBe("100");
+        expect(row1.at(4).find("abbr").attributes("title")).toBe("100 +20 / -15");
         expect(row1.at(5).text()).toBe("$1,000");
     });
 
     it("emits strategy-selected event", () => {
         const items = [
-            {
-                maximum_cost_vs_budget: '100%'
-            },
-            {
-                maximum_cost_vs_budget: '95%'
-            }
+            {maximum_cost_vs_budget: '100%'},
+            {maximum_cost_vs_budget: '95%'}
         ];
-        const wrapper = shallowMount(StrategiesTable, {
+        const wrapper = mount(StrategiesTable, {
             propsData: {
                 strategies
             },
@@ -57,7 +82,7 @@ describe("strategies table", () => {
             }
         });
         wrapper.find(BTable).vm.$emit("row-selected", [items[1]]);
-        expect(wrapper.emitted("strategy-selected")).toStrictEqual([[strategies[1]]])
+        expect(wrapper.emitted("strategy-selected")).toStrictEqual([[strategies[1]]]);
     });
 
 });
