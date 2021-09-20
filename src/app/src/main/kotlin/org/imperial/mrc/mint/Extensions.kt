@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.imperial.mrc.mint.models.ErrorDetail
 import java.io.IOException
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "SwallowedException")
 fun Response.asResponseEntity(): ResponseEntity<String> {
     val httpStatus = httpStatusFromCode(this.statusCode)
 
