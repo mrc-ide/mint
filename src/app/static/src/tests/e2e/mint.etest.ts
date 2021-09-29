@@ -8,6 +8,21 @@ test.describe("basic tests", () => {
         expect(await page.innerText("a.navbar-brand")).toBe("MINT");
     });
 
+    test("prevalences are displayed as ranges", async ({page}) => {
+        await page.goto("/");
+
+        await page.fill("#name", "Project 1");
+
+        await page.fill(".ti-new-tag-input", "Region A");
+        await page.click(".btn-primary");
+
+        // default value is 30%
+        await expect(page.locator("select[name=currentPrevalence] option:checked")).toHaveText(/^\s*26-35%\s*$/);
+
+        await page.selectOption("select[name=currentPrevalence]", "5%");
+        await expect(page.locator("select[name=currentPrevalence] option:checked")).toHaveText(/^\s*<= 7%\s*$/);
+    });
+
     test("creates a project with two regions", async ({page}) => {
         await page.goto("/");
 
