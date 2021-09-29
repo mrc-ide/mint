@@ -11,7 +11,7 @@ import org.springframework.web.servlet.resource.PathResourceResolver
 @SpringBootApplication
 class MintApplication
 
-fun main(args: Array<String>) {
+fun main() {
     SpringApplication.run(MintApplication::class.java)
 }
 

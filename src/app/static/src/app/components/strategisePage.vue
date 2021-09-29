@@ -30,7 +30,7 @@
           <help-circle-icon></help-circle-icon>
         </span>
         <b-input-group prepend="$USD" class="mb-2 mr-sm-3 mb-sm-0">
-          <b-form-input id="inline-form-input-budget" :value="budget" @update="update" type="number" min="0"
+          <b-form-input id="inline-form-input-budget" :value="budget" @update="update" type="number" min="0" step="1000"
                         :number="true" :required="true"></b-form-input>
         </b-input-group>
         <b-button type="submit" variant="primary">Strategize</b-button>

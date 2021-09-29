@@ -3,12 +3,12 @@ FROM vimc/node-docker-openjdk:master
 # Setup gradle
 COPY ./src/gradlew /mint/src/
 COPY ./src/gradle /mint/src/gradle/
+COPY ./src/settings.gradle /mint/src/
 WORKDIR /mint/src
 RUN ./gradlew
 
 # Pull in dependencies
 COPY ./src/build.gradle /mint/src/
-COPY ./src/settings.gradle /mint/src/
 COPY ./src/config/ /mint/src/config/
 
 RUN ./gradlew

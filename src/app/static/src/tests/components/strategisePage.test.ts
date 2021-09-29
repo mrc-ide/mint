@@ -38,6 +38,7 @@ describe("strategise page", () => {
         const wrapper = mount(StrategisePage, {store});
         const input = wrapper.find("input").element as HTMLInputElement;
         expect(input.value).toBe("10000");
+        expect(input.getAttribute("step")).toBe("1000");
     });
 
     it("propagates budget change to project settings", async () => {
