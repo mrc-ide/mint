@@ -1,10 +1,9 @@
 <template>
     <span v-if="short">
-        User Guide: <a :href="en" target="_blank">en</a> <a :href="fr" target="_blank">fr</a>
+        <a :href="en" target="_blank">User Guide</a>
     </span>
     <span v-else>
-    <b>For further guidance please see the User Guide <a :href="en" target="_blank">in English</a> or <a
-        :href="fr" target="_blank">en français</a>.</b>
+    <b>For further guidance please see the <a :href="en" target="_blank">User Guide</a>.</b>
     </span>
 </template>
 <script lang="ts">
