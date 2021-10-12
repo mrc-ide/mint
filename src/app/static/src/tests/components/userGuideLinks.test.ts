@@ -5,7 +5,7 @@ describe("User Guide links", () => {
 
     it("renders long version", () => {
         const wrapper = shallowMount(UserGuideLinks);
-        expect(wrapper.findAll("a").at(0).text()).toContain("English")
+        expect(wrapper.findAll("a").at(0).text()).toContain("User Guide")
     });
 
     it("renders short version", () => {
@@ -14,7 +14,7 @@ describe("User Guide links", () => {
                 short: true
             }
         });
-        expect(wrapper.findAll("a").at(0).text()).toEqual("en")
+        expect(wrapper.findAll("a").at(0).text()).toEqual("User Guide")
     });
 });
 
