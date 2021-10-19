@@ -24,8 +24,12 @@
   }
 }
 
-.navbar-brand {
+a.navbar-brand {
   font-size: 1rem !important;
+
+  &:hover {
+    color: $theme-mint !important;
+  }
 }
 
 .navbar-header {
