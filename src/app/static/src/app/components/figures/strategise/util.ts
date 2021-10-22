@@ -48,7 +48,7 @@ const interventionColourValues: Record<string, string> = {
     "llin-pbo": "e0fae0",
     "irs-llin-pbo": "ffe6b8",
     "llin": "bbf0fb",
-    "irs-llin": "bbf0fb",
+    "irs-llin": "f5c6cb",
     "none": ""
 };
 export const getInterventionColourValue = (intervention: string) => interventionColourValues[intervention];
