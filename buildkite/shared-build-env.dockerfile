@@ -1,4 +1,4 @@
-FROM vimc/node-docker-openjdk:mrc-2639
+FROM vimc/node-docker-openjdk:master
 
 # Setup gradle
 COPY ./src/gradlew /mint/src/
