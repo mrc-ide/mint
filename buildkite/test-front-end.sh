@@ -11,6 +11,7 @@ trap cleardocker EXIT
 # Create an image based on the shared build env that compiles and tests the front-end
 docker build --tag mint-test \
 	--build-arg GIT_ID=$GIT_ID \
+	--build-arg CODECOV_TOKEN=$CODECOV_TOKEN \
   -f $HERE/test-front-end.dockerfile \
 	.
 
