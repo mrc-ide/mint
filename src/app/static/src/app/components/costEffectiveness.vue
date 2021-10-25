@@ -41,23 +41,23 @@
         docs: string
     }
 
-    export default Vue.extend<{}, {}, Computed, {}>({
-        components: {plotlyGraph, dynamicTable, collapsibleDocs},
-        props: ["activeTab"],
-        computed: {
-            settings: mapStateProp<RootState, DynamicFormData | null>
-            (state => state.currentProject && {
-                ...state.currentProject.currentRegion.interventionSettings,
-                ...state.currentProject.currentRegion.baselineSettings
-            }),
-            currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
-            perCaseGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costPerCaseGraphConfig),
-            casesAvertedGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costCasesGraphConfig),
-            tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.costTableConfig),
-            docs: mapStateProp<RootState, string>(state => state.costDocs),
-            tableData() {
-                return this.currentProject ? this.currentProject.currentRegion.tableData : [];
-            }
+    export default Vue.extend<Record<string, never>, Record<string, never>, Computed, "activeTab">({
+    components: {plotlyGraph, dynamicTable, collapsibleDocs},
+    props: ["activeTab"],
+    computed: {
+        settings: mapStateProp<RootState, DynamicFormData | null>
+        (state => state.currentProject && {
+            ...state.currentProject.currentRegion.interventionSettings,
+            ...state.currentProject.currentRegion.baselineSettings
+        }),
+        currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
+        perCaseGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costPerCaseGraphConfig),
+        casesAvertedGraphConfig: mapStateProp<RootState, Graph | null>(state => state.costCasesGraphConfig),
+        tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.costTableConfig),
+        docs: mapStateProp<RootState, string>(state => state.costDocs),
+        tableData() {
+            return this.currentProject ? this.currentProject.currentRegion.tableData : [];
         }
+    }
     });
 </script>

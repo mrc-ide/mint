@@ -89,7 +89,7 @@
 
 <script lang="ts">
     import Vue from "vue"
-    import VueTagsInput from '@johmun/vue-tags-input';
+    import VueTagsInput from "@johmun/vue-tags-input";
     import {RootMutation} from "../mutations";
     import {mapMutationByName} from "../utils";
     import {getSlug, Project, Region} from "../models/project";
@@ -133,88 +133,88 @@
         text: string
     }
 
-    export default Vue.extend<Data, Methods, Computed, {}>({
-        components: {userGuideLinks, VueTagsInput, dropDown},
-        data() {
-            return {
-                newProject: "",
-                regions: [],
-                newRegion: "",
-                showNewProject: false,
-                invalidTag: false
+    export default Vue.extend<Data, Methods, Computed, Record<string, never>>({
+    components: {userGuideLinks, VueTagsInput, dropDown},
+    data() {
+        return {
+            newProject: "",
+            regions: [],
+            newRegion: "",
+            showNewProject: false,
+            invalidTag: false
+        }
+    },
+    computed: {
+        ...mapState(["projects", "baselineOptions", "interventionOptions"]),
+        welcomeText() {
+            const len = this.projects.length;
+            if (len === 0) {
+                return "Create a project to get started";
+            }
+            return `You have ${len} project${len === 1 ? "" : "s"}`
+        },
+        disabled() {
+            return !this.newProject || (!this.newRegion && this.regions.length == 0) || this.invalidTag
+        },
+        placeholder() {
+            return this.regions.length == 0 ? "First region, second region" : "...";
+        }
+    },
+    methods: {
+        setCurrentProject: mapMutationByName(RootMutation.SetCurrentProject),
+        addProject: mapMutationByName(RootMutation.AddProject),
+        startNewProject(event: Event) {
+            event.preventDefault();
+            this.showNewProject = true;
+        },
+        createProject() {
+            const regionNames = this.regions.map((tag) => tag.text.trim());
+            const newRegion = this.newRegion.trim();
+            if (newRegion.length > 0) {
+                // user has entered a region name but not blurred the input
+                // so manually validate their last typed region and add to list
+                const valid = !regionNames.find(t => getSlug(t) == getSlug(newRegion));
+                if (valid) {
+                    regionNames.push(newRegion);
+                } else {
+                    this.invalidTag = true
+                }
+            }
+            if (!this.invalidTag) {
+                const project = new Project(this.newProject, regionNames, this.baselineOptions, this.interventionOptions);
+                this.addProject(project);
+                this.$router.push({
+                    path: project.currentRegion.url
+                });
             }
         },
-        computed: {
-            ...mapState(["projects", "baselineOptions", "interventionOptions"]),
-            welcomeText() {
-                const len = this.projects.length;
-                if (len === 0) {
-                    return "Create a project to get started";
-                }
-                return `You have ${len} project${len === 1 ? "" : "s"}`
-            },
-            disabled() {
-                return !this.newProject || (!this.newRegion && this.regions.length == 0) || this.invalidTag
-            },
-            placeholder() {
-                return this.regions.length == 0 ? "First region, second region" : "...";
-            },
+        tagAdded(newTags: Tag[]) {
+            this.regions = newTags;
+            this.newRegion = "";
+            this.invalidTag = false;
         },
-        methods: {
-            setCurrentProject: mapMutationByName(RootMutation.SetCurrentProject),
-            addProject: mapMutationByName(RootMutation.AddProject),
-            startNewProject(event: Event) {
-                event.preventDefault();
-                this.showNewProject = true;
-            },
-            createProject() {
-                const regionNames = this.regions.map((tag) => tag.text.trim());
-                const newRegion = this.newRegion.trim();
-                if (newRegion.length > 0) {
-                    // user has entered a region name but not blurred the input
-                    // so manually validate their last typed region and add to list
-                    const valid = !regionNames.find(t => getSlug(t) == getSlug(newRegion));
-                    if (valid) {
-                        regionNames.push(newRegion);
-                    } else {
-                        this.invalidTag = true
-                    }
-                }
-                if (!this.invalidTag) {
-                    const project = new Project(this.newProject, regionNames, this.baselineOptions, this.interventionOptions);
-                    this.addProject(project);
-                    this.$router.push({
-                        path: project.currentRegion.url
-                    });
-                }
-            },
-            tagAdded(newTags: Tag[]) {
-                this.regions = newTags;
-                this.newRegion = "";
+        addingDuplicate() {
+            this.invalidTag = true;
+        },
+        isDuplicate(tags: Tag[], tag: Tag) {
+            return !!tags.find(t => getSlug(t.text.trim()) == getSlug(tag.text.trim()));
+        },
+        resetValidation(event: KeyboardEvent) {
+            if ([",", "Enter"].indexOf(event.key) == -1) {
                 this.invalidTag = false;
-            },
-            addingDuplicate() {
-                this.invalidTag = true;
-            },
-            isDuplicate(tags: Tag[], tag: Tag) {
-                return !!tags.find(t => getSlug(t.text.trim()) == getSlug(tag.text.trim()));
-            },
-            resetValidation(event: KeyboardEvent) {
-                if ([",", "Enter"].indexOf(event.key) == -1) {
-                    this.invalidTag = false;
-                }
-            },
-            navigate(event: Event, project: Project, region: Region) {
-                event.preventDefault();
-                this.setCurrentProject(project);
-                this.$router.push({
-                    path: region.url
-                })
-            },
-            deleteProject: mapMutationByName(RootMutation.DeleteProject)
+            }
         },
-        mounted() {
-            this.setCurrentProject(null);
-        }
+        navigate(event: Event, project: Project, region: Region) {
+            event.preventDefault();
+            this.setCurrentProject(project);
+            this.$router.push({
+                path: region.url
+            })
+        },
+        deleteProject: mapMutationByName(RootMutation.DeleteProject)
+    },
+    mounted() {
+        this.setCurrentProject(null);
+    }
     });
 </script>

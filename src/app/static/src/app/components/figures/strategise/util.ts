@@ -6,19 +6,19 @@ export const getRegionPopulations = (project: Project) => project.regions.reduce
     {}
 );
 
-export const formatCost = (cost: number, maximumFractionDigits = 0) => isNaN(cost) ? "NA" : new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+export const formatCost = (cost: number, maximumFractionDigits = 0) => isNaN(cost) ? "NA" : new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
     minimumFractionDigits: 0,
     maximumFractionDigits
 }).format(cost);
 
-export const formatCases = (cases: number, maximumFractionDigits = 0) => new Intl.NumberFormat('en-US', {
+export const formatCases = (cases: number, maximumFractionDigits = 0) => new Intl.NumberFormat("en-US", {
     maximumFractionDigits
 }).format(cases);
 
-export const formatPercentage = (percentage: number) => new Intl.NumberFormat('en-US', {
-    style: 'percent',
+export const formatPercentage = (percentage: number) => new Intl.NumberFormat("en-US", {
+    style: "percent",
     maximumFractionDigits: 1
 }).format(percentage);
 

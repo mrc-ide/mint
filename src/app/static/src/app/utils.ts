@@ -37,12 +37,12 @@ export function deepCopy(data: any): any {
     let result = null;
     if(Array.isArray(data)) {
         result = [];
-        for (let item of data) {
+        for (const item of data) {
             result.push(deepCopy(item));
         }
     } else if (typeof data === "object") {
         result = {} as any;
-        for(let prop in data) {
+        for(const prop in data) {
             if (data.hasOwnProperty(prop)) {
                 result[prop] = deepCopy(data[prop]);
             }
@@ -59,7 +59,7 @@ export const freezer = {
             return Object.freeze(data.map(d => freezer.deepFreeze(d)))
         }
         if (data != null && typeof data === "object") {
-            for (let prop in data) {
+            for (const prop in data) {
                 if (data.hasOwnProperty(prop)) {
                     data[prop] = freezer.deepFreeze(data[prop])
                 }

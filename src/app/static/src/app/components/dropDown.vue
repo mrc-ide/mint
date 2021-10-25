@@ -25,42 +25,42 @@
         parentClass: string
         toggleClass: string
     }
-    export default Vue.extend<Data, Methods, {}, Props>({
-        props: {text: String, parentClass: String, toggleClass: String},
-        data(): Data {
-            return {
-                id: [...Array(30)].map(() => Math.random().toString(36)[2]).join(''),
-                show: false
-            }
-        },
-        methods: {
-            toggle() {
-                this.show = !this.show;
-            },
-            close() {
-                this.show = false;
-            }
-        },
-        mounted() {
-            window.addEventListener("click", (e: any) => {
-                let target = e.target
-                let closeDropdown = true;
-                while (target.parentElement) {
-                    if (target.id == this.id) {
-                        // this click originated from inside the dropdown and was not a navigation
-                        // so leave the dropdown open
-                        const original = e.target;
-                        if (!original.href) {
-                            closeDropdown = false;
-                            break;
-                        }
-                    }
-                    target = target.parentElement
-                }
-                if (closeDropdown) {
-                    this.close();
-                }
-            });
+    export default Vue.extend<Data, Methods, Record<string, never>, Props>({
+    props: {text: String, parentClass: String, toggleClass: String},
+    data(): Data {
+        return {
+            id: [...Array(30)].map(() => Math.random().toString(36)[2]).join(""),
+            show: false
         }
+    },
+    methods: {
+        toggle() {
+            this.show = !this.show;
+        },
+        close() {
+            this.show = false;
+        }
+    },
+    mounted() {
+        window.addEventListener("click", (e: any) => {
+            let target = e.target
+            let closeDropdown = true;
+            while (target.parentElement) {
+                if (target.id == this.id) {
+                    // this click originated from inside the dropdown and was not a navigation
+                    // so leave the dropdown open
+                    const original = e.target;
+                    if (!original.href) {
+                        closeDropdown = false;
+                        break;
+                    }
+                }
+                target = target.parentElement
+            }
+            if (closeDropdown) {
+                this.close();
+            }
+        });
+    }
     })
 </script>

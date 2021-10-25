@@ -1,6 +1,6 @@
 import Vue from "vue"
 import Vuex, {MutationPayload, Store, StoreOptions} from "vuex"
-import CompositionApi from '@vue/composition-api'
+import CompositionApi from "@vue/composition-api"
 
 import {actions} from "./actions";
 import {mutations} from "./mutations";

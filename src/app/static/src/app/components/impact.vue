@@ -44,28 +44,28 @@
         docs: string,
     }
 
-    export default Vue.extend<{}, {}, Computed, {}>({
-        components: {
-            plotlyGraph,
-            dynamicTable,
-            collapsibleDocs
+    export default Vue.extend<Record<string, never>, Record<string, never>, Computed, "activeTab">({
+    components: {
+        plotlyGraph,
+        dynamicTable,
+        collapsibleDocs
+    },
+    props: ["activeTab"],
+    computed: {
+        settings: mapStateProp<RootState, DynamicFormData | null>
+        (state => state.currentProject && state.currentProject.currentRegion.interventionSettings),
+        prevalenceGraphConfig: mapStateProp<RootState, Graph | null>(state => state.prevalenceGraphConfig),
+        casesGraphConfig: mapStateProp<RootState, Graph | null>(state => state.casesGraphConfig),
+        tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.impactTableConfig),
+        currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
+        docs: mapStateProp<RootState, string>(state => state.impactDocs),
+        prevalenceGraphData() {
+            return this.currentProject ? this.currentProject.currentRegion.prevalenceGraphData : [];
         },
-        props: ["activeTab"],
-        computed: {
-            settings: mapStateProp<RootState, DynamicFormData | null>
-            (state => state.currentProject && state.currentProject.currentRegion.interventionSettings),
-            prevalenceGraphConfig: mapStateProp<RootState, Graph | null>(state => state.prevalenceGraphConfig),
-            casesGraphConfig: mapStateProp<RootState, Graph | null>(state => state.casesGraphConfig),
-            tableConfig: mapStateProp<RootState, TableDefinition | null>(state => state.impactTableConfig),
-            currentProject: mapStateProp<RootState, Project | null>(state => state.currentProject),
-            docs: mapStateProp<RootState, string>(state => state.impactDocs),
-            prevalenceGraphData() {
-                return this.currentProject ? this.currentProject.currentRegion.prevalenceGraphData : [];
-            },
-            tableData() {
-                return this.currentProject ? this.currentProject.currentRegion.tableData : [];
-            }
+        tableData() {
+            return this.currentProject ? this.currentProject.currentRegion.tableData : [];
         }
+    }
     });
 
 </script>

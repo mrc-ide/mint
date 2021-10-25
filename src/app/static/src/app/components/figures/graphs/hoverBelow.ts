@@ -1,10 +1,10 @@
-import $ from 'jquery';
+import $ from "jquery";
 import {onBeforeUnmount, onMounted, Ref} from "@vue/composition-api";
 
 export function setupHoverBelowObserver(observer: Ref<MutationObserver | null>, className: string) {
 
     onMounted(() => {
-       const target = $(`.${className}`)[0];
+        const target = $(`.${className}`)[0];
 
         if (target) {
             const config = {
@@ -17,7 +17,7 @@ export function setupHoverBelowObserver(observer: Ref<MutationObserver | null>, 
 
             observer.value = new MutationObserver(function (mutations) {
                 mutations.forEach(function (mutation) {
-                   const nodes = mutation.addedNodes.length ? mutation.addedNodes : [mutation.target];
+                    const nodes = mutation.addedNodes.length ? mutation.addedNodes : [mutation.target];
 
                     const text = $(nodes).filter(".hoverlayer .hovertext text");
                     if (text.length && text.attr("y") !== "0") {
@@ -49,7 +49,7 @@ export function setupHoverBelowObserver(observer: Ref<MutationObserver | null>, 
                             path.attr("d", newPath);
 
                             //We also apply the correct classes for css translate to work
-                            const className = leftLabel ? 'hoverbelow-left' : 'hoverbelow-right';
+                            const className = leftLabel ? "hoverbelow-left" : "hoverbelow-right";
                             path.addClass(className);
                             path.siblings("rect, text").addClass(className);
                         }

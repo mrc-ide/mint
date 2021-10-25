@@ -32,7 +32,7 @@ function evaluateShapes(layout: Layout, props: Props) {
             }
         });
 
-        toRemove.reverse().map((i: number) => {layout.shapes!!.splice(i, 1);});
+        toRemove.reverse().map((i: number) => {layout.shapes!.splice(i, 1);});
     }
 }
 

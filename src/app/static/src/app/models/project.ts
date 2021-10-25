@@ -19,9 +19,9 @@ export const getSlug = (name: string) => name.replace(/\s/g, "-").toLowerCase();
 
 export class Region {
     constructor(name: string,
-                parent: Project,
-                baselineOptions: DynamicFormMeta,
-                interventionOptions: DynamicFormMeta) {
+        parent: Project,
+        baselineOptions: DynamicFormMeta,
+        interventionOptions: DynamicFormMeta) {
         this.name = name;
         this.slug = getSlug(name);
         this.url = `/projects/${parent.slug}/regions/${this.slug}`;
@@ -54,12 +54,12 @@ export interface Project {
 
 export class Project {
     constructor(name: string,
-                regionsName: string[],
-                baselineOptions: DynamicFormMeta,
-                interventionOptions: DynamicFormMeta,
-                currentRegion: Region | null = null,
-                strategies: StrategyWithThreshold[] = [],
-                budget: number = 2_000_000
+        regionsName: string[],
+        baselineOptions: DynamicFormMeta,
+        interventionOptions: DynamicFormMeta,
+        currentRegion: Region | null = null,
+        strategies: StrategyWithThreshold[] = [],
+        budget = 2_000_000
     ) {
         this.name = name;
         this.slug = getSlug(name);
