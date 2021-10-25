@@ -22,6 +22,8 @@ There are three kinds of tests:
 - End-to-end (in-browser) tests. These have suffix `.etest.ts` and are run with [Playwright](https://playwright.dev/) via
   `npm run e2e-test` with configuration in `playwright.config.ts`. Run `npx playwright install chromium` to perform a
   one-time installation of the Playwright Chromium binary.
+  - These tests include an accessibility audit for the homepage of the app using [Axe](https://github.com/dequelabs/axe-core),
+    which is the engine underlying [Accessibility Insights](https://accessibilityinsights.io/) (using the same ruleset).
   - Playwright provides [various tools](https://playwright.dev/docs/debug) for authoring and debugging tests. But if
     you've written a failing test then simply running `npm run e2e-test -- --headed` may help identify the issue.
 

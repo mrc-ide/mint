@@ -1,6 +1,12 @@
 <template>
-    <b-table :items="items" hover selectable select-mode="single" @row-selected="onRowSelected"
-             selected-variant=""></b-table>
+    <b-table :items="items" hover selectable select-mode="single" @row-selected="onRowSelected" selected-variant="">
+        <template #cell(total_cases_averted)="data">
+            <abbr
+                :title="`${formatCases(data.value.median)} +${formatCases(data.value.maximum - data.value.median)} / -${formatCases(data.value.median - data.value.minimum)}`">
+                {{ formatCases(data.value.median) }}
+            </abbr>
+        </template>
+    </b-table>
 </template>
 
 <script lang="ts">
@@ -10,7 +16,8 @@
     import {formatCases, formatCost, getInterventionColourName, getInterventionName} from "./util";
 
     interface Methods {
-        onRowSelected: (rows: Record<string, any>[]) => void
+        onRowSelected: (rows: Record<string, any>[]) => void,
+        formatCases: (value: number) => string
     }
 
     interface Computed {
@@ -21,11 +28,12 @@
         strategies: StrategyWithThreshold[]
     }
 
-    export default Vue.extend<void, Methods, Computed, Props>({
+    export default Vue.extend<Record<string, never>, Methods, Computed, Props>({
         methods: {
             onRowSelected([item]) {
                 this.$emit("strategy-selected", this.strategies[this.items.indexOf(item)]);
-            }
+            },
+            formatCases
         },
         components: {
             BTable
@@ -42,7 +50,11 @@
                         ...a,
                         [intervention.zone]: getInterventionName(intervention.intervention)
                     }), {}),
-                    total_cases_averted: formatCases(strategy.interventions.reduce((a, intervention) => a + intervention.casesAverted, 0)),
+                    total_cases_averted: {
+                        minimum: strategy.interventions.reduce((a, intervention) => a + intervention.casesAvertedErrorMinus, 0),
+                        median: strategy.interventions.reduce((a, intervention) => a + intervention.casesAverted, 0),
+                        maximum: strategy.interventions.reduce((a, intervention) => a + intervention.casesAvertedErrorPlus, 0)
+                    },
                     total_cost: formatCost(strategy.interventions.reduce((a, intervention) => a + intervention.cost, 0)),
                     _cellVariants: strategy.interventions.reduce((a, intervention) => ({
                         ...a,
