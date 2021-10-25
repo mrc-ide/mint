@@ -27,7 +27,7 @@ interface Props {
   strategies: StrategyWithThreshold[]
 }
 
-export default Vue.extend<{}, Methods, Computed, Props>({
+export default Vue.extend<Record<string, never>, Methods, Computed, Props>({
   methods: {
     onRowSelected([item]) {
       this.$emit("strategy-selected", this.strategies[this.items.indexOf(item)]);
