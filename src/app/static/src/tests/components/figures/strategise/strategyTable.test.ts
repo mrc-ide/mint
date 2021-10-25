@@ -24,19 +24,25 @@ describe("strategy table", () => {
                             zone: "Avalon",
                             intervention: "irs",
                             cost: 500,
-                            casesAverted: 300
+                            casesAverted: 300,
+                            casesAvertedErrorMinus: 295,
+                            casesAvertedErrorPlus: 400
                         },
                         {
                             zone: "Atlantis",
                             intervention: "none",
                             cost: 0,
-                            casesAverted: 0
+                            casesAverted: 0,
+                            casesAvertedErrorMinus: 0,
+                            casesAvertedErrorPlus: 0
                         },
                         {
                             zone: "Asgard",
                             intervention: "llin",
                             cost: 750,
-                            casesAverted: 600
+                            casesAverted: 600,
+                            casesAvertedErrorMinus: 590,
+                            casesAvertedErrorPlus: 610
                         }
                     ]
                 }
@@ -53,12 +59,16 @@ describe("strategy table", () => {
         expect(firstRow.at(1).text()).toBe("IRS* only");
         expect(firstRow.at(2).text()).toBe("1000");
         expect(firstRow.at(3).text()).toBe("300");
+        expect(firstRow.at(3).find("abbr").attributes("title")).toBe("300 +100 / -5");
         expect(firstRow.at(4).text()).toBe("33.3%");
+        expect(firstRow.at(4).find("abbr").attributes("title")).toBe("33.3% +11.9 / -4.1");
         expect(firstRow.at(5).text()).toBe("$500");
         expect(firstRow.at(6).text()).toBe("40%");
         expect(firstRow.at(7).text()).toBe("$2");
+        expect(firstRow.at(7).find("abbr").attributes("title")).toBe("$2 +$0 / -$0");
         expect(firstRow.at(8).text()).toBe("$0.5");
         expect(firstRow.at(9).text()).toBe("0.3");
+        expect(firstRow.at(9).find("abbr").attributes("title")).toBe("0.3 +0.1 / -0");
         expect(firstRow.at(1).classes()).toContain("table-primary");
 
         const secondRow = wrapper.findAll("tbody tr:nth-child(2) td");
@@ -79,6 +89,7 @@ describe("strategy table", () => {
         expect(lastRow.at(1).text()).toBe("");
         expect(lastRow.at(2).text()).toBe("6000");
         expect(lastRow.at(3).text()).toBe("900");
+        expect(lastRow.at(3).find("abbr").attributes("title")).toBe("900 +110 / -15");
         expect(lastRow.at(4).text()).toBe("100%");
         expect(lastRow.at(5).text()).toBe("$1,250");
         expect(lastRow.at(6).text()).toBe("100%");
