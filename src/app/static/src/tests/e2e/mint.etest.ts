@@ -1,4 +1,5 @@
 import {expect, test} from "@playwright/test";
+import AxeBuilder from '@axe-core/playwright';
 
 test.describe("basic tests", () => {
 
@@ -6,6 +7,16 @@ test.describe("basic tests", () => {
         await page.goto("/");
 
         expect(await page.innerText("a.navbar-brand")).toBe("MINT");
+    });
+
+    test('accessibility of homepage', async ({page}) => {
+        await page.goto("/");
+
+        const accessibilityScanResults = await new AxeBuilder({page})
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze();
+
+        expect(accessibilityScanResults.violations).toStrictEqual([]);
     });
 
     test("prevalences are displayed as ranges", async ({page}) => {
