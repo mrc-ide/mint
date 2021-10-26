@@ -29,7 +29,7 @@ export enum RootAction {
 }
 
 const currentRegionBaseline = (state: RootState) => {
-    return state.currentProject!!.currentRegion.baselineSettings;
+    return state.currentProject!.currentRegion.baselineSettings;
 };
 
 export const actions: ActionTree<RootState, RootState> = {
@@ -189,7 +189,7 @@ export const actions: ActionTree<RootState, RootState> = {
                 // Exclude regions that aren't fully initialised
                 .filter(region => region.interventionSettings.budgetAllZones)
                 .map(({name, baselineSettings, interventionSettings}) =>
-                ({name, baselineSettings, interventionSettings}))
+                    ({name, baselineSettings, interventionSettings}))
         };
         await api(context)
             .freezeResponse()

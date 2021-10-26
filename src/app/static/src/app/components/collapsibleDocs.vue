@@ -30,24 +30,24 @@
     }
 
     export default Vue.extend<Data, Methods, Computed, "docs">({
-        components: {BCollapse, InfoIcon, ChevronDownIcon, ChevronUpIcon},
-        props: ["docs"],
-        data() {
-            return {show: false}
-        },
-        methods: {
-            toggle(e: Event) {
-                e.preventDefault();
-                this.show = !this.show
-            }
-        },
-        computed: {
-            chevronComponent() {
-                if (this.show) {
-                    return "chevron-up-icon"
-                }
-                return "chevron-down-icon"
-            }
+    components: {BCollapse, InfoIcon, ChevronDownIcon, ChevronUpIcon},
+    props: ["docs"],
+    data() {
+        return {show: false}
+    },
+    methods: {
+        toggle(e: Event) {
+            e.preventDefault();
+            this.show = !this.show
         }
+    },
+    computed: {
+        chevronComponent() {
+            if (this.show) {
+                return "chevron-up-icon"
+            }
+            return "chevron-down-icon"
+        }
+    }
     });
 </script>

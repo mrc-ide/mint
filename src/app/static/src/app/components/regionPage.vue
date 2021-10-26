@@ -62,76 +62,75 @@
 
     let vm: any = null;
 
-    export default Vue.extend<Data, Methods, Computed, {}>({
-        components: {
-            baseline,
-            interventions: () => {
-                vm.loading = true;
-                // @ts-ignore Dynamic imports not supported error
-                return import('./interventions.vue').then((component) => {
-                    vm.loading = false;
-                    return component
-                })
-            },
-            loadingSpinner,
-            BCollapse, BIconCaretDownFill, BIconCaretUpFill
+    export default Vue.extend<Data, Methods, Computed, Record<string, never>>({
+    components: {
+        baseline,
+        interventions: () => {
+            vm.loading = true;
+            return import("./interventions.vue").then((component) => {
+                vm.loading = false;
+                return component
+            })
         },
-        data() {
-            return {
-                interventionsDisabled: false,
-                showBaseline: false,
-                loading: false
+        loadingSpinner,
+        BCollapse, BIconCaretDownFill, BIconCaretUpFill
+    },
+    data() {
+        return {
+            interventionsDisabled: false,
+            showBaseline: false,
+            loading: false
+        }
+    },
+    computed: {
+        ...mapState(["currentProject"]),
+        currentStep: function () {
+            return this.currentProject ? this.currentProject.currentRegion.step : 0
+        },
+        caretIconComponent() {
+            return this.showBaseline ? "b-icon-caret-up-fill" : "b-icon-caret-down-fill"
+        }
+    },
+    methods: {
+        setCurrentRegion: mapActionByName(RootAction.SetCurrentRegion),
+        setCurrentStep: mapMutationByName(RootMutation.SetCurrentRegionStep),
+        baselineValidated: function (valid: boolean) {
+            this.interventionsDisabled = !valid;
+        },
+        next() {
+            ((this.$refs["baseline"] as Vue).$refs["form"] as any).submit();
+            this.setCurrentStep(2);
+            this.showBaseline = false;
+        },
+        toggleBaseline() {
+            if (this.currentStep === 2) {
+                this.showBaseline = !this.showBaseline;
             }
-        },
-        computed: {
-            ...mapState(["currentProject"]),
-            currentStep: function () {
-                return this.currentProject ? this.currentProject.currentRegion.step : 0
-            },
-            caretIconComponent() {
-                return this.showBaseline ? "b-icon-caret-up-fill" : "b-icon-caret-down-fill"
-            }
-        },
-        methods: {
-            setCurrentRegion: mapActionByName(RootAction.SetCurrentRegion),
-            setCurrentStep: mapMutationByName(RootMutation.SetCurrentRegionStep),
-            baselineValidated: function (valid: Boolean) {
-                this.interventionsDisabled = !valid;
-            },
-            next() {
-                ((this.$refs['baseline'] as Vue).$refs["form"] as any).submit();
-                this.setCurrentStep(2);
-                this.showBaseline = false;
-            },
-            toggleBaseline() {
-                if (this.currentStep === 2) {
-                    this.showBaseline = !this.showBaseline;
-                }
-            }
-        },
-        watch: {
-            $route(to) {
-                // navigation has occurred within the app, i.e. by clicking an internal link
-                const params = to.params;
-                this.setCurrentRegion({project: params["project"], region: params["region"]});
-            },
-            currentStep(step: number) {
-                if (step == 1) {
-                    this.showBaseline = true
-                }
-            }
-        },
-        mounted() {
-            // navigation has occurred outside the app, e.g. by refreshing the page, or
-            // directly entering a url
-            const params = this.$router.currentRoute.params;
+        }
+    },
+    watch: {
+        $route(to) {
+            // navigation has occurred within the app, i.e. by clicking an internal link
+            const params = to.params;
             this.setCurrentRegion({project: params["project"], region: params["region"]});
-            if (this.currentProject?.currentRegion?.step == 1) {
+        },
+        currentStep(step: number) {
+            if (step == 1) {
                 this.showBaseline = true
             }
-        },
-        created() {
-            vm = this;
         }
+    },
+    mounted() {
+        // navigation has occurred outside the app, e.g. by refreshing the page, or
+        // directly entering a url
+        const params = this.$router.currentRoute.params;
+        this.setCurrentRegion({project: params["project"], region: params["region"]});
+        if (this.currentProject?.currentRegion?.step == 1) {
+            this.showBaseline = true
+        }
+    },
+    created() {
+        vm = this;
+    }
     });
 </script>

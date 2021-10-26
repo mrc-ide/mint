@@ -43,7 +43,7 @@ export function useWideFormatData(props: Props) {
                 }
                 const y = d.y_formula
                     ? d.y_formula.map(formula => evaluateFormula(formula, row))
-                    : meta.cols!!.map((c: string) => row[c]);
+                    : meta.cols!.map((c: string) => row[c]);
                 const def: SeriesDefinition = {...d, y};
                 if (d.error_y) {
                     def.error_y = getErrorBar(row, d.error_y, y);

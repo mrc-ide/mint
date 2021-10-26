@@ -8,26 +8,26 @@
     </span>
 </template>
 <script lang="ts">
-import Vue from "vue";
+    import Vue from "vue";
 
-interface Data {
-    en: string
-    fr: string
-}
-
-interface Props {
-    short: boolean
-}
-
-export default Vue.extend<Data, {}, {}, Props>({
-    data() {
-        return {
-            en: "/public/resources/User-Guide.pdf",
-            fr: "/public/resources/User-Guide-fr.pdf"
-        }
-    },
-    props: {
-        short: Boolean
+    interface Data {
+        en: string
+        fr: string
     }
-});
+
+    interface Props {
+        short: boolean
+    }
+
+    export default Vue.extend<Data, Record<string, never>, Record<string, never>, Props>({
+        data() {
+            return {
+                en: "/public/resources/User-Guide.pdf",
+                fr: "/public/resources/User-Guide-fr.pdf"
+            }
+        },
+        props: {
+            short: Boolean
+        }
+    });
 </script>

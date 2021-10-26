@@ -27,12 +27,12 @@
         updateBaselineSettings: (settings: DynamicFormData) => void
     }
 
-    export default Vue.extend<{}, Methods, Computed, {}>({
+    export default Vue.extend<Record<string, never>, Methods, Computed, Record<string, never>>({
         components: {DynamicForm},
         methods: {
             submit: function (settings: DynamicFormData) {
                 this.updateBaselineSettings(settings);
-                this.$emit('submit');
+                this.$emit("submit");
             },
             update: mapMutationByName(RootMutation.SetCurrentRegionBaselineOptions),
             updateBaselineSettings: mapActionByName(RootAction.SetCurrentRegionBaselineSettings)

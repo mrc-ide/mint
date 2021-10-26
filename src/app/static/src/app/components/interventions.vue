@@ -78,87 +78,85 @@
 
     let vm: any = null;
 
-    export default Vue.extend<ComponentData, Methods, Computed, {}>({
+    export default Vue.extend<ComponentData, Methods, Computed, Record<string, never>>({
         data() {
             return {
-                verticalTabs: ["Table", "Graphs"],
-                activeVerticalTab: "Graphs",
-                activeHorizontalTab: "Impact",
-                loading: false
+            verticalTabs: ["Table", "Graphs"],
+            activeVerticalTab: "Graphs",
+            activeHorizontalTab: "Impact",
+            loading: false
             }
         },
-        computed: {
-            ...mapState(["currentProject"]),
-            options: {
-                get() {
-                    return this.currentProject.currentRegion.interventionOptions
-                },
-                set(value: DynamicFormMeta) {
-                    this.updateInterventionOptions(value);
-                }
+    computed: {
+        ...mapState(["currentProject"]),
+        options: {
+            get() {
+                return this.currentProject.currentRegion.interventionOptions
             },
-            currentRegion() {
-                return this.currentProject.currentRegion;
+            set(value: DynamicFormMeta) {
+                this.updateInterventionOptions(value);
             }
         },
-        methods: {
-            submitForm() {
-                this.$nextTick(() => {
-                    // wait til the next tick so that the form has been updated
-                    const form = this.$refs.settings as any
-                    form.submit && form.submit();
-                });
-            },
-            changeVerticalTab(name: string) {
-                this.activeVerticalTab = name;
-            },
-            changeHorizontalTab(name: string) {
-                this.activeHorizontalTab = name;
-            },
-            ensureData: function () {
-                this.ensureImpactData();
-                this.ensureCostEffectivenessData();
-            },
-            ensureImpactData: mapActionByName(RootAction.EnsureImpactData),
-            ensureCostEffectivenessData: mapActionByName(RootAction.EnsureCostEffectivenessData),
-            updateInterventionOptions: mapMutationByName(RootMutation.SetCurrentRegionInterventionOptions),
-            updateInterventionSettings: mapMutationByName(RootMutation.SetCurrentRegionInterventionSettings),
-            fetchConfig: mapActionByName(RootAction.FetchConfig)
+        currentRegion() {
+            return this.currentProject.currentRegion;
+        }
+    },
+    methods: {
+        submitForm() {
+            this.$nextTick(() => {
+                // wait til the next tick so that the form has been updated
+                const form = this.$refs.settings as any
+                form.submit && form.submit();
+            });
         },
-        components: {
-            verticalTabs,
-            impact: () => {
-                vm.loading = true;
-                // @ts-ignore Dynamic imports not supported error
-                return import('./impact.vue').then((component) => {
-                    vm.loading = false;
-                    return component
-                })
-            },
-            costEffectiveness: () => {
-                vm.loading = true;
-                // @ts-ignore Dynamic imports not supported error
-                return import('./costEffectiveness.vue').then((component) => {
-                    vm.loading = false;
-                    return component
-                })
-            },
-            DynamicForm,
-            loadingSpinner
+        changeVerticalTab(name: string) {
+            this.activeVerticalTab = name;
         },
+        changeHorizontalTab(name: string) {
+            this.activeHorizontalTab = name;
+        },
+        ensureData: function () {
+            this.ensureImpactData();
+            this.ensureCostEffectivenessData();
+        },
+        ensureImpactData: mapActionByName(RootAction.EnsureImpactData),
+        ensureCostEffectivenessData: mapActionByName(RootAction.EnsureCostEffectivenessData),
+        updateInterventionOptions: mapMutationByName(RootMutation.SetCurrentRegionInterventionOptions),
+        updateInterventionSettings: mapMutationByName(RootMutation.SetCurrentRegionInterventionSettings),
+        fetchConfig: mapActionByName(RootAction.FetchConfig)
+    },
+    components: {
+        verticalTabs,
+        impact: () => {
+            vm.loading = true;
+            return import("./impact.vue").then((component) => {
+                vm.loading = false;
+                return component
+            })
+        },
+        costEffectiveness: () => {
+            vm.loading = true;
+            return import("./costEffectiveness.vue").then((component) => {
+                vm.loading = false;
+                return component
+            })
+        },
+        DynamicForm,
+        loadingSpinner
+    },
         mounted() {
             this.ensureData();
             this.submitForm();
             this.fetchConfig();
         },
-        watch: {
-            options() {
-                this.submitForm();
-            },
-            currentRegion: function () {
-                this.ensureData();
-            }
+    watch: {
+        options() {
+            this.submitForm();
         },
+        currentRegion: function () {
+            this.ensureData();
+        }
+    },
         created() {
             vm = this;
         }

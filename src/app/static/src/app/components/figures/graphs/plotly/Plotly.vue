@@ -2,10 +2,10 @@
     <div :id="id" v-resize:debounce.100="onResize" />
 </template>
 <script>
-    // this code taken directly from https://github.com/David-Desmaisons/vue-plotly
-    // with the only change being the import of Plotly from our "customPlotly" module
-    // which contains a stripped down version of Plotly with only scatter and bar graphs
-    // included, to reduce bundle size
+// this code taken directly from https://github.com/David-Desmaisons/vue-plotly
+// with the only change being the import of Plotly from our "customPlotly" module
+// which contains a stripped down version of Plotly with only scatter and bar graphs
+// included, to reduce bundle size
     import Plotly from "../../../../customPlotly";
     import events from "./events";
     import methods from "./methods";
@@ -17,22 +17,22 @@
         inheritAttrs: false,
         directives: {Resize},
         props: {
-            data: {
-                type: Array
-            },
-            layout: {
-                type: Object
-            },
-            id: {
-                type: String,
-                required: false,
-                default: null
-            }
+        data: {
+            type: Array
+        },
+        layout: {
+            type: Object
+        },
+        id: {
+            type: String,
+            required: false,
+            default: null
+        }
         },
         data() {
             return {
                 scheduled: null,
-                innerLayout: { ...this.layout }
+            innerLayout: { ...this.layout }
             };
         },
         mounted() {
@@ -42,25 +42,25 @@
             });
         },
         watch: {
-            data: {
-                handler() {
-                    this.schedule({ replot: true });
-                },
-                deep: true
+        data: {
+            handler() {
+                this.schedule({ replot: true });
             },
-            options: {
-                handler(value, old) {
-                    if (JSON.stringify(value) === JSON.stringify(old)) {
-                        return;
-                    }
-                    this.schedule({ replot: true });
-                },
-                deep: true
+            deep: true
+        },
+        options: {
+            handler(value, old) {
+                if (JSON.stringify(value) === JSON.stringify(old)) {
+                    return;
+                }
+                this.schedule({ replot: true });
             },
-            layout(layout) {
-                this.innerLayout = { ...layout };
-                this.schedule({ replot: false });
-            }
+            deep: true
+        },
+        layout(layout) {
+            this.innerLayout = { ...layout };
+            this.schedule({ replot: false });
+        }
         },
         computed: {
             options() {

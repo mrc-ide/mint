@@ -3,11 +3,12 @@
         <ul ref="tabLinks" :style="navStyle"
             class="nav nav-tabs">
             <li v-for="tab in tabs"
+                :key="tab"
                 class="nav-item">
                 <a class="text-success nav-link"
                    :class="{active: activeTab === tab}"
                    @click="$emit('tab-selected', tab)">
-                    {{tab}}
+                    {{ tab }}
                 </a>
             </li>
         </ul>

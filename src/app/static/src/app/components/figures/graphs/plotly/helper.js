@@ -1,9 +1,9 @@
 function cached(fn) {
-  const cache = Object.create(null);
-  return function cachedFn(str) {
-    const hit = cache[str];
-    return hit || (cache[str] = fn(str));
-  };
+    const cache = Object.create(null);
+    return function cachedFn(str) {
+        const hit = cache[str];
+        return hit || (cache[str] = fn(str));
+    };
 }
 
 const regex = /-(\w)/g;

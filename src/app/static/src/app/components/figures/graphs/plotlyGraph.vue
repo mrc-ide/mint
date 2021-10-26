@@ -20,41 +20,41 @@
     }
 
     export default defineComponent({
-        components: {
-            Plotly
-        },
-        props: {settings: Object, data: Array, series: Array, metadata: Object, layout: Object},
-        setup(props: Props) {
-            let hoverBelow = false;
-            let observer = ref<MutationObserver | null>(null);
-            if (props.layout.mintcustom && props.layout.mintcustom.hoverposition == "below") {
-                hoverBelow = true;
-                setupHoverBelowObserver(observer, "hoverbelow");
-            }
-
-            let dataSeries: Ref<readonly SeriesDefinition[]>;
-            if (props.metadata.format == "long") {
-                dataSeries = useLongFormatData(props).dataSeries;
-            } else {
-                dataSeries = useWideFormatData(props).dataSeries;
-            }
-
-            const transformedLayout = computed(() => ({
-                ...useLayout(props, dataSeries.value),
-                font: {
-                    // use the same font settings as Bootstrap, which the rest of the app uses
-                    family: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
-                    size: '1rem',
-                    color: '#212529'
-                }
-            }));
-
-            return {
-                transformedLayout,
-                dataSeries,
-                hoverBelow,
-                observer //Not required but makes testing much easier
-            }
+    components: {
+        Plotly
+    },
+    props: {settings: Object, data: Array, series: Array, metadata: Object, layout: Object},
+    setup(props: Props) {
+        let hoverBelow = false;
+        let observer = ref<MutationObserver | null>(null);
+        if (props.layout.mintcustom && props.layout.mintcustom.hoverposition == "below") {
+            hoverBelow = true;
+            setupHoverBelowObserver(observer, "hoverbelow");
         }
+
+        let dataSeries: Ref<readonly SeriesDefinition[]>;
+        if (props.metadata.format == "long") {
+            dataSeries = useLongFormatData(props).dataSeries;
+        } else {
+            dataSeries = useWideFormatData(props).dataSeries;
+        }
+
+        const transformedLayout = computed(() => ({
+            ...useLayout(props, dataSeries.value),
+            font: {
+                // use the same font settings as Bootstrap, which the rest of the app uses
+                family: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
+                size: "1rem",
+                color: "#212529"
+            }
+        }));
+
+        return {
+            transformedLayout,
+            dataSeries,
+            hoverBelow,
+            observer //Not required but makes testing much easier
+        }
+    }
     })
 </script>

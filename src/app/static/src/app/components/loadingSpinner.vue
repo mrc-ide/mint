@@ -88,16 +88,16 @@
     import Vue from "vue";
 
     export default Vue.extend({
-        props: ["size"],
-        computed: {
-            height() {
-                return this.size == "xs" ? "40px" : (this.size == "sm") ? "100px" : "200px";
-            },
-            transforms() {
-                const scales = this.size == "xs" ? [1.01585, 1.02835, 1.04085, 1.05335, 1.06585, 1.07853, 1.09085, 1.00335]
-                    : [1.01254, 1.02504, 1.03754, 1.05004, 1.06254, 1.07504, 1.08754, 1.00004];
-                return scales.map(s => `scale(${s}, ${s})`);
-            }
+    props: ["size"],
+    computed: {
+        height() {
+            return this.size == "xs" ? "40px" : (this.size == "sm") ? "100px" : "200px";
+        },
+        transforms() {
+            const scales = this.size == "xs" ? [1.01585, 1.02835, 1.04085, 1.05335, 1.06585, 1.07853, 1.09085, 1.00335]
+                : [1.01254, 1.02504, 1.03754, 1.05004, 1.06254, 1.07504, 1.08754, 1.00004];
+            return scales.map(s => `scale(${s}, ${s})`);
         }
+    }
     })
 </script>

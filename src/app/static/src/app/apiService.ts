@@ -5,7 +5,7 @@ import {RootState} from "./store";
 import {ResponseSuccess, ResponseFailure} from "./generated";
 import {RootMutation} from "./mutations";
 
-declare var appUrl: string;
+declare let appUrl: string;
 
 export interface ResponseWithType<T> extends ResponseSuccess {
     data: T
@@ -43,8 +43,8 @@ export class APIService<S extends string, E extends string> implements API<S, E>
         return this._baseUrl + url
     };
 
-    private _ignoreErrors: Boolean = false;
-    private _freezeResponse: Boolean = false;
+    private _ignoreErrors = false;
+    private _freezeResponse = false;
 
     static getFirstErrorFromFailure = (failure: ResponseFailure) => {
         if (failure.errors.length == 0) {
@@ -109,7 +109,7 @@ export class APIService<S extends string, E extends string> implements API<S, E>
             return
         }
 
-        let failure = e.response && e.response.data;
+        const failure = e.response && e.response.data;
 
         if (!isMINTResponseFailure(failure)) {
             this._commitError(APIService.createError("Could not parse API response. Please contact support."));

@@ -16,7 +16,7 @@ export function useFiltering(props: FilteringProps) {
             // filter to those settings specified in the metadata
             settings = props.metadata.settings
                 .reduce((acc: Dictionary<string | number>, value: string) => {
-                    acc[value] = props.settings!![value];
+                    acc[value] = props.settings![value];
                     return acc
                 }, {} as Dictionary<string | number>)
         }
@@ -30,7 +30,7 @@ export function useFiltering(props: FilteringProps) {
             return true;
         }
 
-        for (let key of Object.keys(settingsVal)) {
+        for (const key of Object.keys(settingsVal)) {
             if (row[key] != undefined &&
                 (settingsVal[key] === "" || (row[key] != settingsVal[key] && row[key] != "n/a"))) {
                 return false;

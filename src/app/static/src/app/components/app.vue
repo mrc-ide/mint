@@ -6,7 +6,7 @@
                 <li class="project-header full-height">
                     <span>{{ currentProject.name }}:</span>
                     <drop-down :text="currentProject.currentRegion.name" parent-class="px-2" toggle-class="text-dark">
-                        <div class="dropdown-item" v-for="region in currentProject.regions">
+                        <div class="dropdown-item" v-for="region in currentProject.regions" :key="region.url">
                             <router-link :to="region.url" class="text-success">{{ region.name }}</router-link>
                         </div>
                         <div v-if="currentProject.regions.length < maxRegions" class="dropdown-item">
@@ -90,7 +90,7 @@
         validNewRegion: boolean
     }
 
-    export default Vue.extend<Data, Methods, Computed, {}>({
+    export default Vue.extend<Data, Methods, Computed, Record<string, never>>({
         store,
         data() {
             return {
@@ -113,9 +113,9 @@
                 return !this.currentProject.regions.find(r => r.slug == newRegionSlug);
             },
             stratAcrossRegionsIsEnabled() {
-              return switches.stratAcrossRegions &&
-                  // Exclude regions that aren't fully initialised
-                  this.currentProject.regions.filter(region => region.interventionSettings.budgetAllZones).length > 1;
+                return switches.stratAcrossRegions &&
+                    // Exclude regions that aren't fully initialised
+                    this.currentProject.regions.filter(region => region.interventionSettings.budgetAllZones).length > 1;
             }
         },
         methods: {
