@@ -57,5 +57,17 @@
         text-align: left;
       }
     }
+
+    /* mrc-3053 - temporarily hide sprayInput control, and itnUsage 80% option */
+    & > div:nth-child(3) {  /* Past Vector Control */
+      select[name='itnUsage'] option:nth-child(5) { /* 80% setting for itnUsage */
+        display: none;
+      }
+
+      div.row:nth-child(2) {  /* sprayInput  */
+        display: none;
+      }
+    }
+
   }
 }
