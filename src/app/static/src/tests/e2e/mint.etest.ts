@@ -78,8 +78,8 @@ test.describe("basic tests", () => {
         await page.click("#stratAcrossRegions");
         await page.click(".btn-primary");
 
-        // Summary table should be displayed, with llin-pbo as at least one of the strategies
-        expect(await page.innerText(".summaryTable")).toContain("Pyrethroid-PBO ITN only");
+        // Summary table should be displayed, with llin as at least one of the strategies
+        expect(await page.innerText(".summaryTable")).toContain("Pyrethroid LLIN only");
 
         // Ensure that heading prompts strategy selection
         expect(await page.innerText("h2 >> nth=1")).toContain("Select a row");
