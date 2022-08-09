@@ -40,7 +40,11 @@ export function useFiltering(props: FilteringProps) {
         return true;
     };
 
-    const filteredData = computed<any[]>(() => props.data.filter((row: any) => filterBySettings(row)));
+    const filteredData = computed<any[]>(() => {
+        const result = props.data.filter((row: any) => filterBySettings(row));
+        // TODO: may be able remove this from master branch when data is fixed, if it reverts to being sorted by default
+        return result.sort(function(a, b){return a.month-b.month});
+    });
 
     return {filteredData}
 }
