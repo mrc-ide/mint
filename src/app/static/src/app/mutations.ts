@@ -120,6 +120,30 @@ export const mutations: MutationTree<RootState> = {
     [RootMutation.AddPrevalenceGraphData](state: RootState, payload: Data) {
         if (state.currentProject) {
             state.currentProject.currentRegion.prevalenceGraphData = payload;
+
+            //Analyse for duplicates
+            const values = {} as Record<string, number[]>;
+            payload.forEach((value) => {
+                const key = `month:${value.month}-netUse:${value.netUse}-irsUse:${value.irsUse}-intervention:${value.intervention}`;
+                if (!values[key]) {
+                    values[key] = [];
+                }
+                values[key].push(value.value);
+            });
+            const dupKeys = Object.keys(values).filter((s) => values[s].length > 1);
+            if (dupKeys.length) {
+                console.log(`${dupKeys.length} out of ${Object.keys(values).length} duplicates found:`)
+                dupKeys.sort();
+                let counter = 0;
+                dupKeys.forEach((key) => {
+                    counter ++;
+                    if (counter < 50) {
+                        console.log(`${key}: ${JSON.stringify(values[key])}`)
+                    }
+                });
+            } else {
+                console.log("No duplicates found")
+            }
         }
     },
 
