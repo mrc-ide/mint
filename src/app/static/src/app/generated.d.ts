@@ -5,10 +5,10 @@
   * and run ./generate-types.sh to regenerate this file.
 */
 export type Data = {
-  [k: string]: unknown;
+  [k: string]: any;
 }[];
 export interface DataOptions {
-  [k: string]: unknown;
+  [k: string]: any;
 }
 export type Docs = string;
 export interface DynamicFormOptions {
@@ -36,7 +36,7 @@ export interface SelectControl {
     id: string;
     label: string;
     children?: {
-      [k: string]: unknown;
+      [k: string]: any;
     }[];
   }[];
   excludeNullOption?: boolean;
@@ -54,14 +54,14 @@ export interface NumberControl {
 export interface ErrorDetail {
   error: string;
   detail: string | null;
-  [k: string]: unknown;
+  [k: string]: any;
 }
 export interface Graph {
   metadata: LongFormatMetadata | WideFormatMetadata;
   series: SeriesDefinition[];
   layout: Layout;
   config?: {
-    [k: string]: unknown;
+    [k: string]: any;
   };
 }
 export interface LongFormatMetadata {
@@ -85,7 +85,7 @@ export interface SeriesDefinition {
   id?: string;
   name?: string;
   type?: string;
-  [k: string]: unknown;
+  [k: string]: any;
 }
 export interface Layout {
   xaxis: Axis;
@@ -97,16 +97,16 @@ export interface Layout {
     x1?: number;
     y0?: number;
     y1?: number;
-    [k: string]: unknown;
+    [k: string]: any;
   }[];
-  [k: string]: unknown;
+  [k: string]: any;
 }
 export interface Axis {
   title?: string;
   autorange?: boolean;
   rangemode?: string;
   range?: number[];
-  [k: string]: unknown;
+  [k: string]: any;
 }
 export interface ResponseFailure {
   status: "failure";
@@ -114,13 +114,13 @@ export interface ResponseFailure {
   errors: {
     error: string;
     detail: string | null;
-    [k: string]: unknown;
+    [k: string]: any;
   }[];
-  [k: string]: unknown;
+  [k: string]: any;
 }
 export interface ResponseSuccess {
   status: "success";
-  data: unknown;
+  data: any;
   errors: null;
 }
 export type Strategise =
@@ -167,19 +167,15 @@ export interface StrategiseOptions {
         priceIRSPerPerson: number;
         netUse: string;
         irsUse: string;
-        [k: string]: unknown;
+        [k: string]: any;
       };
-      [k: string]: unknown;
+      [k: string]: any;
     }
   ];
 }
-export type ErrorValue =
-  | {
-      [k: string]: unknown;
-    }
-  | {
-      [k: string]: unknown;
-    };
+export type ErrorValue = {
+  [k: string]: any;
+};
 export type TableDefinition = ColumnDefinition[];
 
 export interface ColumnDefinition {
@@ -190,7 +186,7 @@ export interface ColumnDefinition {
     plus: ErrorValue;
   };
   valueTransform?: {
-    [k: string]: unknown;
+    [k: string]: any;
   };
   transform?: string;
   format?: string;
