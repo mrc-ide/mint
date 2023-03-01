@@ -13,7 +13,7 @@ export function useLongFormatData(props: Props) {
     const {filteredData} = useFiltering(props);
     const {evaluateFormula} = useTransformation(props);
     const getRows = (definition: SeriesDefinition) => {
-        const x = [] as any[];
+        let x = [] as any[];
         let y = [] as any[];
         const meta = props.metadata as LongFormatMetadata;
 
@@ -24,7 +24,11 @@ export function useLongFormatData(props: Props) {
 
         filteredData.value.map((row: any) => {
             if (row[meta.id_col] == definition.id) {
-                x.push(row[meta.x_col]);
+                if (meta.x_formula) {
+                    x = meta.x_formula.map(evaluateFormula);
+                } else {
+                    x.push(row[meta.x_col]);
+                }
 
                 if (meta.y_col) {
                     y.push(row[meta.y_col]);
