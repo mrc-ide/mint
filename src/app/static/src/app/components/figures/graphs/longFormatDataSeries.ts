@@ -13,7 +13,7 @@ export function useLongFormatData(props: Props) {
     const {filteredData} = useFiltering(props);
     const {evaluateFormula} = useTransformation(props);
     const getRows = (definition: SeriesDefinition) => {
-        let x = [] as any[];
+        const x = [] as any[];
         let y = [] as any[];
         const meta = props.metadata as LongFormatMetadata;
 
@@ -27,11 +27,13 @@ export function useLongFormatData(props: Props) {
 
         filteredData.value.map((row: any) => {
             if (row[meta.id_col] == definition.id) {
+                let xForRow: any[] = [];
                 if (meta.x_formula) {
-                    x = meta.x_formula.map((formula) => evaluateFormula(formula, row));
+                    xForRow = meta.x_formula.map((formula) => evaluateFormula(formula, row));
                 } else if (meta.x_col) {
-                    x.push(row[meta.x_col]);
+                    xForRow.push(row[meta.x_col]);
                 }
+                x.push(...xForRow);
 
                 if (meta.y_col) {
                     y.push(row[meta.y_col]);
@@ -39,12 +41,12 @@ export function useLongFormatData(props: Props) {
 
                 // If using column values for error
                 if (error_col && error_col_minus) {
-                    error_array.push(getErrorInterval(row[error_col_minus], x[0], row[error_col]));
+                    error_array.push(getErrorInterval(row[error_col_minus], xForRow[0], row[error_col]));
                 }
 
                 // If calculating error
                 if (error_cols && error_cols_minus) {
-                    x.forEach((central: number, i: number) => {
+                    xForRow.forEach((central: number, i: number) => {
                         const interval = getErrorInterval(evaluateFormula(error_cols_minus[i], row), central, evaluateFormula(error_cols[i], row))
                         error_array.push(interval);
                     });
