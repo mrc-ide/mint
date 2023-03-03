@@ -28,7 +28,7 @@ export function useLongFormatData(props: Props) {
         filteredData.value.map((row: any) => {
             if (row[meta.id_col] == definition.id) {
                 let xForRow: any[] = [];
-                if (meta.x_formula) {
+                if (meta.x_formula) {  // NB x_formula is at metadata leve
                     xForRow = meta.x_formula.map((formula) => evaluateFormula(formula, row));
                 } else if (meta.x_col) {
                     xForRow.push(row[meta.x_col]);
@@ -54,7 +54,7 @@ export function useLongFormatData(props: Props) {
             }
         });
 
-        if (definition.y_formula) {
+        if (definition.y_formula) { // NB y_formula is at series definition level, and cannot include row data
             y = definition.y_formula.map(evaluateFormula);
         }
 
