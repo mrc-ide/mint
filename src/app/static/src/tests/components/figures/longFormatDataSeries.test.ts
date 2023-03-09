@@ -185,6 +185,24 @@ describe("long format data series", () => {
         });
     });
 
+    it("calculates x axis values from formula", () => {
+        const localProps = {
+            ...props,
+            metadata: {
+                ...props.metadata,
+                x_formula: ["{month} * 2"]
+            }
+        }
+        const dataSeries = useLongFormatData(localProps).dataSeries.value;
+        expect(dataSeries.length).toBe(2);
+
+        expect(dataSeries[0]).toEqual({
+            id: "none",
+            x: [2, 4],
+            y: [0.1, 0.3]
+        });
+    });
+
     it("includes error_x values when defined", () => {
         const localProps = {
             ...props,
@@ -227,6 +245,43 @@ describe("long format data series", () => {
                 type: "data",
                 col: "error_plus",
                 colminus: "error_minus",
+                array: [0.25, 1],
+                arrayminus: [0.5, 0]
+            }
+        });
+    });
+
+    it("includes error_x formulas ", () => {
+        const localProps = {
+            ...props,
+            series: [
+                {
+                    id: "ITN",
+                    error_x: {
+                        type: "data",
+                        cols: ["{error_plus} * 10"],
+                        colsminus: ["{error_minus} * 100"]
+                    }
+                }
+            ],
+            data: [
+                {"month": 1, "intervention": "ITN",  "value": 0.5, "error_plus": 0.125, "error_minus": 0.005},
+                {"month": 2, "intervention": "ITN", "value": 0.7, "error_plus": 0.3, "error_minus": 0.02},
+            ],
+            settings: null
+        };
+        const dataSeries = useLongFormatData(localProps).dataSeries.value;
+
+        expect(dataSeries.length).toBe(1);
+
+        expect(dataSeries[0]).toStrictEqual({
+            id: "ITN", // intervention
+            x: [1, 2], // month
+            y: [0.5, 0.7], // value
+            error_x: {
+                type: "data",
+                cols: ["{error_plus} * 10"],
+                colsminus: ["{error_minus} * 100"],
                 array: [0.25, 1],
                 arrayminus: [0.5, 0]
             }
