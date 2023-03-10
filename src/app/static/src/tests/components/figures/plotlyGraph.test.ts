@@ -57,6 +57,20 @@ describe("plotly graph", () => {
             x: [1, 2, 3],
             y: [0.2315, 0.7949, 0.5171]
         });
+
+        const dataSummary = wrapper.find(".mint-plot-data-summary");
+        expect(dataSummary.attributes("hidden")).toBe("hidden");
+        const dataSummarySeries = dataSummary.findAll(".mint-plot-data-summary-series");
+        expect(dataSummarySeries.length).toBe(1);
+        const summary = dataSummarySeries.at(0);
+        expect(summary.attributes("name")).toBe("No intervention");
+        expect(summary.attributes("id")).toBe("none");
+        expect(summary.attributes("type")).toBe("lines");
+        expect(summary.attributes("count")).toBe("3");
+        expect(summary.attributes("x-first")).toBe("1");
+        expect(summary.attributes("x-last")).toBe("3");
+        expect(summary.attributes("y-min")).toBe("0.2315");
+        expect(summary.attributes("y-max")).toBe("0.7949");
     });
 
     it("renders wide format data graph", async () => {
@@ -117,6 +131,29 @@ describe("plotly graph", () => {
             x: ["PBO"],
             y: [500]
         });
+
+        const dataSummary = wrapper.find(".mint-plot-data-summary");
+        expect(dataSummary.attributes("hidden")).toBe("hidden");
+        const dataSummarySeries = dataSummary.findAll(".mint-plot-data-summary-series");
+        expect(dataSummarySeries.length).toBe(2);
+        const summary1 = dataSummarySeries.at(0);
+        expect(summary1.attributes("name")).toBe("Pyrethoid ITN");
+        expect(summary1.attributes("id")).toBe("ITN");
+        expect(summary1.attributes("type")).toBe("bar");
+        expect(summary1.attributes("count")).toBe("1");
+        expect(summary1.attributes("x-first")).toBe("ITN");
+        expect(summary1.attributes("x-first")).toBe("ITN");
+        expect(summary1.attributes("y-min")).toBe("1000");
+        expect(summary1.attributes("y-max")).toBe("1000");
+        const summary2 = dataSummarySeries.at(1);
+        expect(summary2.attributes("name")).toBe("Switch to Pyrethoid-PBO ITN");
+        expect(summary2.attributes("id")).toBe("PBO");
+        expect(summary2.attributes("type")).toBe("bar");
+        expect(summary2.attributes("count")).toBe("1");
+        expect(summary2.attributes("x-first")).toBe("PBO");
+        expect(summary2.attributes("x-first")).toBe("PBO");
+        expect(summary2.attributes("y-min")).toBe("500");
+        expect(summary2.attributes("y-max")).toBe("500");
     });
 
     it("uses transformed layout", () => {
