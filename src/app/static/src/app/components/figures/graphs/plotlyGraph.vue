@@ -1,6 +1,18 @@
 <template>
     <div :class="{hoverbelow: hoverBelow}">
         <plotly :data="dataSeries" :layout="transformedLayout" :display-mode-bar="true"></plotly>
+        <div hidden class="mint-plot-data-summary" v-if="dataSeries">
+          <div class="mint-plot-data-summary-series" v-for="series in dataSeries" :key="series.name"
+               :name="series.name"
+               :id="series.id"
+               :type="series.type"
+               :count="series.x.length"
+               :x-first="series.x.length ? series.x[0] : null"
+               :x-last="series.x.length ? series.x[series.x.length-1] : null"
+               :y-min="Math.min(...series.y)"
+               :y-max="Math.max(...series.y)"
+          ></div>
+        </div>
     </div>
 </template>
 <script lang="ts">
