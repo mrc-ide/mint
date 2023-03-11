@@ -14,12 +14,17 @@ export function useTransformation(props: TransformationProps) {
                 let val;
                 if (props.settings && id in props.settings) {
                     val = props.settings[id].toString();
+
+                    // Default to 0 if text is cleared from numeric
+                    if (val === "") {
+                        val = "0";
+                    }
                 }
                 if (!val && row) {
                     val = row[id]
                 }
-                // Default to 0 if text is cleared from numeric
-                return val || "0";
+
+                return val;
             });
         try {
             return evaluate(interpolatedFormula);
