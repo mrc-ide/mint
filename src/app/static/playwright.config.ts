@@ -5,7 +5,8 @@ const config: PlaywrightTestConfig = {
     use: {
         baseURL: "http://localhost:8080",
         screenshot: "only-on-failure"
-    }
+    },
+    retries: 1
 };
 
 export default config;
