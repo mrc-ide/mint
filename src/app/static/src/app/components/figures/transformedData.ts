@@ -11,16 +11,27 @@ export function useTransformation(props: TransformationProps) {
         const interpolatedFormula = formula.replace(/\{([^}]+)\}/g,
             (match) => {
                 const id = match.replace(/\{|\}/g, "");
-                let val = "";
-                if (props.settings) {
-                    val = props.settings[id] as string;
+                let val;
+                if (props.settings && id in props.settings) {
+                    val = props.settings[id].toString();
+
+                    // Default to 0 if text is cleared from numeric
+                    if (val === "") {
+                        val = "0";
+                    }
                 }
                 if (!val && row) {
                     val = row[id]
                 }
-                return val
+
+                return val;
             });
-        return evaluate(interpolatedFormula);
+        try {
+            return evaluate(interpolatedFormula);
+        } catch (e) {
+            console.log(`Unable to evaluate formula: "${formula}" which resolved to: ${interpolatedFormula}`);
+            throw e;
+        }
     };
     return {evaluateFormula}
 }
