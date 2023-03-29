@@ -1,8 +1,8 @@
 <template>
     <b-table striped :items="items" :fields="fields">
         <template #cell()="data">
-            <abbr v-if="data.value.tooltip" :title="data.value.tooltip">{{ data.value.text }}</abbr>
-            <template v-else>{{ data.value.text }}</template>
+            <abbr v-if="data.value.tooltip" :title="data.value.tooltip">{{ data.value.value }}</abbr>
+            <template v-else>{{ data.value.value }}</template>
         </template>
     </b-table>
 </template>
@@ -14,10 +14,15 @@
     import {evaluate} from "mathjs/number";
     import {ColumnDefinition} from "../../generated";
     import {BTable} from "bootstrap-vue";
-    import {getErrorInterval} from "./errorInterval";
+    import {getErrorInterval, ErrorInterval} from "./errorInterval";
 
     interface Props extends FilteringProps {
         config: ColumnDefinition[]
+    }
+
+    interface UnformattedCell {
+        value: string | number,
+        error?: ErrorInterval
     }
 
     export default defineComponent({
@@ -47,7 +52,7 @@
             }
             return value;
         };
-        const formatCell = (col: ColumnDefinition, value: number): string => {
+        const formatValue = (col: ColumnDefinition, value: number): string => {
             let formattedValue = value.toString();
             if (col.precision) {
                 formattedValue = value.toPrecision(col.precision);
@@ -62,19 +67,25 @@
                 key: `${col.valueCol}${i}`,
                 label: col.displayName,
                 sortable: true,
-                thClass: "align-middle"
+                thClass: "align-middle",
+                formatter: (item: UnformattedCell) => {
+                    const formatted = typeof item.value === "number" ? formatValue(col, item.value) : item.value;
+                    const result: Record<string, string>  = {value: formatted};
+                    if (item.error) {
+                        result.tooltip = `${formatted} +${formatValue(col, item.error.plus)} / -${formatValue(col, item.error.minus)}`
+                    }
+                    return result;
+                }
             }
         ));
         const items = computed(() => filteredData.value.map((row) =>
             props.config.reduce((items, col, i) => {
                 const value = evaluateCell(col, row);
-                const item: Record<string, string> = {};
-                item.text = typeof value === "number" ? formatCell(col, value) : value;
+                const item: UnformattedCell = {value};
                 if (typeof value === "number" && col.error) {
                     const valuePlus = <number>evaluateCell({...col, ...col.error.plus}, row);
                     const valueMinus = <number>evaluateCell({...col, ...col.error.minus}, row);
-                    const errorInterval = getErrorInterval(valueMinus, value, valuePlus);
-                    item.tooltip = `${item.text} +${formatCell(col, errorInterval.plus)} / -${formatCell(col, errorInterval.minus)}`
+                    item.error = getErrorInterval(valueMinus, value, valuePlus);
                 }
                 return {...items, [`${col.valueCol}${i}`]: item};
             }, {})

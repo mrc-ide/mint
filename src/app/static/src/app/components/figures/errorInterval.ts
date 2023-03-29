@@ -1,4 +1,4 @@
-interface ErrorInterval {
+export interface ErrorInterval {
     plus: number;
     minus: number;
 }
