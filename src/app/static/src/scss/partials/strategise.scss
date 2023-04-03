@@ -12,25 +12,13 @@
       display: block;
     }
 
-    .table-success {
-      background-color: #bbf0fb;
-    }
-
-    .table-secondary {
-      background-color: #e0fae0;
-    }
-
-    .table-primary {
-      background-color: #dbb8db;
-    }
-
-    .table-warning {
-      background-color: #f5c6cb;
-    }
-
-    .table-danger {
-      background-color: #ffe6b8;
-    }
+    .table-irs { background-color: #c080c0 }
+    .table-llin-pbo { background-color: #bfffea }
+    .table-pyrrole-pbo { background-color: #80b280 }
+    .table-irs-llin-pbo { background-color: #ffd280 }
+    .table-llin { background-color: #8080ff }
+    .table-irs-llin { background-color: #c58080 }
+    .table-irs-pyrrole-pbo { background-color: #99e699 }
 
     .summaryTable {
       tr td:first-child {
