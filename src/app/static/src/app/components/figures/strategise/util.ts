@@ -23,7 +23,7 @@ export const formatPercentage = (percentage: number) => new Intl.NumberFormat("e
 }).format(percentage);
 
 const interventionNames: Record<string, string> = {
-    "irs": "IRS* only",
+    "irs": "IRS only",
     "llin-pbo": "Pyrethroid-PBO ITN only",
     "irs-llin-pbo": "Pyrethroid-PBO ITN with IRS",
     "llin": "Pyrethroid-only ITN only",
@@ -33,18 +33,6 @@ const interventionNames: Record<string, string> = {
     "none": "No intervention"
 };
 export const getInterventionName = (intervention: string) => interventionNames[intervention];
-
-// BTable uses Bootstrap colour variants for styling: https://bootstrap-vue.org/docs/components/table#items-record-data
-/*const interventionColourNames: Record<string, string> = {
-    "irs": "primaryx",
-    "llin-pbo": "secondaryx",
-    "irs-llin-pbo": "dangerx",
-    "llin": "successx",
-    "irs-llin": "warningx",
-    "none": ""
-};
-export const getInterventionColourName = (intervention: string) => interventionColourNames[intervention];
-*/
 
 const interventionColourValues: Record<string, string> = {
     "irs": "c080c0",

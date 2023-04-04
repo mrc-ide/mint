@@ -56,7 +56,7 @@ describe("strategy table", () => {
 
         const firstRow = wrapper.findAll("tbody tr:first-child td");
         expect(firstRow.at(0).text()).toBe("Avalon");
-        expect(firstRow.at(1).text()).toBe("IRS* only");
+        expect(firstRow.at(1).text()).toBe("IRS only");
         expect(firstRow.at(2).text()).toBe("1000");
         expect(firstRow.at(3).text()).toBe("300");
         expect(firstRow.at(3).find("abbr").attributes("title")).toBe("300 +100 / -5");
@@ -69,7 +69,7 @@ describe("strategy table", () => {
         expect(firstRow.at(8).text()).toBe("$0.5");
         expect(firstRow.at(9).text()).toBe("0.3");
         expect(firstRow.at(9).find("abbr").attributes("title")).toBe("0.3 +0.1 / -0");
-        expect(firstRow.at(1).classes()).toContain("table-primary");
+        expect(firstRow.at(1).classes()).toContain("table-irs");
 
         const secondRow = wrapper.findAll("tbody tr:nth-child(2) td");
         expect(secondRow.at(0).text()).toBe("Atlantis");
@@ -82,7 +82,7 @@ describe("strategy table", () => {
         expect(secondRow.at(7).text()).toBe("NA");
         expect(secondRow.at(8).text()).toBe("$0");
         expect(secondRow.at(9).text()).toBe("0");
-        expect(secondRow.at(1).classes()).toHaveLength(0);
+        expect(secondRow.at(1).classes()).toContain("table-none");
 
         const lastRow = wrapper.findAll("tbody tr:last-child td");
         expect(lastRow.at(0).text()).toBe("Total");
