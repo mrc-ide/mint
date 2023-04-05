@@ -34,6 +34,8 @@ const interventionNames: Record<string, string> = {
 };
 export const getInterventionName = (intervention: string) => interventionNames[intervention];
 
+// These colour values used in the barcharts correspond to those defined for table cell backgrounds in strategise.scss -
+// colours should be updated in both places
 const interventionColourValues: Record<string, string> = {
     "irs": "c080c0",
     "llin-pbo": "bfffea",
