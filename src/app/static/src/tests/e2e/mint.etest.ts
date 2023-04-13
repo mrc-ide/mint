@@ -55,7 +55,7 @@ test.describe("basic tests", () => {
     });
 
     test("strategise", async ({page}) => {
-        await page.goto("/?stratAcrossRegions=true");
+        await page.goto("/");
 
         // Create project
         await page.fill("#name", "Project 1");
