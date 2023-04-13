@@ -65,7 +65,8 @@ export interface Graph {
   };
 }
 export interface LongFormatMetadata {
-  x_col: string;
+  x_col?: string;
+  x_formula?: string[];
   y_col?: string;
   id_col: string;
   format: "long";
@@ -122,18 +123,67 @@ export interface ResponseSuccess {
   data: any;
   errors: null;
 }
+export type Strategise =
+  | []
+  | [
+      {
+        costThreshold: number;
+        interventions:
+          | []
+          | [
+              {
+                zone: string;
+                intervention: string;
+                cost: number;
+                casesAverted: number;
+                casesAvertedErrorMinus: number;
+                casesAvertedErrorPlus: number;
+              }
+            ];
+      }
+    ];
+export interface StrategiseOptions {
+  budget: number;
+  zones: [
+    {
+      name?: string;
+      baselineSettings?: {
+        population: number;
+        seasonalityOfTransmission: string;
+        currentPrevalence: string;
+        bitingIndoors: string;
+        bitingPeople: string;
+        levelOfResistance: string;
+        metabolic: string;
+        itnUsage: string;
+        sprayInput: string;
+      };
+      interventionSettings?: {
+        procurePeoplePerNet: number;
+        procureBuffer: number;
+        priceDelivery: number;
+        priceNetPBO: number;
+        priceNetStandard: number;
+        priceIRSPerPerson: number;
+        netUse: string;
+        irsUse: string;
+        [k: string]: any;
+      };
+      [k: string]: any;
+    }
+  ];
+}
+export type ErrorValue = {
+  [k: string]: any;
+};
 export type TableDefinition = ColumnDefinition[];
 
 export interface ColumnDefinition {
   valueCol: string;
   displayName: string;
   error?: {
-    minus: {
-      [k: string]: any;
-    };
-    plus: {
-      [k: string]: any;
-    };
+    minus: ErrorValue;
+    plus: ErrorValue;
   };
   valueTransform?: {
     [k: string]: any;

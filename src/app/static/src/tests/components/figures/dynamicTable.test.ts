@@ -273,4 +273,43 @@ describe("dynamic table", () => {
         expect(rows.at(2).findAll("td").at(2).find("abbr").attributes().title).toBe("2.0k +0.0 / -750.0");
 
     });
+
+    it("columns are sortable by value", async () => {
+        const data = [
+            {sortable_value: 3817283},
+            {sortable_value: 9219}
+        ];
+        const config: ColumnDefinition[] = [
+            {
+                displayName: "Sortable",
+                valueCol: "sortable_value",
+                format: "$0[.][00]a",
+                precision: 2
+            }
+        ];
+
+        const wrapper = mount(dynamicTable, {
+            propsData: {data, config, settings}
+        });
+        const rows = wrapper.findAll("tbody tr");
+
+        // initial ordering
+        expect(rows.at(0).find("td").text()).toBe("$3.8m");
+        expect(rows.at(1).find("td").text()).toBe("$9.2k");
+
+        // sort ascending
+        const sortSpan = wrapper.find("th span.sr-only");
+        await sortSpan.trigger("click");
+
+        let sortedRows = wrapper.findAll("tbody tr");
+        expect(sortedRows.at(0).find("td").text()).toBe("$9.2k");
+        expect(sortedRows.at(1).find("td").text()).toBe("$3.8m");
+
+        // sort descending
+        await sortSpan.trigger("click");
+
+        sortedRows = wrapper.findAll("tbody tr");
+        expect(sortedRows.at(0).find("td").text()).toBe("$3.8m");
+        expect(sortedRows.at(1).find("td").text()).toBe("$9.2k");
+    });
 });

@@ -38,7 +38,6 @@
         formatCases,
         formatCost,
         formatPercentage,
-        getInterventionColourName,
         getInterventionName,
         getRegionPopulations
     } from "./util";
@@ -106,7 +105,7 @@
                             maximum: intervention.casesAvertedErrorPlus / population
                         } as any,
                         _cellVariants: {
-                            intervention: getInterventionColourName(intervention.intervention)
+                            intervention: intervention.intervention
                         }
                     };
                 }).concat({

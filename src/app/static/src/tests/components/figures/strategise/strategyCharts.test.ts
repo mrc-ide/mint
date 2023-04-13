@@ -104,8 +104,8 @@ describe("strategy charts", () => {
         expect(chart.props("data")).toStrictEqual(    [
                 {
                     error_y: { array: ["10"], arrayminus: ["20"] },
-                    marker: { color: 'dbb8db' },
-                    name: 'IRS* only',
+                    marker: { color: 'c080c0' },
+                    name: 'IRS only',
                     showlegend: true,
                     type: 'bar',
                     x: [ 'Amber' ],
@@ -115,8 +115,8 @@ describe("strategy charts", () => {
                 },
                 {
                     error_y: { array: ["1.0"], arrayminus: ["2.0"] },
-                    marker: { color: 'dbb8db' },
-                    name: 'IRS* only',
+                    marker: { color: 'c080c0' },
+                    name: 'IRS only',
                     showlegend: false,
                     type: 'bar',
                     x: [ 'Amber' ],
@@ -126,7 +126,7 @@ describe("strategy charts", () => {
                 },
                 {
                     error_y: { array: ["10"], arrayminus: ["20"] },
-                    marker: { color: 'e0fae0' },
+                    marker: { color: 'bfffea' },
                     name: 'Pyrethroid-PBO ITN only',
                     showlegend: true,
                     type: 'bar',
@@ -137,7 +137,7 @@ describe("strategy charts", () => {
                 },
                 {
                     error_y: { array: ["0.5"], arrayminus: ["1.0"] },
-                    marker: { color: 'e0fae0' },
+                    marker: { color: 'bfffea' },
                     name: 'Pyrethroid-PBO ITN only',
                     showlegend: false,
                     type: 'bar',
@@ -148,8 +148,8 @@ describe("strategy charts", () => {
                 },
                 {
                     error_y: { array: ["10"], arrayminus: ["20"] },
-                    marker: { color: 'ffe6b8' },
-                    name: 'Pyrethroid-PBO ITN with IRS*',
+                    marker: { color: 'ffd280' },
+                    name: 'Pyrethroid-PBO ITN with IRS',
                     showlegend: true,
                     type: 'bar',
                     x: [ 'Aramanth' ],
@@ -159,8 +159,8 @@ describe("strategy charts", () => {
                 },
                 {
                     error_y: { array: ["0.3"], arrayminus: ["0.7"] },
-                    marker: { color: 'ffe6b8' },
-                    name: 'Pyrethroid-PBO ITN with IRS*',
+                    marker: { color: 'ffd280' },
+                    name: 'Pyrethroid-PBO ITN with IRS',
                     showlegend: false,
                     type: 'bar',
                     x: [ 'Aramanth' ],
@@ -170,8 +170,8 @@ describe("strategy charts", () => {
                 },
                 {
                     error_y: { array: ["10"], arrayminus: ["20"] },
-                    marker: { color: 'bbf0fb' },
-                    name: 'Pyrethroid LLIN only',
+                    marker: { color: '8080ff' },
+                    name: 'Pyrethroid-only ITN only',
                     showlegend: true,
                     type: 'bar',
                     x: [ 'Asgard' ],
@@ -181,8 +181,8 @@ describe("strategy charts", () => {
                 },
                 {
                     error_y: { array: ["0.3"], arrayminus: ["0.5"] },
-                    marker: { color: 'bbf0fb' },
-                    name: 'Pyrethroid LLIN only',
+                    marker: { color: '8080ff' },
+                    name: 'Pyrethroid-only ITN only',
                     showlegend: false,
                     type: 'bar',
                     x: [ 'Asgard' ],
@@ -192,8 +192,8 @@ describe("strategy charts", () => {
                 },
                 {
                     error_y: { array: ["10"], arrayminus: ["20"] },
-                    marker: { color: 'f5c6cb' },
-                    name: 'Pyrethroid LLIN with IRS*',
+                    marker: { color: 'c58080' },
+                    name: 'Pyrethroid-only ITN with IRS',
                     showlegend: true,
                     type: 'bar',
                     x: [ 'Atlantis' ],
@@ -203,8 +203,8 @@ describe("strategy charts", () => {
                 },
                 {
                     error_y: { array: ["0.2"], arrayminus: ["0.4"] },
-                    marker: { color: 'f5c6cb' },
-                    name: 'Pyrethroid LLIN with IRS*',
+                    marker: { color: 'c58080' },
+                    name: 'Pyrethroid-only ITN with IRS',
                     showlegend: false,
                     type: 'bar',
                     x: [ 'Atlantis' ],
@@ -236,8 +236,8 @@ describe("strategy charts", () => {
                 },
                 {
                     error_y: { array: ["10"], arrayminus: ["20"] },
-                    marker: { color: 'bbf0fb' },
-                    name: 'Pyrethroid LLIN only',
+                    marker: { color: '8080ff' },
+                    name: 'Pyrethroid-only ITN only',
                     showlegend: false,
                     type: 'bar',
                     x: [ 'Asgard' ],
@@ -247,8 +247,8 @@ describe("strategy charts", () => {
                 },
                 {
                     error_y: { array: ["0.3"], arrayminus: ["0.5"] },
-                    marker: { color: 'bbf0fb' },
-                    name: 'Pyrethroid LLIN only',
+                    marker: { color: '8080ff' },
+                    name: 'Pyrethroid-only ITN only',
                     showlegend: false,
                     type: 'bar',
                     x: [ 'Asgard' ],
