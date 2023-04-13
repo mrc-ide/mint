@@ -11,8 +11,31 @@ import Vue from "vue";
 import strategyCharts from "../../app/components/figures/strategise/strategyCharts.vue";
 import strategyTable from "../../app/components/figures/strategise/strategyTable.vue";
 import {RootMutation} from "../../app/mutations";
+import mock = jest.mock;
 
 describe("strategise page", () => {
+
+    const strategy = {
+        costThreshold: 1,
+        interventions: [
+            {
+                zone: "Region A",
+                intervention: "irs-llin-pbo",
+                casesAverted: 60,
+                casesAvertedErrorMinus: 55,
+                casesAvertedErrorPlus: 70,
+                cost: 600
+            },
+            {
+                zone: "Region B",
+                intervention: "irs-llin",
+                casesAverted: 40,
+                casesAvertedErrorMinus: 30,
+                casesAvertedErrorPlus: 45,
+                cost: 400
+            }
+        ]
+    };
 
     const createStore = (
         mockSetBudgetMutation = jest.fn(),
@@ -135,27 +158,6 @@ describe("strategise page", () => {
     });
 
     it("handles strategy selection", async () => {
-        const strategy = {
-            costThreshold: 1,
-            interventions: [
-                {
-                    zone: "Region A",
-                    intervention: "irs-llin-pbo",
-                    casesAverted: 60,
-                    casesAvertedErrorMinus: 55,
-                    casesAvertedErrorPlus: 70,
-                    cost: 600
-                },
-                {
-                    zone: "Region B",
-                    intervention: "irs-llin",
-                    casesAverted: 40,
-                    casesAvertedErrorMinus: 30,
-                    casesAvertedErrorPlus: 45,
-                    cost: 400
-                }
-            ]
-        };
         const store = createStore();
         store.state.currentProject!.strategies = [strategy];
         const wrapper = shallowMount(StrategisePage, {store});
@@ -181,4 +183,19 @@ describe("strategise page", () => {
         expect(wrapper.find(strategyTable).isVisible()).toBe(true);
     });
 
+    it("calls strategise on load if strategy set exists", () => {
+        const mockStrategise = jest.fn();
+        const store = createStore(jest.fn(), mockStrategise);
+        store.state.currentProject!.strategies = [strategy];
+        shallowMount(StrategisePage, {store});
+        expect(mockStrategise).toHaveBeenCalledTimes(1);
+
+    });
+
+    it("does not call strategise on load if strategy set does not exist", () => {
+        const mockStrategise = jest.fn();
+        const store = createStore(jest.fn(), mockStrategise);
+        shallowMount(StrategisePage, {store});
+        expect(mockStrategise).not.toHaveBeenCalled();
+    });
 });

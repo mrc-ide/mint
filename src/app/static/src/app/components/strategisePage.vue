@@ -174,6 +174,13 @@
             onStrategySelected(strategy) {
                 this.selectedStrategy = strategy;
             }
+        },
+        created() {
+            // if we already had a strategy set from a previous calculation, recalculate as the previous set may be
+            // out of date because of changes made to the region options
+            if (this.strategies.length) {
+                this.submit();
+            }
         }
     });
 </script>
