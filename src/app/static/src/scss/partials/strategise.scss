@@ -12,24 +12,34 @@
       display: block;
     }
 
-    .table-success {
-      background-color: #bbf0fb;
+     // The following cell background colours correspond to the barchart colours defined in interventionColourValues in
+     // components/figures/strategise/util.ts - colours should be updated in both places
+    .table-irs {
+      background-color: #c080c0
     }
 
-    .table-secondary {
-      background-color: #e0fae0;
+    .table-llin-pbo {
+      background-color: #bfffea
     }
 
-    .table-primary {
-      background-color: #dbb8db;
+    .table-pyrrole-pbo {
+      background-color: #80b280
     }
 
-    .table-warning {
-      background-color: #f5c6cb;
+    .table-irs-llin-pbo {
+      background-color: #ffd280
     }
 
-    .table-danger {
-      background-color: #ffe6b8;
+    .table-llin {
+      background-color: #8080ff
+    }
+
+    .table-irs-llin {
+      background-color: #c58080
+    }
+
+    .table-irs-pyrrole-pbo {
+      background-color: #99e699
     }
 
     .summaryTable {

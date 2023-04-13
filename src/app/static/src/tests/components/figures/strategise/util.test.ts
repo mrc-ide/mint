@@ -2,7 +2,7 @@ import {
     formatCases,
     formatCost,
     formatPercentage,
-    getInterventionColourName,
+    getInterventionColourValue,
     getInterventionName,
     getRegionPopulations
 } from "../../../../app/components/figures/strategise/util";
@@ -30,13 +30,23 @@ describe("strategise utilities", () => {
     });
 
     it("gets intervention name", () => {
-        expect(getInterventionName("irs-llin")).toBe("Pyrethroid LLIN with IRS*");
-        expect(getInterventionName("none")).toBe("No intervention");
+        expect(getInterventionName("irs")).toBe("IRS only");
+        expect(getInterventionName("llin-pbo")).toBe("Pyrethroid-PBO ITN only");
+        expect(getInterventionName("pyrrole-pbo")).toBe("Pyrethroid-pyrrole ITN only");
+        expect(getInterventionName("irs-llin-pbo")).toBe("Pyrethroid-PBO ITN with IRS");
+        expect(getInterventionName("llin")).toBe("Pyrethroid-only ITN only");
+        expect(getInterventionName("irs-llin")).toBe("Pyrethroid-only ITN with IRS");
+        expect(getInterventionName("irs-pyrrole-pbo")).toBe("Pyrethroid-pyrrole ITN with IRS");
     });
 
     it("gets intervention colour", () => {
-        expect(getInterventionColourName("irs-llin")).toBe("warning");
-        expect(getInterventionColourName("none")).toBe("");
+        expect(getInterventionColourValue("irs")).toBe("c080c0");
+        expect(getInterventionColourValue("llin-pbo")).toBe("bfffea");
+        expect(getInterventionColourValue("pyrrole-pbo")).toBe("80b280");
+        expect(getInterventionColourValue("irs-llin-pbo")).toBe("ffd280");
+        expect(getInterventionColourValue("llin")).toBe("8080ff");
+        expect(getInterventionColourValue("irs-llin")).toBe("c58080");
+        expect(getInterventionColourValue("irs-pyrrole-pbo")).toBe("99e699");
     });
 
     it("gets populations", () => {

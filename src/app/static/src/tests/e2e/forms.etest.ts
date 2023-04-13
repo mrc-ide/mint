@@ -31,6 +31,9 @@ test.beforeEach(async ({page}) => {
 });
 
 test("can set procurement buffer to 0", async ({page}) => {
+    // Click on Interventions header to order by name
+    await page.locator(":nth-match(th div, 1)").click();
+
     // values in cost table should update accordingly
     const llinRow = await page.locator(":nth-match(table tr, 4)");
     const costCell = await llinRow.locator(":nth-match(td, 5)");
