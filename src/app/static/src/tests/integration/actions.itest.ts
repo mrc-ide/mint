@@ -114,7 +114,7 @@ describe("actions", () => {
         expect(commit.mock.calls[0][0]).toBe(RootMutation.AddInterventionOptions);
         const options = commit.mock.calls[0][1] as DynamicFormMeta;
         expect(options.controlSections.length).toBe(3);
-        expect(options.controlSections[0].label).toBe("Intervention coverage potential");
+        expect(options.controlSections[0].label).toBe("Future intervention");
     });
 
     it("can get table data", async () => {

@@ -128,6 +128,7 @@ class MintrAPIClientTests {
                                         "priceDelivery" to 2.75,
                                         "priceNetPBO" to 2.5,
                                         "priceNetStandard" to 1.5,
+                                        "priceNetPyrrole" to 3,
                                         "priceIRSPerPerson" to 5.73,
                                         "netUse" to "0.8",
                                         "irsUse" to "0.6"
