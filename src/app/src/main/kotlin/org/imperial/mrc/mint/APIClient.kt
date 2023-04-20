@@ -23,6 +23,7 @@ interface APIClient {
     fun getImpactDocs(): ResponseEntity<String>
     fun getCostDocs(): ResponseEntity<String>
     fun getStrategies(options: Map<String, Any>): ResponseEntity<String>
+    fun getVersion(): ResponseEntity<String>
 }
 
 @Component
@@ -88,6 +89,11 @@ class MintrAPIClient(
     override fun getStrategies(options: Map<String, Any>): ResponseEntity<String> {
         return postJson("strategise", objectMapper.writeValueAsString(options))
     }
+
+    override fun getVersion(): ResponseEntity<String> {
+        return get("version")
+    }
+
 
     fun get(url: String): ResponseEntity<String> {
         return "$baseUrl/$url".httpGet()
