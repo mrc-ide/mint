@@ -4,13 +4,14 @@ import CompositionApi from "@vue/composition-api"
 
 import {actions} from "./actions";
 import {mutations} from "./mutations";
-import {Project} from "./models/project";
+import {Project, Versions} from "./models/project";
 import {APIError} from "./apiService";
 import {Graph, TableDefinition} from "./generated";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {localStorageManager} from "./localStorageManager";
 
 export interface RootState {
+    versions: Versions | null,
     projects: Project[]
     currentProject: Project | null
     errors: APIError[]
@@ -37,6 +38,7 @@ const existingState = localStorageManager.getState();
 
 const storeOptions: StoreOptions<RootState> = {
     state: {
+        versions: null,
         projects: [],
         currentProject: null,
         errors: [],

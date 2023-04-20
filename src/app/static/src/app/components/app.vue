@@ -70,6 +70,7 @@
     import {MAX_REGIONS} from "../index";
 
     interface Methods {
+        fetchVersion: () => void
         fetchDocs: () => void
         fetchBaselineOptions: () => void
         fetchInterventionOptions: () => void
@@ -135,11 +136,13 @@
             cancel() {
                 this.newRegionName = "";
             },
+            fetchVersion: mapActionByName(RootAction.FetchVersion),
             fetchDocs: mapActionByName(RootAction.FetchDocs),
             fetchBaselineOptions: mapActionByName(RootAction.FetchBaselineOptions),
             fetchInterventionOptions: mapActionByName(RootAction.FetchInterventionOptions)
         },
         beforeMount: function () {
+            this.fetchVersion();
             this.fetchDocs();
             this.fetchBaselineOptions();
             this.fetchInterventionOptions();
