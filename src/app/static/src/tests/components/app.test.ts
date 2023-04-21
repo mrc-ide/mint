@@ -10,6 +10,7 @@ import {RootMutation} from "../../app/mutations";
 import VueRouter from "vue-router";
 import {switches} from "../../app/featureSwitches";
 import {MAX_REGIONS} from "../../app";
+import VersionDropDown from "../../app/components/versionDropDown.vue";
 
 describe("app", () => {
     const oldStratAcrossRegions = switches.stratAcrossRegions;
@@ -50,6 +51,11 @@ describe("app", () => {
     it("does not show project menu if currentProject is null", () => {
         const wrapper = getWrapper();
         expect(wrapper.findAll(".navbar-nav.mr-auto").length).toBe(0);
+    });
+
+    it("renders versions drop-down", () => {
+        const wrapper = getWrapper();
+        expect(wrapper.getComponent(VersionDropDown).exists()).toBe(true);
     });
 
     it("show project menu if currentProject is not null", () => {
