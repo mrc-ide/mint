@@ -5,6 +5,7 @@ import {RootMutation} from "../../app/mutations";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {router} from "../../app/router";
 import {Project} from "../../app/models/project";
+import {currentMintVersion} from "../../app/mintVersion";
 
 describe("actions", () => {
 
@@ -407,4 +408,28 @@ describe("actions", () => {
         expect(commit.mock.calls[0][0]).toBe(RootMutation.DismissErrors);
     });
 
+    it("fetches version", async () => {
+        const commit = jest.fn();
+        const url = "/version";
+        const version = {data: "20230421", mintr: "1.2.3"};
+        mockAxios.onGet(url).reply(200, mockSuccess(version));
+
+        await (actions[RootAction.FetchVersion] as any)({commit} as any);
+
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.SetVersions);
+        expect(commit.mock.calls[0][1]).toStrictEqual({...version, mint: currentMintVersion});
+    });
+
+    it("FetchVersions commits error", async () => {
+        const commit = jest.fn();
+        const url = "/version";
+        mockAxios.onGet(url).reply(500, mockFailure("TEST ERROR"));
+
+        await (actions[RootAction.FetchVersion] as any)({commit} as any);
+
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe(RootMutation.AddError);
+        expect(commit.mock.calls[0][1]).toStrictEqual(mockError("TEST ERROR"));
+    });
 });

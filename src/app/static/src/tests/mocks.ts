@@ -7,6 +7,7 @@ import {Project, Region, StrategyWithThreshold} from "../app/models/project";
 
 export function mockRootState(state: Partial<RootState> = {}): RootState {
     return {
+        versions: null,
         projects: [],
         currentProject: null,
         errors: [],

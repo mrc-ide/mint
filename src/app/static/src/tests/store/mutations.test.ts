@@ -313,4 +313,16 @@ describe("mutations", () => {
 
        expect(state.errors).toStrictEqual([]);
     });
+
+    it("sets versions", () => {
+        const state = mockRootState();
+        const versions = {
+            data: "20230421",
+            mintr: "1.2.3",
+            mint: "4.5.6"
+        };
+        mutations[RootMutation.SetVersions](state, versions);
+
+        expect(state.versions).toBe(versions);
+    });
 });
