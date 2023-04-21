@@ -61,3 +61,14 @@ a.navbar-brand {
 .dropdown-toggle {
   cursor: pointer;
 }
+
+.dropdown-right {
+  left: auto;
+  right: 0;
+}
+
+.dropdown-item-unclickable {
+  cursor: pointer;
+  padding: .25rem 1.5rem;
+  white-space: nowrap;
+}

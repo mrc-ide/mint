@@ -5,7 +5,7 @@
            v-on:click="toggle">
             {{ text }}
         </a>
-        <div class="dropdown-menu" :class="show && 'show'">
+        <div class="dropdown-menu" :class="[{show: show}, dropdownClass]">
             <slot></slot>
         </div>
     </div>
@@ -24,9 +24,10 @@
         text: string,
         parentClass: string
         toggleClass: string
+        dropdownClass: string
     }
     export default Vue.extend<Data, Methods, Record<string, never>, Props>({
-    props: {text: String, parentClass: String, toggleClass: String},
+    props: {text: String, parentClass: String, toggleClass: String, dropdownClass: String},
     data(): Data {
         return {
             id: [...Array(30)].map(() => Math.random().toString(36)[2]).join(""),

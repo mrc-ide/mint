@@ -29,6 +29,10 @@
                 <li v-else class="nav-item">
                     <router-link class="text-dark" to="/accessibility">Accessibility</router-link>
                 </li>
+                <span class="mx-2">|</span>
+                <li class="nav-item">
+                    <version-drop-down />
+                </li>
             </ul>
         </div>
         <router-view></router-view>
@@ -68,6 +72,7 @@
     import {switches} from "../featureSwitches";
     import userGuideLinks from "./userGuideLinks.vue";
     import {MAX_REGIONS} from "../index";
+    import VersionDropDown from "./versionDropDown.vue";
 
     interface Methods {
         fetchVersion: () => void
@@ -99,7 +104,7 @@
                 maxRegions: MAX_REGIONS
             }
         },
-        components: {dropDown, BIconGraphUp, BModal, userGuideLinks},
+        components: {VersionDropDown, dropDown, BIconGraphUp, BModal, userGuideLinks},
         directives: {"BModal": VBModal},
         computed: {
             ...mapState(["currentProject", "baselineOptions", "interventionOptions"]),
