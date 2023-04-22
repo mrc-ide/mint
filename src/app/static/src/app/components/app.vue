@@ -29,8 +29,10 @@
                 <li v-else class="nav-item">
                     <router-link class="text-dark" to="/accessibility">Accessibility</router-link>
                 </li>
-                <span class="mx-2">|</span>
-                <li class="nav-item">
+                <li>
+                    <span class="mx-2">|</span>
+                </li>
+                <li id="version-nav-item" class="nav-item">
                     <version-drop-down />
                 </li>
             </ul>
