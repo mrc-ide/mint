@@ -8,23 +8,23 @@
   </drop-down>
 </template>
 <script lang="ts">
-  import Vue from "vue";
-  import {store} from "../store";
-  import dropDown from "./dropDown.vue";
-  import {Versions} from "../models/project";
-  import {mapState} from "vuex";
+    import Vue from "vue";
+    import {store} from "../store";
+    import dropDown from "./dropDown.vue";
+    import {Versions} from "../models/project";
+    import {mapState} from "vuex";
 
-  interface Computed {
-      versions: Versions,
-      versionItems: string[]
-  }
+    interface Computed {
+        versions: Versions,
+        versionItems: string[]
+    }
 
-  interface Methods {
-      versionString: (version: string) => string
-  }
+    interface Methods {
+        versionString: (version: string) => string
+    }
 
-  export default Vue.extend<Record<string, never>, Methods, Computed, Record<string, never>>({
-    store,
+    export default Vue.extend<Record<string, never>, Methods, Computed, Record<string, never>>({
+        store,
     components: {
         dropDown
     },
@@ -39,5 +39,5 @@
     methods: {
         versionString: (version: string) => `v${version}`
     }
-  })
+    })
 </script>
