@@ -1,7 +1,7 @@
 <template>
   <drop-down v-if="versions" :text="versionString(versions.data)" :dropdown-class="'dropdown-right'">
       <div class="dropdown-item">
-          <a href="#">News</a>
+          <a href="https://mrc-ide.github.io/mint-news/" target="_blank">News</a>
       </div>
       <hr/>
       <div v-for="item in versionItems" class="dropdown-item-unclickable" :key="item">{{item}}</div>

@@ -16,6 +16,7 @@ describe("versionDropDown", () =>{
         const wrapper = mount(VersionDropDown, {store});
         expect(wrapper.find(".dropdown-toggle").text()).toBe("v20230421");
         expect(wrapper.find(".dropdown-item").text()).toBe("News");
+        expect(wrapper.find(".dropdown-item a").attributes("href")).toBe("https://mrc-ide.github.io/mint-news/");
         const versionItems = wrapper.findAll(".dropdown-item-unclickable");
         expect(versionItems.length).toBe(3);
         expect(versionItems.at(0).text()).toBe("data: v20230421");
