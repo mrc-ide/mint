@@ -1,5 +1,6 @@
 import {expect, test} from "@playwright/test";
 import AxeBuilder from '@axe-core/playwright';
+import {currentMintVersion} from "../../app/mintVersion";
 
 test.describe("basic tests", () => {
 
@@ -7,6 +8,24 @@ test.describe("basic tests", () => {
         await page.goto("/");
 
         expect(await page.innerText("a.navbar-brand")).toBe("MINT");
+
+        // Renders versions
+        const versionNavItem = await page.locator("#version-nav-item")
+        const toggle = await versionNavItem.locator(".dropdown-toggle");
+        const dataVersion = (await toggle.innerText()).trim();
+        expect(dataVersion).toMatch(/^v[0-9]{8}$/);
+        await expect(versionNavItem.locator(".dropdown-menu")).not.toBeVisible();
+
+        await toggle.click();
+
+        await expect(await versionNavItem.locator(".dropdown-menu")).toBeVisible();
+
+        expect(await versionNavItem.locator(".dropdown-item").innerText()).toBe("News");
+        const versionItems = await versionNavItem.locator(".dropdown-item-unclickable");
+        await expect(versionItems).toHaveCount(3);
+        expect(await versionItems.nth(0).innerText()).toBe(`data: ${dataVersion}`);
+        expect(await versionItems.nth(1).innerText()).toBe(`mint: v${currentMintVersion}`);
+        expect(await versionItems.nth(2).innerText()).toMatch(/^mintr: v[0-9]+.[0-9]+.[0-9]+$/);
     });
 
     test('accessibility of homepage', async ({page}) => {

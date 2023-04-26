@@ -81,3 +81,9 @@ export interface StrategyWithThreshold {
         casesAvertedErrorPlus: number
     }[]
 }
+
+export interface Versions {
+    mint: string
+    data: string,
+    mintr: string
+}

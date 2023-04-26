@@ -29,6 +29,12 @@
                 <li v-else class="nav-item">
                     <router-link class="text-dark" to="/accessibility">Accessibility</router-link>
                 </li>
+                <li>
+                    <span class="mx-2">|</span>
+                </li>
+                <li id="version-nav-item" class="nav-item">
+                    <version-drop-down />
+                </li>
             </ul>
         </div>
         <router-view></router-view>
@@ -68,8 +74,10 @@
     import {switches} from "../featureSwitches";
     import userGuideLinks from "./userGuideLinks.vue";
     import {MAX_REGIONS} from "../index";
+    import VersionDropDown from "./versionDropDown.vue";
 
     interface Methods {
+        fetchVersion: () => void
         fetchDocs: () => void
         fetchBaselineOptions: () => void
         fetchInterventionOptions: () => void
@@ -98,7 +106,7 @@
                 maxRegions: MAX_REGIONS
             }
         },
-        components: {dropDown, BIconGraphUp, BModal, userGuideLinks},
+        components: {VersionDropDown, dropDown, BIconGraphUp, BModal, userGuideLinks},
         directives: {"BModal": VBModal},
         computed: {
             ...mapState(["currentProject", "baselineOptions", "interventionOptions"]),
@@ -135,11 +143,13 @@
             cancel() {
                 this.newRegionName = "";
             },
+            fetchVersion: mapActionByName(RootAction.FetchVersion),
             fetchDocs: mapActionByName(RootAction.FetchDocs),
             fetchBaselineOptions: mapActionByName(RootAction.FetchBaselineOptions),
             fetchInterventionOptions: mapActionByName(RootAction.FetchInterventionOptions)
         },
         beforeMount: function () {
+            this.fetchVersion();
             this.fetchDocs();
             this.fetchBaselineOptions();
             this.fetchInterventionOptions();

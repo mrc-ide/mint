@@ -23,4 +23,10 @@ class HomeTests : EndpointTests() {
         responseEntity = testRestTemplate.getForEntity("/projects/p1/regions/r1")
         assertThat(responseEntity.statusCodeValue).isEqualTo(200)
     }
+
+    @Test
+    fun `can get version`() {
+        val responseEntity = testRestTemplate.getForEntity<String>("/version")
+        assertSuccess(responseEntity, "Version")
+    }
 }

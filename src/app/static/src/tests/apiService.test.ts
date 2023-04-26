@@ -251,6 +251,19 @@ describe("ApiService", () => {
         expect(warnings[1][0]).toBe("No success handler registered for request /baseline/.");
     });
 
+    it("does not warn that success handler is not set if ignoreSuccess is true", async () => {
+        mockAxios.onGet(`/baseline/`)
+            .reply(200, mockSuccess(true));
+
+        await api({commit: jest.fn(), rootState} as any)
+            .ignoreSuccess()
+            .get("/baseline/");
+
+        const warnings = (console.warn as jest.Mock).mock.calls;
+        expect(warnings.length).toBe(1);
+        expect(warnings[0][0]).toBe("No error handler registered for request /baseline/.");
+    });
+
     it("returns the response object from a POST", async () => {
 
         mockAxios.onPost(`/baseline/`)

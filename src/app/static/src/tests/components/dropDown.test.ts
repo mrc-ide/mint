@@ -9,12 +9,14 @@ describe("drop down", () => {
             propsData: {
                 text: "test text",
                 parentClass: "test-parent",
-                toggleClass: "test-toggle"
+                toggleClass: "test-toggle",
+                dropdownClass: "test-dropdown"
             }
         });
         expect(wrapper.find(".dropdown").classes()).toStrictEqual(["dropdown", "test-parent"]);
         expect(wrapper.find(".dropdown-toggle").classes()).toStrictEqual(["dropdown-toggle", "test-toggle"]);
         expect(wrapper.find(".dropdown-toggle").text()).toBe("test text");
+        expect(wrapper.find(".dropdown-menu").classes()).toStrictEqual(["dropdown-menu", "test-dropdown"]);
     });
 
     it("toggles dropdown on click", async () => {

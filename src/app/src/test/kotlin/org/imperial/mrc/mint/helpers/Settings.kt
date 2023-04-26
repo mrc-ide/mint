@@ -10,7 +10,6 @@ class Settings {
                 "bitingPeople" to "low",
                 "itnUsage" to "0%",
                 "sprayInput" to "0%",
-                "metabolic" to "yes",
                 "population" to 1000
         )
     }

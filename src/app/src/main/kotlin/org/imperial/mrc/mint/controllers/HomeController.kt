@@ -26,4 +26,11 @@ class HomeController(private val apiClient: APIClient,
     fun tableData(@RequestBody dataOptions: Map<String, Any>): ResponseEntity<String> {
         return apiClient.getTableData(dataOptions)
     }
+
+    @GetMapping("/version")
+    @ResponseBody
+    fun version(): ResponseEntity<String> {
+        return apiClient.getVersion()
+    }
 }
+

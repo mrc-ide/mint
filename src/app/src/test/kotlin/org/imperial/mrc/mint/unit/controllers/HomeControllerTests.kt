@@ -23,4 +23,15 @@ class HomeControllerTests  {
         val sut = HomeController(mockAPI, mock())
         assertThat(sut.tableData(options)).isSameAs(mockResponse)
     }
+
+    @Test
+    fun `gets version from the api`()
+    {
+        val mockAPI = mock<APIClient>{
+            on { getVersion() } doReturn mockResponse
+        }
+
+        val sut = HomeController(mockAPI, mock())
+        assertThat(sut.version()).isSameAs(mockResponse)
+    }
 }

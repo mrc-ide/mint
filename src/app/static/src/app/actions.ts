@@ -5,9 +5,12 @@ import {Data, Graph} from "./generated";
 import {RootMutation} from "./mutations";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {router} from "./router";
-import {StrategyWithThreshold} from "./models/project";
+import {StrategyWithThreshold, Versions} from "./models/project";
+import {get} from "jquery";
+import {currentMintVersion} from "./mintVersion";
 
 export enum RootAction {
+    FetchVersion = "FetchVersion",
     FetchPrevalenceGraphData = "FetchPrevalenceGraphData",
     FetchPrevalenceGraphConfig = "FetchPrevalenceGraphConfig",
     FetchCasesGraphConfig = "FetchCasesGraphConfig",
@@ -54,6 +57,18 @@ export const actions: ActionTree<RootState, RootState> = {
             await router.push({
                 path: "/"
             })
+        }
+    },
+
+    async [RootAction.FetchVersion](context) {
+        const {commit} = context;
+        const result = await api(context)
+            .ignoreSuccess()
+            .withError(RootMutation.AddError)
+            .get<Record<string, string>>("/version");
+
+        if (result) {
+            commit(RootMutation.SetVersions, {...result.data, mint: currentMintVersion});
         }
     },
 

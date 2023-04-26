@@ -1,11 +1,12 @@
 import {MutationTree} from "vuex";
 import {RootState} from "./store";
-import {Project, Region, StrategyWithThreshold} from "./models/project";
+import {Project, Region, StrategyWithThreshold, Versions} from "./models/project";
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 
 export enum RootMutation {
+    SetVersions = "SetVersions",
     AddProject = "AddProject",
     SetCurrentProject = "SetCurrentProject",
     AddRegion = "AddRegion",
@@ -35,6 +36,9 @@ export enum RootMutation {
 }
 
 export const mutations: MutationTree<RootState> = {
+    [RootMutation.SetVersions](state: RootState, payload: Versions) {
+        state.versions = payload;
+    },
 
     [RootMutation.AddProject](state: RootState, payload: Project) {
         state.projects.push(payload)

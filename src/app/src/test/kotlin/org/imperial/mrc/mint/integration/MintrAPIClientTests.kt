@@ -140,4 +140,12 @@ class MintrAPIClientTests {
         assertThat(result.statusCodeValue).isEqualTo(200)
         JSONValidator().validateSuccess(result.body!!, "Strategise")
     }
+
+    @Test
+    fun `can get version`() {
+        val sut = MintrAPIClient(ConfiguredAppProperties(), ObjectMapper())
+        val result = sut.getVersion()
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "Version")
+    }
 }

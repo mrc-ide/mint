@@ -10,6 +10,7 @@ import {RootMutation} from "../../app/mutations";
 import VueRouter from "vue-router";
 import {switches} from "../../app/featureSwitches";
 import {MAX_REGIONS} from "../../app";
+import VersionDropDown from "../../app/components/versionDropDown.vue";
 
 describe("app", () => {
     const oldStratAcrossRegions = switches.stratAcrossRegions;
@@ -25,13 +26,15 @@ describe("app", () => {
                         addRegionMock = jest.fn(),
                         fetchDocsMock = jest.fn(),
                         fetchBaselineMock = jest.fn(),
-                        fetchInterventionsMock = jest.fn()) => {
+                        fetchInterventionsMock = jest.fn(),
+                        fetchVersionMock = jest.fn()) => {
         const store = new Vuex.Store({
             state: mockRootState(state),
             actions: {
                 [RootAction.FetchDocs]: fetchDocsMock,
                 [RootAction.FetchBaselineOptions]: fetchBaselineMock,
-                [RootAction.FetchInterventionOptions]: fetchInterventionsMock
+                [RootAction.FetchInterventionOptions]: fetchInterventionsMock,
+                [RootAction.FetchVersion]: fetchVersionMock
             },
             mutations: {
                 [RootMutation.AddRegion]: addRegionMock
@@ -48,6 +51,11 @@ describe("app", () => {
     it("does not show project menu if currentProject is null", () => {
         const wrapper = getWrapper();
         expect(wrapper.findAll(".navbar-nav.mr-auto").length).toBe(0);
+    });
+
+    it("renders versions drop-down", () => {
+        const wrapper = getWrapper();
+        expect(wrapper.getComponent(VersionDropDown).exists()).toBe(true);
     });
 
     it("show project menu if currentProject is not null", () => {
@@ -105,14 +113,16 @@ describe("app", () => {
         expect(wrapper.findAll("#stratAcrossRegions").length).toBe(0);
     });
 
-    it("fetches docs and options before mount", () => {
+    it("fetches docs, options and version before mount", () => {
         const fetchDocsMock = jest.fn();
         const fetchBaselineMock = jest.fn();
         const fetchInterventionsMock = jest.fn();
-        getWrapper({}, jest.fn(), fetchDocsMock, fetchBaselineMock, fetchInterventionsMock);
+        const fetchVersionMock = jest.fn();
+        getWrapper({}, jest.fn(), fetchDocsMock, fetchBaselineMock, fetchInterventionsMock, fetchVersionMock);
         expect(fetchDocsMock.mock.calls.length).toBe(1);
         expect(fetchBaselineMock.mock.calls.length).toBe(1);
         expect(fetchInterventionsMock.mock.calls.length).toBe(1);
+        expect(fetchVersionMock.mock.calls.length).toBe(1);
     });
 
     it("adds new region and navigates to it", async () => {
