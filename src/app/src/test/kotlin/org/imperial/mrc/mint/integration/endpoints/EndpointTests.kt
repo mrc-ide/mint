@@ -15,15 +15,20 @@ abstract class EndpointTests {
     @Autowired
     lateinit var testRestTemplate: TestRestTemplate
 
-    protected fun assertSuccess(responseEntity: ResponseEntity<String>,
-                                schemaName: String?) {
+    protected fun assertSuccess(responseEntity: ResponseEntity<String>) {
+        if (responseEntity.statusCode != HttpStatus.OK) {
+            Assertions.fail<String>("Expected OK response but got error: ${responseEntity.body}")
+        }
+    }
+
+    protected fun assertSuccessfulValidJson(responseEntity: ResponseEntity<String>,
+                                            schemaName: String?) {
 
         Assertions.assertThat(responseEntity.headers.contentType!!.toString())
                 .isEqualTo("application/json")
 
-        if (responseEntity.statusCode != HttpStatus.OK) {
-            Assertions.fail<String>("Expected OK response but got error: ${responseEntity.body}")
-        }
+        assertSuccess(responseEntity)
+
         if (schemaName != null) {
             JSONValidator().validateSuccess(responseEntity.body!!, schemaName)
         }

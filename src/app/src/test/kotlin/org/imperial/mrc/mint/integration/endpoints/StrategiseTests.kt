@@ -31,7 +31,7 @@ class StrategiseTests : EndpointTests() {
                         )
                 )
         )
-        assertSuccess(responseEntity, "Strategise")
+        assertSuccessfulValidJson(responseEntity, "Strategise")
     }
 
 }

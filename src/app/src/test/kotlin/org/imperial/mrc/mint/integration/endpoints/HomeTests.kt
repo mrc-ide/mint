@@ -12,21 +12,27 @@ class HomeTests : EndpointTests() {
     fun `can get table data`() {
         val responseEntity = testRestTemplate.postForEntity<String>("/table/data",
                 Settings.Baseline)
-        assertSuccess(responseEntity, "Data")
+        assertSuccessfulValidJson(responseEntity, "Data")
     }
 
     @Test
     fun `can get index page for valid vue routes`() {
         var responseEntity = testRestTemplate.getForEntity<String>("/")
-        assertThat(responseEntity.statusCodeValue).isEqualTo(200)
+        assertSuccess(responseEntity)
 
         responseEntity = testRestTemplate.getForEntity("/projects/p1/regions/r1")
-        assertThat(responseEntity.statusCodeValue).isEqualTo(200)
+        assertSuccess(responseEntity)
+
+        responseEntity = testRestTemplate.getForEntity<String>("accessibility")
+        assertSuccess(responseEntity)
+
+        responseEntity = testRestTemplate.getForEntity<String>("privacy")
+        assertSuccess(responseEntity)
     }
 
     @Test
     fun `can get version`() {
         val responseEntity = testRestTemplate.getForEntity<String>("/version")
-        assertSuccess(responseEntity, "Version")
+        assertSuccessfulValidJson(responseEntity, "Version")
     }
 }

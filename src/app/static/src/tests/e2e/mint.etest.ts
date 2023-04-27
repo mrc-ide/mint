@@ -124,4 +124,27 @@ test.describe("basic tests", () => {
         expect(await page.innerText(".tab-content")).toContain("2000");
     });
 
+    test("accessibility page", async ({page}) => {
+        const expectedHeader = "Accessibility on MINT";
+        // can browse directly
+        await page.goto("/accessibility");
+        await expect(await page.innerText("h1")).toBe(expectedHeader);
+
+        // can follow link from nav bar
+        await page.goto("/");
+        await page.click("a[href='/accessibility']");
+        await expect(await page.innerText("h1")).toBe(expectedHeader);
+    });
+
+    test("privacy page", async ({page}) => {
+        const expectedHeader = "Privacy notice for mint.dide.ic.ac.uk";
+        // can browse directly
+        await page.goto("/privacy");
+        await expect(await page.innerText("h1")).toBe(expectedHeader);
+
+        // can follow link from nav bar
+        await page.goto("/");
+        await page.click("a[href='/privacy']");
+        await expect(await page.innerText("h1")).toBe(expectedHeader);
+    });
 });

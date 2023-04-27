@@ -8,12 +8,12 @@ class OptionTests: EndpointTests() {
     @Test
     fun `can get baseline options`() {
         val responseEntity = testRestTemplate.getForEntity<String>("/baseline/options")
-        assertSuccess(responseEntity, "DynamicFormOptions")
+        assertSuccessfulValidJson(responseEntity, "DynamicFormOptions")
     }
 
     @Test
     fun `can get intervention options`() {
         val responseEntity = testRestTemplate.getForEntity<String>("/intervention/options")
-        assertSuccess(responseEntity, "DynamicFormOptions")
+        assertSuccessfulValidJson(responseEntity, "DynamicFormOptions")
     }
 }
