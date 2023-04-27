@@ -53,6 +53,13 @@ describe("app", () => {
         expect(wrapper.findAll(".navbar-nav.mr-auto").length).toBe(0);
     });
 
+    it("shows accessibility and privacy links if currentProject is null", () => {
+        const wrapper = getWrapper();
+
+        expect(wrapper.find("router-link-stub[to='/accessibility']").text()).toBe("Accessibility");
+        expect(wrapper.find("router-link-stub[to='/privacy']").text()).toBe("Privacy");
+    });
+
     it("renders versions drop-down", () => {
         const wrapper = getWrapper();
         expect(wrapper.getComponent(VersionDropDown).exists()).toBe(true);

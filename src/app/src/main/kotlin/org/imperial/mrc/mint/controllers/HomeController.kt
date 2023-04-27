@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 class HomeController(private val apiClient: APIClient,
                      private val appProperties: AppProperties) {
 
-    @GetMapping("/", "/projects/{project}/regions/{region}")
+    @GetMapping("/", "/projects/{project}/regions/{region}", "accessibility", "privacy")
     fun index(model: Model): String {
         model["title"] = appProperties.applicationTitle
         return "index"

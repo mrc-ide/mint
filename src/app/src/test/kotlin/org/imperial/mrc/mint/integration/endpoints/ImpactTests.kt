@@ -10,31 +10,31 @@ class ImpactTests: EndpointTests() {
     @Test
     fun `can get impact graph prevalence config`() {
         val responseEntity = testRestTemplate.getForEntity<String>("/impact/graph/prevalence/config")
-        assertSuccess(responseEntity, "Graph")
+        assertSuccessfulValidJson(responseEntity, "Graph")
     }
 
     @Test
     fun `can get impact cases config`() {
         val responseEntity = testRestTemplate.getForEntity<String>("/impact/graph/cases-averted/config")
-        assertSuccess(responseEntity, "Graph")
+        assertSuccessfulValidJson(responseEntity, "Graph")
     }
 
     @Test
     fun `can get impact graph prevalence data`() {
         val responseEntity = testRestTemplate.postForEntity<String>("/impact/graph/prevalence/data",
                 Settings.Baseline)
-        assertSuccess(responseEntity, "Data")
+        assertSuccessfulValidJson(responseEntity, "Data")
     }
 
     @Test
     fun `can get impact table config`() {
         val responseEntity = testRestTemplate.getForEntity<String>("/impact/table/config")
-        assertSuccess(responseEntity, "TableDefinition")
+        assertSuccessfulValidJson(responseEntity, "TableDefinition")
     }
 
     @Test
     fun `can get impact docs`() {
         val responseEntity = testRestTemplate.getForEntity<String>("/impact/docs")
-        assertSuccess(responseEntity, "Docs")
+        assertSuccessfulValidJson(responseEntity, "Docs")
     }
 }
