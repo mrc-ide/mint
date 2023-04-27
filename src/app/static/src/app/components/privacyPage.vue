@@ -44,7 +44,7 @@
                 <h2>How long will we use your personal data for?</h2>
                 <ul>
                     <li>
-                      We will retain your personal data indefinitely to fulfil the purposes we collected it for, including for the purposes
+                      We may retain your personal data indefinitely to fulfil the purposes we collected it for, including for the purposes
                       of satisfying any legal, accounting, or reporting requirements.
                     </li>
                     <li>We therefore will remove your data when the site is discontinued.</li>
