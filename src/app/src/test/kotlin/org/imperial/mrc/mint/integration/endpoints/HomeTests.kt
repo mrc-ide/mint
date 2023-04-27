@@ -23,10 +23,10 @@ class HomeTests : EndpointTests() {
         responseEntity = testRestTemplate.getForEntity("/projects/p1/regions/r1")
         assertSuccess(responseEntity)
 
-        responseEntity = testRestTemplate.getForEntity<String>("accessibility")
+        responseEntity = testRestTemplate.getForEntity<String>("/accessibility")
         assertSuccess(responseEntity)
 
-        responseEntity = testRestTemplate.getForEntity<String>("privacy")
+        responseEntity = testRestTemplate.getForEntity<String>("/privacy")
         assertSuccess(responseEntity)
     }
 
