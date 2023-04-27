@@ -9,7 +9,7 @@
                 <ul>
                     <li>inform you as to how we look after your personal data when you visit our websites;</li>
                     <li>tell you about your privacy rights;</li>
-                    <li>tell you how the law protects you;</li>>
+                    <li>tell you how the law protects you;</li>
                 </ul>
                 <p>
                   This policy is based on the <a href="https://www.imperial.ac.uk/about-the-site/privacy/" target="_blank" rel="noopener noreferrer">Imperial College privacy policy</a>.
@@ -34,7 +34,7 @@
                   We store your data on our own servers based in London, UK
                 </p>
 
-                <h2>How we keep your data secure</h2>h2>
+                <h2>How we keep your data secure</h2>
                 <p>
                   We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used or
                   accessed in an unauthorised way, altered or disclosed. In addition, we limit access to your personal data to the

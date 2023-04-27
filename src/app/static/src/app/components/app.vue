@@ -26,9 +26,17 @@
                 <li v-if="currentProject" class="nav-item">
                     <user-guide-links :short="true"/>
                 </li>
-                <li v-else class="nav-item">
-                    <router-link class="text-dark" to="/accessibility">Accessibility</router-link>
-                </li>
+                <template v-else>
+                    <li class="nav-item">
+                        <router-link class="text-dark" to="/accessibility">Accessibility</router-link>
+                    </li>
+                    <li>
+                        <span class="mx-2">|</span>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="text-dark" to="/privacy">Privacy</router-link>
+                    </li>
+                </template>
                 <li>
                     <span class="mx-2">|</span>
                 </li>
