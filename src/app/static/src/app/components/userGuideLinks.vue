@@ -22,7 +22,7 @@
     export default Vue.extend<Data, Record<string, never>, Record<string, never>, Props>({
         data() {
             return {
-                en: "/public/resources/User-Guide.pdf",
+                en: "/public/resources/MINT v2.0 User-Guide-English.pdf",
                 fr: "/public/resources/User-Guide-fr.pdf"
             }
         },
