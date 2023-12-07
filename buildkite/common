@@ -30,3 +30,7 @@ TAG_SHA=$ORG/$NAME:$GIT_ID
 TAG_BRANCH=$ORG/$NAME:$GIT_BRANCH
 TAG_LATEST="$ORG/$NAME:latest"
 BUILD_ENV_TAG=$ORG/mint-shared-build-env:$GIT_ID
+
+function cleardocker() {
+  $HERE/clear-docker.sh
+}

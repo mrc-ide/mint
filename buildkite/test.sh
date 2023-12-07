@@ -3,9 +3,6 @@ set -e
 HERE=$(realpath "$(dirname $0)")
 . $HERE/common
 
-function cleardocker() {
-  $HERE/../scripts/clear-docker.sh
-}
 trap cleardocker EXIT
 
 # Create an image based on the shared build env that runs back-end tests
@@ -27,5 +24,5 @@ done
 # Run the build env image to run gradle tests
 docker run --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    --network=mint_nw \
+    --network=$NETWORK \
     mint-test
