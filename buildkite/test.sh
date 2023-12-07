@@ -3,9 +3,6 @@ set -e
 HERE=$(realpath "$(dirname $0)")
 . $HERE/common
 
-function cleardocker() {
-  $HERE/../scripts/clear-docker.sh
-}
 trap cleardocker EXIT
 
 # Create an image based on the shared build env that runs back-end tests

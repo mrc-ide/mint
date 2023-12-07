@@ -3,9 +3,6 @@ set -ex
 HERE=$(dirname $0)
 . $HERE/common
 
-function cleardocker() {
-  $HERE/../scripts/clear-docker.sh
-}
 trap cleardocker EXIT
 
 # Run all dependencies
