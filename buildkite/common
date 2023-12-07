@@ -24,6 +24,7 @@ GIT_BRANCH=$(echo $GIT_BRANCH | sed 's;/;-;g')
 BUILDKITE_DOCKER_AUTH_PATH=/var/lib/buildkite-agent/.docker/config.json
 ORG=mrcide
 NAME=mint
+NETWORK=mint_nw
 
 TAG_SHA=$ORG/$NAME:$GIT_ID
 TAG_BRANCH=$ORG/$NAME:$GIT_BRANCH

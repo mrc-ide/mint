@@ -24,5 +24,5 @@ done
 # Run the build env image to run gradle tests
 docker run --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    --network=mint_nw \
+    --network=$NETWORK \
     mint-test
