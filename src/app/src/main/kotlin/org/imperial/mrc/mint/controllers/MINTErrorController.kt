@@ -13,12 +13,7 @@ import javax.servlet.http.HttpServletRequest
 
 @Controller
 class MINTErrorController(private val appProperties: AppProperties) : ErrorController {
-
-    override fun getErrorPath(): String {
-        return "/error"
-    }
-
-    @RequestMapping("/error")
+    @RequestMapping("\${server.error.path}")
     fun handleError(request: HttpServletRequest): ModelAndView {
         val status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE)
                 ?.toString()?.toInt()?: 0

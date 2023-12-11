@@ -1,5 +1,4 @@
 .gradle
-!gradle/wrapper/gradle-wrapper.jar
 app/static/node_modules
 app/static/public/*
 !app/static/public/favicon.ico
@@ -8,7 +7,6 @@ build
 app/build
 app/uploads
 app/out
-gradle
 
 ### STS ###
 .apt_generated

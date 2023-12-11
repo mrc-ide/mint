@@ -1,4 +1,4 @@
-FROM openjdk:8u121
+FROM eclipse-temurin:21-jre
 
 RUN mkdir /static/public -p
 
