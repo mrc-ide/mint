@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
-class HomeController(private val apiClient: APIClient,
-                     private val appProperties: AppProperties) {
+class HomeController(
+    private val apiClient: APIClient,
+    private val appProperties: AppProperties
+) {
 
     @GetMapping("/", "/projects/{project}/regions/{region}", "accessibility", "privacy")
     fun index(model: Model): String {
@@ -33,4 +35,3 @@ class HomeController(private val apiClient: APIClient,
         return apiClient.getVersion()
     }
 }
-

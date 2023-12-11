@@ -22,11 +22,12 @@ formatting:
   Indentation:
     active: true
     indentSize: 4
-    continuationIndentSize: 4
 
 style:
-  MandatoryBracesIfStatements:
+  BracesOnIfStatements:
     active: true
+    singleLine: always
+    multiLine: always
   MandatoryBracesLoops:
     active: true
   WildcardImport:

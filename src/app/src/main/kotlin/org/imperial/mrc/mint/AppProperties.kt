@@ -12,11 +12,11 @@ interface AppProperties {
     val apiUrl: String
 }
 
-//prevent auto-wiring of default Properties
-class MintProperties: Properties()
+// prevent auto-wiring of default Properties
+class MintProperties : Properties()
 
 @Component
-class ConfiguredAppProperties(private val props: MintProperties = properties): AppProperties {
+class ConfiguredAppProperties(private val props: MintProperties = properties) : AppProperties {
     override val applicationTitle = propString("application_title")
     override val applicationUrl = propString("application_url")
     override val apiUrl = propString("mintr_url")

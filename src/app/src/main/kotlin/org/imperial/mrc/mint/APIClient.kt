@@ -1,9 +1,9 @@
 package org.imperial.mrc.mint
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
-import com.github.kittinunf.fuel.core.Request
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import kotlin.jvm.Throws
@@ -28,8 +28,9 @@ interface APIClient {
 
 @Component
 class MintrAPIClient(
-        appProperties: AppProperties,
-        private val objectMapper: ObjectMapper) : APIClient {
+    appProperties: AppProperties,
+    private val objectMapper: ObjectMapper
+) : APIClient {
 
     companion object {
         const val TIMEOUT = 60000
@@ -53,8 +54,7 @@ class MintrAPIClient(
         return get("graph/impact/cases-averted/config")
     }
 
-    override fun getImpactGraphPrevalenceData(dataOptions: Map<String, Any>): ResponseEntity<String>
-    {
+    override fun getImpactGraphPrevalenceData(dataOptions: Map<String, Any>): ResponseEntity<String> {
         return postJson("graph/prevalence/data", optionsJson(dataOptions))
     }
 
@@ -94,32 +94,30 @@ class MintrAPIClient(
         return get("version")
     }
 
-
     fun get(url: String): ResponseEntity<String> {
         return "$baseUrl/$url".httpGet()
-                .addTimeouts()
-                .response()
-                .second
-                .asResponseEntity()
+            .addTimeouts()
+            .response()
+            .second
+            .asResponseEntity()
     }
 
-    private fun optionsJson(dataOptions: Map<String, Any>): String
-    {
-        return  objectMapper.writeValueAsString(dataOptions)
+    private fun optionsJson(dataOptions: Map<String, Any>): String {
+        return objectMapper.writeValueAsString(dataOptions)
     }
 
     private fun postJson(url: String, json: String): ResponseEntity<String> {
         return "$baseUrl/$url".httpPost()
-                .addTimeouts()
-                .header("Content-Type" to "application/json")
-                .body(json)
-                .response()
-                .second
-                .asResponseEntity()
+            .addTimeouts()
+            .header("Content-Type" to "application/json")
+            .body(json)
+            .response()
+            .second
+            .asResponseEntity()
     }
 
     private fun Request.addTimeouts(): Request {
         return this.timeout(TIMEOUT)
-                .timeoutRead(TIMEOUT)
+            .timeoutRead(TIMEOUT)
     }
 }

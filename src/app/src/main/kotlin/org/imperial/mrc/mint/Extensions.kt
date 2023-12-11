@@ -1,11 +1,11 @@
 package org.imperial.mrc.mint
 
-import org.springframework.http.ResponseEntity
-import org.springframework.http.MediaType
-import org.springframework.http.HttpStatus
-import com.github.kittinunf.fuel.core.Response
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.kittinunf.fuel.core.Response
 import org.imperial.mrc.mint.models.ErrorDetail
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import java.io.IOException
 
 @Suppress("UNCHECKED_CAST", "SwallowedException")
@@ -14,7 +14,7 @@ fun Response.asResponseEntity(): ResponseEntity<String> {
 
     if (this.statusCode == -1) {
         return ErrorDetail(httpStatus, "No response returned. The request may have timed out.")
-                .toResponseEntity() as ResponseEntity<String>
+            .toResponseEntity() as ResponseEntity<String>
     }
 
     return try {
@@ -25,14 +25,12 @@ fun Response.asResponseEntity(): ResponseEntity<String> {
         }
 
         ResponseEntity.status(httpStatus)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(body)
-
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(body)
     } catch (e: IOException) {
         ErrorDetail(httpStatus, "Could not parse response.")
-                .toResponseEntity() as ResponseEntity<String>
+            .toResponseEntity() as ResponseEntity<String>
     }
-
 }
 
 fun httpStatusFromCode(code: Int): HttpStatus {
@@ -43,4 +41,3 @@ fun httpStatusFromCode(code: Int): HttpStatus {
         HttpStatus.INTERNAL_SERVER_ERROR
     }
 }
-

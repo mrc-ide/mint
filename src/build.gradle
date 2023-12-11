@@ -25,6 +25,9 @@ subprojects {
     apply plugin: "kotlin-spring"
     apply plugin: "io.gitlab.arturbosch.detekt"
 
+    dependencies {
+        detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.23.4"
+    }
     detekt {
         config = files("$rootDir/config/detekt/detekt.yml")
         buildUponDefaultConfig = true

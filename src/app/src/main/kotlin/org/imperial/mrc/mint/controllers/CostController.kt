@@ -1,7 +1,7 @@
 package org.imperial.mrc.mint.controllers
 
-import org.springframework.http.ResponseEntity
 import org.imperial.mrc.mint.APIClient
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -30,5 +30,4 @@ class CostController(private val apiClient: APIClient) {
     fun docs(): ResponseEntity<String> {
         return apiClient.getCostDocs()
     }
-
 }

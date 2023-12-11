@@ -19,5 +19,4 @@ class OptionsController(private val apiClient: APIClient) {
     fun interventionOptions(): ResponseEntity<String> {
         return apiClient.getInterventionOptions()
     }
-
 }

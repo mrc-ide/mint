@@ -16,7 +16,7 @@ class MINTErrorController(private val appProperties: AppProperties) : ErrorContr
     @RequestMapping("\${server.error.path}")
     fun handleError(request: HttpServletRequest): ModelAndView {
         val status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE)
-                ?.toString()?.toInt()?: 0
+            ?.toString()?.toInt() ?: 0
         val codesToReturnNotFound = listOf(HttpStatus.NOT_FOUND, HttpStatus.UNAUTHORIZED, HttpStatus.FORBIDDEN)
         val viewName = if (codesToReturnNotFound.contains(httpStatusFromCode(status))) {
             "404"

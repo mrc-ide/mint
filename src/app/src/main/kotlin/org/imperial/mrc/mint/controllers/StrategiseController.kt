@@ -13,5 +13,4 @@ class StrategiseController(private val apiClient: APIClient) {
     fun strategise(@RequestBody options: Map<String, Any>): ResponseEntity<String> {
         return apiClient.getStrategies(options)
     }
-
 }
