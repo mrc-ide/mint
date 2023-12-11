@@ -1,10 +1,10 @@
 # Setup a combined nodejs and openjdk image
 # Eventually this should be extracted into something we can publish and cache
-FROM node:12-bullseye
+FROM node:20-bookworm
 RUN curl -fsSL -o /usr/share/keyrings/docker.asc https://download.docker.com/linux/debian/gpg && \
     curl -fsSL -o /usr/share/keyrings/adoptium.asc https://packages.adoptium.net/artifactory/api/gpg/key/public
-RUN echo "deb [arch=amd64, signed-by=/usr/share/keyrings/docker.asc] https://download.docker.com/linux/debian bullseye stable" > /etc/apt/sources.list.d/docker.list
-RUN echo "deb [arch=amd64, signed-by=/usr/share/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb bullseye main" > /etc/apt/sources.list.d/adoptium.list
+RUN echo "deb [arch=amd64, signed-by=/usr/share/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list
+RUN echo "deb [arch=amd64, signed-by=/usr/share/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb bookworm main" > /etc/apt/sources.list.d/adoptium.list
 RUN apt-get update && apt-get install -y temurin-17-jdk docker-ce
 
 # Setup gradle

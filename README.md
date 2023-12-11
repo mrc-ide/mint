@@ -12,7 +12,7 @@ docker run --rm -p 8080:8080 mrcide/mint
 ### Developing
 Requirements:
 * Docker
-* npm
+* NodeJS 20 with npm
 * openjdk 21
 * coreutils or realpath (Mac users only)
 
