@@ -1,6 +1,6 @@
 package org.imperial.mrc.mint.unit
 
-import org.assertj.core.api.Java6Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThat
 import org.imperial.mrc.mint.ConfiguredAppProperties
 import org.imperial.mrc.mint.MintProperties
 import org.junit.jupiter.api.AfterEach

@@ -11,8 +11,8 @@ class ErrorDetail(
 ) {
 
     val error = "OTHER_ERROR"
-    fun toResponseEntity(): ResponseEntity<Any> = ResponseEntity
+    fun toResponseEntity(): ResponseEntity<String> = ResponseEntity
         .status(this.httpStatus)
         .contentType(MediaType.APPLICATION_JSON)
-        .body(ErrorResponse(listOf(this)).toJsonString() as Any)
+        .body(ErrorResponse(listOf(this)).toJsonString())
 }

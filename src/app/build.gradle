@@ -1,28 +1,10 @@
-buildscript {
-    ext.kotlin_version = '1.9.21'
-}
-
 apply plugin: 'application'
 
-mainClassName = "org.imperial.mrc.mint.AppStartKt"
-
-jacoco {
-    toolVersion = "0.8.11"
-    reportsDirectory = file("$projectDir/coverage")
+application {
+    mainClass = "org.imperial.mrc.mint.AppStartKt"
 }
-
-jacocoTestReport {
-    reports {
-        xml.required = true
-        csv.required = false
-    }
-}
-
-group = 'org.imperial.mrc'
-sourceCompatibility = '1.8'
 
 dependencies {
-
     implementation 'com.github.kittinunf.fuel:fuel:2.3.1'
     implementation 'com.github.kittinunf.fuel:fuel-json:2.3.1'
     implementation 'com.github.kittinunf.fuel:fuel-coroutines:2.3.1'

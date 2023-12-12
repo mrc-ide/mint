@@ -1,0 +1,8 @@
+{
+  "models": [
+    {
+      "name": "FFNN",
+      "filename": "FFNN.onnx"
+    }
+  ]
+}
