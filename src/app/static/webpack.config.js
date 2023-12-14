@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const { VueLoaderPlugin } = require('vue-loader');
+const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -86,6 +87,12 @@ const appConfig = {
             template: 'public/index.ftl',
             filename: 'index.ftl',
             minify: false
+        }),
+        new CopyPlugin({
+            patterns: [{
+                from: 'node_modules/onnxruntime-web/dist/*.wasm',
+                to: 'js/[name][ext]'
+            }]
         }),
         // uncomment to see analysis of bundle size
         //new BundleAnalyzerPlugin({analyzerPort: 4000})

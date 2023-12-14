@@ -8,10 +8,11 @@ import {router} from "./router";
 import {StrategyWithThreshold, Versions} from "./models/project";
 import {get} from "jquery";
 import {currentMintVersion} from "./mintVersion";
+import {generateData} from "./emulator";
 
 export enum RootAction {
     FetchVersion = "FetchVersion",
-    FetchPrevalenceGraphData = "FetchPrevalenceGraphData",
+    UpdatePrevalenceGraphData = "UpdatePrevalenceGraphData",
     FetchPrevalenceGraphConfig = "FetchPrevalenceGraphConfig",
     FetchCasesGraphConfig = "FetchCasesGraphConfig",
     FetchImpactTableConfig = "FetchImpactTableConfig",
@@ -26,9 +27,11 @@ export enum RootAction {
     FetchConfig = "FetchConfig",
     SetCurrentRegion = "SetCurrentRegion",
     SetCurrentRegionBaselineSettings = "SetCurrentRegionBaselineSettings",
+    SetCurrentRegionInterventionSettings = "SetCurrentRegionInterventionSettings",
     FetchDocs = "FetchDocs",
     DismissErrors = "DismissErrors",
-    Strategise = "Strategise"
+    Strategise = "Strategise",
+    FetchEmulatorConfig = "FetchEmulatorConfig",
 }
 
 const currentRegionBaseline = (state: RootState) => {
@@ -41,9 +44,19 @@ export const actions: ActionTree<RootState, RootState> = {
         const {dispatch, commit} = context;
         commit(RootMutation.SetCurrentRegionBaselineSettings, payload);
         await Promise.all([
-            dispatch(RootAction.FetchPrevalenceGraphData),
+            dispatch(RootAction.UpdatePrevalenceGraphData),
             dispatch(RootAction.FetchTableData)
         ]);
+    },
+
+    async [RootAction.SetCurrentRegionInterventionSettings](context, payload: DynamicFormData) {
+        context.commit(RootMutation.SetCurrentRegionInterventionSettings, payload);
+
+        // When using pre-calculated data, we fetch data for all intervention settings up-front.
+        // No need to refresh in those cases.
+        if (context.state.selectedEmulator != null) {
+            await context.dispatch(RootAction.UpdatePrevalenceGraphData);
+        }
     },
 
     async [RootAction.SetCurrentRegion](context, payload: { project: string, region: string }) {
@@ -93,12 +106,27 @@ export const actions: ActionTree<RootState, RootState> = {
             .get<Graph>("/impact/graph/cases-averted/config")
     },
 
-    async [RootAction.FetchPrevalenceGraphData](context) {
-        await api(context)
-            .freezeResponse()
-            .withSuccess(RootMutation.AddPrevalenceGraphData)
-            .withError(RootMutation.AddError)
-            .postAndReturn<Data>("/impact/graph/prevalence/data", currentRegionBaseline(context.state))
+    async [RootAction.UpdatePrevalenceGraphData](context) {
+        const selectedEmulator = context.state.selectedEmulator;
+        if (selectedEmulator == null) {
+            await api(context)
+                .freezeResponse()
+                .withSuccess(RootMutation.AddPrevalenceGraphData)
+                .withError(RootMutation.AddError)
+                .postAndReturn<Data>("/impact/graph/prevalence/data", currentRegionBaseline(context.state));
+        } else {
+            const emulatorConfig = context.state.emulatorConfig;
+            const graphConfig = context.state.prevalenceGraphConfig;
+            const baseline = currentRegionBaseline(context.state);
+            const intervention = context.state.currentProject?.currentRegion.interventionSettings;
+
+            if (!emulatorConfig || !graphConfig || !intervention) {
+                return;
+            }
+
+            var data = await generateData(emulatorConfig.models[selectedEmulator], graphConfig, baseline, intervention);
+            context.commit(RootMutation.AddPrevalenceGraphData, data);
+        }
     },
 
     async [RootAction.FetchPrevalenceGraphConfig](context) {
@@ -150,7 +178,7 @@ export const actions: ActionTree<RootState, RootState> = {
         const project = context.state.currentProject;
         if (project && (!project.currentRegion.tableData.length || !project.currentRegion.prevalenceGraphData.length)) {
             await Promise.all([
-                context.dispatch(RootAction.FetchPrevalenceGraphData),
+                context.dispatch(RootAction.UpdatePrevalenceGraphData),
                 context.dispatch(RootAction.FetchTableData)
             ]);
         }
@@ -185,7 +213,8 @@ export const actions: ActionTree<RootState, RootState> = {
             context.dispatch(RootAction.FetchImpactTableConfig),
             context.dispatch(RootAction.FetchCostCasesGraphConfig),
             context.dispatch(RootAction.FetchCostPerCaseGraphConfig),
-            context.dispatch(RootAction.FetchCostTableConfig)
+            context.dispatch(RootAction.FetchCostTableConfig),
+            context.dispatch(RootAction.FetchEmulatorConfig)
         ]);
     },
 
@@ -211,6 +240,13 @@ export const actions: ActionTree<RootState, RootState> = {
             .withSuccess(RootMutation.UpdateStrategies)
             .withError(RootMutation.AddError)
             .postAndReturn<StrategyWithThreshold[]>("/strategise", options)
-    }
+    },
 
+    async [RootAction.FetchEmulatorConfig](context) {
+        await api(context)
+            .freezeResponse()
+            .withSuccess(RootMutation.UpdateEmulatorConfig)
+            .withError(RootMutation.AddError)
+            .get<any>("/emulator/config")
+    },
 };

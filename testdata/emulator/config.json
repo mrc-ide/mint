@@ -1,8 +1,71 @@
 {
   "models": [
     {
-      "name": "FFNN",
-      "filename": "FFNN.onnx"
+      "name": "Emulator (FFNN)",
+      "filename": "FFNN.onnx",
+      "inputShape": [1, 20],
+
+      "timerange": {
+        "offset": 0,
+        "start": -13,
+        "end": 37
+      },
+
+      "features": [
+        {
+          "input": "baseline.bitingPeople",
+          "type": "ONE_HOT",
+          "values": ["high", "low"]
+        },
+        {
+          "input": "baseline.bitingIndoors",
+          "type": "ONE_HOT",
+          "values": ["high", "low"]
+        },
+        {
+          "input": "baseline.seasonalityOfTransmission",
+          "type": "ONE_HOT",
+          "values": ["perennial", "seasonal"]
+        },
+        {
+          "input": "intervention.name",
+          "type": "ONE_HOT",
+          "values": [
+            "irs",
+            "irs-llin",
+            "irs-llin-pbo",
+            "irs-pyrrole-pbo",
+            "llin",
+            "llin-pbo",
+            "none",
+            "pyrrole-pbo"
+          ]
+        },
+        {
+          "input": "baseline.currentPrevalence",
+          "type": "REAL"
+        },
+        {
+          "input": "baseline.levelOfResistance",
+          "type": "REAL"
+        },
+        {
+          "input": "baseline.itnUsage",
+          "type": "REAL"
+        },
+        {
+          "input": "baseline.sprayInput",
+          "type": "REAL"
+        },
+        {
+          "input": "intervention.netUse",
+          "type": "REAL"
+        },
+        {
+          "input": "intervention.irsUse",
+          "type": "REAL"
+        }
+      ]
     }
   ]
 }

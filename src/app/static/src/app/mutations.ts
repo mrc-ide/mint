@@ -4,6 +4,7 @@ import {Project, Region, StrategyWithThreshold, Versions} from "./models/project
 import {APIError} from "./apiService";
 import {Data, Graph, TableDefinition} from "./generated";
 import {DynamicFormData, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import {EmulatorConfig} from "./emulator";
 
 export enum RootMutation {
     SetVersions = "SetVersions",
@@ -32,7 +33,9 @@ export enum RootMutation {
     UpdateImpactDocs = "UpdateImpactDocs",
     UpdateCostDocs = "UpdateCostDocs",
     SetBudget = "SetBudget",
-    UpdateStrategies = "UpdateStrategies"
+    UpdateStrategies = "UpdateStrategies",
+    SetSelectedEmulatorModel = "SetSelectedEmulatorModel",
+    UpdateEmulatorConfig = "UpdateEmulatorConfig"
 }
 
 export const mutations: MutationTree<RootState> = {
@@ -173,6 +176,13 @@ export const mutations: MutationTree<RootState> = {
         if (state.currentProject) {
             state.currentProject.strategies = payload;
         }
-    }
+    },
 
+    [RootMutation.SetSelectedEmulatorModel](state: RootState, payload: number | null) {
+        state.selectedEmulator = payload;
+    },
+
+    [RootMutation.UpdateEmulatorConfig](state: RootState, payload: EmulatorConfig) {
+        state.emulatorConfig = payload;
+    }
 };
