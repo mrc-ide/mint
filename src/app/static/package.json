@@ -61,7 +61,7 @@
     "vue-eslint-parser": "^8.0.0",
     "vue-feather-icons": "^5.1.0",
     "vue-jest": "^3.0.7",
-    "vue-loader": "^15.9.8",
+    "vue-loader": "^17.3.1",
     "vue-resize-directive": "^1.2.0",
     "vue-router": "^3.5.2",
     "vue-template-compiler": "^2.6.14",
