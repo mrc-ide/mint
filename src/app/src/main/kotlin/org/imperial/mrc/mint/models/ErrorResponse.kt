@@ -8,6 +8,6 @@ data class ErrorResponse(val errors: List<ErrorDetail>) {
     val status = "failure"
 }
 
-fun ErrorResponse.toJsonString() = ObjectMapper().apply {
+fun ErrorResponse.toJsonString(): String = ObjectMapper().apply {
     setSerializationInclusion(JsonInclude.Include.NON_NULL)
 }.writeValueAsString(this)

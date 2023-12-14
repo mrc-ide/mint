@@ -13,7 +13,7 @@ docker run --rm -p 8080:8080 mrcide/mint
 Requirements:
 * Docker
 * npm
-* openjdk 8
+* openjdk 21
 * coreutils or realpath (Mac users only)
 
 1. Clone this repo

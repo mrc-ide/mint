@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/impact")
-class ImpactController(private val apiClient: APIClient){
+class ImpactController(private val apiClient: APIClient) {
 
     @GetMapping("/graph/prevalence/config")
     @ResponseBody

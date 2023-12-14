@@ -20,10 +20,10 @@ fun main() {
 class MvcConfig : WebMvcConfigurer {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/public/**")
-                .addResourceLocations("file:/static/public/", "file:static/public/")
-                .resourceChain(true)
-                .addResolver(EncodedResourceResolver())
-                .addResolver(PathResourceResolver())
+            .addResourceLocations("file:/static/public/", "file:static/public/")
+            .resourceChain(true)
+            .addResolver(EncodedResourceResolver())
+            .addResolver(PathResourceResolver())
     }
 
     @Suppress("MagicNumber")

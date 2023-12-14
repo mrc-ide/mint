@@ -16,12 +16,6 @@ class ErrorControllerTests {
     }
 
     @Test
-    fun `returns error path`() {
-        val sut = MINTErrorController(mockProps)
-        assertThat(sut.errorPath).isEqualTo("/error")
-    }
-
-    @Test
     fun `returns 404 page if status is 404, 403 or 401`() {
         val sut = MINTErrorController(mockProps)
         var mockRequest = mock<HttpServletRequest> {

@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.5.30'
+    ext.kotlin_version = '1.9.21'
 }
 
 apply plugin: 'application'
@@ -7,7 +7,7 @@ apply plugin: 'application'
 mainClassName = "org.imperial.mrc.mint.AppStartKt"
 
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = "0.8.11"
     reportsDirectory = file("$projectDir/coverage")
 }
 
@@ -30,7 +30,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
     implementation 'org.pac4j:spring-webmvc-pac4j:3.2.0'
     implementation 'org.slf4j:slf4j-nop:1.7.26'
