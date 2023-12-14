@@ -1,9 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const appConfig = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -11,7 +11,7 @@ const appConfig = {
     output: {
         path: path.resolve(__dirname, './public'),
         publicPath: '/public/',
-        filename: 'js/app.js'
+        filename: 'js/[name].js'
     },
     module: {
         rules: [
@@ -77,7 +77,7 @@ const appConfig = {
     performance: {
         hints: false
     },
-    devtool: '#eval-source-map',
+    devtool: 'eval-source-map',
     plugins: [
         // make sure to include the plugin for the magic
         new VueLoaderPlugin(),
@@ -99,7 +99,7 @@ const appConfig = {
 
 if (process.env.NODE_ENV === 'production') {
 
-    appConfig.devtool = '#source-map';
+    appConfig.devtool = 'source-map';
     // http://vue-loader.vuejs.org/en/workflow/production.html
     appConfig.plugins = appConfig.plugins.concat([
         new webpack.DefinePlugin({
