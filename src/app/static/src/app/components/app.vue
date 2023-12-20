@@ -23,9 +23,19 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto mr-3">
-                <li v-if="currentProject" class="nav-item">
-                    <user-guide-links :short="true"/>
-                </li>
+                <template v-if="currentProject">
+                    <template v-if="emulatorOptions">
+                        <li v-if="emulatorOptions">
+                            <b-form-select v-model="selectedEmulator" @change="updateSelectedEmulator" :options="emulatorOptions"></b-form-select>
+                        </li>
+                        <li>
+                            <span class="mx-2">|</span>
+                        </li>
+                    </template>
+                    <li v-if="currentProject" class="nav-item">
+                        <user-guide-links :short="true"/>
+                    </li>
+                </template>
                 <template v-else>
                     <li class="nav-item">
                         <router-link class="text-dark" to="/accessibility">Accessibility</router-link>
@@ -72,7 +82,7 @@
     import Vue from "vue"
     import {mapState} from "vuex";
     import dropDown from "./dropDown.vue";
-    import {BIconGraphUp, BModal, VBModal} from "bootstrap-vue";
+    import {BIconGraphUp, BModal, VBModal, BFormSelect} from "bootstrap-vue";
     import {RootAction} from "../actions";
     import {mapActionByName, mapMutationByName} from "../utils";
     import {store} from "../store";
@@ -83,6 +93,7 @@
     import userGuideLinks from "./userGuideLinks.vue";
     import {MAX_REGIONS} from "../index";
     import VersionDropDown from "./versionDropDown.vue";
+    import {EmulatorConfig} from "../emulator";
 
     interface Methods {
         fetchVersion: () => void
@@ -92,10 +103,12 @@
         addRegion: (region: Region) => void
         createNewRegion: () => void
         cancel: () => void
+        updateSelectedEmulator: (value: number | null) => void
     }
 
     interface Data {
         newRegionName: string
+        selectedEmulator: number | null
     }
 
     interface Computed {
@@ -104,6 +117,8 @@
         baselineOptions: DynamicFormMeta
         interventionOptions: DynamicFormMeta
         validNewRegion: boolean
+        emulatorConfig: EmulatorConfig
+        emulatorOptions: any
     }
 
     export default Vue.extend<Data, Methods, Computed, Record<string, never>>({
@@ -111,13 +126,14 @@
         data() {
             return {
                 newRegionName: "",
-                maxRegions: MAX_REGIONS
+                maxRegions: MAX_REGIONS,
+                selectedEmulator: null,
             }
         },
-        components: {VersionDropDown, dropDown, BIconGraphUp, BModal, userGuideLinks},
+        components: {VersionDropDown, dropDown, BIconGraphUp, BModal, BFormSelect, userGuideLinks},
         directives: {"BModal": VBModal},
         computed: {
-            ...mapState(["currentProject", "baselineOptions", "interventionOptions"]),
+            ...mapState(["currentProject", "baselineOptions", "interventionOptions", "emulatorConfig"]),
             validNewRegion() {
                 if (this.newRegionName.trim().length == 0) {
                     return false;
@@ -132,9 +148,25 @@
                 return switches.stratAcrossRegions &&
                     // Exclude regions that aren't fully initialised
                     this.currentProject.regions.filter(region => region.interventionSettings.budgetAllZones).length > 1;
+            },
+            emulatorOptions() {
+                if (this.emulatorConfig && this.emulatorConfig.models.length > 0) {
+                    var options: any = [ { value: null, text: "Pre-calculated" } ];
+                    for (let i = 0; i < this.emulatorConfig.models.length; i++) {
+                        options.push({ value: i, text: this.emulatorConfig.models[i].name });
+                    }
+                    return options;
+                } else {
+                    // Dropdown is hidden and only pre-calculated data gets used.
+                    return null;
+                }
             }
         },
         methods: {
+            updateSelectedEmulator: function(value: number | null) {
+                this.$store.commit(RootMutation.SetSelectedEmulatorModel, value);
+                this.$store.dispatch(RootAction.UpdatePrevalenceGraphData);
+            },
             addRegion: mapMutationByName(RootMutation.AddRegion),
             createNewRegion() {
                 const region = new Region(

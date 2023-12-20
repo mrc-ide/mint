@@ -122,7 +122,7 @@
         ensureImpactData: mapActionByName(RootAction.EnsureImpactData),
         ensureCostEffectivenessData: mapActionByName(RootAction.EnsureCostEffectivenessData),
         updateInterventionOptions: mapMutationByName(RootMutation.SetCurrentRegionInterventionOptions),
-        updateInterventionSettings: mapMutationByName(RootMutation.SetCurrentRegionInterventionSettings),
+        updateInterventionSettings: mapActionByName(RootAction.SetCurrentRegionInterventionSettings),
         fetchConfig: mapActionByName(RootAction.FetchConfig)
     },
     components: {

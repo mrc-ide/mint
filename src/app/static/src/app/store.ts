@@ -9,6 +9,7 @@ import {APIError} from "./apiService";
 import {Graph, TableDefinition} from "./generated";
 import {DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import {localStorageManager} from "./localStorageManager";
+import {EmulatorConfig} from "./emulator";
 
 export interface RootState {
     versions: Versions | null,
@@ -25,11 +26,12 @@ export interface RootState {
     costPerCaseGraphConfig: Graph | null
     impactDocs: string
     costDocs: string
+    selectedEmulator: number | null
+    emulatorConfig: EmulatorConfig | null
 }
 
 const logger = (store: Store<RootState>) => {
     store.subscribe((mutation: MutationPayload, state: RootState) => {
-        console.log(mutation.type);
         localStorageManager.saveState(state);
     })
 };
@@ -52,6 +54,8 @@ const storeOptions: StoreOptions<RootState> = {
         costPerCaseGraphConfig: null,
         impactDocs: "",
         costDocs: "",
+        selectedEmulator: null,
+        emulatorConfig: null,
         ...existingState
     },
     actions,
