@@ -24,6 +24,8 @@ interface APIClient {
     fun getCostDocs(): ResponseEntity<String>
     fun getStrategies(options: Map<String, Any>): ResponseEntity<String>
     fun getVersion(): ResponseEntity<String>
+    fun getEmulatorConfig(): ResponseEntity<String>
+    fun getEmulatorModel(filename: String): ResponseEntity<out Any>
 }
 
 @Component
@@ -55,7 +57,7 @@ class MintrAPIClient(
     }
 
     override fun getImpactGraphPrevalenceData(dataOptions: Map<String, Any>): ResponseEntity<String> {
-        return postJson("graph/prevalence/data", optionsJson(dataOptions))
+        return postJson("graph/prevalence/data", dataOptions)
     }
 
     override fun getImpactTableConfig(): ResponseEntity<String> {
@@ -63,7 +65,7 @@ class MintrAPIClient(
     }
 
     override fun getTableData(dataOptions: Map<String, Any>): ResponseEntity<String> {
-        return postJson("table/data", optionsJson(dataOptions))
+        return postJson("table/data", dataOptions)
     }
 
     override fun getCostCasesAvertedGraphConfig(): ResponseEntity<String> {
@@ -87,11 +89,19 @@ class MintrAPIClient(
     }
 
     override fun getStrategies(options: Map<String, Any>): ResponseEntity<String> {
-        return postJson("strategise", objectMapper.writeValueAsString(options))
+        return postJson("strategise", options)
     }
 
     override fun getVersion(): ResponseEntity<String> {
         return get("version")
+    }
+
+    override fun getEmulatorConfig(): ResponseEntity<String> {
+        return get("emulator/config")
+    }
+
+    override fun getEmulatorModel(filename: String): ResponseEntity<out Any> {
+        return getBinary("emulator/model/$filename")
     }
 
     fun get(url: String): ResponseEntity<String> {
@@ -99,21 +109,26 @@ class MintrAPIClient(
             .addTimeouts()
             .response()
             .second
-            .asResponseEntity()
+            .jsonAsResponseEntity()
     }
 
-    private fun optionsJson(dataOptions: Map<String, Any>): String {
-        return objectMapper.writeValueAsString(dataOptions)
+    fun getBinary(url: String): ResponseEntity<out Any> {
+        return "$baseUrl/$url".httpGet()
+            .addTimeouts()
+            .response()
+            .second
+            .binaryAsResponseEntity()
     }
 
-    private fun postJson(url: String, json: String): ResponseEntity<String> {
+    private fun postJson(url: String, data: Map<String, Any>): ResponseEntity<String> {
+        val json = objectMapper.writeValueAsString(data)
         return "$baseUrl/$url".httpPost()
             .addTimeouts()
             .header("Content-Type" to "application/json")
             .body(json)
             .response()
             .second
-            .asResponseEntity()
+            .jsonAsResponseEntity()
     }
 
     private fun Request.addTimeouts(): Request {

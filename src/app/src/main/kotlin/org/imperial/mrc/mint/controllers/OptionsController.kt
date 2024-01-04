@@ -9,13 +9,11 @@ import org.springframework.web.bind.annotation.*
 class OptionsController(private val apiClient: APIClient) {
 
     @GetMapping("/baseline/options")
-    @ResponseBody
     fun baselineOptions(): ResponseEntity<String> {
         return apiClient.getBaselineOptions()
     }
 
     @GetMapping("/intervention/options")
-    @ResponseBody
     fun interventionOptions(): ResponseEntity<String> {
         return apiClient.getInterventionOptions()
     }

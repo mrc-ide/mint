@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*
 class StrategiseController(private val apiClient: APIClient) {
 
     @PostMapping("/strategise")
-    @ResponseBody
     fun strategise(@RequestBody options: Map<String, Any>): ResponseEntity<String> {
         return apiClient.getStrategies(options)
     }

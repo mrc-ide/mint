@@ -15,7 +15,7 @@ abstract class EndpointTests {
     @Autowired
     lateinit var testRestTemplate: TestRestTemplate
 
-    protected fun assertSuccess(responseEntity: ResponseEntity<String>) {
+    protected fun assertSuccess(responseEntity: ResponseEntity<*>) {
         if (responseEntity.statusCode != HttpStatus.OK) {
             Assertions.fail<String>("Expected OK response but got error: ${responseEntity.body}")
         }

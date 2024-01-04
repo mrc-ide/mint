@@ -18,4 +18,5 @@ docker pull $MINTR_IMAGE
 docker run --rm -d \
   --network=$NETWORK \
   --name=$API \
-  -p 8888:8888 $MINTR_IMAGE
+  -v $HERE/../testdata/emulator:/emulator \
+  -p 8888:8888 $MINTR_IMAGE --emulator=/emulator
