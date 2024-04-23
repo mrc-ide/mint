@@ -34,7 +34,7 @@
     export default Vue.extend<Data, Record<string, never>, Computed, Props>({
         data() {
             return {
-                en: "/public/resources/MINT v2.0 User-Guide-English.pdf",
+                en: "/public/resources/MINT v2.1 User-Guide-English.pdf",
                 fr: "/public/resources/User-Guide-fr.pdf"
             }
         },

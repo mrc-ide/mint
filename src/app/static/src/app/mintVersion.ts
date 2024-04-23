@@ -1,1 +1,1 @@
-export const currentMintVersion = "2.0.0";
+export const currentMintVersion = "2.1.0";

@@ -4,7 +4,7 @@ import {switches} from "../../app/featureSwitches";
 
 const expectLinksToExpectedResources = (wrapper: Wrapper<any>) => {
     const links = wrapper.findAll("a");
-    expect(links.at(0).attributes("href")).toBe("/public/resources/MINT v2.0 User-Guide-English.pdf");
+    expect(links.at(0).attributes("href")).toBe("/public/resources/MINT v2.1 User-Guide-English.pdf");
     if (switches.frenchUserGuide) {
         expect(links.at(1).attributes("href")).toBe("/public/resources/User-Guide-fr.pdf");
     } else {
